@@ -1,0 +1,942 @@
+[
+    {
+        "KEGG IDS": [
+            "C00025", 
+            "C00217", 
+            "C00302"
+        ], 
+        "Names": [
+            "L-Glutamic acid", 
+            "L-Glutamate", 
+            "Glutamate", 
+            "D-Glutamic acid", 
+            "D-Glutamate", 
+            "Glutamate", 
+            "Glutamic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C16435", 
+            "C00763", 
+            "C00148"
+        ], 
+        "Names": [
+            "Proline", 
+            "D-Proline", 
+            "L-Proline"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01825", 
+            "C00124", 
+            "C01582"
+        ], 
+        "Names": [
+            "L-Galactose", 
+            "D-Galactose", 
+            "Galactose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00152", 
+            "C01905", 
+            "C16438"
+        ], 
+        "Names": [
+            "L-Asparagine", 
+            "D-Asparagine", 
+            "Asparagine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00937", 
+            "C00424", 
+            "C05999"
+        ], 
+        "Names": [
+            "D-Lactaldehyde", 
+            "L-Lactaldehyde", 
+            "Lactaldehyde"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00149", 
+            "C00497", 
+            "C00711"
+        ], 
+        "Names": [
+            "L-Malic acid", 
+            "Malic acid", 
+            "Malate", 
+            "L-Malate", 
+            "D-Malic acid", 
+            "D-Malate", 
+            "Malic acid", 
+            "Malate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00508", 
+            "C00309", 
+            "C05052"
+        ], 
+        "Names": [
+            "L-Ribulose", 
+            "D-Ribulose", 
+            "Ribulose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00191", 
+            "C16245"
+        ], 
+        "Names": [
+            "Glucuronic acid", 
+            "D-Glucuronic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C10906", 
+            "C00095", 
+            "C02336"
+        ], 
+        "Names": [
+            "D-Fructose", 
+            "D-Fructose", 
+            "Fructose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00623", 
+            "C00093", 
+            "C03189"
+        ], 
+        "Names": [
+            "Glycerol 1-phosphate", 
+            "L-Glycerol 1-phosphate", 
+            "D-Glycerol 1-phosphate", 
+            "Glycerol 1-phosphate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00764", 
+            "C00247", 
+            "C01452"
+        ], 
+        "Names": [
+            "D-xylo-Hexulose", 
+            "D-Sorbose", 
+            "L-xylo-Hexulose", 
+            "L-Sorbose", 
+            "xylo-Hexulose", 
+            "Sorbose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C15584", 
+            "C00146"
+        ], 
+        "Names": [
+            "Phenol", 
+            "Phenol"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C05789", 
+            "C05790", 
+            "C05791"
+        ], 
+        "Names": [
+            "L-Urobilinogen", 
+            "Urobilinogen", 
+            "D-Urobilinogen"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C16434", 
+            "C00407", 
+            "C06418"
+        ], 
+        "Names": [
+            "Isoleucine", 
+            "L-Isoleucine", 
+            "D-Isoleucine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00768", 
+            "C00135", 
+            "C06419"
+        ], 
+        "Names": [
+            "Histidine", 
+            "L-Histidine", 
+            "D-Histidine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C06417", 
+            "C16436", 
+            "C00183"
+        ], 
+        "Names": [
+            "D-Valine", 
+            "Valine", 
+            "L-Valine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C08348", 
+            "C00333"
+        ], 
+        "Names": [
+            "Galacturonic acid", 
+            "D-Galacturonic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01040", 
+            "C05410"
+        ], 
+        "Names": [
+            "L-Gulono-1,4-lactone", 
+            "Gulono-1,4-lactone"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C05794", 
+            "C05795", 
+            "C05793"
+        ], 
+        "Names": [
+            "Urobilin", 
+            "D-Urobilin", 
+            "L-Urobilin"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00152", 
+            "C01905", 
+            "C16438"
+        ], 
+        "Names": [
+            "L-Asparagine", 
+            "D-Asparagine", 
+            "Asparagine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00155", 
+            "C05330"
+        ], 
+        "Names": [
+            "L-Homocysteine", 
+            "Homocysteine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00082", 
+            "C01536", 
+            "C06420"
+        ], 
+        "Names": [
+            "L-Tyrosine", 
+            "Tyrosine", 
+            "Tyrosine", 
+            "D-Tyrosine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00794", 
+            "C01722"
+        ], 
+        "Names": [
+            "Sorbitol", 
+            "L-Sorbitol"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00736", 
+            "C00793", 
+            "C00097"
+        ], 
+        "Names": [
+            "Cysteine", 
+            "D-Cysteine", 
+            "L-Cysteine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00062", 
+            "C02385", 
+            "C00792"
+        ], 
+        "Names": [
+            "L-Arginine", 
+            "Arginine", 
+            "D-Arginine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C14177", 
+            "C01726"
+        ], 
+        "Names": [
+            "Lombricine", 
+            "D-Lombricine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C08351", 
+            "C01906"
+        ], 
+        "Names": [
+            "Hamamelose", 
+            "D-Hamamelose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00577", 
+            "C02154", 
+            "C02426"
+        ], 
+        "Names": [
+            "D-Glyceraldehyde", 
+            "Aldotriose", 
+            "Glycerose", 
+            "Glyceraldehyde", 
+            "L-Glycerose", 
+            "L-Glyceraldehyde", 
+            "L-Aldotriose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00818", 
+            "C00767"
+        ], 
+        "Names": [
+            "D-Glucaric acid", 
+            "D-Glucarate", 
+            "Glucarate", 
+            "Glucaric acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00819", 
+            "C00064", 
+            "C00303"
+        ], 
+        "Names": [
+            "D-Glutamine", 
+            "L-Glutamine", 
+            "Glutamine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01420", 
+            "C00491"
+        ], 
+        "Names": [
+            "Dicysteine", 
+            "Cystine", 
+            "L-Dicysteine", 
+            "L-Cystine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C02614", 
+            "C00815", 
+            "C02612"
+        ], 
+        "Names": [
+            "L-Citramalate", 
+            "L-Citramalic acid", 
+            "Citramalic acid", 
+            "Citramalate", 
+            "D-Citramalate", 
+            "D-Citramalic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00259", 
+            "C11476"
+        ], 
+        "Names": [
+            "L-Arabinose", 
+            "L-Arabinose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00898", 
+            "C02107"
+        ], 
+        "Names": [
+            "Tartaric acid", 
+            "Tartrate", 
+            "D-Tartaric acid", 
+            "D-Tartrate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C16435", 
+            "C00763", 
+            "C00148"
+        ], 
+        "Names": [
+            "Proline", 
+            "D-Proline", 
+            "L-Proline"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C02291", 
+            "C00542"
+        ], 
+        "Names": [
+            "L-Cystathionine", 
+            "Cystathionine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00879", 
+            "C01807"
+        ], 
+        "Names": [
+            "D-Galactarate", 
+            "D-Galactaric acid", 
+            "D-Mucic acid", 
+            "Galactaric acid", 
+            "Galactarate", 
+            "Mucic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00525", 
+            "C00078", 
+            "C00806"
+        ], 
+        "Names": [
+            "D-Tryptophan", 
+            "Tryptophan", 
+            "L-Tryptophan", 
+            "Tryptophan"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00186", 
+            "C01432", 
+            "C00256"
+        ], 
+        "Names": [
+            "L-Lactate", 
+            "L-Lactic acid", 
+            "Lactic acid", 
+            "Lactate", 
+            "D-Lactate", 
+            "D-Lactic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C11703", 
+            "C07056"
+        ], 
+        "Names": [
+            "L-Isoprenaline", 
+            "Isoprenaline"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00318", 
+            "C00487", 
+            "C15025"
+        ], 
+        "Names": [
+            "L-Carnitine", 
+            "Carnitine", 
+            "D-Carnitine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00736", 
+            "C00793", 
+            "C00097"
+        ], 
+        "Names": [
+            "Cysteine", 
+            "D-Cysteine", 
+            "L-Cysteine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00073", 
+            "C01733", 
+            "C00855"
+        ], 
+        "Names": [
+            "L-Methionine", 
+            "Methionine", 
+            "Methionine", 
+            "D-Methionine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00079", 
+            "C02265", 
+            "C02057"
+        ], 
+        "Names": [
+            "L-Phenylalanine", 
+            "D-Phenylalanine", 
+            "Phenylalanine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00548", 
+            "C15583"
+        ], 
+        "Names": [
+            "Phenyl acetate", 
+            "Phenyl acetate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00515", 
+            "C01602", 
+            "C00077"
+        ], 
+        "Names": [
+            "D-Ornithine", 
+            "Ornithine", 
+            "L-Ornithine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C04006", 
+            "C01177"
+        ], 
+        "Names": [
+            "L-myo-Inositol 1-phosphate", 
+            "myo-Inositol 1-phosphate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00904", 
+            "C01011"
+        ], 
+        "Names": [
+            "Citramalyl-CoA", 
+            "L-Citramalyl-CoA"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01879", 
+            "C02237"
+        ], 
+        "Names": [
+            "Pyroglutamic acid", 
+            "D-Pyroglutamic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01394", 
+            "C01510", 
+            "C00181"
+        ], 
+        "Names": [
+            "Xylose", 
+            "L-Xylose", 
+            "D-Xylose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C03339", 
+            "C01159"
+        ], 
+        "Names": [
+            "Greenwald ester", 
+            "D-Greenwald ester"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00402", 
+            "C00049", 
+            "C16433"
+        ], 
+        "Names": [
+            "D-Aspartate", 
+            "D-Aspartic acid", 
+            "L-Aspartate", 
+            "L-Aspartic acid", 
+            "Aspartate", 
+            "Aspartic acid"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C16434", 
+            "C00407", 
+            "C06418"
+        ], 
+        "Names": [
+            "Isoleucine", 
+            "L-Isoleucine", 
+            "D-Isoleucine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00041", 
+            "C00133", 
+            "C01401"
+        ], 
+        "Names": [
+            "L-Alanine", 
+            "D-Alanine", 
+            "Alanine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C02522", 
+            "C08352"
+        ], 
+        "Names": [
+            "D-Quinovose", 
+            "Quinovose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C06562", 
+            "C17590"
+        ], 
+        "Names": [
+            "D-Catechin", 
+            "Catechin"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00062", 
+            "C02385", 
+            "C00792"
+        ], 
+        "Names": [
+            "L-Arginine", 
+            "Arginine", 
+            "D-Arginine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00716", 
+            "C00740", 
+            "C00065"
+        ], 
+        "Names": [
+            "Serine", 
+            "D-Serine", 
+            "L-Serine", 
+            "Serine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00819", 
+            "C00064", 
+            "C00303"
+        ], 
+        "Names": [
+            "D-Glutamine", 
+            "L-Glutamine", 
+            "Glutamine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C16439", 
+            "C00123", 
+            "C01570"
+        ], 
+        "Names": [
+            "Leucine", 
+            "L-Leucine", 
+            "D-Leucine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00577", 
+            "C02154", 
+            "C02426"
+        ], 
+        "Names": [
+            "D-Glyceraldehyde", 
+            "Aldotriose", 
+            "Glycerose", 
+            "Glyceraldehyde", 
+            "L-Glycerose", 
+            "L-Glyceraldehyde", 
+            "L-Aldotriose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01411", 
+            "C01765", 
+            "C01766"
+        ], 
+        "Names": [
+            "Borneol", 
+            "d-Borneol", 
+            "L-Borneol"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01718", 
+            "C00328"
+        ], 
+        "Names": [
+            "Kynurenine", 
+            "L-Kynurenine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C02336", 
+            "C00095", 
+            "C01719"
+        ], 
+        "Names": [
+            "Fructose", 
+            "D-Fructose", 
+            "L-Fructose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00118", 
+            "C00661"
+        ], 
+        "Names": [
+            "D-Glyceraldehyde 3-phosphate", 
+            "Glyceraldehyde 3-phosphate", 
+            "Glyceraldehyde 3-phosphate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C02976", 
+            "C01094"
+        ], 
+        "Names": [
+            "Fructose 1-phosphate", 
+            "D-Fructose 1-phosphate"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C06417", 
+            "C16436", 
+            "C00183"
+        ], 
+        "Names": [
+            "D-Valine", 
+            "Valine", 
+            "L-Valine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C16440", 
+            "C00739", 
+            "C00047"
+        ], 
+        "Names": [
+            "Lysine", 
+            "D-Lysine", 
+            "L-Lysine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00121", 
+            "C08353"
+        ], 
+        "Names": [
+            "D-Ribose", 
+            "Ribose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01825", 
+            "C00124", 
+            "C01582"
+        ], 
+        "Names": [
+            "L-Galactose", 
+            "D-Galactose", 
+            "Galactose"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00683", 
+            "C02557", 
+            "C01213"
+        ], 
+        "Names": [
+            "D-Methylmalonyl-CoA", 
+            "Methylmalonyl-CoA", 
+            "L-Methylmalonyl-CoA"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C07911", 
+            "C16719"
+        ], 
+        "Names": [
+            "Phenylpropanolamine", 
+            "l-Phenylpropanolamine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C10043", 
+            "C15608"
+        ], 
+        "Names": [
+            "Flavone", 
+            "Flavone"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00515", 
+            "C01602", 
+            "C00077"
+        ], 
+        "Names": [
+            "D-Ornithine", 
+            "Ornithine", 
+            "L-Ornithine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00768", 
+            "C00135", 
+            "C06419"
+        ], 
+        "Names": [
+            "Histidine", 
+            "L-Histidine", 
+            "D-Histidine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00079", 
+            "C02265", 
+            "C02057"
+        ], 
+        "Names": [
+            "L-Phenylalanine", 
+            "D-Phenylalanine", 
+            "Phenylalanine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C01213", 
+            "C02557", 
+            "C00683"
+        ], 
+        "Names": [
+            "L-Methylmalonyl-CoA", 
+            "Methylmalonyl-CoA", 
+            "D-Methylmalonyl-CoA"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00318", 
+            "C00487", 
+            "C15025"
+        ], 
+        "Names": [
+            "L-Carnitine", 
+            "Carnitine", 
+            "D-Carnitine"
+        ]
+    }, 
+    {
+        "KEGG IDS": [
+            "C00402", 
+            "C00049", 
+            "C16433"
+        ], 
+        "Names": [
+            "D-Aspartate", 
+            "D-Aspartic acid", 
+            "L-Aspartate", 
+            "L-Aspartic acid", 
+            "Aspartate", 
+            "Aspartic acid"
+        ]
+    }
+]

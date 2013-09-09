@@ -1,0 +1,51 @@
+{% with "Reaction" as title %}
+	{% include "header.html" %}
+{% endwith %}
+
+	<div class="centerize">
+
+	{% include "reaction_balancing_check.html" %}
+
+	<form id="rxnForm" name="reactionForm" action="/reaction" method="get">
+		<input type="hidden" name="query" value="{{ query }}" />
+		{% include "parsed_reaction.html" %}
+		
+		{% if reaction.is_balanced and reaction.is_electron_balanced and reaction.is_conserving %}
+			{% include "reaction_result_table.html" %}
+			
+			<div class="buttonSet">
+				<input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
+				<input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />
+				<input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
+			</div>
+		{% endif %}
+		
+	</form>
+
+	{% if reaction.all_compounds and reaction.is_conserving %}
+	<table class="formationEnergyInfo">
+		<tr>
+			<th colspan="2">Compound Formation Energies</td>		
+		</tr>
+		<tr class="speciesHeader">
+			<td>Compound</td>
+			<td><a href="/faq#dgf">&Delta;<sub>f</sub>G'&deg;</a> [kJ / mol]</td>
+		</tr>
+		{% for compound in reaction.all_compounds %}
+		<tr>
+			<td><a href="{{ compound.compound.link }}">{{ compound.name }}</a></td>
+			<td>
+			{% if compound.transformed_energy != None %}
+			{{ compound.transformed_energy|floatformat:1 }}
+			{% else %}&mdash;
+			{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% endif %}
+	
+	
+	</div>
+
+{% include "footer.html" %}

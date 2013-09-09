@@ -1,0 +1,48 @@
+<table class="enzymeInfo">
+	<tr>
+		<td width="150px">Common names</td>
+		<td>
+			{% for name in enzyme.all_common_names %}
+			<div class="commonName">{{ name }}</div>
+			{% endfor %}
+		</td>
+	</tr>
+  <tr>
+    <td width="150px">EC Number</td>
+    <td>
+      <div>{{ enzyme.ec }}</div>
+    </td>
+  </tr>
+  	{% if enzyme.all_cofactors %}
+  	<tr>
+    	<td width="150px">Cofactors</td>
+    	<td>
+    		{% for cofactor in enzyme.all_cofactors %}
+      		<div class="commonName">
+      			<a href="{{ cofactor.link }}">{{ cofactor }}</a>
+      		</div>
+      		{% endfor %}
+    	</td>
+  	</tr>
+  	
+  	{% endif %}
+	{% if enzyme.kegg_link %}
+	<tr>
+		<td width="150px">Links</td>
+		<td><div><a href="{{enzyme.kegg_link}}">KEGG &raquo;</a></div>
+		    <div><a href="{{enzyme.brenda_link}}">BRENDA &raquo;</a></div></td>
+	</tr>
+	{% endif %}
+</table>
+{% if enzyme.all_reactions %}
+<table class="reactionInfo">
+	<tr class="reactionRow">
+		<th>Reactions</th>		
+	</tr>
+	{% for reaction in enzyme.all_reactions %}
+		<tr class="{% cycle 'reactionRowOdd' 'reactionRowEven' %}">
+			<td><a href="{{reaction.link}}">{{reaction.reaction_string}}</a></td>
+		</tr>
+	{% endfor %}
+</table>
+{% endif %}

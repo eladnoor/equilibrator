@@ -1,0 +1,18 @@
+{% with enzyme.first_name as title %}
+	{% include "header.html" %}
+{% endwith %}
+
+	<div class="centerize">
+
+		<div class="enzyme">
+			{{ enzyme }}
+			{% if is_superuser %}
+				<a class="adminLink" href="/admin/gibbs/enzyme/{{ enzyme.pk }}">Edit in admin</a>
+			{% endif %}
+		</div>
+	
+		{% include "enzyme_info_table.html" %}
+	
+	</div>
+		
+{% include "footer.html" %}

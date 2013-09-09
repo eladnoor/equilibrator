@@ -1,0 +1,769 @@
+# The reactions used in the reaction_parser regression test.
+# We list reactions and partial parsing output in order to verify
+# that parsing is working as expected.
+reactions: <
+  query: "H2O => 2 H2 + O2"
+  reactants: <
+    parsed_name: "H2O"
+    match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "H2"
+  	parsed_coeff: 2
+  	match_names: "H2"
+  >
+  products: <
+  	parsed_name: "O2"
+  	match_names: "O2"
+  >
+>
+reactions: <
+  # Net reaction for the TCA cycle.
+  query: "Acetyl-CoA + 3 NAD+ + Q + GDP + Pi + 2 H2O <=> CoA-SH + 3 NADH + 3 H+ + QH2 + GTP + 2 CO2"
+  reactants: <
+    parsed_name: "Acetyl-CoA"
+    match_names: "Acetyl-CoA"
+  >
+  reactants: <
+    parsed_name: "NAD+"
+    parsed_coeff: 3
+    match_names: "NAD+"
+  >
+  reactants: <
+    parsed_name: "Q"
+    match_names: "Q"
+  >
+  reactants: <
+    parsed_name: "GDP"
+    match_names: "GDP"
+  >
+  reactants: <
+  	# Given the current data, "Pi" has no exact match, only "PPi"
+  	parsed_name: "Pi"
+	match_names: "Pi"
+  >
+  reactants: <
+  	parsed_name: "H2O"
+  	parsed_coeff: 2
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "CoA-SH"
+  	match_names: "CoA-SH"
+  >
+  products: <
+  	parsed_name: "NADH"
+  	parsed_coeff: 3
+  	match_names: "NADH"
+  >
+  products: <
+  	parsed_name: "H+"
+  	parsed_coeff: 3
+  	match_names: "H+"
+  >
+  products: <
+  	parsed_name: "QH2"
+  	match_names: "QH2"
+  >
+  products: <
+  	parsed_name: "GTP"
+  	match_names: "GTP"
+  >
+  products: <
+  	parsed_name: "CO2"
+  	parsed_coeff: 2
+  	match_names: "CO2"
+  >
+>
+reactions: <
+  # First step of the TCA cycle: Oxaloacetate to Citrate
+  query: "oxaloacetate + acetyl coa + h2o = citrate + coa-sh"
+  reactants: <
+    parsed_name: "oxaloacetate"
+    match_names: "Oxaloacetate"
+  >
+  reactants: <
+  	parsed_name: "acetyl coa"
+  	match_names: "Acetyl-CoA"
+  >
+  reactants: <
+  	parsed_name: "h2o"
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "citrate"
+  	match_names: "Citrate"
+  >
+  products: <
+  	parsed_name: "coa-sh"
+  	match_names: "CoA-SH"
+  >
+>
+reactions: <
+  # Second step of the TCA cycle: Citrate isomerization
+  query: "Citrate <=> cis-Aconitate + water"
+  reactants: <
+    parsed_name: "Citrate"
+    match_names: "Citrate"
+  >
+  products: <
+  	parsed_name: "cis-Aconitate"
+  	match_names: "cis-Aconitate"
+  >
+  products: <
+  	parsed_name: "water"
+  	match_names: "Water"
+  >
+>
+reactions: <
+  # Third step of the TCA cycle: Citrate isomerization p2
+  query: "cis-Aconitate + h2o = isocitrate"
+  reactants: <
+  	parsed_name: "cis-Aconitate"
+  	match_names: "cis-Aconitate"
+  >
+  reactants: <
+  	parsed_name: "h2o"
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "isocitrate"
+  	match_names: "Isocitrate"
+  >
+>
+reactions: <
+  # Fourth step of the TCA cycle: NADH generation
+  query: "Isocitrate + nad+ <=> oxalosuccinate + NADH + H+"
+  reactants: <
+  	parsed_name: "Isocitrate"
+  	match_names: "Isocitrate"
+  >
+  reactants: <
+  	parsed_name: "nad+"
+  	match_names: "NAD+"
+  >
+  products: <
+  	parsed_name: "oxalosuccinate"
+  	match_names: "Oxalosuccinate"
+  >
+  products: <
+  	parsed_name: "NADH"
+  	match_names: "NADH"
+  >
+  products: <
+  	parsed_name: "H+"
+  	match_names: "H+"
+  >
+>
+reactions: <
+  # Fifth step of the TCA cycle: generate 5C molecule
+  query: "oxalosuccinate = alpha ketoglutarate + CO2"
+  reactants: <
+  	parsed_name: "oxalosuccinate"
+  	match_names: "Oxalosuccinate"
+  >
+  products: <
+    # The common name alpha-Ketoglutarate is not in KEGG
+  	parsed_name: "alpha ketoglutarate"
+  	match_names: "alpha ketoglutarate"
+  >
+  products: <
+  	parsed_name: "CO2"
+  	match_names: "CO2"
+  >
+>
+reactions: <
+  # Sixth step of the TCA cycle: generate NADH, regenerate 4C chain
+  query: "alpha ketoglutaric acid + NAD+ + Coa-SH => Succinyl-CoA + NADH + H+ + CO2"
+  reactants: <
+  	parsed_name: "alpha ketoglutaric acid"
+  	match_names: "alpha-Ketoglutaric acid"
+  >
+  reactants: <
+  	parsed_name: "NAD+"
+  	match_names: "NAD+"
+  >
+  reactants: <
+  	parsed_name: "Coa-SH"
+  	match_names: "CoA-SH"
+  >
+  products: <
+  	parsed_name: "Succinyl-CoA"
+  	match_names: "Succinyl-CoA"
+  >
+  products: <
+  	parsed_name: "NADH"
+  	match_names: "NADH"
+  >
+  products: <
+  	parsed_name: "H+"
+  	match_names: "H+"
+  >
+  products: <
+  	parsed_name: "CO2"
+  	match_names: "CO2"
+  >
+>
+reactions: <
+  # 7th step of the TCA cycle: ATP/GTP generation
+  query: "Succinyl-CoA + GDP + Pi = Succinate + CoA-SH + GTP"
+  reactants: <
+  	parsed_name: "Succinyl-CoA"
+  	match_names: "Succinyl-CoA"
+  >
+  reactants: <
+  	parsed_name: "GDP"
+  	match_names: "GDP"
+  >
+  reactants: <
+  	parsed_name: "Pi"
+  	match_names: "Pi"
+  >
+  products: <
+  	parsed_name: "Succinate"
+  	match_names: "Succinate"
+  >
+  products: <
+  	parsed_name: "CoA-SH"
+  	match_names: "CoA-SH"
+  >
+  products: <
+  	parsed_name: "GTP"
+  	match_names: "GTP"
+  >
+>
+reactions: <
+  # 8th step of the TCA cycle.
+  query: "Succinate + ubiquinone <=> Fumarate + ubiquinol"
+  reactants: <
+  	parsed_name: "Succinate"
+  	match_names: "Succinate"
+  >
+  reactants: <
+  	parsed_name: "ubiquinone"
+  	match_names: "Ubiquinone"
+  >
+  products: <
+  	parsed_name: "Fumarate"
+  	match_names: "Fumarate"
+  >
+  products: <
+  	parsed_name: "ubiquinol"
+  	match_names: "Ubiquinol"
+  >
+>
+reactions: <
+  # 9th step of the TCA cycle: hydration of Fumarate
+  query: "Fumarate + h2o <=> L-Malate"
+  reactants: <
+  	parsed_name: "Fumarate"
+  	match_names: "Fumarate"
+  >
+  reactants: <
+  	parsed_name: "h2o"
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "L-Malate"
+  	match_names: "L-Malate"
+  >
+>
+reactions: <
+  # 10th step of TCA cycle: geneate NADH
+  query: "L-Malate + NAD+ => Oxaloacetate + NADH + H+"
+  reactants: <
+  	parsed_name: "L-Malate"
+  	match_names: "L-Malate"
+  >
+  reactants: <
+  	parsed_name: "NAD+"
+  	match_names: "NAD+"
+  >
+  products: <
+  	parsed_name: "Oxaloacetate"
+  	match_names: "Oxaloacetate"
+  >
+  products: <
+  	parsed_name: "NADH"
+  	match_names: "NADH"
+  >
+  products: <
+  	parsed_name: "H+"
+  	match_names: "H+"
+  >
+>
+# Calvin cycle reactions
+reactions: <
+  query: "6 Ribulose bisphosphate + 6 CO2 + 6 H2O => 12 3-phosphoglycerate + 12 H+"
+  reactants: <
+  	parsed_name: "Ribulose bisphosphate"
+  	parsed_coeff: 6
+  	match_names: "D-Ribulose 1,5-bisphosphate"
+  >
+  reactants: <
+  	parsed_name: "CO2"
+  	parsed_coeff: 6
+  	match_names: "CO2"
+  >
+  reactants: <
+  	parsed_name: "H2O"
+  	parsed_coeff: 6
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "3-phosphoglycerate"
+  	parsed_coeff: 12
+  	match_names: "3-Phosphoglycerate"
+  >
+  products: <
+  	parsed_name: "H+"
+  	parsed_coeff: 12
+  	match_names: "H+"
+  >
+>
+reactions: <
+  query: "12 3-phosphoglycerate + 12 ATP => 12 1,3-bisphosphoglycerate + 12 ADP"
+  reactants: <
+  	parsed_name: "3-phosphoglycerate"
+  	parsed_coeff: 12
+  	match_names: "3-Phosphoglycerate"
+  >
+  reactants: <
+  	parsed_name: "ATP"
+  	parsed_coeff: 12
+  	match_names: "ATP"
+  >
+  products: <
+  	parsed_name: "1,3-bisphosphoglycerate"
+  	parsed_coeff: 12
+  	match_names: "1,3-Bisphospho-D-glycerate"
+  >
+  products: <
+  	parsed_name: "ADP"
+  	parsed_coeff: 12
+  	match_names: "ADP"
+  >
+>
+reactions: <
+  query: "12 1,3-bisphosphoglycerate + 12 NADPH + 12 H+ = 12 glyceraldehyde-3-phosphate + 12 NADP+ + 12 Pi"
+  reactants: <
+  	parsed_name: "1,3-bisphosphoglycerate"
+  	parsed_coeff: 12
+  	match_names: "1,3-Bisphospho-D-glycerate"
+  >
+  reactants: <
+  	parsed_name: "NADPH"
+  	parsed_coeff: 12
+  	match_names: "NADPH"
+  >
+  reactants: <
+  	parsed_name: "H+"
+  	parsed_coeff: 12
+  	match_names: "H+"
+  >
+  products: <
+  	parsed_name: "glyceraldehyde-3-phosphate"
+  	parsed_coeff: 12
+  	match_names: "Glyceraldehyde 3-phosphate"
+  >
+  products: <
+  	parsed_name: "NADP+"
+  	parsed_coeff: 12
+  	match_names: "NADP+"
+  >
+  products: <
+  	parsed_name: "Pi"
+  	parsed_coeff: 12
+  	match_names: "Pi"
+  >
+>
+reactions: <
+  query: "5 glyceraldehyde-3-phosphate => 5 dihydroxyacetone-3-phosphate"
+  reactants: <
+  	parsed_name: "glyceraldehyde-3-phosphate"
+  	parsed_coeff: 5
+  	match_names: "Glyceraldehyde 3-phosphate"
+  >
+  products: <
+  	parsed_name: "dihydroxyacetone-3-phosphate"
+  	parsed_coeff: 5
+  	match_names: "Dihydroxyacetone phosphate"
+  >
+>
+reactions: <
+  query: "3 glyceraldehyde-3-phosphate + 3 dihydroxyacetone-3-phosphate = 3 fructose-1,6-bisphosphate"
+  reactants: <
+  	parsed_name: "glyceraldehyde-3-phosphate"
+  	parsed_coeff: 3
+  	match_names: "Glyceraldehyde 3-phosphate"
+  >
+  reactants: <
+  	parsed_name: "dihydroxyacetone-3-phosphate"
+  	parsed_coeff: 3
+  	match_names: "Dihydroxyacetone phosphate"
+  >
+  products: <
+  	parsed_name: "fructose-1,6-bisphosphate"
+  	parsed_coeff: 3
+  	match_names: "D-Fructose 1,6-bisphosphate"
+  >
+>
+reactions: <
+  query: "3 fructose-1,6-bisphosphate + 3 H2O => 3 fructose-6-phosphate + 3 Pi"
+  reactants: <
+  	parsed_name: "fructose-1,6-bisphosphate"
+  	parsed_coeff: 3
+  	match_names: "D-Fructose 1,6-bisphosphate"
+  >
+  reactants: <
+  	parsed_name: "H2O"
+  	parsed_coeff: 3
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "fructose-6-phosphate"
+  	parsed_coeff: 3
+  	match_names: "D-Fructose 6-phosphate"
+  >
+  products: <
+  	parsed_name: "Pi"
+  	parsed_coeff: 3
+  	match_names: "Pi"
+  >
+>
+reactions: <
+  query: "2 fructose-6-phosphate + 2 glyceraldehyde-3-phosphate = 3 erythrose-4-phosphate + 2 xylulose-5-phosphate"
+  reactants: <
+  	parsed_name: "fructose-6-phosphate"
+  	parsed_coeff: 2
+  	match_names: "D-Fructose 6-phosphate"
+  >
+  reactants: <
+  	parsed_name: "glyceraldehyde-3-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Glyceraldehyde 3-phosphate"
+  >
+  products: <
+  	parsed_name: "erythrose-4-phosphate"
+  	parsed_coeff: 3
+  	match_names: "D-Erythrose 4-phosphate"
+  >
+  products: <
+  	parsed_name: "xylulose-5-phosphate"
+  	parsed_coeff: 2
+  	match_names: "D-Xylulose 5-phosphate"
+  >
+>
+reactions: <
+  query: "2 erythrose-4-phosphate + 2 dihydroxyacetone-3-phosphate => 2 sedoheptulose-1,7-bisphosphate"
+  reactants: <
+  	parsed_name: "erythrose-4-phosphate"
+  	parsed_coeff: 2
+  	match_names: "D-Erythrose 4-phosphate"
+  >
+  reactants: <
+  	parsed_name: "dihydroxyacetone-3-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Dihydroxyacetone phosphate"
+  >
+  products: <
+  	parsed_name: "sedoheptulose-1,7-bisphosphate"
+  	parsed_coeff: 2
+  	match_names: "Sedoheptulose 1,7-bisphosphate"
+  >
+>
+reactions: <
+  query: "2 sedoheptulose-1,7-bisphosphate + 2 H2O <=> 2 sedoheptulose-7-phosphate + 2 Pi"
+  reactants: <
+  	parsed_name: "sedoheptulose-1,7-bisphosphate"
+  	parsed_coeff: 2
+  	match_names: "Sedoheptulose 1,7-bisphosphate"
+  >
+  reactants: <
+  	parsed_name: "H2O"
+  	parsed_coeff: 2
+  	match_names: "H2O"
+  >
+  products: <
+  	parsed_name: "sedoheptulose-7-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Sedoheptulose 7-phosphate"
+  >
+  products: <
+  	parsed_name: "Pi"
+  	parsed_coeff: 2
+  	match_names: "Pi"
+  >
+>
+reactions: <
+  query: "2 sedoheptulose-7-phosphate + 2 glyceraldehyde-3-phosphate <=> 2 ribose 5-phosphate + 2 xylulose-5-phosphate"
+  reactants: <
+  	parsed_name: "sedoheptulose-7-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Sedoheptulose 7-phosphate"
+  >
+  reactants: <
+  	parsed_name: "glyceraldehyde-3-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Glyceraldehyde 3-phosphate"
+  >
+  products: <
+  	parsed_name: "ribose 5-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Ribose 5-phosphate"
+  >
+  products: <
+  	parsed_name: "xylulose-5-phosphate"
+  	parsed_coeff: 2
+  	match_names: "D-Xylulose 5-phosphate"
+  >
+>
+reactions: <
+  query: "4 xylulose-5-phosphate => 4 ribulose 5-phosphate"
+  reactants: <
+  	parsed_name: "xylulose-5-phosphate"
+  	parsed_coeff: 4
+  	match_names: "D-Xylulose 5-phosphate"
+  >
+  products: <
+  	parsed_name: "ribulose 5-phosphate"
+  	parsed_coeff: 4
+  	match_names: "D-Ribulose 5-phosphate"
+  >
+>
+reactions: <
+  query: "2 Ribose 5-phosphate = 2 ribulose 5-phosphate"
+  reactants: <
+  	parsed_name: "Ribose 5-phosphate"
+  	parsed_coeff: 2
+  	match_names: "Ribose 5-phosphate"
+  >
+  products: <
+  	parsed_name: "ribulose 5-phosphate"
+  	parsed_coeff: 2
+  	match_names: "D-Ribulose 5-phosphate"
+  >
+>
+reactions: <
+  query: "6 ribulose 5-phosphate + 6 atp => 6 ribulose 1,5-bisphosphate + 6 ADP + 6 H+"
+  reactants: <
+  	parsed_name: "ribulose 5-phosphate"
+  	parsed_coeff: 6
+  	match_names: "D-Ribulose 5-phosphate"
+  >
+  reactants: <
+    parsed_name: "atp"
+    parsed_coeff: 6
+    match_names: "ATP"
+  >
+  products: <
+    parsed_name: "ribulose 1,5-bisphosphate"
+    parsed_coeff: 6
+    match_names: "D-Ribulose 1,5-bisphosphate"
+  >
+  products: <
+    parsed_name: "ADP"
+    parsed_coeff: 6
+    match_names: "ADP"
+  >
+  products: <
+    parsed_name: "H+"
+    parsed_coeff: 6
+    match_names: "H+"
+  >
+>
+# Reactions from "Chloroplast Metabolism" by Barry Halliwell
+reactions: <
+  query: "oxaloacetate + NADPH + H+ => L-malate + NADP+"
+  reactants: <
+  	parsed_name: "oxaloacetate"
+  	match_names: "Oxaloacetate"
+  >
+  reactants: <
+    parsed_name: "NADPH"
+    match_names: "NADPH"
+  >
+  reactants: <
+    parsed_name: "H+"
+    match_names: "H+"
+  >
+  products: <
+    parsed_name: "L-malate"
+    match_names: "L-Malate"
+  >
+  products: <
+    parsed_name: "NADP+"
+    match_names: "NADP+"
+  >
+>
+reactions: <
+  query: "6-phosphogluconate + NADP+ <=> D-ribulose 5-phosphate + CO2 + NADPH + H+"
+  reactants: <
+  	parsed_name: "6-phosphogluconate"
+  	match_names: "6-Phospho-D-gluconate"
+  >
+  reactants: <
+    parsed_name: "NADP+"
+    match_names: "NADP+"
+  >
+  products: <
+    parsed_name: "D-ribulose 5-phosphate"
+    match_names: "D-Ribulose 5-phosphate"
+  >
+  products: <
+    parsed_name: "CO2"
+    match_names: "CO2"
+  >
+  products: <
+    parsed_name: "NADPH"
+    match_names: "NADPH"
+  >
+  products: <
+    parsed_name: "H+"
+    match_names: "H+"
+  >
+>
+reactions: <
+  query: "ascorbate + 2 O2- => H2O2 + dehydroascorbate"
+  reactants: <
+  	parsed_name: "ascorbate"
+  	match_names: "Ascorbate"
+  >
+  reactants: <
+    parsed_name: "O2-"
+    parsed_coeff: 2
+    match_names: "O2-"
+  >
+  products: <
+    parsed_name: "H2O2"
+    match_names: "H2O2"
+  >
+  products: <
+    parsed_name: "dehydroascorbate"
+    match_names: "Dehydroascorbate"
+  >
+>
+reactions: <
+  query: "PEP + HCO3- => oxaloacetate + phosphate"
+  reactants: <
+  	parsed_name: "PEP"
+  	match_names: "PEP"
+  >
+  reactants: <
+    parsed_name: "HCO3-"
+    match_names: "HCO3-"
+  >
+  products: <
+    parsed_name: "oxaloacetate"
+    match_names: "Oxaloacetate"
+  >
+  products: <
+    parsed_name: "phosphate"
+    match_names: "phosphate"
+  >
+>
+reactions: <
+  query: "4 GSH + 2 O2 => 2 GSSG + 2 H2O"
+  reactants: <
+  	parsed_name: "GSH"
+  	parsed_coeff: 4
+  	match_names: "GSH"
+  >
+  reactants: <
+    parsed_name: "O2"
+    parsed_coeff: 2
+    match_names: "O2"
+  >
+  products: <
+    parsed_name: "GSSG"
+    parsed_coeff: 2
+    match_names: "GSSG"
+  >
+  products: <
+    parsed_name: "H2O"
+    parsed_coeff: 2
+    match_names: "H2O"
+  >
+>
+reactions: <
+  query: "GSSG + NADPH + H+ <=> 2 GSH + NADP+"
+  reactants: <
+  	parsed_name: "GSSG"
+  	match_names: "GSSG"
+  >
+  reactants: <
+    parsed_name: "NADPH"
+    match_names: "NADPH"
+  >
+  reactants: <
+    parsed_name: "H+"
+    match_names: "H+"
+  >
+  products: <
+    parsed_name: "GSH"
+    parsed_coeff: 2
+    match_names: "GSH"
+  >
+  products: <
+    parsed_name: "NADP+"
+    match_names: "NADP+"
+  >
+>
+reactions: <
+  query: "acetyl SCoA + HCO3- + H+ + ATP <=> malonyl SCoA + ADP + Pi"
+  reactants: <
+  	parsed_name: "acetyl SCoA"
+  	match_names: "Acetyl-CoA"
+  >
+  reactants: <
+    parsed_name: "HCO3-"
+    match_names: "HCO3-"
+  >
+  reactants: <
+    parsed_name: "H+"
+    match_names: "H+"
+  >
+  reactants: <
+  	parsed_name: "ATP"
+  	match_names: "ATP"
+  >
+  products: <
+    parsed_name: "malonyl SCoA"
+    match_names: "Malonyl-CoA"
+  >
+  products: <
+    parsed_name: "ADP"
+    match_names: "ADP"
+  >
+  products: <
+    parsed_name: "Pi"
+    match_names: "Pi"
+  >
+>
+reactions: <
+  query: "pyruvate + NAD+ = acetyl SCoA + CO2 + NADH + H+"
+  reactants: <
+  	parsed_name: "pyruvate"
+  	match_names: "Pyruvate"
+  >
+  reactants: <
+    parsed_name: "NAD+"
+    match_names: "NAD+"
+  >
+  products: <
+    parsed_name: "acetyl SCoA"
+    match_names: "Acetyl-CoA"
+  >
+  products: <
+    parsed_name: "CO2"
+    match_names: "CO2"
+  >
+  products: <
+    parsed_name: "NADH"
+    match_names: "NADH"
+  >
+  products: <
+    parsed_name: "H+"
+    match_names: "H+"
+  >
+>

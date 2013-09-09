@@ -1,0 +1,197 @@
+<html>
+  <head>
+    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
+    <title>Classic Biochemical Reactions and Pathways</title>
+    {% include "analytics.html" %}
+  </head>
+  <body>
+    <div class="container">
+      {% include "logo_small.html" %}
+      <div class="title">Classic Biochemical Reactions and Pathways</div>
+      
+      <div>
+        <ul>
+          <li><a href="#atpHydrolysis">ATP Hydrolysis</a></li>
+          <li><a href="#glucoseOxidation">The Oxidation of Glucose</a></li>
+          <li><a href="#fermentation">Glycolysis and Fermentation</a></li>
+          <li><a href="#netReactions">Net Reactions of Major Cellular Pathways</a></li>
+          <li><a href="#glycolysisEnzymatic">Enzymatic Reactions in Glycolysis</a></li>
+          <li><a href="#centralEnzymatic">Enzymatic Reactions in Central Metabolism</a></li>
+        </ul>
+      </div>
+      
+      <div class="section" id="atpHydrolysis">
+        <div class="title">ATP Hydrolysis</div>
+        <p> 
+        ATP is considered the energy "currency" of the cell. But how much is that currency worth?
+        How much energy is in an ATP? The hydrolysis of one phosphate bond to form ADP and phosphate
+        </p>
+        
+        <p>
+        <a href="/search?query=ATP+%2B+Water+%3C%3D%3E+ADP+%2B+Phosphate">ATP + Water &lt;=&gt; ADP + Phosphate</a>
+        </p> 
+
+        <p>
+        has a &Delta;<sub>r</sub>G'&deg; of about -35 kJ / mol. That is, if you hydrolyze 1 mol of ATP to ADP in standard conditions,
+        35 kJ of energy that is usable for work is released. Conversely, it takes 35 kJ of work to form 1 mol of ATP from ADP in
+        standard conditions.
+        </p>
+
+        <p>
+        Keep in mind that &Delta;<sub>r</sub>G'&deg; is defined in standard conditions (1 molar concentrations) while biological
+        concentrations are much closer to 1 millimolar (1 mM). Try using eQuilibrator to figure out the &Delta;<sub>r</sub>G' of
+        ATP hydrolysis in these conditions (answer: roughly 50 kJ / mol).
+        </p>
+      </div>
+      
+      <div class="section" id="glucoseOxidation">
+        <div class="title">The Oxidation of Glucose</div>
+        <p>
+        The oxidation of glucose is a major source of chemical energy for most organisms. Indeed, most of the energy
+        harvested from glucose oxidation is stored as ATP. If we take a look at the full oxidation of glucose to carbon
+        dioxide and water
+        </p>
+        
+        <p>
+        <a href="/search?query=Glucose+%2B+6+O2+%3D+6+CO2+%2B+6+H2O">Glucose + 6 O2 &lt;=&gt; 6 CO2 + 6 H2O</a>
+        </p> 
+
+        <p>
+        we find that &Delta;<sub>r</sub>G'&deg; = -2921 kJ / mol. At more biological 1 mM concentrations,
+        &Delta;<sub>r</sub>G' = -2904 kJ / mol. According to our calculation from above, that's enough energy
+        to make 58 ATP. But most organisms generate only about 30 ATP by burning glucose.
+        </p>
+
+        <p>
+        Biochemistry textbooks often write this reaction as generating 36 ATP
+        </p>
+        
+        <p>
+        <a href="/search?query=Glucose+%2B+6+O2+%2B+36+ADP+%2B+36+Phosphate+<%3D>+6+CO2%28aq%29+%2B+42+H2O+%2B+36+ATP">
+          Glucose + 6 O2 + 36 ADP + 36 Phosphate &lt;=&gt; 6 CO2 + 42 H2O + 36 ATP
+        </a>
+        </p>
+        
+        <p>
+        giving a &Delta;<sub>r</sub>G' of -1177 kJ / mol (when all concentrations are 1 mM). In other words,
+        there's more free energy! Which begs the question: why not make more ATP? If you're interested in learning
+        why, consider looking up "chemical motive force" for reversible reactions.
+        </p>
+      </div>
+      
+      <div class="section" id="fermentation">
+        <div class="title">Glycolysis and Fermentation</div>
+        <p> 
+        The reason that glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to
+        accept electrons (high <a href="http://en.wikipedia.org/wiki/Reduction_potential">reduction potential</a>).
+        This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several ATP.
+        This process is called
+        <a href="http://en.wikipedia.org/wiki/Oxidative_phosphorylation">oxidative phosphorylation</a>. In anaerobic conditions,
+        however, oxygen is not available (by definition) and it's impossible to drive oxidative phosphorylation.
+        </p>
+        
+        <p>
+        The anaerobic breakdown of glucose for energy production is called <strong>fermentation</strong>. Several approaches to fermenting glucose
+        occur in nature, but here we'll discuss only one: fermentation of glucose to lactate. The fermentation of glucose begins in
+        the same way that the oxidation of glucose does: with the breakdown of glucose to two pyruvate molecules,
+        also known as <strong>glycolysis</strong>:
+        </p>
+        
+        <p>
+        <a href="/search?query=Glucose+%3D%3E+2+Pyruvate">Glucose &lt;=&gt; 2 Pyruvate</a>
+        </p> 
+
+        <p>
+        If you inspect this reaction in eQuilibrator, you'll notice that it is not "electron-balanced."
+        That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule.
+        These electrons don't just float around the cell: they are carried by specific compounds called electron carriers.
+        In glycolysis, the electron carrier of choice is nicotinamide adenine dinucleotide (<a href="/compound?compoundId=C00004">NADH</a>).
+        To fix the electron imbalance, try clicking on the "Balance with NADH" link.
+        </p>
+
+        <p>
+        The full glycolysis reaction, including electron carriers and ATP production is:
+        </p>
+        
+        <p>
+        <a href="/search?query=Glucose+%2B+2+NAD%2B+%2B+2+ADP+%2B+2+Phosphate+<%3D>+2+Pyruvate+%2B+2+NADH+%2B+2+ATP+%2B+2+H2O">
+          Glucose + 2 NAD  + 2 ADP + 2 Phosphate &lt;=&gt; 2 Pyruvate + 2 NADH + 2 ATP + 2 H2O
+        </a>
+        </p>
+        
+        <p>
+        Clearly glycolysis produces ATP without any oxygen. However, if you ran glycolysis over and over again to provide ATP,
+        the amount of NADH in the cell would grow continually. The ratio of NAD+ concentration to NADH concentration -
+        sometimes called the "redox state" - is very important to living cells because it affects the energetics of redox reactions,
+        in particular in glycolysis. The more NADH there is in the cell, the more energy is required to make more NADH.
+        Therefore, if NADH is allowed to build up in the cell, glycolysis would release less and less energy.
+        <p>
+        
+        <p>
+        Fermentation to lactate solves this problem by taking the electrons carried by NADH and giving
+        them to pyruvate to form lactate:
+        </p>
+        
+        <p>
+        <a href="/search?query=2+Pyruvate+%2B+2+NADH+%3C%3D%3E+2+Lactate+%2B+2+NAD%2B">
+        2 Pyruvate + 2 NADH &lt;=&gt; 2 Lactate + 2 NAD+
+        </a>
+        </p>
+        
+        <p>
+        Since lactate build-up is problematic (in much the same way that NADH build up is) the lactate is then excreted from the cell.
+        Fermentation to lactate, then, produces 2 ATP from one glucose while forming 2 lactate:
+        </p>
+        
+        <p>
+        <a href="/search?query=Glucose++%2B+2+ADP+%2B+2+Phosphate+%3C%3D%3E+2+Lactate+%2B+2+ATP+%2B+2+H2O">
+        Glucose + 2 ADP + 2 Phosphate &lt;=&gt; 2 Lactate + 2 ATP + 2 H2O
+        </a>
+        </p>
+        
+        <p>
+        This neat biochemical trick enables organisms as varied as E. Coli and humans to produce energy from
+        sugars even when oxygen isn't available.
+        </p>
+      </div>
+    
+    <div class="section" id="netReactions">
+      <div class="title">Net Reactions of Major Cellular Pathways</div> 
+      <ul>
+        <li>Lactate fermentation: <a href="/search?query=Glucose+%2B+2+ADP+%2B+2+Phosphate+<%3D>+2+L-Lactate+%2B+2+ATP+%2B+2+H2O">Glucose + 2 ADP + 2 Phosphate &lt;=&gt; 2 Lactate + 2 ATP + 2 H2O</a></li>
+        <li>Ethanol fermentation: <a href="/search?query=Glucose+%2B+2+ADP+%2B+2+Phosphate+<%3D>+2+Ethanol+%2B+2+CO2+%2B+2+ATP+%2B+2+H2O">Glucose + 2 ADP + 2 Phosphate &lt;=&gt; 2 Ethanol + 2 CO2 + 2 ATP + 2 H2O</a></li>
+        <li>Oxidative phosphorylation: <a href="/search?query=2+NADH+%2B+O2+%2B+3+ADP+%2B+3+Phosphate+<%3D>+2+NAD+%2B+5+H2O+%2B+3+ATP">2 NADH + O2 + 3 ADP + 3 Phosphate &lt;=&gt; 2 NAD + 5 H2O + 3 ATP</a></li>
+        <li>Calvin cycle: <a href="/search?query=6+CO2+%2B+12+NADH+%2B+18+ATP+%2B+12+Water+<%3D>+Glucose+%2B+12+NAD+%2B+18+ADP+%2B+18+Phosphate">6 CO2 + 12 NADH + 18 ATP + 12 Water &lt;=&gt; Glucose + 12 NAD + 18 ADP + 18 Phosphate</a></li>
+      </ul>
+    </div>
+    
+    <div class="section" id="glycolysisEnzymatic">
+      <div class="title">Enzymatic Reactions in Glycolysis</div> 
+      <ul>
+        <li>Hexokinase (Glucokinase): <a href="/search?query=Glucose+%2B+ATP+<%3D>+Glucose+6-phosphate+%2B+ADP">Glucose + ATP &lt;=&gt; Glucose 6-phosphate + ADP</a></li>
+        <li>Fructose Bisphosphate Aldolase: <a href="/search?query=D-Fructose+1%2C6-bisphosphate+<%3D>+Dihydroxyacetone+phosphate+%2B+Glyceraldehyde+3-phosphate">D-Fructose 1,6-bisphosphate &lt;=&gt; Dihydroxyacetone phosphate + Glyceraldehyde 3-phosphate</a></li>
+        <li>Triose-phosphate isomerase (TIM): <a href="/search?query=Dihydroxyacetone+phosphate+<%3D>+Glyceraldehyde+3-phosphate">Dihydroxyacetone phosphate &lt;=&gt; Glyceraldehyde 3-phosphate</a></li>
+        <li>Pyruvate kinase: <a href="/search?query=Pyruvate+%2B+ATP+<%3D>+PEP+%2B+ADP">Pyruvate + ATP &lt;=&gt; PEP + ADP</a></li>
+        <li>Lactate dehydrogenase: <a href="/search?query=Pyruvate+%2B+NADH+<%3D>+Lactate+%2B+NAD%2B">Pyruvate + NADH &lt;=&gt; Lactate + NAD+</a></li>
+      </ul>
+    </div>
+    
+    
+    <div class="section" id="centralEnzymatic">
+      <div class="title">Enzymatic Reactions in Central Metabolism</div> 
+      <ul>
+        <li>Isocitrate dehydrogenase: <a href="/search?query=Isocitrate+%2B+NAD%2B+<%3D>+2-Oxoglutarate+%2B+CO2+%2B+NADH+">Isocitrate + NAD+ &lt;=&gt; 2-Oxoglutarate + CO2 + NADH</a></li>
+        <li>RuBisCO: <a href="/search?query=D-Ribulose+1%2C5-bisphosphate+%2B+CO2+%2B+H2O+<%3D>+2+3-Phospho-D-glycerate">D-Ribulose 1,5-bisphosphate + CO2 + H2O &lt;=&gt; 2 3-Phospho-D-glycerate</a></li>
+        <li>PEP Carboxylase: <a href="/search?query=Pi+%2B+Oxaloacetate+%3C%3D%3E+H2O+%2B+CO2%28aq%29+%2B+PEP">Pi + Oxaloacetate &lt;=&gt; CO2 + PEP</a></li>
+      </ul>
+    </div>
+
+    <div id="footer">
+    {% include "about_links.html" %}
+    </div>
+    
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,21 @@
+  {% if enzyme_results %}
+    <div class="resultsSection">
+      <div class="title">Enzymes</div>
+    {% for result in enzyme_results|slice:":5" %}
+      <div class="searchResult enzymeResult clearfix">
+        <span class="name"><a href="{{result.value.link}}">{{ result.key }} (EC {{ result.value.ec }})</a></span>
+        <span class="reactions">
+          <ul>
+          {% for reaction in result.value.all_reactions|slice:":3" %}
+            <li><a class="reactionLink" href="{{reaction.link}}">{{reaction.reaction_string}}</a>
+            {% if forloop.last and result.value.all_reactions|slice:"3:" %}
+            <li><a class="viewAllLink" href="{{result.value.link}}">View all {{ result.key }} reactions &raquo;</a></li>
+            {% endif %}
+            </li>
+          {% endfor %}
+          </ul>
+        </span>
+      </div>
+    {% endfor %}
+    </div>
+  {% endif %}

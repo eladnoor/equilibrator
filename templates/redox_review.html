@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<link href="/media/info_page.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
+		<title>Redox Review</title>
+    {% include "analytics.html" %}
+	</head>
+	<body>
+		<div class="container">
+			{% include "logo_small.html" %}
+			<div class="title">Redox Review</div>
+			
+	        <p>
+	        Redox reactions are a special case of biochemical reactions, where electrons are transferred from one compound to another.
+	        It is common to consider the compound which looses the electrons and consequently changes to its oxidized form as the
+	        electron donor, and the compound which gains electrons and changes to its reduced form as the electron acceptor.
+	        For example, in the reaction <a href="/reaction?reactionId=R00342">L-malate + NAD+ &harr; oxaloacetate + NADH</a>,
+	        L-malate is the electron donor and is oxidized to oxaloacetate. NAD+ is the electron acceptor and is reduced to NADH.
+	        Since all of the reactants are soluble metabolites with explicit chemical formulas, one can calculate their formation
+	        energies and use them to deduce the &Delta;G of the reaction like in any other biochemical reaction.
+	        </p>
+	        
+	        <p>
+	        There are several compounds that are used mainly for electron transfer. They are called electron carriers or redox carriers.
+	        For example, the pair NAD<sup>+</sup>:NADH, NADP<sup>+</sup>:NADPH, and ubiquinone:ubiquinol are all common electron donors or acceptors in many redox reactions.
+	        Since they are not chemically involved in these reactions (except by electron transfer) it is useful to define their standard reduction potential
+	        (E&deg;) which reflects the affinity of the oxidized form for electrons (calculated assuming that H2 is the electron donor).
+	        Electrons tend to flow from a lower potential to a higher one. In biological systems, it is common to define the reduction potential at a specific pH, denoted E'&deg;. 
+	        </p>
+	        
+	        <p>
+	        The reduction potential of NAD<sup>+</sup>:NADH is E'&deg; = -0.32 V and the reduction potential of 1/2 O2:H2O is E'&deg; = 0.82 V (both at the pH 7).
+	        Therefore, electrons will tend to flow from NADH to O2 producing NAD<sup>+</sup> and H2O. As a brief aside, note that we make no effort 
+	        to balance protons (H<sup>+</sup>). Protons are be drawn from the aqueous environment and their potential is dictated by the pH.
+	        </p>
+	        
+	        <p>
+	  		Reduction potentials can be defined and measured for any electron source or sink, not only for soluble electron carriers.
+	  		However, when a reaction involves only soluble electron carriers, performing calculations using reduction potentials is equivalent to using the
+	  		change in &Delta;G'&deg; of formation of the oxidized and reduced forms. The equation for converting E'&deg; to &Delta;G'&deg;
+	  		is: &Delta;G'&deg; = -nF∙&Delta;E'&deg;, where n is the number of electrons transferred, and F is Faraday's constant that represents the charge
+	  		of 1 mol of electrons or 9.65∙104 C∙mol<sup>-1</sup>. For example, the ∆G'&deg; attributed to the oxidation of NADH by O2 is -2∙F∙(0.82 - (-0.32)) = -220 kJ/mol.
+	  		eQuilibrator provides the same result for this reaction: <a href="/search?query=NADH+%2B+0.5+O2+%3C%3D%3E+NAD%2B+%2B+H2O">NADH + 0.5 O2 <=> NAD<sup>+</sup> + H2O</a>.
+	        </p>
+	        
+	        <p>
+	        Currently, eQuilibrator only deals with soluble compounds, and therefore all electron carriers can be handled via their formation energies,
+	        without the need to explicitly specify their redox potentials. The reduced and oxidized forms of these electron carriers are two distinct
+	        chemicals and each is treated as a separate entity in eQuilibrator. For example, oxidized FMN and reduced FMN. In some cases, the formation
+	        energy of the redox pair is unknown and we know only the difference between the formation energies of the two forms. In these situations,
+	        the oxidized form is typically defined to have a formation energy of 0 and the reduced form has a value which is relative to that
+	        (as is the case with FMN). These relative formation energies are equivalent reduction potentials.
+	        </p>
+	        
+	        <p><strong>Update</strong>: eQuilibrator now supports half-reactions. You can search for a half-reaction like 
+	        <a href="/search?query=NAD%2B+<%3D>+NADH">NAD<sup>+</sup> <=> NADH</a> and eQuilibrator will allow you to calculate its reduction potential.
+	        Calculating the reduction potential enables you to pair half-reactions with redox carriers not found in our database, including electrodes
+	        and soluble metal ions with known reduction potentials.
+	        </p>
+			
+			
+   		<div id="footer">
+    		{% include "about_links.html" %}
+    	</div>
+    </div>
+
+  </body>
+</html>

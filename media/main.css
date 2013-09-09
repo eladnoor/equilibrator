@@ -1,0 +1,111 @@
+body {
+	font-family: arial;
+ 	margin: 0;
+ 	padding: 0;
+}
+
+.error {
+	margin: 0 auto;
+	width: 80%;
+}
+
+.centerize {
+	margin: 0 auto;
+	text-align: center;
+	width: 80%;
+}
+
+.subscript {
+  	font-size: 75%;
+  	vertical-align: bottom;
+}
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+a {
+ 	color: #0066CC;
+	text-decoration: none;
+}
+
+.logo {
+	margin: 20px 0px 40px 0px;
+}
+
+.logo img {
+	border: none;
+	align: center;
+}
+
+.title {
+	font-size: 40px;
+	font-weight: bold;
+	margin: 0 auto 45px auto;
+	text-align: center;
+}
+
+.subtitle {
+	font-size: 16px;
+}
+
+#searchForm {
+	text-align: left;
+}
+
+#searchForm form {
+	margin: 0px 0px 3px 0px;
+}
+
+#queryField, #submitButton {
+	height: 40px;
+	font-size: 20px;
+}
+
+#queryField {
+	width: 80%;
+}
+
+.directions {
+	text-align: left;
+	color: grey;
+	padding: 0px;
+	font-size: 14px;
+}
+
+.examples table {
+	margin: 50px auto 30px auto;
+	width: 650px;
+}
+
+.examples th {
+	border-bottom: solid 1px black;
+	text-align: center;
+}
+
+.examples a {
+	color: #006633;
+}
+
+#footer {
+	margin-top: 50px;
+	text-align: center;
+}
+
+
+/** autocomplete styles */
+.autocomplete-w1 { background:url(/media/images/shadow.png) no-repeat bottom right; position:absolute; top:0px; left:0px; margin:6px 0 0 6px; /* IE6 fix: */ _background:none; _margin:1px 0 0 0; }
+.autocomplete { border:1px solid #999; background:#FFF; cursor:default; text-align:left; max-height:350px; overflow:auto; margin:-6px 6px 6px -6px; /* IE6 specific: */ _height:350px;  _margin:0; _overflow-x:hidden; }
+.autocomplete .selected { background:#F0F0F0; }
+.autocomplete .type { float: right; font-size: 9px; }
+.autocomplete .CompoundType { color: #3399FF }
+.autocomplete .EnzymeType { color: #006633 }
+.autocomplete div { padding:2px 5px; white-space:nowrap; overflow:hidden; }
+.autocomplete strong { font-weight:normal; color:#3399FF; }
+
+

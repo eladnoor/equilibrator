@@ -1,0 +1,194 @@
+.printable {
+	margin: 10%;
+	font-size: 18px;
+}
+
+.adminLink {
+	font-size: 10px;
+}
+
+.header {
+	margin: 15px 0px 0px 10px;
+}
+
+.header #searchForm {
+	padding-top: 40px;
+	padding-left: 10px;
+}
+
+.header #queryField {
+	width: 70%;
+}
+
+.logoSmall img {
+	width: 150px;
+	height: 120px;
+	border: none;
+	float: left;
+	margin: 7px;
+}
+
+.errorMsg {
+	background-color: #C00;
+}
+
+.warning {
+	background-color: #FFF1A8;
+}
+
+.errorMsg, .warning {
+	border-radius: 5px;
+	font-weight: bold;
+	margin: 10px auto;
+	padding: 3px;
+	max-width: 450px;
+}
+
+.missingCount {
+	color: red;
+}
+
+.customConcentrations {
+	display: none;
+}
+
+#searchResults {
+	margin-left: 20px;
+	width: 85%;
+	text-align: left;
+}
+
+#searchResults .searchResult {
+	display: block;
+	margin: 10px;
+	padding: 5px;
+	border: solid 1px black;
+}
+
+#searchResults a:hover {
+	background-color: #CCFFCC;
+}
+
+#searchResults .searchResult span {
+	display: block;
+	color: black;
+	padding-left: 6px;
+}
+
+#searchResults .resultsSection .title {
+	text-align: left;
+	font-size: 22px;
+	margin: 5px 0 5px 0;
+}
+
+#searchResults .searchResult .name {
+	color: #0066CC;
+	padding-left: 0px;
+}
+
+#searchResults .searchResult .image {
+	float: right;
+}
+
+#searchResults .searchResult .note {
+	font-size: 9px;
+	color: #FF3300;
+}
+
+#searchResults .searchResult .reactionLink {
+	color: #006633;
+}
+
+#searchResults .searchResult .viewAllLink {
+	color: #0066CC;
+}
+
+#searchResults .image img {
+	border: solid 1px black;
+	max-height: 100px;
+}
+
+.parsedRxn, .compoundSelector, .compound, .enzyme {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 15px auto;
+}
+
+.reactionController, .parsedRxn {
+	text-align: center;
+}
+
+table.results,
+table.compoundInfo,
+table.speciesInfo,
+table.enzymeInfo,
+table.reactionInfo,
+table.formationEnergyInfo {
+	margin: 10px auto;
+	width: 750px;
+	border: solid 1px black;
+	padding: 0px;
+    border-spacing: 0px;
+}
+
+.graphLink {
+  float: right;
+}
+
+.graphLink img {
+  border: 0px;
+}
+
+.results td,
+.compoundInfo td,
+.speciesInfo td,
+.enzymeInfo td,
+.reactionInfo td,
+.formationEnergyInfo td {
+  padding: 5px;
+}
+
+.reactionHeader td,
+.reactionSource td,
+td.reference.border {
+  border-bottom: black 1px solid;
+}
+
+table.reactionInfo,
+table.speciesInfo,
+table.formationEnergyInfo {
+	text-align: center;
+	padding: 0px;
+}
+
+.speciesHeader td,
+.speciesSource.last td,
+td.reference.border {
+  border-bottom: black 1px solid;
+}
+
+.reactionRowOdd {
+	background-color: #CCFFCC;
+}
+
+.refsList {
+  text-align: left;
+}
+
+.refsList a {
+  color: black;
+}
+
+#figureContainer {
+  margin: 5px auto 35px auto;
+  width:600px;
+  height:300px;
+}
+
+#figureContainer #legendContainer {
+  float:right; 
+}
+
+#figureContainer #dgFigure {
+  clear: both; 
+}

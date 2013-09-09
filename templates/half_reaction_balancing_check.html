@@ -1,0 +1,14 @@
+	{% if not reaction.is_balanced %}
+		<div class="warning">Reaction is not balanced!
+		{% if reaction.balanced_with_water and balance_with_water_link %}
+		<a href="{{ balance_with_water_link }}">Balance with water</a>?
+		{% endif %}
+		</div>
+		{% else %}
+			{% if reaction.contains_co2 %}
+				<div class="warning">
+				Did you mean <a href="{{ replace_co2_link }}">CO<sub>2</sub>(total)</a>?
+				<a href="/faq#aqueousCO2">Learn more &raquo;</a>
+				</div>
+			{% endif %}
+	{% endif %}

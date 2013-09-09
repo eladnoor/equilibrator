@@ -1,0 +1,52 @@
+		<div class="parsedRxn">
+			{% for compound in reaction.substrates %}
+				{% with "substrates" as reaction_side %}
+					{% include "compound_in_reaction.html" %}
+				{% endwith %}
+				
+				{% if not forloop.last %} + {% endif %}
+			{% endfor %}
+			
+			{% if reaction.missing_atoms %}
+				+
+				{% for atom, count in reaction.missing_atoms %}
+					<span class="missingCount">{{ count }}</span>
+					{% if reaction.balanced_with_water %}
+					<span class="missingAtom">Water</span>
+					{% else %}
+					<span class="missingAtom">{{ atom }}</span>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+			
+			{% if reaction.missing_electrons and reaction.is_balanced %}
+				+ <span class="missingCount">{{ reaction.missing_electrons }}</span>
+				  <span class="missingAtom">e<sup>-</sup></span>
+			{% endif %}
+			
+			&rarr;
+			{% for compound in reaction.products %}
+				{% with "products" as reaction_side %}
+					{% include "compound_in_reaction.html" %}
+				{% endwith %}
+				
+				{% if not forloop.last %} + {% endif %}
+			{% endfor %}
+			
+			{% if reaction.extra_atoms %}
+				+
+				{% for atom, count in reaction.extra_atoms %}
+					<span class="missingCount">{{ count }}</span>
+					{% if reaction.balanced_with_water %}
+					<span class="missingAtom">Water</span>
+					{% else %}
+					<span class="missingAtom">{{ atom }}</span>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+			
+			{% if reaction.extra_electrons and reaction.is_balanced %}
+				+ <span class="missingCount">{{ reaction.extra_electrons }}</span>
+				  <span class="missingAtom">e<sup>-</sup></span>
+			{% endif %}
+		</div>

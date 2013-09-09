@@ -1,0 +1,34 @@
+	<table class="results">
+
+		<tr>
+			<td width="150px"><strong>Estimated <a href="faq#dgr">E'&deg;</strong></a></td>
+			<td colspan="2">
+			{% if reaction.e0_tag != None %}
+			  <strong>
+				{{ reaction.e0_tag|floatformat:1 }} mV
+			  </strong>
+			{% else %}
+			  <strong>
+				<a href="/faq#notAvailable">Not available</a>
+	      </strong>
+			{% endif %}
+			</td>
+		</tr>
+
+		{% if reaction.e0_tag != None %}
+		<tr>
+			<td width="150px">
+				pH
+			</td>
+			<td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
+			<td><div id="phSlider"></div></td>
+		</tr>
+		<tr>
+			<td width="150px">
+			Ionic strength (M)
+			</td>
+			<td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
+			<td><div id="ionStrengthSlider"></div></td>
+		</tr>
+		{% endif %}
+	</table>

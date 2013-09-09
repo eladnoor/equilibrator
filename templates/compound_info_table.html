@@ -1,0 +1,41 @@
+<table class="compoundInfo">
+	<tr>
+		<th colspan="2">General Properties</td>		
+	</tr>
+	<tr>
+		<td width="150px">Formula</td>
+		<td>{{ compound.html_formula|safe }}</td>
+	</tr>
+	<tr>
+		<td width="150px">Common names</td>
+		<td>
+			{% for name in compound.all_common_names %}
+			{{ name }}{% if not forloop.last %}; {% endif %}
+			{% endfor %}
+		</td>
+	</tr>
+	<tr>
+		<td>Mass (Da)</td>
+		<td>{{ compound.mass }}</td>
+	</tr>
+	<tr>
+		<td width="150px">Structure</td>
+		<td><img src="{{ compound.small_image_url }}" /></td>
+	</tr>
+	{% if compound.kegg_link %}
+	<tr>	
+		<td width="150px">Links</td>
+		<td><a href="{{compound.kegg_link}}">KEGG &raquo;</a></td>
+	</tr>
+	{% endif %}
+	{% if compound.note %}
+		<td width="150px">Note</td>
+		<td>{{compound.note}}
+		{% if compound.details_link %}
+		<a href="{{compound.details_link}}">More info &raquo;</a>
+		{% endif %}
+		</td>
+	{% endif %}
+</table>
+
+

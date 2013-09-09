@@ -1,0 +1,135 @@
+"Alanine","C01401","D-Alanine","C00133",1
+"Alanine","C01401","L-Alanine","C00041",1
+"Aldotriose","C02154","L-Aldotriose","C02426",1
+"Arginine","C02385","D-Arginine","C00792",1
+"Arginine","C02385","L-Arginine","C00062",1
+"Asparagine","C16438","D-Asparagine","C01905",1
+"Asparagine","C16438","L-Asparagine","C00152",1
+"Aspartate","C16433","D-Aspartate","C00402",1
+"Aspartate","C16433","L-Aspartate","C00049",1
+"Aspartic acid","C16433","D-Aspartic acid","C00402",1
+"Aspartic acid","C16433","L-Aspartic acid","C00049",1
+"Borneol","C01411","d-Borneol","C01765",1
+"Borneol","C01411","L-Borneol","C01766",1
+"Carnitine","C00487","D-Carnitine","C15025",1
+"Carnitine","C00487","L-Carnitine","C00318",1
+"Catechin","C17590","D-Catechin","C06562",1
+"Citramalate","C00815","D-Citramalate","C02612",1
+"Citramalate","C00815","L-Citramalate","C02614",1
+"Citramalic acid","C00815","D-Citramalic acid","C02612",1
+"Citramalic acid","C00815","L-Citramalic acid","C02614",1
+"Citramalyl-CoA","C00904","L-Citramalyl-CoA","C01011",1
+"Cystathionine","C00542","L-Cystathionine","C02291",1
+"Cysteine","C00736","D-Cysteine","C00793",1
+"Cysteine","C00736","L-Cysteine","C00097",1
+"Cystine","C01420","L-Cystine","C00491",1
+"D-Fructose","C10906","D-Fructose","C00095",1
+"Dicysteine","C01420","L-Dicysteine","C00491",1
+"Flavone","C15608","Flavone","C10043",1
+"Fructose","C02336","D-Fructose","C00095",1
+"Fructose","C02336","L-Fructose","C01719",1
+"Fructose 1-phosphate","C02976","D-Fructose 1-phosphate","C01094",1
+"Galactarate","C01807","D-Galactarate","C00879",1
+"Galactaric acid","C01807","D-Galactaric acid","C00879",1
+"Galactose","C01582","D-Galactose","C00124",1
+"Galactose","C01582","L-Galactose","C01825",1
+"Galacturonic acid","C08348","D-Galacturonic acid","C00333",1
+"Glucarate","C00767","D-Glucarate","C00818",1
+"Glucaric acid","C00767","D-Glucaric acid","C00818",1
+"Glucuronic acid","C00191","D-Glucuronic acid","C16245",1
+"Glutamate","C00025","D-Glutamate","C00217",1
+"Glutamate","C00302","Glutamate","C00025",1
+"Glutamate","C00302","D-Glutamate","C00217",1
+"Glutamate","C00302","L-Glutamate","C00025",1
+"Glutamic acid","C00302","D-Glutamic acid","C00217",1
+"Glutamic acid","C00302","L-Glutamic acid","C00025",1
+"Glutamine","C00303","D-Glutamine","C00819",1
+"Glutamine","C00303","L-Glutamine","C00064",1
+"Glyceraldehyde","C02154","D-Glyceraldehyde","C00577",1
+"Glyceraldehyde","C02154","L-Glyceraldehyde","C02426",1
+"Glyceraldehyde 3-phosphate","C00661","Glyceraldehyde 3-phosphate","C00118",1
+"Glyceraldehyde 3-phosphate","C00661","D-Glyceraldehyde 3-phosphate","C00118",1
+"Glycerol 1-phosphate","C00623","D-Glycerol 1-phosphate","C00093",1
+"Glycerol 1-phosphate","C03189","Glycerol 1-phosphate","C00623",1
+"Glycerol 1-phosphate","C03189","D-Glycerol 1-phosphate","C00093",1
+"Glycerol 1-phosphate","C03189","L-Glycerol 1-phosphate","C00623",1
+"Glycerose","C02154","L-Glycerose","C02426",1
+"Greenwald ester","C03339","D-Greenwald ester","C01159",1
+"Gulono-1,4-lactone","C05410","L-Gulono-1,4-lactone","C01040",1
+"Hamamelose","C08351","D-Hamamelose","C01906",1
+"Histidine","C00768","D-Histidine","C06419",1
+"Histidine","C00768","L-Histidine","C00135",1
+"Homocysteine","C05330","L-Homocysteine","C00155",1
+"Isoleucine","C16434","D-Isoleucine","C06418",1
+"Isoleucine","C16434","L-Isoleucine","C00407",1
+"Isoprenaline","C07056","L-Isoprenaline","C11703",1
+"Kynurenine","C01718","L-Kynurenine","C00328",1
+"L-Arabinose","C11476","L-Arabinose","C00259",1
+"Lactaldehyde","C05999","D-Lactaldehyde","C00937",1
+"Lactaldehyde","C05999","L-Lactaldehyde","C00424",1
+"Lactate","C01432","D-Lactate","C00256",1
+"Lactate","C01432","L-Lactate","C00186",1
+"Lactic acid","C01432","D-Lactic acid","C00256",1
+"Lactic acid","C01432","L-Lactic acid","C00186",1
+"Leucine","C16439","D-Leucine","C01570",1
+"Leucine","C16439","L-Leucine","C00123",1
+"Lombricine","C14177","D-Lombricine","C01726",1
+"Lysine","C16440","D-Lysine","C00739",1
+"Lysine","C16440","L-Lysine","C00047",1
+"Malate","C00149","D-Malate","C00497",1
+"Malate","C00711","Malate","C00149",1
+"Malate","C00711","D-Malate","C00497",1
+"Malate","C00711","L-Malate","C00149",1
+"Malic acid","C00149","D-Malic acid","C00497",1
+"Malic acid","C00711","Malic acid","C00149",1
+"Malic acid","C00711","D-Malic acid","C00497",1
+"Malic acid","C00711","L-Malic acid","C00149",1
+"Methionine","C00073","D-Methionine","C00855",1
+"Methionine","C01733","Methionine","C00073",1
+"Methionine","C01733","D-Methionine","C00855",1
+"Methionine","C01733","L-Methionine","C00073",1
+"Methylmalonyl-CoA","C02557","D-Methylmalonyl-CoA","C00683",1
+"Methylmalonyl-CoA","C02557","L-Methylmalonyl-CoA","C01213",1
+"Mucic acid","C01807","D-Mucic acid","C00879",1
+"myo-Inositol 1-phosphate","C01177","L-myo-Inositol 1-phosphate","C04006",1
+"Ornithine","C01602","D-Ornithine","C00515",1
+"Ornithine","C01602","L-Ornithine","C00077",1
+"Phenol","C15584","Phenol","C00146",1
+"Phenyl acetate","C15583","Phenyl acetate","C00548",1
+"Phenylalanine","C02057","D-Phenylalanine","C02265",1
+"Phenylalanine","C02057","L-Phenylalanine","C00079",1
+"Phenylpropanolamine","C07911","l-Phenylpropanolamine","C16719",1
+"Proline","C16435","D-Proline","C00763",1
+"Proline","C16435","L-Proline","C00148",1
+"Pyroglutamic acid","C01879","D-Pyroglutamic acid","C02237",1
+"Quinovose","C08352","D-Quinovose","C02522",1
+"Ribose","C08353","D-Ribose","C00121",1
+"Ribulose","C05052","D-Ribulose","C00309",1
+"Ribulose","C05052","L-Ribulose","C00508",1
+"Serine","C00065","D-Serine","C00740",1
+"Serine","C00716","Serine","C00065",1
+"Serine","C00716","D-Serine","C00740",1
+"Serine","C00716","L-Serine","C00065",1
+"Sorbitol","C00794","L-Sorbitol","C01722",1
+"Sorbose","C01452","D-Sorbose","C00764",1
+"Sorbose","C01452","L-Sorbose","C00247",1
+"Tartaric acid","C00898","D-Tartaric acid","C02107",1
+"Tartrate","C00898","D-Tartrate","C02107",1
+"Tryptophan","C00078","D-Tryptophan","C00525",1
+"Tryptophan","C00806","Tryptophan","C00078",1
+"Tryptophan","C00806","D-Tryptophan","C00525",1
+"Tryptophan","C00806","L-Tryptophan","C00078",1
+"Tyrosine","C00082","D-Tyrosine","C06420",1
+"Tyrosine","C01536","Tyrosine","C00082",1
+"Tyrosine","C01536","D-Tyrosine","C06420",1
+"Tyrosine","C01536","L-Tyrosine","C00082",1
+"Urobilin","C05794","D-Urobilin","C05795",1
+"Urobilin","C05794","L-Urobilin","C05793",1
+"Urobilinogen","C05790","D-Urobilinogen","C05791",1
+"Urobilinogen","C05790","L-Urobilinogen","C05789",1
+"Valine","C16436","D-Valine","C06417",1
+"Valine","C16436","L-Valine","C00183",1
+"xylo-Hexulose","C01452","D-xylo-Hexulose","C00764",1
+"xylo-Hexulose","C01452","L-xylo-Hexulose","C00247",1
+"Xylose","C01394","D-Xylose","C00181",1
+"Xylose","C01394","L-Xylose","C01510",1

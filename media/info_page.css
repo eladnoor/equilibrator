@@ -1,0 +1,64 @@
+body {
+  margin: 10px auto;
+  text-align: left;
+  font-family: helevetica;
+}
+
+a {
+  color: #0066CC;
+  text-decoration: none;
+}
+
+.logoSmall {
+  width: 100%;
+  text-align: center;
+}
+
+.logoSmall img {
+  width: 150px;
+  height: 120px;
+  border: none;
+}
+
+.container {
+  width: 650px;
+  margin-left: 30px;
+}
+
+.section {
+  margin: 10px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.faqEntry {
+  margin: 10px;
+}
+
+.faqQuestion {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.faqAnswer {
+  padding-left: 10px;
+  border-left: dashed 1px black;
+}
+
+#footer {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.downloadTable, td, th {
+  border: solid 1px black;
+  text-align: center;
+}
+
+td {
+  padding: 3px;
+}
+

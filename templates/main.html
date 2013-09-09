@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<title>eQuilibrator: The Biochemical Thermodynamics Calculator</title>
+		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+		<link href="/media/main.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
+		<script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
+		<script type="text/javascript" src="/media/main.js"></script>
+	    {% include "analytics.html" %}
+	</head>
+	<body>
+	
+	<div class="centerize">
+	
+		{% include "logo_large.html" %}
+			
+		<div id="searchForm">
+			<form name="searchForm" action="/search" method="get">
+				<div>
+					<input type="text" name="query" id="queryField" />
+					<input type="submit" id="submitButton" value="Search" />
+				</div>
+			</form>
+			<div class="directions">
+				Type a <b>compound name</b> or <b>reaction</b> or try an <b>example</b> below.
+			</div>
+		</div>
+		
+		{% include "examples.html" %}
+		
+		<div id="footer">
+			{% include "about_links.html" %}
+		</div>
+	</div>
+	
+	</body>
+</html>
