@@ -10,8 +10,8 @@ var updateISField = function(event, ui) {
 	$("#ionStrengthField").val(ui.value);
 };
 var toggleCustomConcentrations = function() {
-	var concentrationProfile = $("form input=radion[name=concentration_profile]:checked");
-	var showConcentrations = concentrationProfile.val() == "custom";
+	var conditions = $("form input=radion[name=conditions]:checked");
+	var showConcentrations = conditions.val() == "custom";
 	$(".customConcentrations").toggle(showConcentrations);
 }
 	

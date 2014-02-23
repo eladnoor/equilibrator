@@ -2,7 +2,7 @@ import logging
 
 from django.http import Http404
 from django.shortcuts import render_to_response
-from gibbs import concentration_profile
+from gibbs import conditions
 from gibbs import reaction
 from gibbs import search_form
 from gibbs import service_config
@@ -40,10 +40,9 @@ def ResultsPage(request):
         if not best_reaction:
             return render_to_response('search_error_page.html', template_data)
         
-        reactants, products = best_reaction
-        cprofile = concentration_profile.GetProfile()
-        rxn = reaction.Reaction.FromIds(reactants, products,
-                                        concentration_profile=cprofile,
+        std_conditions = conditions.StandardConditions()
+        rxn = reaction.Reaction.FromIds(best_reaction,
+                                        conditions=std_conditions,
                                         pH=ph, pMg=pmg,
                                         ionic_strength=ionic_strength)
         

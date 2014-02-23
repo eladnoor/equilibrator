@@ -13,6 +13,11 @@ def FAQPage(request):
     return render_to_response('faq.html', {})
 
 
+def CitePage(request):
+    """Renders the FAQ page."""
+    return render_to_response('cite.html', {})
+
+
 def RedoxReview(request):
     """Renders robots.txt."""
     return render_to_response('redox_review.html', {})

@@ -22,7 +22,7 @@ def main():
     logging.info('Loading KEGG data')
     draw_thumbnails = True
     ### uncomment this to make things faster (don't draw compounds):
-    #draw_thumbnails = False
+    draw_thumbnails = False
     load_kegg_json.LoadAllKeggData(draw_thumbnails=draw_thumbnails)
     
     logging.info('Loading corrections/additions to KEGG')

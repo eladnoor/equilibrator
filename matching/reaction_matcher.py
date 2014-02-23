@@ -60,21 +60,20 @@ class ReactionMatches(object):
             if not compound_match:
                 return None
             
-            reactants.append((c.parsed_coeff,
+            reactants.append((-c.parsed_coeff,
                               compound_match.value.kegg_id,
                               compound_match.key))
         
-        products = []
         for c in self.products:
             compound_match = self._FindFirstCompoundMatch(c.matches)
             if not compound_match:
                 return None
             
-            products.append((c.parsed_coeff,
-                             compound_match.value.kegg_id,
-                             compound_match.key))
+            reactants.append((c.parsed_coeff,
+                              compound_match.value.kegg_id,
+                              compound_match.key))
         
-        return reactants, products
+        return reactants
     
 
 class ReactionMatcher(object):

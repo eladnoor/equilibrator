@@ -3,6 +3,7 @@
 import logging
 import pyparsing
 import re
+import numpy
 
 
 class ParseError(Exception):
@@ -89,8 +90,8 @@ class ParsedReactionQuery(object):
         return False
     
     def __str__(self):
-        joined_rs = ['%s %s' % (c,r) for c,r in self.substrates]
-        joined_ps = ['%s %s' % (c,p) for c,p in self.products]
+        joined_rs = ['%s %s' % (numpy.abs(c),r) for c,r in self.substrates]
+        joined_ps = ['%s %s' % (numpy.abs(c),p) for c,p in self.products]
         return '%s => %s' % (' + '.join(joined_rs), ' + '.join(joined_ps))
     
 

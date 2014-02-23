@@ -1,4 +1,4 @@
-{% with compound.coeff|default:1 as coeff %}
+{% with compound.abs_coeff|default:1 as coeff %}
   <input type="hidden" name="{{ reaction_side }}Coeff" value="{{ coeff }}" />
 {% endwith %}
   
@@ -6,8 +6,8 @@
   <input type="hidden" name="{{ reaction_side }}Id" value="{{ c.kegg_id }}" />
   <input type="hidden" name="{{ reaction_side }}Name" value="{{ compound.name }}" />
   
-  {% if compound.coeff != 1.0 %}
-  	{{ compound.coeff|floatformat }}
+  {% if compound.abs_coeff != 1.0 %}
+  	{{ compound.abs_coeff|floatformat }}
   {% endif %}
   
   <a href="{{ c.link }}" title="{{ c.formula }}">

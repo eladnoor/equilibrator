@@ -4,6 +4,7 @@ import hashlib
 import logging
 import numpy
 import re
+from scipy.misc import logsumexp
 
 from django.db import models
 from gibbs import constants
@@ -186,23 +187,15 @@ class SpeciesGroup(models.Model):
             # No data...
             return None
         
-        # Shorter names are handy!
-        _i_s = ionic_strength
-        _r = constants.R
-        _t = constants.DEFAULT_TEMP
-
         # Compute per-species transforms, scaled down by R*T.
-        transform = lambda x: x.Transform(pH=pH, pMg=pMg, ionic_strength=_i_s)
+        transform = lambda x: x.Transform(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
         scaled_transforms = [(-transform(s) / constants.RT)
                              for s in self.all_species]
         
         # Numerical issues: taking a sum of exp(v) for |v| quite large.
         # Use the fact that we take a log later to offset all values by a 
         # constant (the minimum value).
-        offset = min(scaled_transforms)
-        scaled_offset_transforms = [(st - offset) for st in scaled_transforms]
-        sum_exp = sum(numpy.exp(scaled_offset_transforms))
-        return -constants.RT * (offset + numpy.log(sum_exp))
+        return -constants.RT * logsumexp(scaled_transforms)
     
 
 class Compound(models.Model):
