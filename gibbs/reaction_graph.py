@@ -18,12 +18,9 @@ def ReactionGraph(request):
         mode = 'varyIs'
 
     rxn = reaction.Reaction.FromForm(form)
-    compound_list = [c.compound.SpeciesJson()['species'] for c in rxn.filtered_substrates] + \
-                    [c.compound.SpeciesJson()['species'] for c in rxn.filtered_products]
-    coeff_list = [-c.coeff for c in rxn.filtered_substrates] + \
-                 [c.coeff for c in rxn.filtered_products]
-    concentration_list = [c.concentration for c in rxn.filtered_substrates] + \
-                         [c.concentration for c in rxn.filtered_products]
+    compound_list = [c.compound.SpeciesJson()['species'] for c in rxn.reactants]
+    coeff_list = [c.coeff for c in rxn.reactants]
+    concentration_list = [c.phase.Value() for c in rxn.reactants]
     template_data = {"compound_data": json.dumps(compound_list),
                      "coeff_data": json.dumps(coeff_list),
                      "concentration_list": json.dumps(concentration_list),

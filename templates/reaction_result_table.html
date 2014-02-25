@@ -3,7 +3,7 @@
         {% if not reaction.standard_concentrations %}
         <tr>
             <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
-            <td colspan="2">
+            <td colspan="3">
             <strong>
             {% if reaction.dg_tag != None %}
                 {{ reaction.dg_tag|floatformat:1 }} kJ / mol
@@ -17,7 +17,7 @@
 
         <tr>
             <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'&deg;</strong></a></td>
-            <td colspan="2">
+            <td colspan="3">
             {% if reaction.dg0_tag != None %}
               <strong>
                 {{ reaction.dg0_tag|floatformat:1 }} kJ / mol
@@ -34,7 +34,7 @@
         {% if reaction.catalyzing_enzymes %}
         <tr>
             <td width="150px"><strong>Catalyzed by</strong></td>
-            <td colspan="2">
+            <td colspan="3">
             {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
                 <div><a href="{{ enzyme.link }}">{{ enzyme }}</a></div>
             {% endfor %}
@@ -48,18 +48,18 @@
                 pH<a href="{{ reaction.ph_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of pH"><img src="/media/images/graph_icon.png" /></a>
             </td>
             <td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
-            <td><div id="phSlider"></div></td>
+            <td colspan="2"><div id="phSlider"></div></td>
         </tr>
         <tr>
             <td width="150px">
             Ionic strength (M) <a href="{{ reaction.is_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of ionic strength"><img src="/media/images/graph_icon.png" /></a>
             </td>
             <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
-            <td><div id="ionStrengthSlider"></div></td>
+            <td colspan="2"><div id="ionStrengthSlider"></div></td>
         </tr>
         <tr>
             <td width="150px">Concentrations</td>
-            <td colspan="2">
+            <td colspan="3">
                 {% if not conditions or conditions == "standard" %}
                   <input type="radio" name="conditions" value="standard" checked><a href="/faq#stdConditions">Standard conditions</a> (1 M)
                 {% else %}
@@ -80,29 +80,50 @@
 		</td>
 	  </tr>
 	  <tr class="customConcentrations">
-	    <th colspan="3">Reactant Concentrations</th>
+	    <th colspan="4">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</th>
+	  </tr>
+	  <tr class="customConcentrations">
+	    <th colspan="4">Reactant Concentrations</th>
 	  </tr>
 
 	  {% for reactant in reaction.reactants %}
 	  <tr class="customConcentrations">
-	    <td width="150px">
-		  {{ reactant.name }}{{ reactant.subscript }}:
-	    </td>
-	    <td colspan="2">
-            {% if reactant.is_constant %}
-                {% if reactant.compound.kegg_id == 'C00001' or reactant.compound.kegg_id == 'C00080' %}
-                  N/A <a href="/faq#waterConcentration"><sup>Learn more &raquo;</sup></a>
+         {% if reactant.compound.kegg_id == 'C00001' %}
+             <td colspan="2">
+		    Water(l):
+	        </td>
+             <td>
+               55 M <a href="/faq#waterConcentration"> Learn more &raquo;</a>
+               <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
+             </td>
+             <td width="50px">
+               liquid
+               <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
+             </td>
+         {% else %}
+             <td colspan="2">
+		    {{ reactant.name }}{{ reactant.subscript }}:
+	        </td>
+             <td>
+                {% if reactant.is_constant %}
+                    <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
+                    {{ reactant.value_string }} 
                 {% else %}
-                  {{ reactant.value_string }}{{ reactant.units }}
+                    <input type="text" size="10" value="{{ reactant.value_string }}" name="reactantsConcentration" />
                 {% endif %}
-                <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
-            {% else %}
-              <div class="input-box"> 
-                <input type="text" size="10" value="{{ reactant.value_string }}" name="reactantsConcentration" />
-                <span class="unit">{{ reactant.units }}</span>
-              </div>
-            {% endif %}
-         </td>
+                {{ reactant.units }}
+             </td>
+             <td width="50px">
+                <select name="reactantsPhase">
+                {% for phase in reactant.possible_phases %}
+                  <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
+                      {{ phase }}
+                  </option>
+                {% endfor %}
+                </select>
+             </td>
+         {% endif %}
+
        </tr>
        {% endfor %}
        {% endif %}

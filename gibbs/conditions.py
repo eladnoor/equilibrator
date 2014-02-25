@@ -1,4 +1,12 @@
+# -*- coding: utf-8 -*-
 import logging
+
+STANDARD_AQUEOUS_PHASE_NAME = 'aqueous_1M'
+CUSTOM_AQUEOUS_PHASE_NAME = 'aqueous'
+STANDARD_GAS_PHASE_NAME = 'gas_1bar'
+CUSTOM_GAS_PHASE_NAME = 'gas'
+STANDARD_LIQUID_PHASE_NAME = 'liquid'
+STANDARD_SOLID_PHASE_NAME = 'solid'
 
 class _BasePhase(object):
     def Name(self):
@@ -8,19 +16,24 @@ class _BasePhase(object):
     def Units(self):
         return NotImplementedError
     def Value(self):
+        # the value in the given units (i.e. the number shown to the user)
         return 1
     def ValueString(self):
         return '%.2g' % self.Value()
     def IsConstant(self):
         return True
-    def GetRatio(self):
-        return 1
     def __str__(self):
-        return '%g %s' % (self.Value(), self.Units())
+        if self.Value() > 1e-2:
+            return '%.2g %s' % (self.Value(), self.Units())
+        
+        if self.Value() > 1e-4:
+            return '%.2g m%s' % (self.Value() * 1e3, self.Units())
+        
+        return '%2g μ%s' % (self.Value() * 1e6, self.Units())
 
 class StandardAqueousPhase(_BasePhase):
     def Name(self):
-        return 'aqueous solution'
+        return STANDARD_AQUEOUS_PHASE_NAME
     def Subscript(self):
         return '(aq)'
     def Units(self):
@@ -28,37 +41,33 @@ class StandardAqueousPhase(_BasePhase):
 
 class StandardGasPhase(_BasePhase):
     def Name(self):
-        return 'gas'
+        return STANDARD_GAS_PHASE_NAME
     def Subscript(self):
         return '(g)'
     def Units(self):
-        return 'Pa'
+        return 'bar'
 
 class StandardLiquidPhase(_BasePhase):
     def Name(self):
-        return 'liquid'
+        return STANDARD_LIQUID_PHASE_NAME
     def Subscript(self):
         return '(l)'
     def Units(self):
-        return 'Pa'
+        return 'bar'
 
 class StandardSolidPhase(_BasePhase):
     def Name(self):
-        return 'solid'
+        return STANDARD_SOLID_PHASE_NAME
     def Subscript(self): 
         return '(s)'
     def Units(self):
-        return 'Pa'
-
-class MillimolarAqueousPhase(StandardAqueousPhase):
-    def Value(self):
-        return 1e-3
-    def __str__(self):
-        return '1 mM'
+        return 'bar'
 
 class CustomAqueousPhase(StandardAqueousPhase):
     def __init__(self, concentration=1.0): # in units of M
         self._concentration = concentration
+    def Name(self):
+        return CUSTOM_AQUEOUS_PHASE_NAME
     def IsConstant(self):
         return False
     def Value(self):
@@ -67,6 +76,8 @@ class CustomAqueousPhase(StandardAqueousPhase):
 class CustomGasPhase(StandardGasPhase):
     def __init__(self, partial_pressure=1.0):
         self._partial_pressure = partial_pressure
+    def Name(self):
+        return CUSTOM_GAS_PHASE_NAME
     def IsConstant(self):
         return False
     def Value(self):
@@ -109,25 +120,21 @@ class MillimolarConditions(_BaseConditions):
         if kegg_id == 'C00001':
             return StandardLiquidPhase()
         else:
-            return MillimolarAqueousPhase()
+            return CustomAqueousPhase(1e-3)
             
 class CustomConditions(_BaseConditions):
     
     def __str__(self):
         return CUSTOM_CONDITION_STRING
 
-    def __init__(self, kegg_ids, concentrations):
+    def __init__(self, all_ids, all_phases, all_ratios):
         self._phases = {}
-        for kegg_id, concentration in zip((kegg_ids, concentrations)):
-            if kegg_id == 'C00001':
-                self._phases[kegg_id] = StandardLiquidPhase()
-            else:
-                self._phases[kegg_id] = CustomAqueousPhase(concentration)
+        for kegg_id, phase, ratio in zip(all_ids, all_phases, all_ratios):
+            self._phases[kegg_id] = GetPhase(kegg_id, phase, ratio)
     
     def GetPhase(self, kegg_id):
         if kegg_id not in self._phases:
-            logging.error('Condition requested for unknown id: %s',
-                          kegg_id)
+            logging.error('Condition requested for unknown id: %s', kegg_id)
 
         return self._phases[kegg_id]
 
@@ -135,12 +142,31 @@ class CustomConditions(_BaseConditions):
         params = []
         params.append('conditions=%s' % self.__str__())
         for kegg_id, phase in self._phases.iteritems():
-            params.append('reactantId=%s' % kegg_id)
-            params.append('phase=%s' % phase.Name())
-            params.append('value=%s' % phase.Value())
+            params.append('reactantsPhase=%s' % phase.Name())
+            params.append('reactantsConcentration=%s' % phase.Value())
         return params
-        
-def GetConditions(name, all_ids=None, all_concentrations=None):
+
+###############################################################################
+
+def GetPhase(kegg_id, phase, value):
+    if phase == STANDARD_AQUEOUS_PHASE_NAME:
+        return StandardAqueousPhase()
+    if phase == CUSTOM_AQUEOUS_PHASE_NAME:
+        return CustomAqueousPhase(value)
+    if phase == STANDARD_GAS_PHASE_NAME:
+        return StandardGasPhase()
+    if phase == CUSTOM_GAS_PHASE_NAME:
+        return CustomGasPhase(value)
+    if phase == STANDARD_LIQUID_PHASE_NAME:
+        return StandardLiquidPhase()
+    if phase == STANDARD_SOLID_PHASE_NAME:
+        return StandardSolidPhase()
+    
+    raise NotImplementedError
+
+###############################################################################
+
+def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):
     
     if name == STANDARD_CONDITION_STRING:
         return StandardConditions()
@@ -149,8 +175,8 @@ def GetConditions(name, all_ids=None, all_concentrations=None):
         return MillimolarConditions()
     
     if name == CUSTOM_CONDITION_STRING:
-        assert all_ids and all_concentrations
-        return CustomConditions(all_ids, all_concentrations)
+        assert all_ids and all_phases and all_ratios
+        return CustomConditions(all_ids, all_phases, all_ratios)
 
     logging.error('unrecognized condition name: ' + name)
     return None

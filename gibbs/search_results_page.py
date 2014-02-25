@@ -40,9 +40,8 @@ def ResultsPage(request):
         if not best_reaction:
             return render_to_response('search_error_page.html', template_data)
         
-        std_conditions = conditions.StandardConditions()
         rxn = reaction.Reaction.FromIds(best_reaction,
-                                        conditions=std_conditions,
+                                        cond=conditions.StandardConditions(),
                                         pH=ph, pMg=pmg,
                                         ionic_strength=ionic_strength)
         

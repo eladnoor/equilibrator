@@ -87,7 +87,9 @@ class ValueSource(models.Model):
     
 
 class Specie(models.Model):
-    """A single specie of a compound."""
+    """
+        A single specie of a compound.
+    """
     # The ID of the compound in KEGG.
     kegg_id = models.CharField(max_length=10)
     
@@ -134,6 +136,12 @@ class Specie(models.Model):
     
     
 class SpeciesGroup(models.Model):
+    """
+        A set of different species (AKA pseudoisomers/protonation states) that
+        a compound can have. There is a separation between SpeciesGroup and Compound
+        in order to associate a compound with more than one source of data,
+        e.g. Alberty vs. Component Contribution
+    """
     # The ID of the compound in KEGG.
     kegg_id = models.CharField(max_length=10)
     
@@ -165,7 +173,9 @@ class SpeciesGroup(models.Model):
     all_species_no_mg = property(GetSpeciesWithoutMg)
 
     def StashTransformedSpeciesEnergies(self, ph, pmg, ionic_strength):
-        """Stash the transformed species formation energy in each one."""
+        """
+            Stash the transformed species formation energy in each one.
+        """
         for species in self.all_species:
             species.transformed_energy = species.Transform(
                 pH=ph, pMg=pmg, ionic_strength=ionic_strength)
@@ -173,15 +183,16 @@ class SpeciesGroup(models.Model):
     def DeltaG(self, pH=constants.DEFAULT_PH,
                pMg=constants.DEFAULT_PMG,
                ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        """Get a deltaG estimate for this group of species.
-        
-        Args:
-            pH: the PH to estimate at.
-            ionic_strength: the ionic strength to estimate at.
-            temp: the temperature to estimate at.
-        
-        Returns:
-            The estimated delta G in the given conditions or None.
+        """
+            Get a deltaG estimate for this group of species.
+            
+            Args:
+                pH: the pH to estimate at.
+                pMg: the pMg to estimate at.
+                ionic_strength: the ionic strength to estimate at.
+            
+            Returns:
+                The estimated delta G in the given conditions or None.
         """
         if not self.all_species:
             # No data...
@@ -199,7 +210,9 @@ class SpeciesGroup(models.Model):
     
 
 class Compound(models.Model):
-    """A single compound."""
+    """
+        A single compound.
+    """
     # The ID of the compound in KEGG.
     kegg_id = models.CharField(max_length=10, null=True)
     
@@ -482,8 +495,6 @@ class Compound(models.Model):
             self._all_species_groups = self.species_groups.all()
             
         return self._all_species_groups
-        
-        return self.species_groups.all()
     
     def HasSpeciesGroups(self):
         """Returns true if this compound has any species groups."""
@@ -621,6 +632,15 @@ class StoredReaction(models.Model):
         """Get the string representation of this reaction."""
         return '%s <=> %s' % (self._SideString(self.substrates.all()),
                               self._SideString(self.products.all()))
+    
+    def GetReactants(self):
+        all_reactants = []
+        for r in self.substrates.all():
+            all_reactants.append((-r.coeff, r.compound.kegg_id, r.compound.FirstName()))
+        for r in self.products.all():
+            all_reactants.append((r.coeff, r.compound.kegg_id, r.compound.FirstName()))
+        return all_reactants
+    reactants = property(GetReactants)
     
     @staticmethod
     def HashableReactionString(substrates, products):

@@ -1,9 +1,6 @@
 		<div class="parsedRxn">
 			{% for compound in reaction.substrates %}
-				{% with "substrates" as reaction_side %}
-					{% include "compound_in_reaction.html" %}
-				{% endwith %}
-				
+				{% include "compound_in_reaction.html" %}
 				{% if not forloop.last %} + {% endif %}
 			{% endfor %}
 			
@@ -26,10 +23,7 @@
 			
 			&rarr;
 			{% for compound in reaction.products %}
-				{% with "products" as reaction_side %}
-					{% include "compound_in_reaction.html" %}
-				{% endwith %}
-				
+				{% include "compound_in_reaction.html" %}
 				{% if not forloop.last %} + {% endif %}
 			{% endfor %}
 			

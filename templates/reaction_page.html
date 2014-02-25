@@ -22,30 +22,6 @@
 		
 	</form>
 
-	{% if reaction.all_compounds and reaction.is_conserving %}
-	<table class="formationEnergyInfo">
-		<tr>
-			<th colspan="2">Compound Formation Energies</td>		
-		</tr>
-		<tr class="speciesHeader">
-			<td>Compound</td>
-			<td><a href="/faq#dgf">&Delta;<sub>f</sub>G'&deg;</a> [kJ / mol]</td>
-		</tr>
-		{% for compound in reaction.all_compounds %}
-		<tr>
-			<td><a href="{{ compound.compound.link }}">{{ compound.name }}</a></td>
-			<td>
-			{% if compound.transformed_energy != None %}
-			{{ compound.transformed_energy|floatformat:1 }}
-			{% else %}&mdash;
-			{% endif %}
-			</td>
-		</tr>
-		{% endfor %}
-	</table>
-	{% endif %}
-	
-	
 	</div>
 
 {% include "footer.html" %}

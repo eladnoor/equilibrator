@@ -36,19 +36,19 @@ def _MakeReactionParser():
     compound_name_component = pyparsing.Word(pyparsing.alphanums + "()",
                                              pyparsing.alphanums + "-+,()'")
     compound_name = pyparsing.Forward()
-    compound_name << (compound_name_component + pyparsing.ZeroOrMore(compound_name_component))
+    compound_name <<= (compound_name_component + pyparsing.ZeroOrMore(compound_name_component))
     compound_name.setParseAction(lambda s: ' '.join(s))
     
     compound_with_coeff = pyparsing.Forward()
-    compound_with_coeff << ((optional_coeff + compound_name) | compound_name)
+    compound_with_coeff <<= ((optional_coeff + compound_name) | compound_name)
     compound_with_coeff.setParseAction(_parsedCompound)
     compound_with_coeff.setResultsName("compound")
     
     compound_with_separator = pyparsing.Forward()
-    compound_with_separator << (compound_with_coeff + compound_separator)
+    compound_with_separator <<= (compound_with_coeff + compound_separator)
     
     reaction_side = pyparsing.Forward()
-    reaction_side << (pyparsing.ZeroOrMore(compound_with_separator) +
+    reaction_side <<= (pyparsing.ZeroOrMore(compound_with_separator) +
                       compound_with_coeff)
     reaction_side.setParseAction(lambda l: [l])
     reaction_side.setResultsName("reaction_side")
@@ -57,7 +57,7 @@ def _MakeReactionParser():
     side_separator = pyparsing.Or(side_separators).suppress()
     
     reaction = pyparsing.Forward()
-    reaction << (reaction_side + side_separator + reaction_side)
+    reaction <<= (reaction_side + side_separator + reaction_side)
     return reaction
 
 

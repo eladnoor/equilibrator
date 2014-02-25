@@ -8,8 +8,28 @@ from gibbs import conditions
 from gibbs import constants
 from gibbs import models
 
-# gases by order in KEGG: O2, NH3, CO, H2, N2   
-VOLATILE_COMPOUNDS_KEGG_IDS = ['C00007','C00014','C00237','C00282','C00697']
+# volatile compounds by order in KEGG: O2, NH3, CO, H2, N2
+# CO2 has special treatment and is not included in this list
+VOLATILE_COMPOUNDS_KEGG_IDS = ['C00011', # CO2 (only carbon dioxide without carbonates)
+                               'C00007', # O2
+                               'C00014', # NH3
+                               'C00237', # CO
+                               'C00282', # H2
+                               'C00697', # N2
+                               'C00058', # formic acid (COOH)                            
+                               'C00067', # formaldehyde (CH2O)
+                               'C00132', # methanol (CH3OH)
+                               'C01438', # methane (CH4)
+                               'C00469', # ethanol
+                               'C80045', # ethane
+                               'C06547', # ethylene
+                               'C80047', # propane
+                               'C11505', # propene
+                               'C00533', # nitric oxide (NO)
+                               'C00887', # nitrous oxide (N2O)
+                               'C05361', # hydrazine (N2H4)
+                               'C00283'  # hydrogen sulfide (H2S)
+                               ]
 
 class ReactantFormulaMissingError(Exception):
     
@@ -39,7 +59,7 @@ class CompoundWithCoeff(object):
         if phase is not None:
             self.phase = phase
         else:
-            self.phase = conditions.StandardAqueousPhase()
+            self.phase = conditions.StandardConditions()
     
     def AbsoluteCoefficient(self):
         return numpy.abs(self.coeff)
@@ -87,20 +107,12 @@ class CompoundWithCoeff(object):
             return self._name
         return str(self.compound.FirstName())
     
-    def _HumanConcentrationStringWithUnits(self):
-        if self.concentration > 1e-2:
-            return '%.2g M' % self.concentration
-        
-        if self.concentration > 1e-4:
-            return '%.2g mM' % (self.concentration * 1e3)
-        
-        return '%2g μM' % (self.concentration * 1e6)
-    
     def __eq__(self, other):
-        """Check equality with another CompoundWithCoeff.
+        """
+            Check equality with another CompoundWithCoeff.
         
-        Args:
-            other: a second CompoundWithCoeff (or like object).
+            Args:
+                other: a second CompoundWithCoeff (or like object).
         """
         if self.coeff != other.coeff:
             return False
@@ -110,10 +122,25 @@ class CompoundWithCoeff(object):
         
         return True
         
+    def GetPhaseName(self):
+        return self.phase.Name()
+        
+    def GetPossiblePhases(self):
+        phase_list = []
+        if self.compound.kegg_id == 'C00001':
+            phase_list.append(conditions.STANDARD_LIQUID_PHASE_NAME)
+        else:
+            phase_list.append(conditions.CUSTOM_AQUEOUS_PHASE_NAME)
+            
+        if self.compound.kegg_id in VOLATILE_COMPOUNDS_KEGG_IDS:
+            phase_list.append(conditions.CUSTOM_GAS_PHASE_NAME)
+        
+        return phase_list
+
     def GetPhaseSubscript(self):
         return self.phase.Subscript()
     
-    def GetPhaseValue(self):
+    def GetPhaseValueString(self):
         return self.phase.ValueString()
     
     def GetPhaseUnits(self):
@@ -128,10 +155,12 @@ class CompoundWithCoeff(object):
     name = property(GetName)
     abs_coeff = property(AbsoluteCoefficient)
     subscript = property(GetPhaseSubscript)
-    value_string = property(GetPhaseValue)
+    phase_name = property(GetPhaseName)
+    value_string = property(GetPhaseValueString)
+    human_string = property(GetPhaseHumanString)
     units = property(GetPhaseUnits)
     is_constant = property(GetPhaseIsConstant)
-    human_concentration_w_units = property(GetPhaseHumanString)
+    possible_phases = property(GetPossiblePhases)
 
 class Reaction(object):
     """A reaction."""
@@ -148,8 +177,8 @@ class Reaction(object):
         """
         # Hack - ignore H+ because it has the wrong priority for the Alberty data.
         self.reactants = reactants or []
-        self._FilterZeroes()
         self._FilterProtons()
+        self._Dedup()
         
         self.ph = pH
         self.pmg = pMg
@@ -161,21 +190,20 @@ class Reaction(object):
         self._SetCompoundPriorities()
     
     def _SetCompoundPriorities(self):
-        """Returns a set of (int, SpeciesGroup) tuples for the reaction."""
+        """
+            Returns a set of (int, SpeciesGroup) tuples for the reaction.
+        """
         
-        compounds = [c.compound for c in self.reactants]
-        
-        sentinel = 1<<10;
-        get_min_priority = lambda c: min(c.GetSpeciesGroupPriorities() + [sentinel])
-        min_priorities = map(get_min_priority, compounds)
-        priority_to_use = max(min_priorities)
+        priorities = [c.compound.GetSpeciesGroupPriorities() for c in self.reactants]
+        priorities = filter(lambda l: l is not [], priorities)
         
         # Someone is missing data!
-        if priority_to_use == sentinel:
+        if priorities == []:
             return
+        priority_to_use = max([min(l) for l in priorities])
         
-        for c in compounds:
-            c.SetSpeciesGroupPriority(priority_to_use)
+        for c in self.reactants:
+            c.compound.SetSpeciesGroupPriority(priority_to_use)
          
     def SwapSides(self):
         """Swap the sides of this reaction."""
@@ -316,16 +344,18 @@ class Reaction(object):
         # Build the appropriate concentration profile.
         cond = conditions.GetConditions(form.cleaned_conditions,
                                         form.cleaned_reactantsId,
+                                        form.cleaned_reactantsPhase,
                                         form.cleaned_reactantsConcentration)
 
         # Return the built reaction object.
         return Reaction.FromIds(zipped_reactants,
-                                conditions=cond,
+                                cond=cond,
                                 pH=ph, pMg=pmg,
                                 ionic_strength=i_s)
     
     @staticmethod
     def FromStoredReaction(stored_reaction,
+                           cond=None,
                            pH=constants.DEFAULT_PH,
                            pMg=constants.DEFAULT_PMG,
                            ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
@@ -337,18 +367,16 @@ class Reaction(object):
         Returns:
             A Reaction object.
         """
-        substrates = [CompoundWithCoeff.FromReactant(r)
-                     for r in stored_reaction.substrates.all()]
-        products  = [CompoundWithCoeff.FromReactant(r)
-                     for r in stored_reaction.products.all()]
-        rxn = Reaction(substrates, products, pH=pH, pMg=pMg,
-                       ionic_strength=ionic_strength)
+        rxn = Reaction.FromIds(stored_reaction.reactants,
+                               cond=cond,
+                               pH=pH, pMg=pMg,
+                               ionic_strength=ionic_strength)
         rxn.SetStoredReaction(stored_reaction)
         return rxn
     
     @staticmethod
     def FromIds(reactants,
-                conditions=None,
+                cond=None,
                 pH=constants.DEFAULT_PH,
                 pMg=constants.DEFAULT_PMG,
                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
@@ -375,8 +403,10 @@ class Reaction(object):
         
         rxn = Reaction(rs, pH=pH, pMg=pMg,
                        ionic_strength=ionic_strength)
-        if conditions:
-            rxn.ApplyConditions(conditions)
+        if cond:
+            rxn.ApplyConditions(cond)
+        else:
+            rxn.ApplyConditions(conditions.StandardConditions())
         
         return rxn
     
@@ -635,10 +665,8 @@ class Reaction(object):
         return oxy_count
 
     def _FindCompoundIndex(self, kegg_id):
-        """Returns the index of the compound with the given id.
-        
-        Returns:
-            The index of the compound or None if not present.
+        """
+            Returns the first index of the compound with the given KEGG id.
         """
         for i, c in enumerate(self.reactants):
             if c.compound.kegg_id == kegg_id:
@@ -661,16 +689,25 @@ class Reaction(object):
         to_c_w_c = CompoundWithCoeff.FromId(coeff, to_id, phase=phase)
         self.reactants[i] = to_c_w_c
 
-    def _FilterZeroes(self):
-        """Removes compounds with coefficients equal to zero.
-        
-        Args:
-            side: the reaction side to filter.
+    def _Dedup(self):
         """
+            Collapses duplicate compounds and removes ones with coefficients of zero.
+        """
+        kegg_id_to_index = {}
+        for i, c in enumerate(self.reactants):
+            first_i = kegg_id_to_index.setdefault(c.compound.kegg_id, i)
+            if i != first_i:
+                self.reactants[first_i].coeff += c.coeff
+                c.coeff = 0
+                
         self.reactants = filter(lambda x: x.coeff != 0, self.reactants)
 
     def _FilterProtons(self):
-        """Removes Hydrogens from the list of compounds."""
+        """
+            Removes Protons from the list of compounds.
+            Since we use Bob Alberty's framework for biochemical reactions, there
+            is no meaning for having H+ in a reaction.
+        """
         self.reactants = filter(lambda c: c.compound.kegg_id != 'C00080', self.reactants)
         
     def _AddCompound(self, kegg_id, how_many):
@@ -680,13 +717,14 @@ class Reaction(object):
             kegg_id: the KEGG id.
             how_many: by how much to change the reactant's coefficient.
         """
-        i = self._FindCompoundIndex(kegg_id)        
+        i = self._FindCompoundIndex(kegg_id)
         if i is not None:
             self.reactants[i].coeff += how_many
         else:
             c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id)
+            c_w_coeff.phase = self._conditions.GetPhase(kegg_id)
             self.reactants.append(c_w_coeff)    
-        self._FilterZeroes()
+        self._Dedup()
 
     def TryBalanceWithWater(self):
         """Try to balance the reaction with water.
@@ -729,8 +767,8 @@ class Reaction(object):
                          reduced_acceptor_id='C00004'):  # NADH
         """Try to balance the reaction electons."""        
         net_electrons = self._GetElectronDiff()
-        self._AddCompound(reduced_acceptor_id, net_electrons/2)
-        self._AddCompound(acceptor_id, -net_electrons/2)
+        self._AddCompound(reduced_acceptor_id, -net_electrons/2)
+        self._AddCompound(acceptor_id, net_electrons/2)
         
     def FilterHydrogen(self):
         """Removes Hydrogens from the list of compounds."""
@@ -775,10 +813,11 @@ class Reaction(object):
             The correction or None on error.
         """        
         # Shorthand for coeff * log(concentration)
-        mult_log = lambda c: c.coeff * numpy.log(c.concentration)
+        mult_log_c_list = [c.coeff * numpy.log(c.phase.Value())
+                           for c in self.reactants]
 
         # Compute log(Q) - the log of the reaction quotient
-        log_Q = sum([mult_log(c) for c in self.reactants])
+        log_Q = sum(mult_log_c_list)
         
         _r = constants.R
         _t = constants.DEFAULT_TEMP

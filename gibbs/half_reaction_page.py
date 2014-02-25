@@ -2,7 +2,6 @@ import logging
 
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render_to_response
-from gibbs import concentration_profile
 from gibbs import reaction
 from gibbs import reaction_form
 
@@ -41,7 +40,6 @@ def HalfReactionPage(request):
                      'ph': rxn.ph,
                      'pmg': rxn.pmg,
                      'ionic_strength': rxn.i_s,
-                     'concentration_profile': str(rxn.concentration_profile),
                      'balance_with_water_link': balance_with_water_link,
                      'replace_co2_link': replace_co2_link}
     return render_to_response('half_reaction_page.html', template_data)
