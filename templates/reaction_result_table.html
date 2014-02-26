@@ -1,6 +1,6 @@
     <table class="results">
 
-        {% if not reaction.standard_concentrations %}
+        {% if conditions and conditions != "standard" %}
         <tr>
             <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
             <td colspan="3">
@@ -22,7 +22,7 @@
               <strong>
                 {{ reaction.dg0_tag|floatformat:1 }} kJ / mol
                 </strong>
-                &nbsp;&nbsp;&nbsp; [K'<sub>eq</sub> = {{ reaction.k_eq_tag|stringformat:".2g" }}]
+                &nbsp;&nbsp;&nbsp; [ K'<sub>eq</sub> = {{ reaction.k_eq_tag_human|safe }} ]
             {% else %}
               <strong>
                 <a href="/faq#notAvailable">Not available</a>
@@ -60,23 +60,9 @@
         <tr>
             <td width="150px">Concentrations</td>
             <td colspan="3">
-                {% if not conditions or conditions == "standard" %}
-                  <input type="radio" name="conditions" value="standard" checked><a href="/faq#stdConditions">Standard conditions</a> (1 M)
-                {% else %}
-                  <input type="radio" name="conditions" value="standard" checked><a href="/faq#stdConditions">Standard conditions</a> (1 M)
-                {% endif %}
-                
-                {% ifequal conditions "mM" %}
-                  <input type="radio" name="conditions" value="mM" checked>1 mM
-                {% else %}
-                  <input type="radio" name="conditions" value="mM">1 mM
-                {% endifequal %}
-				
-                {% ifequal conditions "custom" %}
-			  <input type="radio" name="conditions" id="customConcRadio" value="custom" checked>Custom
-                {% else %}
-			  <input type="radio" name="conditions" id="customConcRadio" value="custom">Custom
-                {% endifequal %}
+                <input type="radio" name="conditions" value="standard" checked><a href="/faq#stdConditions">Standard conditions</a> (1 M)
+                <input type="radio" name="conditions" value="mM" {% if conditions == "mM" %}checked{% endif %}>1 mM
+                <input type="radio" name="conditions" id="customConcRadio" value="custom" {% if conditions == "custom" %}checked{% endif %}>Custom
 		</td>
 	  </tr>
 	  <tr class="customConcentrations">

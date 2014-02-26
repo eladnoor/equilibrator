@@ -871,7 +871,19 @@ class Reaction(object):
         rt = constants.R * constants.DEFAULT_TEMP
         keq = numpy.exp(-dg0_tag / rt)
         return keq
-    
+
+    def KeqTagHuman(self):
+        """
+            Returns K'eq for this reaction, in a human readable formet
+            using HTML superscript.
+        """
+        keq = self.KeqTag()
+        exp = numpy.floor(numpy.log10(keq))
+        if abs(exp) <= 2:
+            return '%.2g' % keq
+        else:
+            return '%.1f &times; 10<sup>%d</sup>' % (keq / 10**exp, exp)
+        
     def NoDeltaGExplanation(self):
         """Get an explanation for why there's no delta G value.
         
@@ -969,6 +981,7 @@ class Reaction(object):
     dg0_tag = property(DeltaG0Tag)
     dg_tag = property(DeltaGTag)
     k_eq_tag = property(KeqTag)
+    k_eq_tag_human = property(KeqTagHuman)
     e0_tag = property(E0_tag)
     no_dg_explanation = property(NoDeltaGExplanation)
     ph_graph_link = property(GetPhGraphLink)

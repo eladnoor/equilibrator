@@ -4,6 +4,18 @@ from gibbs import constants
 from gibbs import conditions
 
 class ReactionForm(form_utils.BaseForm):
+    
+    def GetReactantConcentrations(self):
+        for c in self.cleaned_data['reactantsConcentration']:
+            try:
+                conc = float(c)
+                if conc <= 0:
+                    yield 1e-9
+                else:
+                    yield conc
+            except ValueError:
+                yield 1e-9
+    
     reactionId = forms.CharField(required=False)
     reactantsId = form_utils.ListFormField(required=False)
     reactantsCoeff = form_utils.ListFormField(required=False)
@@ -34,7 +46,7 @@ class ReactionForm(form_utils.BaseForm):
     cleaned_reactantsCoeff = property(lambda self: [float(c) for c in self.cleaned_data['reactantsCoeff']])
     cleaned_reactantsName = property(lambda self: self.cleaned_data['reactantsName'])
     cleaned_reactantsPhase = property(lambda self: self.cleaned_data['reactantsPhase'])
-    cleaned_reactantsConcentration = property(lambda self: [float(c) for c in self.cleaned_data['reactantsConcentration']])
+    cleaned_reactantsConcentration = property(GetReactantConcentrations)
     cleaned_ph = property(lambda self: self._GetWithDefault('ph', constants.DEFAULT_PH))
     cleaned_pmg = property(lambda self: self._GetWithDefault('pmg', constants.DEFAULT_PMG))
     cleaned_ionic_strength = property(lambda self: self._GetWithDefault('ionic_strength',
