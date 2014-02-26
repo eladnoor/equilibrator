@@ -114,13 +114,18 @@
                 {{ reactant.units }}
              </td>
              <td width="50px">
-                <select name="reactantsPhase">
-                {% for phase in reactant.possible_phases %}
-                  <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
-                      {{ phase }}
-                  </option>
-                {% endfor %}
-                </select>
+                {% if reactant.has_multiple_phases %}
+                    <select name="reactantsPhase">
+                    {% for phase in reactant.possible_phases %}
+                      <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
+                          {{ phase }}
+                      </option>
+                    {% endfor %}
+                    </select>
+                {% else %}
+                    {{ reactant.phase_name }}
+                    <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
+                {% endif %}
              </td>
          {% endif %}
 

@@ -136,6 +136,9 @@ class CompoundWithCoeff(object):
             phase_list.append(conditions.CUSTOM_GAS_PHASE_NAME)
         
         return phase_list
+        
+    def HasMultiplePhases(self):
+        return len(self.GetPossiblePhases()) > 1
 
     def GetPhaseSubscript(self):
         return self.phase.Subscript()
@@ -161,6 +164,7 @@ class CompoundWithCoeff(object):
     units = property(GetPhaseUnits)
     is_constant = property(GetPhaseIsConstant)
     possible_phases = property(GetPossiblePhases)
+    has_multiple_phases = property(HasMultiplePhases)
 
 class Reaction(object):
     """A reaction."""
