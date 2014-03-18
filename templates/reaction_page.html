@@ -8,17 +8,19 @@
 
 	<form id="rxnForm" name="reactionForm" action="/reaction" method="get">
 		<input type="hidden" name="query" value="{{ query }}" />
-		{% include "parsed_reaction.html" %}
-		
-		{% if reaction.is_balanced and reaction.is_electron_balanced and reaction.is_conserving %}
-			{% include "reaction_result_table.html" %}
-			
-			<div class="buttonSet">
-				<input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
-				<input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />
-				<input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
-			</div>
-		{% endif %}
+		{% if not reaction.is_empty %}
+               {% include "parsed_reaction.html" %}
+    		
+    		     {% if reaction.is_balanced and reaction.is_electron_balanced and reaction.is_conserving %}
+                {% include "reaction_result_table.html" %}
+    			
+    			<div class="buttonSet">
+    				<input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
+    				<input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />
+    				<input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
+    			</div>
+                {% endif %}
+    		{% endif %}
 		
 	</form>
 

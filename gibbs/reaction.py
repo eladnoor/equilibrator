@@ -204,7 +204,7 @@ class Reaction(object):
         # Someone is missing data!
         if priorities == []:
             return
-        priority_to_use = max([min(l) for l in priorities])
+        priority_to_use = max([min(l) for l in priorities if l])
         
         for c in self.reactants:
             c.compound.SetSpeciesGroupPriority(priority_to_use)
@@ -455,6 +455,7 @@ class Reaction(object):
                 return 0
             
             electron_diff += coeff * electrons
+        
         return electron_diff
     
     def _GetAtomDiff(self):
@@ -475,12 +476,13 @@ class Reaction(object):
         Returns:
             True if balanced.
         """
-        if not atom_diff:
-            return False
-        
         # Always ignore hydrogens, ala Alberty.
         atom_diff.pop('H', 0)
-                        
+        
+        # This can happen for reactions that only involve hydrogen
+        if len(atom_diff) == 0:
+            return True
+        
         return max([abs(x) for x in atom_diff.values()]) < 0.01
     
     def _GetUrlParams(self, query=None):
@@ -607,6 +609,9 @@ class Reaction(object):
         except ReactantFormulaMissingError:
             return True
     
+    def IsEmpty(self):
+        return len(self._GetAtomDiff()) == 0
+    
     def IsBalanced(self):
         """Checks if the collection is atom-wise balanced.
         
@@ -640,7 +645,7 @@ class Reaction(object):
         Returns:
             True if the collection is electron-wise balanced.
         """
-        if self._GetElectronDiff() > 0:
+        if self._GetElectronDiff() < 0:
             self.SwapSides()
             
     def E0_tag(self):
@@ -968,6 +973,7 @@ class Reaction(object):
     volatile_reactants = property(GetVolatileReactants)
     is_conserving = property(CheckConservationLaws)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
+    is_empty = property(IsEmpty)    
     is_balanced = property(IsBalanced)
     is_electron_balanced = property(IsElectronBalanced)
     is_half_reaction = property(IsHalfReaction)

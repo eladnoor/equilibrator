@@ -27,10 +27,7 @@ def HalfReactionPage(request):
         rxn.TryReplaceCO2()
         query = rxn.GetQueryString()
     
-    if rxn.IsHalfReaction():
-        rxn.StandardizeHalfReaction()
-    else:
-        return HttpResponseBadRequest('Reaction is not a half-reaction.')
+    rxn.StandardizeHalfReaction()
         
     # Render the template.
     balance_with_water_link = rxn.GetBalanceWithWaterLink(query)

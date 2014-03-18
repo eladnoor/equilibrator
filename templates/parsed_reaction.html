@@ -16,8 +16,8 @@
 				{% endfor %}
 			{% endif %}
 			
-			{% if reaction.missing_electrons and reaction.is_balanced %}
-				+ <span class="missingCount">{{ reaction.missing_electrons }}</span>
+			{% if reaction.extra_electrons and reaction.is_balanced %}
+				+ <span class="missingCount">{{ reaction.extra_electrons }}</span>
 				  <span class="missingAtom">e<sup>-</sup></span>
 			{% endif %}
 			
@@ -39,8 +39,8 @@
 				{% endfor %}
 			{% endif %}
 			
-			{% if reaction.extra_electrons and reaction.is_balanced %}
-				+ <span class="missingCount">{{ reaction.extra_electrons }}</span>
+			{% if reaction.missing_electrons and reaction.is_balanced %}
+				+ <span class="missingCount">{{ reaction.missing_electrons }}</span>
 				  <span class="missingAtom">e<sup>-</sup></span>
 			{% endif %}
 		</div>
