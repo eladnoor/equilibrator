@@ -21,38 +21,6 @@
 		
 	</form>
 
-	{% if not reaction.is_empty and reaction.all_compounds %}
-	<table class="compoundInfo">
-		<tr>
-			<th colspan="3">Compound Formation Energies</td>		
-		</tr>
-		<tr>
-			<td>Compound</td>
-			<td><a href="/faq#dgf">&Delta;<sub>f</sub>G&deg;</a></td>
-			<td><a href="/faq#dgf">&Delta;<sub>f</sub>G'&deg;</a></td>
-			<td>Source</td>
-		</tr>
-		{% for compound in reaction.all_compounds %}
-		<tr>
-			<td><a href="{{ compound.compound.link }}">{{ compound.name }}</a></td>
-			<td>{{ compound.compound.dgf_zero|floatformat:1 }}</td>
-			<td>
-			{% if compound.transformed_energy != None %}
-			{{ compound.transformed_energy|floatformat:1 }}
-			{% else %}&mdash;
-			{% endif %}
-			</td>
-			<td>
-			{% if compound.compound.dg_source != None %}
-			<a href="/data_refs" title="Reference list">{{ compound.compound.dg_source }}</a>
-			{% endif %}
-			</td>
-		</tr>
-		{% endfor %}
-	</table>
-	{% endif %}
-	
-	
 	</div>
 
 {% include "footer.html" %}

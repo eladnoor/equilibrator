@@ -648,11 +648,17 @@ class Reaction(object):
         if self._GetElectronDiff() < 0:
             self.SwapSides()
             
-    def E0_tag(self):
+    def E0_tag(self, pH=None, pMg=None, ionic_strength=None):
         """Returns the standard transformed reduction potential of this reaction."""
         delta_electrons = abs(self._GetElectronDiff())
         assert delta_electrons != 0
-        return - self.dg0_tag / (constants.F*delta_electrons)
+        return - self.DeltaG0Tag(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
+
+    def E_tag(self, pH=None, pMg=None, ionic_strength=None):
+        """Returns the standard transformed reduction potential of this reaction."""
+        delta_electrons = abs(self._GetElectronDiff())
+        assert delta_electrons != 0
+        return - self.DeltaGTag(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
     
     def _ExtraWaters(self):
         atom_diff = self._GetAtomDiff()
@@ -882,12 +888,19 @@ class Reaction(object):
             Returns K'eq for this reaction, in a human readable formet
             using HTML superscript.
         """
-        keq = self.KeqTag()
-        exp = numpy.floor(numpy.log10(keq))
+        dg0_tag = self.DeltaG0Tag()
+        if dg0_tag is None:
+            return None
+        
+        rtln10 = constants.R * constants.DEFAULT_TEMP * numpy.log(10)
+        x = -dg0_tag / rtln10
+
+        exp = numpy.floor(x)
+        prefactor = 10**(x - exp)
         if abs(exp) <= 2:
-            return '%.2g' % keq
+            return '%.2g' % (10**x)
         else:
-            return '%.1f &times; 10<sup>%d</sup>' % (keq / 10**exp, exp)
+            return '%.1f &times; 10<sup>%d</sup>' % (prefactor, exp)
         
     def NoDeltaGExplanation(self):
         """Get an explanation for why there's no delta G value.
@@ -989,6 +1002,7 @@ class Reaction(object):
     k_eq_tag = property(KeqTag)
     k_eq_tag_human = property(KeqTagHuman)
     e0_tag = property(E0_tag)
+    e_tag = property(E_tag)
     no_dg_explanation = property(NoDeltaGExplanation)
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)

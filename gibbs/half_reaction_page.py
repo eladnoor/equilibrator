@@ -37,6 +37,7 @@ def HalfReactionPage(request):
                      'ph': rxn.ph,
                      'pmg': rxn.pmg,
                      'ionic_strength': rxn.i_s,
+                     'conditions': str(rxn.conditions),
                      'balance_with_water_link': balance_with_water_link,
                      'replace_co2_link': replace_co2_link}
     return render_to_response('half_reaction_page.html', template_data)
