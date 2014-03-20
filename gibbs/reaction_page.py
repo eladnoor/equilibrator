@@ -50,6 +50,7 @@ def ReactionPage(request):
                      'ph': rxn.ph,
                      'pmg': rxn.pmg,
                      'ionic_strength': rxn.i_s,
+                     'e_reduction_potential': rxn.e_reduction_potential,
                      'conditions': str(rxn.conditions),
                      'balance_with_water_link': balance_with_water_link,
                      'balance_electrons_link': balance_electrons_link,

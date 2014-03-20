@@ -26,6 +26,7 @@ class ReactionForm(form_utils.BaseForm):
     ph = forms.FloatField(required=False)
     pmg = forms.FloatField(required=False)
     ionic_strength = forms.FloatField(required=False)
+    electronReductionPotential = forms.FloatField(required=False)
     conditions = forms.ChoiceField(required=False,
                                    choices=[(conditions.STANDARD_CONDITION_STRING, conditions.STANDARD_CONDITION_STRING),
                                             (conditions.MILLIMOLAR_CONDITION_STRING, conditions.MILLIMOLAR_CONDITION_STRING),
@@ -50,7 +51,9 @@ class ReactionForm(form_utils.BaseForm):
     cleaned_ph = property(lambda self: self._GetWithDefault('ph', constants.DEFAULT_PH))
     cleaned_pmg = property(lambda self: self._GetWithDefault('pmg', constants.DEFAULT_PMG))
     cleaned_ionic_strength = property(lambda self: self._GetWithDefault('ionic_strength',
-                                                                        constants.DEFAULT_IONIC_STRENGTH))
+                                                    constants.DEFAULT_IONIC_STRENGTH))
+    cleaned_e_reduction_potential = property(lambda self: self._GetWithDefault('electronReductionPotential',
+                                                    constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
     cleaned_conditions = property(lambda self: self.cleaned_data['conditions'])
     cleaned_query = property(lambda self: self.cleaned_data['query'])
     cleaned_balance_w_water = property(lambda self: self._GetWithDefault('balance_w_water', False))

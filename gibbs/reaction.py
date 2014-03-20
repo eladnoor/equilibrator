@@ -172,7 +172,8 @@ class Reaction(object):
     def __init__(self, reactants=None,
                  pH=constants.DEFAULT_PH,
                  pMg=constants.DEFAULT_PMG,
-                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                 e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL):
         """Construction.
         
         Args:
@@ -187,6 +188,7 @@ class Reaction(object):
         self.ph = pH
         self.pmg = pMg
         self.i_s = ionic_strength
+        self.e_reduction_potential = e_reduction_potential
         self._conditions = None
         self._stored_reaction = None
         self._all_stored_reactions = None
@@ -337,9 +339,10 @@ class Reaction(object):
                 kegg_id=form.cleaned_reactionId)
             return Reaction.FromStoredReaction(stored_reaction)
         
-        i_s = form.cleaned_ionic_strength
         ph = form.cleaned_ph
         pmg = form.cleaned_pmg
+        i_s = form.cleaned_ionic_strength
+        e_red = form.cleaned_e_reduction_potential
         
         zipped_reactants = zip(form.cleaned_reactantsCoeff,
                                form.cleaned_reactantsId,
@@ -355,7 +358,8 @@ class Reaction(object):
         return Reaction.FromIds(zipped_reactants,
                                 cond=cond,
                                 pH=ph, pMg=pmg,
-                                ionic_strength=i_s)
+                                ionic_strength=i_s,
+                                e_reduction_potential=e_red)
     
     @staticmethod
     def FromStoredReaction(stored_reaction,
@@ -383,7 +387,8 @@ class Reaction(object):
                 cond=None,
                 pH=constants.DEFAULT_PH,
                 pMg=constants.DEFAULT_PMG,
-                ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+                ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL):
         """Build a reaction object from lists of IDs.
         
         Args:
@@ -406,7 +411,8 @@ class Reaction(object):
             rs.append(CompoundWithCoeff(coeff, compounds[id], name))
         
         rxn = Reaction(rs, pH=pH, pMg=pMg,
-                       ionic_strength=ionic_strength)
+                       ionic_strength=ionic_strength,
+                       e_reduction_potential=e_reduction_potential)
         if cond:
             rxn.ApplyConditions(cond)
         else:
@@ -872,6 +878,19 @@ class Reaction(object):
         dg0_tag = self.DeltaG0Tag(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
         correction = self._GetConcentrationCorrection()
         return dg0_tag + correction
+        
+    def HalfReactionDeltaGTag(self, pH=None, pMg=None, ionic_strength=None,
+                              e_reduction_potential=None):
+        """Compute the DeltaG' for a half-reaction, assuming the missing
+           electrons are provided in a certain potential (e_reduction_potential)
+        
+        Returns:
+            The DeltaG' for this half-reaction, or None if data was missing.
+        """
+        dg_tag = self.DeltaGTag(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+        e_red = e_reduction_potential or self.e_reduction_potential
+        delta_electrons = abs(self._GetElectronDiff())      
+        return dg_tag + (constants.F * delta_electrons * e_red)
     
     def KeqTag(self):
         """Returns K'eq for this reaction."""
@@ -999,6 +1018,7 @@ class Reaction(object):
     dg0 = property(DeltaG0)
     dg0_tag = property(DeltaG0Tag)
     dg_tag = property(DeltaGTag)
+    half_reaction_dg_tag = property(HalfReactionDeltaGTag)
     k_eq_tag = property(KeqTag)
     k_eq_tag_human = property(KeqTagHuman)
     e0_tag = property(E0_tag)
