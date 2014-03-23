@@ -3,8 +3,6 @@ import logging
 
 from util import django_utils
 
-django_utils.SetupDjango()
-
 from gibbs import models
 
 DEFAULT_CITATION_DATA_FILENAME = 'data/citation_data.json'

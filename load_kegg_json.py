@@ -4,8 +4,6 @@ import logging
 from util import django_utils
 import gzip
 
-django_utils.SetupDjango()
-
 from gibbs import models
 
 # Cache compounds so we can look them up faster.

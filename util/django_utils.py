@@ -1,6 +1,6 @@
 import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fooproject.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 from django.conf import settings
     
 def IsSuperUser(request):

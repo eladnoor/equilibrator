@@ -6,8 +6,6 @@ import logging
 from util import django_utils
 import gzip
 
-django_utils.SetupDjango()
-
 from gibbs import models
 
 DEFAULT_COMPOUND_MAPPING_FILENAME = 'data/compound_replacement_mapping.json.gz'

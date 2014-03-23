@@ -4,8 +4,6 @@ import logging
 from util import django_utils
 import gzip
 
-django_utils.SetupDjango()
-
 from gibbs import models
 
 DEFAULT_COMPOUND_DATA_FILENAME = 'data/additional_compound_data.json.gz'
