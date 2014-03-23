@@ -20,16 +20,13 @@ def main():
     load_citation_data.LoadCitationData()
         
     logging.info('Loading KEGG data')
-    load_kegg_json.LoadAllKeggData(draw_thumbnails=True)
+    load_kegg_json.LoadAllKeggData(draw_thumbnails=False)
     
     logging.info('Loading corrections/additions to KEGG')
     load_additional_data.LoadAdditionalCompoundData()    
     
     logging.info('Loading compound mappings')
     load_compound_mappings.LoadEquivalentCompounds()
-    
-    logging.info('Exporting database to JSON and CSV files')
-    export_database.export_database()
     
 if __name__ == '__main__':
     main()

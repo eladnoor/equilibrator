@@ -37,7 +37,8 @@ class ReactantFormulaMissingError(Exception):
         self.compound = c
         
     def __str__(self):
-        return "Cannot test reaction balancing because the reactant %s does not have a chemical formula" % self.compound.kegg_id
+        return ("Cannot test reaction balancing because the reactant %s does not "
+                "have a chemical formula" % self.compound.kegg_id)
 
 class CompoundWithCoeff(object):
     """A compound with a stoichiometric coefficient."""
