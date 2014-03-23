@@ -1,8 +1,7 @@
-from django.core.management import setup_environ
-import settings
+import os
 
-def SetupDjango():
-    setup_environ(settings)
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fooproject.settings")
+from django.conf import settings
     
 def IsSuperUser(request):
     """Returns true if the current user is a super user."""
