@@ -5,8 +5,6 @@ from util import django_utils
 import gzip
 from load_kegg_json import GetOrCreateNames, AddPmapToCompound
 
-django_utils.SetupDjango()
-
 from gibbs import models
 
 DEFAULT_COMPOUND_DATA_FILENAME = 'data/additional_compound_data.json.gz'

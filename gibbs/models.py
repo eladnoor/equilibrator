@@ -25,7 +25,7 @@ except ImportError:
 class CommonName(models.Model):
     """A common name of a compound."""
     name = models.CharField(max_length=500, db_index=True)
-    enabled = models.BooleanField()
+    enabled = models.BooleanField(True)
     
     @staticmethod
     def GetOrCreate(name):
@@ -38,10 +38,10 @@ class CommonName(models.Model):
             A CommonName object.
         """
         try:
-            n = CommonName.objects.get(name=name)
+            n = CommonName.objects.get(name=name, enabled=True)
             return n
         except Exception:
-            n = CommonName(name=name)
+            n = CommonName(name=name, enabled=True)
             n.save()
             return n
     

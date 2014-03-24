@@ -1,19 +1,10 @@
-#!/usr/bin/python
+#!/usr/local/bin/python
 
 import sys
 import StringIO
-from django.core.management import setup_environ, call_command
+from django.core.management import call_command
 
-print "Setting Up Environment... ",
-try:
-    import settings # Assumed to be in the same directory.
-except ImportError:
-    sys.stderr.write("Error: Can't find the file 'settings.py' in the directory containing %r.\n"
-                     "(If the file settings.py does indeed exist, it's causing an ImportError somehow.)\n" % __file__)
-    sys.exit(1)
-
-setup_environ(settings)
-print "Done"
+from util import django_utils
 
 # Now we can import Django stuff!
 from django.db import connection

@@ -1,10 +1,8 @@
-#!/usr/bin/python
+#!/usr/local/bin/python
 
 from util import django_utils
 import export_database
 import logging
-
-django_utils.SetupDjango()
 
 import load_additional_data
 import load_citation_data
