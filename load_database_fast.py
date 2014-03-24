@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 from util import django_utils
-import export_database
 import logging
 
 django_utils.SetupDjango()
@@ -23,7 +22,7 @@ def main():
     load_kegg_json.LoadAllKeggData(draw_thumbnails=False)
     
     logging.info('Loading corrections/additions to KEGG')
-    load_additional_data.LoadAdditionalCompoundData()    
+    load_additional_data.LoadAdditionalCompoundData()
     
     logging.info('Loading compound mappings')
     load_compound_mappings.LoadEquivalentCompounds()

@@ -3,22 +3,13 @@ import logging
 
 from util import django_utils
 import gzip
+from load_kegg_json import GetOrCreateNames, AddPmapToCompound
 
 django_utils.SetupDjango()
 
 from gibbs import models
 
 DEFAULT_COMPOUND_DATA_FILENAME = 'data/additional_compound_data.json.gz'
-
-
-def GetOrCreateNames(names_list):
-    """
-        Find all the names in the database.
-        Create them if they are not present.
-    """
-    return [models.CommonName.GetOrCreate(n)
-            for n in names_list]
-    
 
 def LoadAdditionalCompoundData(json_filename=DEFAULT_COMPOUND_DATA_FILENAME):
     parsed_json = json.load(gzip.open(json_filename))
@@ -32,17 +23,24 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_COMPOUND_DATA_FILENAME):
             note = cd.get('note')
             preferred_name = cd.get('preferred name')
             details_link = cd.get('details_link')
+            pmaps = cd.get('pmaps')
+            names = cd.get('names')
+
             if note:
                 compound.note = note
             if preferred_name:
                 compound.preferred_name = preferred_name
             if details_link:
                 compound.details_link = details_link
-            
-            names = cd.get('names')
             if names:
                 for n in GetOrCreateNames(names):
                     compound.common_names.add(n)
+            if pmaps:
+                # override the pseudoisomer map that appears in the
+                # kegg_compound.json file
+                compound.species_groups.clear()
+                for pmap in pmaps:
+                    AddPmapToCompound(pmap, compound)
                     
             compound.save()
         except Exception, e:

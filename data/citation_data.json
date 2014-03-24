@@ -60,8 +60,15 @@
         "url": "http://bioinformatics.oxfordjournals.org/content/28/15/2037.long"
     },
     {
-        "ref": "Noor E, Haraldsdottir HS, Milo R, and Fleming RMT (2013) Consistent Estimation of Gibbs Energy using Component Contributions (unpublished)",
+        "ref": "Noor E, Haraldsdottir HS, Milo R, and Fleming RMT (2013) Consistent Estimation of Gibbs Energy using Component Contributions",
         "year": 2013,
         "name": "Component Contribution (2013)"
+    },
+    {
+        "ref": "Maden BEH (2000) Tetrahydrofolate and tetrahydromethanopterin compared: functionally distinct carriers in C1",
+        "year": 2000,
+        "name": "Maden (2000)",
+        "pmid": 10970772,
+        "url": "http://www.biochemj.org/bj/350/0609/bj3500609.htm"
     }
 ]
