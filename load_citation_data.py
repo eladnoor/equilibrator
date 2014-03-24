@@ -1,7 +1,7 @@
 import json
 import logging
 
-from util import django_utils
+import util.django_utils
 
 from gibbs import models
 

@@ -1,6 +1,4 @@
-#!/usr/local/bin/python
-
-from util import django_utils
+import util.django_utils
 import export_database
 import logging
 

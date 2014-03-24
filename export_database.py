@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from util import django_utils
 import csv
 import gzip

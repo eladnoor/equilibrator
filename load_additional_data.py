@@ -1,7 +1,7 @@
 import json
 import logging
 
-from util import django_utils
+import util.django_utils
 import gzip
 from load_kegg_json import GetOrCreateNames, AddPmapToCompound
 
