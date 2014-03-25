@@ -6,6 +6,7 @@ import numpy
 import re
 from scipy.misc import logsumexp
 
+from django.http import Http404
 from django.db import models
 from gibbs import constants
 from gibbs import formula_parser
@@ -23,7 +24,9 @@ except ImportError:
     openbabel = None
 
 class CommonName(models.Model):
-    """A common name of a compound."""
+    """
+        A common name of a compound.
+    """
     name = models.CharField(max_length=500, db_index=True)
     enabled = models.BooleanField(True)
     
@@ -50,7 +53,9 @@ class CommonName(models.Model):
     
     
 class ValueSource(models.Model):
-    """The source of a particular numeric value."""
+    """
+        The source of a particular numeric value.
+    """
     # The name of the source.
     name = models.CharField(max_length=100)
     
@@ -107,6 +112,11 @@ class Specie(models.Model):
     
     # The source of this value.
     formation_energy_source = models.ForeignKey(ValueSource, null=True)
+
+    # The phase (s, l, g, or aq)
+    phase = models.CharField(max_length=2,
+                             choices=constants.PHASE_CHOICES,
+                             default=constants.DEFAULT_PHASE)
     
     def Transform(self,
                   pH=constants.DEFAULT_PH,
@@ -134,7 +144,6 @@ class Specie(models.Model):
     def __unicode__(self):
         return self.kegg_id
     
-    
 class SpeciesGroup(models.Model):
     """
         A set of different species (AKA pseudoisomers/protonation states) that
@@ -153,7 +162,7 @@ class SpeciesGroup(models.Model):
     
     # The source of these values.
     formation_energy_source = models.ForeignKey(ValueSource)
-    
+
     def __init__(self, *args, **kwargs):        
         super(SpeciesGroup, self).__init__(*args, **kwargs)
         self._all_species = None
@@ -180,9 +189,11 @@ class SpeciesGroup(models.Model):
             species.transformed_energy = species.Transform(
                 pH=ph, pMg=pmg, ionic_strength=ionic_strength)
 
-    def DeltaG(self, pH=constants.DEFAULT_PH,
-               pMg=constants.DEFAULT_PMG,
-               ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+    def DeltaG0Prime(self,
+                     pH=constants.DEFAULT_PH,
+                     pMg=constants.DEFAULT_PMG,
+                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                     phase=constants.DEFAULT_PHASE):
         """
             Get a deltaG estimate for this group of species.
             
@@ -194,21 +205,32 @@ class SpeciesGroup(models.Model):
             Returns:
                 The estimated delta G in the given conditions or None.
         """
-        if not self.all_species:
-            # No data...
+        species = [s for s in self.all_species if s.phase == phase]        
+        
+        if not species:
+            # No data for this compound in this phase and priority
             return None
         
-        # Compute per-species transforms, scaled down by R*T.
-        transform = lambda x: x.Transform(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
-        scaled_transforms = [(-transform(s) / constants.RT)
-                             for s in self.all_species]
-        
-        # Numerical issues: taking a sum of exp(v) for |v| quite large.
-        # Use the fact that we take a log later to offset all values by a 
-        # constant (the minimum value).
-        return -constants.RT * logsumexp(scaled_transforms)
-    
-
+        if phase == 'aq':
+            # Compute per-species transforms, scaled down by R*T.
+            transform = lambda x: x.Transform(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+            scaled_transforms = [(-transform(s) / constants.RT)
+                                 for s in species]
+            
+            # Numerical issues: taking a sum of exp(v) for |v| quite large.
+            # Use the fact that we take a log later to offset all values by a 
+            # constant (the minimum value).
+            return -constants.RT * logsumexp(scaled_transforms)
+        else:
+            if len(species) > 1:
+                logging.error('only aqueous phase can have multiple species')
+                raise Http404
+            else:
+                # compounds which are not in solution do not need to be
+                # transformed since they have only one specie and there is no
+                # equilibrium between pseudoisomers in that phase
+                return species[0].formation_energy
+            
 class Compound(models.Model):
     """
         A single compound.
@@ -252,7 +274,7 @@ class Compound(models.Model):
     # Replace this compound with another one.
     replace_with = models.ForeignKey('self', null=True)
     
-    # An explanation for when no DeltaG estimate is available.
+    # An explanation for when no DeltaG0 estimate is available.
     no_dg_explanation = models.CharField(max_length=2048,
                                          blank=True,
                                          null=True)
@@ -270,18 +292,24 @@ class Compound(models.Model):
         self._priority = None
     
     def GetSpeciesGroupPriorities(self):
-        """Get the priorities of species groups available."""
+        """
+            Get the priorities of species groups available.
+        """
         return [sg.priority for sg in self.all_species_groups]
     
     def SetSpeciesGroupPriority(self, priority):
-        """Set the priority of the species group to use."""
+        """
+            Set the priority of the species group to use.
+        """
         for sg in self.species_groups.all():
             if sg.priority == priority:
                 self._species_group_to_use = sg
                 break
     
     def SetHighestPriority(self):
-        """Set the priority to the highest one."""
+        """
+            Set the priority to the highest one.
+        """
         ps = self.GetSpeciesGroupPriorities()
         if not ps:
             return
@@ -289,15 +317,18 @@ class Compound(models.Model):
         self.SetSpeciesGroupPriority(min(ps))
     
     def HasData(self):
-        """Has enough data to display."""
+        """
+            Has enough data to display.
+        """
         return self.mass and self.formula
     
     def FirstName(self):
-        """Return the 'first' name of this compound.
-        
-        If a 'preferred_name' is set, returns that. Otherwise, returns
-        the first name in the list of common names. Presumes that the
-        list of names is in some order.
+        """
+            Return the 'first' name of this compound.
+            
+            If a 'preferred_name' is set, returns that. Otherwise, returns
+            the first name in the list of common names. Presumes that the
+            list of names is in some order.
         """
         if self.preferred_name:
             return self.preferred_name
@@ -305,24 +336,26 @@ class Compound(models.Model):
         names = list(self.common_names.all())
         return names[0].name
     
-    def DeltaG(self, pH=constants.DEFAULT_PH,
-               pMg=constants.DEFAULT_PMG,
-               ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        """Get a deltaG estimate for the given compound.
+    def DeltaG0Prime(self,
+                     pH=constants.DEFAULT_PH,
+                     pMg=constants.DEFAULT_PMG,
+                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+        """
+            Get a deltaG estimate for the given compound.
         
-        Args:
-            pH: the PH to estimate at.
-            ionic_strength: the ionic strength to estimate at.
-            temp: the temperature to estimate at.
-        
-        Returns:
-            The estimated delta G in the given conditions or None.
+            Args:
+                pH: the PH to estimate at.
+                ionic_strength: the ionic strength to estimate at.
+                temp: the temperature to estimate at.
+            
+            Returns:
+                The estimated delta G in the given conditions or None.
         """
         sg = self._species_group
         if not sg:
             return None
         
-        return sg.DeltaG(pH, pMg, ionic_strength)
+        return sg.DeltaG0Prime(pH, pMg, ionic_strength)
 
     def WriteStructureThumbnail(self, output_format='png'):
         if not indigo or not indigo_renderer or not openbabel:
@@ -362,7 +395,9 @@ class Compound(models.Model):
                                                                          str(e)))
 
     def GetAtomBag(self):
-        """Returns a dictionary of atoms and their counts for this compound."""
+        """
+            Returns a dictionary of atoms and their counts for this compound.
+        """
         if not self.formula:
             logging.warning('Formula is not defined for KEGG ID %s', self.kegg_id)
             return None
@@ -424,11 +459,12 @@ class Compound(models.Model):
                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
         """Returns JSON for the species."""
         sg = species_group or self._species_group
-        l = []
+        dg0_prime = sg.DeltaG0Prime(pH, pMg, ionic_strength)
         d = {'source': str(sg.formation_energy_source),
-             'dgzero_tag': {'value': round(sg.DeltaG(pH, pMg, ionic_strength), 1),
+             'dgzero_prime': {'value': round(dg0_prime, 1),
                             'pH': pH,
                             'ionic_strength': ionic_strength}}
+        l = []
         for s in sg.all_species:
             l.append({'nh': int(s.number_of_hydrogens),
                       'charge': int(s.net_charge),
@@ -469,7 +505,7 @@ class Compound(models.Model):
         """
         rows = []
         for sg in self.species_groups.filter(priority=priority):
-            dG0_prime = round(sg.DeltaG(pH, pMg, ionic_strength), 1)
+            dG0_prime = round(sg.DeltaG0Prime(pH, pMg, ionic_strength), 1)
             rows.append([self.kegg_id, self.name, dG0_prime, pH, ionic_strength,
                          constants.DEFAULT_TEMP, None])
         return rows
@@ -539,7 +575,7 @@ class Compound(models.Model):
     substrate_of = property(_GetSubstrateEnzymes)
     product_of = property(_GetProductEnzymes)
     cofactor_of = property(_GetCofactorEnzymes)
-    dgf_zero_tag = property(DeltaG)
+    dgf_zero_prime = property(DeltaG0Prime)
     dg_source = property(_GetDGSource)
     
     def StashTransformedSpeciesEnergies(self, ph, pmg, ionic_strength):
@@ -719,7 +755,7 @@ class StoredReaction(models.Model):
         
         dG0_prime = 0
         for coeff, compound in coeff_compound_pairs:
-            dG0_f_prime = compound.DeltaG(pH, pMg, ionic_strength)
+            dG0_f_prime = compound.DeltaG0Prime(pH, pMg, ionic_strength)
             if dG0_f_prime is not None:
                 dG0_prime += coeff * dG0_f_prime
             else:

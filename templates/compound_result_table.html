@@ -1,90 +1,95 @@
 <form name="compoundForm" action="/compound" method="get">
-	<input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
-	
-			
+    <input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
+    
+            
 <table class="results">
-	<tr>
-		<td width="150px"><strong>Estimated <a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a></strong></td>
-		<td colspan="2">
-		<strong>
-		{% if delta_g_estimate != None %}
-			{{ delta_g_estimate|floatformat:1 }} kJ / mol
-		{% else %}
-			<a href="/faq#notAvailable">Not available</a>
-		{% endif %}
-		</strong>
-		</td>
-		{% if no_dg_explanation %}
-		<tr>
-			<td width="150px">Note</td>
-			<td colspan="2">
-				{{ no_dg_explanation }}
-			</td>
-		</tr>
-		{% endif %}
-		{% if compound.dg_source %}
-		<tr>
-			<td width="150px">Source</td>
-			<td colspan="2">
-				<a href="/data_refs" title="Reference list">{{ compound.dg_source }}</a>
-			</td>
-		</tr>
-		{% endif %}
-	</tr>	
-	
-	{% if delta_g_estimate != None %}
-	<tr>
-		<td width="150px">pH </td>
-		<td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
-		<td><div id="phSlider"></div></td>
-	</tr>
-	<tr>
-		<td width="150px">Ionic strength (M)</td>
-		<td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
-		<td><div id="ionStrengthSlider"></div></td>
-	</tr>
-	{% endif %}
+    <tr>
+        <td width="150px">
+            <strong>
+                Estimated <a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a>
+            </strong>
+        </td>
+        <td colspan="2">
+            <strong>
+            {% if delta_g0_prime_estimate != None %}
+                {{ delta_g0_prime_estimate|floatformat:1 }} kJ / mol
+            {% else %}
+                <a href="/faq#notAvailable">Not available</a>
+            {% endif %}
+            </strong>
+        </td>
+    </tr>    
+    
+    {% if no_dg_explanation %}
+        <tr>
+            <td width="150px">Note</td>
+            <td colspan="2">{{ no_dg_explanation }}</td>
+        </tr>
+    {% endif %}
+    
+    {% if compound.dg_source %}
+        <tr>
+        <td width="150px">Source</td>
+        <td colspan="2">
+                <a href="/data_refs" title="Reference list">{{ compound.dg_source }}</a>
+        </td>
+        </tr>
+    {% endif %}
+
+    {% if delta_g0_prime_estimate != None %}
+        <tr>
+            <td width="150px">pH </td>
+            <td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
+            <td colspan="3"><div id="phSlider"></div></td>
+        </tr>
+        <tr>
+            <td width="150px">Ionic strength (M)</td>
+            <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
+            <td colspan="3"><div id="ionStrengthSlider"></div></td>
+        </tr>
+    {% endif %}
+
+    {% if compound.has_species_groups %}
+        <tr bgcolor="#B1D0FC">
+            <th colspan="5">Species Formation Energies</td>        
+        </tr>
+        <tr class="speciesHeader">
+            <td>Phase</td>
+            <td>Net charge</td>
+            <td><a href="faq#dgf">&Delta;<sub>f</sub>G&deg;</a> [kJ / mol]</td>
+            <td><a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a> [kJ / mol]</td>
+            <td>Reference</td>
+        </tr>
+    
+    
+        {% for sg in compound.unique_species_groups %}
+            {% for specie in sg.all_species_no_mg %}
+                <tr class="speciesSource {% if forloop.last and not forloop.parentloop.last %}last{%endif%}">
+                    <td>{{ specie.get_phase_display }}</td>                
+                    <td>{% if specie.phase == 'aq' %} {{ specie.net_charge }} {% else %} &nbsp; {% endif %}</td>
+                    <td>{{ specie.formation_energy|floatformat:1 }}</td>
+                    <td>
+                        {% if specie.transformed_energy != None %}
+                            {{ specie.transformed_energy|floatformat:1 }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    
+                    {% if forloop.first %}
+                    <td class="reference {% if not forloop.parentloop.last %}border{% endif %}" rowspan="{{ sg.all_species|length }}">
+                        <a href="/data_refs" title="Reference list">{{ sg.formation_energy_source }}</a>
+                    </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
 </table>
 
-{% if compound.has_species_groups %}
-<table class="speciesInfo">
-	<tr>
-		<th colspan="4">Species Formation Energies</td>		
-	</tr>
-	<tr class="speciesHeader">
-		<td>Net Charge</td>
-		<td><a href="faq#dgf">&Delta;<sub>f</sub>G&deg;</a> [kJ / mol]</td>
-		<td><a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a> [kJ / mol]</td>
-		<td>Reference</td>
-	</tr>
-
-
-  {% for sg in compound.unique_species_groups %}
-	{% for specie in sg.all_species_no_mg %}
-	<tr class="speciesSource {% if forloop.last and not forloop.parentloop.last %}last{%endif%}">
-		<td>{{ specie.net_charge }}</td>
-		<td>{{ specie.formation_energy|floatformat:1 }}</td>
-		<td>{% if specie.transformed_energy != None %}
-				{{ specie.transformed_energy|floatformat:1 }}
-				{% else %}
-					N/A
-			{% endif %}
-		</td>
-		
-		{% if forloop.first %}
-		<td class="reference {% if not forloop.parentloop.last %}border{% endif %}" rowspan="{{ sg.all_species|length }}">
-		<a href="/data_refs" title="Reference list">{{ sg.formation_energy_source }}</a>
-		</td>
-		{% endif %}
-	</tr>
-	{% endfor %}
-  {% endfor %}
-</table>
+{% if delta_g0_prime_estimate != None %}
+<div class="buttonSet">
+    <input type="submit" value="Update" name="submit" />
+</div>
 {% endif %}
-
-	{% if delta_g_estimate != None%}
-	<div class="buttonSet">
-		<input type="submit" value="Update" name="submit" />
-	</div>
-	{% endif %}
 </form>

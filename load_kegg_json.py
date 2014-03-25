@@ -5,6 +5,7 @@ import util.django_utils
 import gzip
 
 from gibbs import models
+from gibbs import constants
 
 # Cache compounds so we can look them up faster.
 COMPOUNDS_CACHE = {}
@@ -63,31 +64,6 @@ REACTION_FILE = 'data/kegg_reactions.json.gz'
 ENZYME_FILE = 'data/kegg_enzymes.json.gz'
 GC_NULLSPACE_FILENAME = 'data/kegg_gc_nullspace.json.gz'
 
-def MakeSpeciesGroup(pmap, source, compound):
-    logging.debug('Writing data from source %s', source.name)
-    
-    if 'priority' not in pmap or 'species' not in pmap:
-        logging.error('Malformed pmap field for %s', compound.kegg_id)
-        return None
-        
-    sg = models.SpeciesGroup(kegg_id=compound.kegg_id,
-                             priority=pmap['priority'],
-                             formation_energy_source=source)
-    sg.save()
-    
-    for sdict in pmap['species']:
-        specie = models.Specie(kegg_id=compound.kegg_id,
-                               number_of_hydrogens=sdict['nH'],
-                               number_of_mgs=sdict['nMg'],
-                               net_charge=sdict['z'],
-                               formation_energy=sdict['dG0_f'])
-        specie.save()
-        sg.species.add(specie)
-    
-    sg.save()
-    return sg
-
-
 def GetSource(source_string):
     if not source_string:
         return None
@@ -107,18 +83,45 @@ def GetSource(source_string):
         
     return None
 
-        
 def AddPmapToCompound(pmap, compound):
     source_string = pmap.get('source')
-    my_source = GetSource(source_string)
-    if not my_source:
+    source = GetSource(source_string)
+    if not source:
         logging.error('Failed to get source %s', source_string)
         return 
-    
-    sg = MakeSpeciesGroup(pmap, my_source, compound)
-    if sg is not None:
-        compound.species_groups.add(sg)
 
+    logging.debug('Writing data from source %s', source.name)
+    
+    if 'priority' not in pmap or 'species' not in pmap:
+        logging.error('Malformed pmap field for %s', compound.kegg_id)
+        return
+    
+    sg = models.SpeciesGroup(kegg_id=compound.kegg_id,
+                             priority=pmap['priority'],
+                             formation_energy_source=source)
+    sg.save()
+
+    for sdict in pmap['species']:
+        phase = sdict.get('phase', constants.DEFAULT_PHASE)
+        if phase == constants.AQUEOUS_PHASE_SHORT:
+            specie = models.Specie(kegg_id=compound.kegg_id,
+                                   number_of_hydrogens=sdict['nH'],
+                                   number_of_mgs=sdict['nMg'],
+                                   net_charge=sdict['z'],
+                                   formation_energy=sdict['dG0_f'],
+                                   phase=phase)
+        else:
+            specie = models.Specie(kegg_id=compound.kegg_id,
+                                   number_of_hydrogens=0,
+                                   number_of_mgs=0,
+                                   net_charge=0,
+                                   formation_energy=sdict['dG0_f'],
+                                   phase=phase)
+        specie.save()
+        sg.species.add(specie)
+    
+    sg.save()
+    compound.species_groups.add(sg)
 
 def LoadKeggCompounds(kegg_json_filename=COMPOUND_FILE, draw_thumbnails=True):
     parsed_json = json.load(gzip.open(kegg_json_filename, 'r'))

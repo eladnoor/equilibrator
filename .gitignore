@@ -33,3 +33,10 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+.spyderproject
+
+# log files
+*.log
+
+# backup files
+*~

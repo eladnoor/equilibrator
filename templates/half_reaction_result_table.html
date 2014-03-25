@@ -1,11 +1,11 @@
 	<table class="results">
 
-        {% if reaction.e_reduction_potential != 0 and reaction.half_reaction_dg_tag != None %}
+        {% if reaction.e_reduction_potential != 0 and reaction.half_reaction_dg_prime != None %}
         <tr>
             <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
             <td colspan="3">
             <strong>
-              {{ reaction.half_reaction_dg_tag|floatformat:1 }} kJ / mol
+              {{ reaction.half_reaction_dg_prime|floatformat:1 }} kJ / mol
             </strong>
             </td>
         </tr>
@@ -16,8 +16,8 @@
             <td width="150px"><strong>Estimated <a href="faq#dgr">E'</strong></a></td>
             <td colspan="3">
             <strong>
-            {% if reaction.e_tag != None %}
-                {{ reaction.e_tag|floatformat:1 }} mV
+            {% if reaction.e_prime != None %}
+                {{ reaction.e_prime|floatformat:1 }} mV
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -29,8 +29,8 @@
             <td width="150px"><strong>Estimated <a href="faq#dgr">E'&deg;</strong></a></td>
             <td colspan="3">
             <strong>
-            {% if reaction.e0_tag != None %}
-                {{ reaction.e0_tag|floatformat:1 }} mV
+            {% if reaction.e0_prime != None %}
+                {{ reaction.e0_prime|floatformat:1 }} mV
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -38,7 +38,7 @@
             </td>
         </tr>
 
-        {% if reaction.e0_tag != None %}
+        {% if reaction.e0_prime != None %}
         <tr>
             <td width="150px">
                 pH

@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-
-STANDARD_AQUEOUS_PHASE_NAME = 'aqueous_1M'
-CUSTOM_AQUEOUS_PHASE_NAME = 'aqueous'
-STANDARD_GAS_PHASE_NAME = 'gas_1bar'
-CUSTOM_GAS_PHASE_NAME = 'gas'
-STANDARD_LIQUID_PHASE_NAME = 'liquid'
-STANDARD_SOLID_PHASE_NAME = 'solid'
+from gibbs import constants
 
 class _BasePhase(object):
     def Name(self):
@@ -33,7 +27,7 @@ class _BasePhase(object):
 
 class StandardAqueousPhase(_BasePhase):
     def Name(self):
-        return STANDARD_AQUEOUS_PHASE_NAME
+        return constants.STANDARD_AQUEOUS_PHASE_NAME
     def Subscript(self):
         return '(aq)'
     def Units(self):
@@ -41,7 +35,7 @@ class StandardAqueousPhase(_BasePhase):
 
 class StandardGasPhase(_BasePhase):
     def Name(self):
-        return STANDARD_GAS_PHASE_NAME
+        return constants.STANDARD_GAS_PHASE_NAME
     def Subscript(self):
         return '(g)'
     def Units(self):
@@ -49,7 +43,7 @@ class StandardGasPhase(_BasePhase):
 
 class StandardLiquidPhase(_BasePhase):
     def Name(self):
-        return STANDARD_LIQUID_PHASE_NAME
+        return constants.STANDARD_LIQUID_PHASE_NAME
     def Subscript(self):
         return '(l)'
     def Units(self):
@@ -57,7 +51,7 @@ class StandardLiquidPhase(_BasePhase):
 
 class StandardSolidPhase(_BasePhase):
     def Name(self):
-        return STANDARD_SOLID_PHASE_NAME
+        return constants.STANDARD_SOLID_PHASE_NAME
     def Subscript(self): 
         return '(s)'
     def Units(self):
@@ -67,7 +61,7 @@ class CustomAqueousPhase(StandardAqueousPhase):
     def __init__(self, concentration=1.0): # in units of M
         self._concentration = concentration
     def Name(self):
-        return CUSTOM_AQUEOUS_PHASE_NAME
+        return constants.CUSTOM_AQUEOUS_PHASE_NAME
     def IsConstant(self):
         return False
     def Value(self):
@@ -77,7 +71,7 @@ class CustomGasPhase(StandardGasPhase):
     def __init__(self, partial_pressure=1.0):
         self._partial_pressure = partial_pressure
     def Name(self):
-        return CUSTOM_GAS_PHASE_NAME
+        return constants.CUSTOM_GAS_PHASE_NAME
     def IsConstant(self):
         return False
     def Value(self):
@@ -85,9 +79,6 @@ class CustomGasPhase(StandardGasPhase):
         
 ###############################################################################
 
-STANDARD_CONDITION_STRING = 'standard'
-MILLIMOLAR_CONDITION_STRING = 'mM'
-CUSTOM_CONDITION_STRING = 'custom'
 
 class _BaseConditions(object):
 
@@ -103,7 +94,7 @@ class _BaseConditions(object):
 class StandardConditions(_BaseConditions):
     
     def __str__(self):
-        return STANDARD_CONDITION_STRING
+        return constants.STANDARD_CONDITION_STRING
         
     def GetPhase(self, kegg_id):
         if kegg_id == 'C00001':
@@ -114,7 +105,7 @@ class StandardConditions(_BaseConditions):
 class MillimolarConditions(_BaseConditions):
 
     def __str__(self):
-        return MILLIMOLAR_CONDITION_STRING
+        return constants.MILLIMOLAR_CONDITION_STRING
     
     def GetPhase(self, kegg_id):
         if kegg_id == 'C00001':
@@ -125,7 +116,7 @@ class MillimolarConditions(_BaseConditions):
 class CustomConditions(_BaseConditions):
     
     def __str__(self):
-        return CUSTOM_CONDITION_STRING
+        return constants.CUSTOM_CONDITION_STRING
 
     def __init__(self, all_ids, all_phases, all_ratios):
         self._phases = {}
@@ -149,17 +140,17 @@ class CustomConditions(_BaseConditions):
 ###############################################################################
 
 def GetPhase(kegg_id, phase, value):
-    if phase == STANDARD_AQUEOUS_PHASE_NAME:
+    if phase == constants.STANDARD_AQUEOUS_PHASE_NAME:
         return StandardAqueousPhase()
-    if phase == CUSTOM_AQUEOUS_PHASE_NAME:
+    if phase == constants.CUSTOM_AQUEOUS_PHASE_NAME:
         return CustomAqueousPhase(value)
-    if phase == STANDARD_GAS_PHASE_NAME:
+    if phase == constants.STANDARD_GAS_PHASE_NAME:
         return StandardGasPhase()
-    if phase == CUSTOM_GAS_PHASE_NAME:
+    if phase == constants.CUSTOM_GAS_PHASE_NAME:
         return CustomGasPhase(value)
-    if phase == STANDARD_LIQUID_PHASE_NAME:
+    if phase == constants.STANDARD_LIQUID_PHASE_NAME:
         return StandardLiquidPhase()
-    if phase == STANDARD_SOLID_PHASE_NAME:
+    if phase == constants.STANDARD_SOLID_PHASE_NAME:
         return StandardSolidPhase()
     
     raise NotImplementedError
@@ -168,13 +159,13 @@ def GetPhase(kegg_id, phase, value):
 
 def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):
     
-    if name == STANDARD_CONDITION_STRING:
+    if name == constants.STANDARD_CONDITION_STRING:
         return StandardConditions()
 
-    if name == MILLIMOLAR_CONDITION_STRING:
+    if name == constants.MILLIMOLAR_CONDITION_STRING:
         return MillimolarConditions()
     
-    if name == CUSTOM_CONDITION_STRING:
+    if name == constants.CUSTOM_CONDITION_STRING:
         assert all_ids and all_phases and all_ratios
         return CustomConditions(all_ids, all_phases, all_ratios)
 

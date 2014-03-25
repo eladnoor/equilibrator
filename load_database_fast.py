@@ -1,6 +1,7 @@
 import util.django_utils
 import logging
-import timeit
+import numpy as np
+import time, datetime
 
 import load_additional_data
 import load_citation_data
@@ -11,12 +12,10 @@ from django.db import transaction
 
 def main():
     transaction.set_autocommit(False)
-    start = timeit.timeit()
     
     load_citation_data.CheckData()
     load_kegg_json.CheckData()
     load_additional_data.CheckData()
-    transaction.commit()
 
     logging.info('Loading citation data')
     load_citation_data.LoadCitationData()
@@ -34,8 +33,9 @@ def main():
     load_compound_mappings.LoadEquivalentCompounds()
     transaction.commit()
     
-    end = timeit.timeit()
-    logging.info('Elapsed loading time = %s' % str(end - start))
-    
 if __name__ == '__main__':
+    start = time.time()
     main()
+    end = time.time()
+    elapsed = datetime.timedelta(seconds=np.floor(end - start))
+    logging.info('Elapsed loading time = %s' % str(elapsed))

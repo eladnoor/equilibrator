@@ -51,7 +51,7 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
                      % (name, pH, reaction_fname))
         csv_reaction_dict[pH] = csv.writer(gzip.open(reaction_fname, 'w'))
         csv_reaction_dict[pH].writerow(["!MiriamID::urn:miriam:kegg.reaction",
-                                        "!dG0_tag (kJ/mol)", "!pH",
+                                        "!dG0_prime (kJ/mol)", "!pH",
                                         "!I (mM)", "!T (Kelvin)", "!Note"])
     
     for r in models.StoredReaction.objects.all():
@@ -77,7 +77,7 @@ def export_compounds(priority, name, ionic_strength, pMg, pH_list):
                      (name, pH, compound_fname))
         csv_compound_dict[pH] = csv.writer(gzip.open(compound_fname, 'w'))
         csv_compound_dict[pH].writerow(["!MiriamID::urn:miriam:kegg.compound",
-                                        "!Name", "!dG0_tag (kJ/mol)",
+                                        "!Name", "!dG0_prime (kJ/mol)",
                                         "!pH", "!I (mM)", "!T (Kelvin)",
                                         "!Note"])
     

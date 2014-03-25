@@ -5,8 +5,8 @@
             <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
             <td colspan="3">
             <strong>
-            {% if reaction.dg_tag != None %}
-                {{ reaction.dg_tag|floatformat:1 }} kJ / mol
+            {% if reaction.dg_prime != None %}
+                {{ reaction.dg_prime|floatformat:1 }} kJ / mol
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -18,11 +18,11 @@
         <tr>
             <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'&deg;</strong></a></td>
             <td colspan="3">
-            {% if reaction.dg0_tag != None %}
+            {% if reaction.dg0_prime != None %}
               <strong>
-                {{ reaction.dg0_tag|floatformat:1 }} kJ / mol
+                {{ reaction.dg0_prime|floatformat:1 }} kJ / mol
                 </strong>
-                &nbsp;&nbsp;&nbsp; [ K'<sub>eq</sub> = {{ reaction.k_eq_tag_human|safe }} ]
+                &nbsp;&nbsp;&nbsp; [ K'<sub>eq</sub> = {{ reaction.k_eq_prime_human|safe }} ]
             {% else %}
               <strong>
                 <a href="/faq#notAvailable">Not available</a>
@@ -42,7 +42,7 @@
         </tr>
         {% endif %}
 
-        {% if reaction.dg0_tag != None %}
+        {% if reaction.dg0_prime != None %}
         <tr>
             <td width="150px">
                 pH<a href="{{ reaction.ph_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of pH"><img src="/media/images/graph_icon.png" /></a>
@@ -97,9 +97,9 @@
                 {{ reactant.units }}
              </td>
              <td width="50px">
-                {% if reactant.has_multiple_phases %}
+                {% if reactant.compound.has_multiple_phases %}
                     <select name="reactantsPhase">
-                    {% for phase in reactant.possible_phases %}
+                    {% for phase in reactant.compound.possible_phases %}
                       <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
                           {{ phase }}
                       </option>

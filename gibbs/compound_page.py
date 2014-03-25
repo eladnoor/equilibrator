@@ -20,8 +20,9 @@ def CompoundPage(request):
     compound.StashTransformedSpeciesEnergies(form.cleaned_ph,
                                              form.cleaned_pmg,
                                              form.cleaned_ionic_strength)
-    delta_g_estimate = compound.DeltaG(
-        pH=form.cleaned_ph, pMg=form.cleaned_pmg,
+    delta_g0_prime_estimate = compound.DeltaG0Prime(
+        pH=form.cleaned_ph,
+        pMg=form.cleaned_pmg,
         ionic_strength=form.cleaned_ionic_strength)
     
     template_data = {'is_superuser': django_utils.IsSuperUser(request),
@@ -29,7 +30,7 @@ def CompoundPage(request):
                      'ph': form.cleaned_ph,
                      'pmg': form.cleaned_pmg,
                      'ionic_strength': form.cleaned_ionic_strength,
-                     'delta_g_estimate': delta_g_estimate,
+                     'delta_g0_prime_estimate': delta_g0_prime_estimate,
                      'no_dg_explanation': compound.no_dg_explanation,
                      'kegg_link': compound.GetKeggLink()}
     return render_to_response('compound_page.html', template_data)

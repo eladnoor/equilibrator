@@ -77,7 +77,7 @@ class CompoundTest(unittest.TestCase):
         compound.formula = 'C10R11H16N5O12P3S'
         self.assertEqual(None, compound.GetAtomBag())
 
-    def testDeltaG(self):
+    def testDeltaG0(self):
         # Create a test compound.
         species = [models.Specie(number_of_hydrogens=12, net_charge=0,
                                  formation_energy=-10.5),
@@ -99,11 +99,11 @@ class CompoundTest(unittest.TestCase):
                      (7.0, 0.001, 386.473),
                      (7.0, 0.2, 390.505))
 
-        for ph, i_s, expected_dg in test_data:
-            actual_dg = compound.DeltaG(pH=ph, ionic_strength=i_s)
-            self.assertAlmostEqual(expected_dg, actual_dg, 3,
+        for ph, i_s, expected_dg0 in test_data:
+            actual_dg0 = compound.DeltaG0(pH=ph, ionic_strength=i_s)
+            self.assertAlmostEqual(expected_dg0, actual_dg0, 3,
                                    'ph: %f, i_s: %f, expected dG: %f, actual dG: %f' %
-                                   (ph, i_s, expected_dg, actual_dg))
+                                   (ph, i_s, expected_dg0, actual_dg0))
 
 class StoredReactionTest(unittest.TestCase):
     """Tests for StoredReaction"""

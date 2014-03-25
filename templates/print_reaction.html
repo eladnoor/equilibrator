@@ -17,7 +17,7 @@
 				{{ compound.name }} ({{ compound.human_concentration_w_units }})
 				
 				{% if not forloop.last %} + {% endif %}
-			{% endfor %} = {{ reaction.dg_tag|floatformat:1 }} kJ / mol
+			{% endfor %} = {{ reaction.dg_prime|floatformat:1 }} kJ / mol
 		</div>
 	</body>
 </html>

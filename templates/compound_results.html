@@ -7,7 +7,7 @@
         <span class="name">{{ result.key }}</span>
         <span class="formula">Formula: {{ result.value.html_formula|safe }}</span>
         <span class="dG">&Delta;<sub>f</sub>G'&deg;:
-          {% with result.value.dgf_zero_tag as fe %}
+          {% with result.value.dgf_zero_prime as fe %}
             {% if fe != None %}
             {{ fe|floatformat:1 }} kJ / mol
               {% else %}

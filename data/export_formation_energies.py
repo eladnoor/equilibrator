@@ -34,7 +34,7 @@ def GenFormationEnergyData(pH=constants.DEFAULT_PH,
     """
     dicts = []
     for compound in models.Compound.objects.all():
-        dG = compound.DeltaG(pH=pH, ionic_strength=ionic_strength)
+        dG = compound.DeltaG0Prime(pH=pH, ionic_strength=ionic_strength)
         if dG:
             dG = round(dG, 3)
         

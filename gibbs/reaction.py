@@ -303,20 +303,18 @@ class Reaction(object):
              'chemically_balanced': self.is_balanced,
              'redox_balanced': self.is_electron_balanced,
              'dgzero': None,
-             'dgzero_tag': None,
-             'keq_tag': None,
+             'dgzero_prime': None,
+             'keq_prime': None,
              'KEGG_ID': None}
         
-        if self.dg0 is not None:
-            d['dgzero'] = round(self.dg0, 1)
-        if self.dg0_tag is not None:
-            d['dgzero_tag'] = {
-                'value': round(self.dg0_tag, 1),
+        if self.dg0_prime is not None:
+            d['dgzero_prime'] = {
+                'value': round(self.dg0_prime, 1),
                 'pH': self.ph,
                 'ionic_strength': self.i_s}
-        if self.k_eq_tag is not None:
-            d['keq_tag'] = {
-                'value': self.k_eq_tag,
+        if self.k_eq_prime is not None:
+            d['keq_prime'] = {
+                'value': self.k_eq_prime,
                 'pH': self.ph,
                 'ionic_strength': self.i_s}
         
@@ -655,17 +653,17 @@ class Reaction(object):
         if self._GetElectronDiff() < 0:
             self.SwapSides()
             
-    def E0_tag(self, pH=None, pMg=None, ionic_strength=None):
+    def E0_prime(self, pH=None, pMg=None, ionic_strength=None):
         """Returns the standard transformed reduction potential of this reaction."""
         delta_electrons = abs(self._GetElectronDiff())
         assert delta_electrons != 0
-        return - self.DeltaG0Tag(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
+        return - self.DeltaG0Prime(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
 
-    def E_tag(self, pH=None, pMg=None, ionic_strength=None):
+    def E_prime(self, pH=None, pMg=None, ionic_strength=None):
         """Returns the standard transformed reduction potential of this reaction."""
         delta_electrons = abs(self._GetElectronDiff())
         assert delta_electrons != 0
-        return - self.DeltaGTag(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
+        return - self.DeltaGPrime(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
     
     def _ExtraWaters(self):
         atom_diff = self._GetAtomDiff()
@@ -796,35 +794,6 @@ class Reaction(object):
         """Removes Hydrogens from the list of compounds."""
         self.reactants = filter(lambda c: c.compound.kegg_id != 'C00080', self.reactants)
 
-    def GetTotalFormationEnergy(self,
-                                pH=constants.DEFAULT_PH,
-                                pMg=constants.DEFAULT_PMG,
-                                ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        """Compute an estimate for a collection of compounds + coefficients.
-        
-        You can compute the DeltaG of a reaction using negative coefficients for
-        products.
-        
-        Args:
-            collection: an iterable of CompoundWithCoeff objects.
-            pH: the pH.
-            pMg: the pMg.
-            ionic_strength: the ionic strength.
-        """ 
-        sum = 0
-        for compound_w_coeff in self.reactants:
-            c = compound_w_coeff.compound
-            coeff = compound_w_coeff.coeff
-            
-            est = c.DeltaG(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
-            if est == None:
-                logging.info('No estimate for compound %s', c.kegg_id)
-                return None
-            
-            sum += coeff * est
-    
-        return sum
-    
     def _GetConcentrationCorrection(self):
         """Get the concentration term in DeltaG' for these concentrations.
         
@@ -845,18 +814,7 @@ class Reaction(object):
         _t = constants.DEFAULT_TEMP
         return _r * _t * log_Q
 
-    def DeltaG0(self):
-        """Compute the DeltaG0 for a reaction.
-        
-        Returns:
-            The DeltaG0 for this reaction, or None if data was missing.
-        """
-        dg0 = self.GetTotalFormationEnergy(pH=0, pMg=0, ionic_strength=0)
-        if dg0 is None:
-            logging.warning("Failed to get some reactant's formation energy.")
-        return dg0  
-
-    def DeltaG0Tag(self, pH=None, pMg=None, ionic_strength=None):
+    def DeltaG0Prime(self, pH=None, pMg=None, ionic_strength=None):
         """Compute the DeltaG0' for a reaction.
         
         Returns:
@@ -865,55 +823,70 @@ class Reaction(object):
         ph = pH or self.ph
         pmg = pMg or self.pmg
         i_s = ionic_strength or self.i_s
-        dg0_tag = self.GetTotalFormationEnergy(pH=ph, pMg=pmg, ionic_strength=i_s)
-        if dg0_tag is None:
-            logging.warning("Failed to get some reactant's formation energy.")
-        return dg0_tag
 
-    def DeltaGTag(self, pH=None, pMg=None, ionic_strength=None):
+        dg0_prime = 0
+        for compound_w_coeff in self.reactants:
+            c = compound_w_coeff.compound
+            coeff = compound_w_coeff.coeff
+            
+            est = c.DeltaG0Prime(pH=ph, pMg=pmg, ionic_strength=i_s)
+            if est == None:
+                logging.info('No estimate for compound %s', c.kegg_id)
+                return None
+            
+            dg0_prime += coeff * est
+    
+        if dg0_prime is None:
+            logging.warning("Failed to get some reactant's formation energy.")
+        return dg0_prime
+
+    def DeltaGPrime(self, pH=None, pMg=None, ionic_strength=None):
         """Compute the DeltaG' for a reaction.
         
         Returns:
             The DeltaG' for this reaction, or None if data was missing.
         """
-        dg0_tag = self.DeltaG0Tag(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+        dg0_prime = self.DeltaG0Prime(pH=pH, pMg=pMg,
+                                      ionic_strength=ionic_strength)
         correction = self._GetConcentrationCorrection()
-        return dg0_tag + correction
+        return dg0_prime + correction
         
-    def HalfReactionDeltaGTag(self, pH=None, pMg=None, ionic_strength=None,
-                              e_reduction_potential=None):
+    def HalfReactionDeltaGPrime(self, pH=None, pMg=None, ionic_strength=None,
+                                e_reduction_potential=None):
         """Compute the DeltaG' for a half-reaction, assuming the missing
            electrons are provided in a certain potential (e_reduction_potential)
         
         Returns:
             The DeltaG' for this half-reaction, or None if data was missing.
         """
-        dg_tag = self.DeltaGTag(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+        dg_prime = self.DeltaGPrime(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
         e_red = e_reduction_potential or self.e_reduction_potential
         delta_electrons = abs(self._GetElectronDiff())      
-        return dg_tag + (constants.F * delta_electrons * e_red)
+        return dg_prime + constants.F * delta_electrons * e_red
     
-    def KeqTag(self):
-        """Returns K'eq for this reaction."""
-        dg0_tag = self.DeltaG0Tag()
-        if dg0_tag is None:
+    def KeqPrime(self):
+        """
+            Returns the transformed equilibrium constant for this reaction.
+        """
+        dg0_prime = self.DeltaG0Prime()
+        if dg0_prime is None:
             return None
         
         rt = constants.R * constants.DEFAULT_TEMP
-        keq = numpy.exp(-dg0_tag / rt)
+        keq = numpy.exp(-dg0_prime / rt)
         return keq
 
-    def KeqTagHuman(self):
+    def KeqPrimeHuman(self):
         """
-            Returns K'eq for this reaction, in a human readable formet
-            using HTML superscript.
+            Returns the transformed equilibrium constant for this reaction,
+            in a human readable formet (using HTML superscript).
         """
-        dg0_tag = self.DeltaG0Tag()
-        if dg0_tag is None:
+        dg0_prime = self.DeltaG0Prime()
+        if dg0_prime is None:
             return None
         
         rtln10 = constants.R * constants.DEFAULT_TEMP * numpy.log(10)
-        x = -dg0_tag / rtln10
+        x = -dg0_prime / rtln10
 
         exp = numpy.floor(x)
         prefactor = 10**(x - exp)
@@ -923,10 +896,11 @@ class Reaction(object):
             return '%.1f &times; 10<sup>%d</sup>' % (prefactor, exp)
         
     def NoDeltaGExplanation(self):
-        """Get an explanation for why there's no delta G value.
+        """
+            Get an explanation for why there's no delta G value.
         
-        Return:
-            The explanation or None.
+            Return:
+                The explanation or None.
         """
         for compound in self.reactants:
             if compound.compound.no_dg_explanation:
@@ -1016,14 +990,13 @@ class Reaction(object):
     extra_electrons = property(ExtraElectrons)
     missing_electrons = property(MissingElectrons)
     all_compounds = property(AllCompoundsWithTransformedEnergies)
-    dg0 = property(DeltaG0)
-    dg0_tag = property(DeltaG0Tag)
-    dg_tag = property(DeltaGTag)
-    half_reaction_dg_tag = property(HalfReactionDeltaGTag)
-    k_eq_tag = property(KeqTag)
-    k_eq_tag_human = property(KeqTagHuman)
-    e0_tag = property(E0_tag)
-    e_tag = property(E_tag)
+    dg0_prime = property(DeltaG0Prime)
+    dg_prime = property(DeltaGPrime)
+    half_reaction_dg_prime = property(HalfReactionDeltaGPrime)
+    k_eq_prime = property(KeqPrime)
+    k_eq_prime_human = property(KeqPrimeHuman)
+    e0_prime = property(E0_prime)
+    e_prime = property(E_prime)
     no_dg_explanation = property(NoDeltaGExplanation)
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
