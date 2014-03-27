@@ -40,22 +40,23 @@
         <tr>
             <td width="150px">pH </td>
             <td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
-            <td colspan="3"><div id="phSlider"></div></td>
+            <td colspan="4"><div id="phSlider"></div></td>
         </tr>
         <tr>
             <td width="150px">Ionic strength (M)</td>
             <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
-            <td colspan="3"><div id="ionStrengthSlider"></div></td>
+            <td colspan="4"><div id="ionStrengthSlider"></div></td>
         </tr>
     {% endif %}
 
     {% if compound.has_species_groups %}
         <tr bgcolor="#B1D0FC">
-            <th colspan="5">Species Formation Energies</td>        
+            <th colspan="6">Species Formation Energies</td>        
         </tr>
         <tr class="speciesHeader">
             <td>Phase</td>
             <td>Net charge</td>
+            <td>#Hydrogen</td>
             <td><a href="faq#dgf">&Delta;<sub>f</sub>G&deg;</a> [kJ / mol]</td>
             <td><a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a> [kJ / mol]</td>
             <td>Reference</td>
@@ -65,8 +66,9 @@
         {% for sg in compound.unique_species_groups %}
             {% for specie in sg.all_species_no_mg %}
                 <tr class="speciesSource {% if forloop.last and not forloop.parentloop.last %}last{%endif%}">
-                    <td>{{ specie.get_phase_display }}</td>                
-                    <td>{% if specie.phase == 'aq' %} {{ specie.net_charge }} {% else %} &nbsp; {% endif %}</td>
+                    <td>{{ specie.phase }}</td>
+                    <td>{% if specie.phase == 'aqueous' %} {{ specie.net_charge }} {% else %} &nbsp; {% endif %}</td>
+                    <td>{% if specie.phase == 'aqueous' %} {{ specie.number_of_hydrogens }} {% else %} &nbsp; {% endif %}</td>
                     <td>{{ specie.formation_energy|floatformat:1 }}</td>
                     <td>
                         {% if specie.transformed_energy != None %}

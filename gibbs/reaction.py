@@ -43,7 +43,7 @@ class ReactantFormulaMissingError(Exception):
 class CompoundWithCoeff(object):
     """A compound with a stoichiometric coefficient."""
     
-    def __init__(self, coeff, compound, name=None, phase=None):
+    def __init__(self, coeff, compound, phase, name=None):
         """Construct a CompoundWithCoeff object.
         
         Args:
@@ -56,11 +56,8 @@ class CompoundWithCoeff(object):
         self.coeff = coeff
         self._name = name
         self.transformed_energy = None
-
-        if phase is not None:
-            self.phase = phase
-        else:
-            self.phase = conditions.StandardConditions()
+        self.phase = phase
+        logging.info('ID = %s, phase = %s' % (compound.kegg_id, phase.PhaseName()))
     
     def AbsoluteCoefficient(self):
         return numpy.abs(self.coeff)
@@ -68,18 +65,19 @@ class CompoundWithCoeff(object):
     @staticmethod
     def FromReactant(reactant):
         return CompoundWithCoeff(reactant.coeff, reactant.compound,
+                                 conditions.StandardAqueousPhase(),
                                  name=reactant.compound.FirstName())
     
     @staticmethod
-    def FromId(coeff, kegg_id, name=None, phase=None):
+    def FromId(coeff, kegg_id, phase, name=None):
         compound = models.Compound.objects.get(kegg_id=kegg_id)
         my_name = name or compound.FirstName()
-        return CompoundWithCoeff(coeff, compound, name=my_name,
-                                 phase=phase)
+        return CompoundWithCoeff(coeff, compound, phase, name=my_name)
         
     def Minus(self):
         """Returns a new CompoundWithCoeff with coeff = -self.coeff."""
-        return CompoundWithCoeff(-self.coeff, self.compound, self.name)
+        return CompoundWithCoeff(-self.coeff, self.compound, self.phase,
+                                 self.name)
     
     def __str__(self):
         name = self.name or str(self.compound)
@@ -118,23 +116,33 @@ class CompoundWithCoeff(object):
         if self.coeff != other.coeff:
             return False
         
-        if self.compound.kegg_id != other.compound.kegg_id:
+        if self.GetKeggID() != other.GetKeggID():
+            return False
+            
+        if self.phase.Name() != other.phase.Name():
             return False
         
         return True
+
+    def DeltaG0Prime(self, pH, pMg, ionic_strength):
+        dg0_prime = self.compound.DeltaG0Prime(pH=pH,
+                                               pMg=pMg,
+                                               ionic_strength=ionic_strength,
+                                               phase=self.phase.PhaseName())
+        return self.coeff * dg0_prime
         
     def GetPhaseName(self):
-        return self.phase.Name()
+        return self.phase.PhaseName()
         
     def GetPossiblePhases(self):
         phase_list = []
-        if self.compound.kegg_id == 'C00001':
-            phase_list.append(conditions.STANDARD_LIQUID_PHASE_NAME)
+        if self.GetKeggID() == 'C00001':
+            phase_list.append(constants.LIQUID_PHASE_NAME)
         else:
-            phase_list.append(conditions.CUSTOM_AQUEOUS_PHASE_NAME)
+            phase_list.append(constants.AQUEOUS_PHASE_NAME)
             
-        if self.compound.kegg_id in VOLATILE_COMPOUNDS_KEGG_IDS:
-            phase_list.append(conditions.CUSTOM_GAS_PHASE_NAME)
+        if self.GetKeggID() in VOLATILE_COMPOUNDS_KEGG_IDS:
+            phase_list.append(constants.GAS_PHASE_NAME)
         
         return phase_list
         
@@ -156,6 +164,9 @@ class CompoundWithCoeff(object):
     def GetPhaseHumanString(self):
         return str(self.phase)
     
+    def GetKeggID(self):
+        return self.compound.kegg_id
+    
     name = property(GetName)
     abs_coeff = property(AbsoluteCoefficient)
     subscript = property(GetPhaseSubscript)
@@ -166,6 +177,7 @@ class CompoundWithCoeff(object):
     is_constant = property(GetPhaseIsConstant)
     possible_phases = property(GetPossiblePhases)
     has_multiple_phases = property(HasMultiplePhases)
+    kegg_id = property(GetKeggID)
 
 class Reaction(object):
     """A reaction."""
@@ -181,7 +193,6 @@ class Reaction(object):
             substrates: a list of CompoundWithCoeff objects.
             products: a list of CompoundWithCoeff objects.
         """
-        # Hack - ignore H+ because it has the wrong priority for the Alberty data.
         self.reactants = reactants or []
         self._FilterProtons()
         self._Dedup()
@@ -207,7 +218,9 @@ class Reaction(object):
         # Someone is missing data!
         if priorities == []:
             return
-        priority_to_use = max([min(l) for l in priorities if l])
+        priority_to_use = min([max(l) for l in priorities if l])
+        logging.info('All priorities: %s' % str(priorities))        
+        logging.info('Using the priority %d' % priority_to_use)        
         
         for c in self.reactants:
             c.compound.SetSpeciesGroupPriority(priority_to_use)
@@ -235,7 +248,7 @@ class Reaction(object):
         """
         self._conditions = cond
         for c in self.reactants:
-            c.phase = self._conditions.GetPhase(c.compound.kegg_id)
+            c.phase = self._conditions.GetPhase(c.kegg_id)
     conditions = property(GetConditions, ApplyConditions)    
     
     def __str__(self):
@@ -407,7 +420,9 @@ class Reaction(object):
             if id not in compounds:
                 logging.error('Unknown reactant %s', id)
                 return None
-            rs.append(CompoundWithCoeff(coeff, compounds[id], name))
+            rs.append(CompoundWithCoeff(coeff, compounds[id],
+                                        conditions.StandardAqueousPhase(),
+                                        name))
         
         rxn = Reaction(rs, pH=pH, pMg=pMg,
                        ionic_strength=ionic_strength,
@@ -456,7 +471,8 @@ class Reaction(object):
             
             electrons = c.num_electrons
             if electrons == None:
-                logging.warning('Compound %s has unknown electron count', c.kegg_id)
+                logging.warning('Compound %s has unknown electron count', 
+                                c.kegg_id)
                 return 0
             
             electron_diff += coeff * electrons
@@ -706,7 +722,7 @@ class Reaction(object):
         from_c_w_c = self.reactants[i]
         coeff = from_c_w_c.coeff
         phase = from_c_w_c.phase
-        to_c_w_c = CompoundWithCoeff.FromId(coeff, to_id, phase=phase)
+        to_c_w_c = CompoundWithCoeff.FromId(coeff, to_id, phase)
         self.reactants[i] = to_c_w_c
 
     def _Dedup(self):
@@ -741,8 +757,8 @@ class Reaction(object):
         if i is not None:
             self.reactants[i].coeff += how_many
         else:
-            c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id)
-            c_w_coeff.phase = self._conditions.GetPhase(kegg_id)
+            phase = self._conditions.GetPhase(kegg_id)
+            c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id, phase)
             self.reactants.append(c_w_coeff)    
         self._Dedup()
 
@@ -824,21 +840,20 @@ class Reaction(object):
         pmg = pMg or self.pmg
         i_s = ionic_strength or self.i_s
 
-        dg0_prime = 0
-        for compound_w_coeff in self.reactants:
-            c = compound_w_coeff.compound
-            coeff = compound_w_coeff.coeff
-            
-            est = c.DeltaG0Prime(pH=ph, pMg=pmg, ionic_strength=i_s)
-            if est == None:
-                logging.info('No estimate for compound %s', c.kegg_id)
-                return None
-            
-            dg0_prime += coeff * est
-    
-        if dg0_prime is None:
-            logging.warning("Failed to get some reactant's formation energy.")
-        return dg0_prime
+        c_dg0_prime_list = [c.DeltaG0Prime(pH=ph, pMg=pmg, ionic_strength=i_s)
+                            for c in self.reactants]
+
+        # find all the IDs of compounds that have no known formation energy
+        # if there are any such compounds, print and error message and 
+        # return None since we cannot calculate the reaction energy
+        kegg_id_list = [c.kegg_id for c in self.reactants]
+        kegg_id_and_dg0 = zip(kegg_id_list, c_dg0_prime_list)
+        unknown_kegg_ids = [x[0] for x in kegg_id_and_dg0 if x[1] is None]
+        if unknown_kegg_ids:
+            logging.warning("Failed to get formation energy for: " +
+                            ', '.join(unknown_kegg_ids))
+            return None
+        return sum(c_dg0_prime_list)
 
     def DeltaGPrime(self, pH=None, pMg=None, ionic_strength=None):
         """Compute the DeltaG' for a reaction.
@@ -854,12 +869,14 @@ class Reaction(object):
     def HalfReactionDeltaGPrime(self, pH=None, pMg=None, ionic_strength=None,
                                 e_reduction_potential=None):
         """Compute the DeltaG' for a half-reaction, assuming the missing
-           electrons are provided in a certain potential (e_reduction_potential)
+           electrons are provided in a certain potential 
+           (e_reduction_potential)
         
         Returns:
             The DeltaG' for this half-reaction, or None if data was missing.
         """
-        dg_prime = self.DeltaGPrime(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+        dg_prime = self.DeltaGPrime(pH=pH, pMg=pMg,
+                                    ionic_strength=ionic_strength)
         e_red = e_reduction_potential or self.e_reduction_potential
         delta_electrons = abs(self._GetElectronDiff())      
         return dg_prime + constants.F * delta_electrons * e_red

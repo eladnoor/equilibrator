@@ -114,10 +114,10 @@ class Specie(models.Model):
     formation_energy_source = models.ForeignKey(ValueSource, null=True)
 
     # The phase (s, l, g, or aq)
-    phase = models.CharField(max_length=2,
+    phase = models.CharField(max_length=10,
                              choices=constants.PHASE_CHOICES,
                              default=constants.DEFAULT_PHASE)
-    
+        
     def Transform(self,
                   pH=constants.DEFAULT_PH,
                   pMg=constants.DEFAULT_PMG,
@@ -139,10 +139,16 @@ class Specie(models.Model):
             dG += self.number_of_mgs * \
                    (constants.RTlog10 * pMg - constants.MG_FORMATION_ENERGY)
 
+        logging.info('dG0 = %.1f --> dG0\' = %.1f' % (self.formation_energy, dG))
         return dG
     
     def __unicode__(self):
         return self.kegg_id
+    
+    def __str__(self):
+        return "nH = %d, nMg = %d, z = %d, dG0_f = %.2f, phase = %s" %\
+            (self.number_of_hydrogens, self.number_of_mgs, self.net_charge,
+             self.formation_energy, self.phase)
     
 class SpeciesGroup(models.Model):
     """
@@ -167,6 +173,11 @@ class SpeciesGroup(models.Model):
         super(SpeciesGroup, self).__init__(*args, **kwargs)
         self._all_species = None
             
+    def __str__(self):
+        s = "KEGG ID = %s\npriority = %d\nformation_energy_source = %s\n" % \
+            (self.kegg_id, self.priority, self.formation_energy_source)
+        return s + '\n'.join([str(s) for s in self.all_species])
+
     def GetSpecies(self):
         """Gets the list of Species, potentially caching."""
         if self._all_species is None:
@@ -205,22 +216,26 @@ class SpeciesGroup(models.Model):
             Returns:
                 The estimated delta G in the given conditions or None.
         """
-        species = [s for s in self.all_species if s.phase == phase]        
+        species = [s for s in self.all_species if s.get_phase_display() == phase]        
         
         if not species:
-            # No data for this compound in this phase and priority
+            logging.warning('No data for this compound in this phase and priority')
             return None
         
-        if phase == 'aq':
+        transform = lambda x: x.Transform(pH=pH, pMg=pMg, 
+                                          ionic_strength=ionic_strength)
+        if phase == constants.DEFAULT_PHASE:
             # Compute per-species transforms, scaled down by R*T.
-            transform = lambda x: x.Transform(pH=pH, pMg=pMg, ionic_strength=ionic_strength)
             scaled_transforms = [(-transform(s) / constants.RT)
                                  for s in species]
             
             # Numerical issues: taking a sum of exp(v) for |v| quite large.
             # Use the fact that we take a log later to offset all values by a 
             # constant (the minimum value).
-            return -constants.RT * logsumexp(scaled_transforms)
+            if len(scaled_transforms) > 1:
+                dg0_prime = -constants.RT * logsumexp(scaled_transforms)
+            else:
+                dg0_prime = -constants.RT * scaled_transforms[0]
         else:
             if len(species) > 1:
                 logging.error('only aqueous phase can have multiple species')
@@ -229,7 +244,10 @@ class SpeciesGroup(models.Model):
                 # compounds which are not in solution do not need to be
                 # transformed since they have only one specie and there is no
                 # equilibrium between pseudoisomers in that phase
-                return species[0].formation_energy
+                dg0_prime = transform(species[0])
+        
+        logging.info('dG0\' for %s = %.1f' % (self.kegg_id, dg0_prime))
+        return dg0_prime
             
 class Compound(models.Model):
     """
@@ -304,6 +322,8 @@ class Compound(models.Model):
         for sg in self.species_groups.all():
             if sg.priority == priority:
                 self._species_group_to_use = sg
+                logging.info('Setting priority for %s to %d' % 
+                             (self.kegg_id, priority))
                 break
     
     def SetHighestPriority(self):
@@ -339,7 +359,8 @@ class Compound(models.Model):
     def DeltaG0Prime(self,
                      pH=constants.DEFAULT_PH,
                      pMg=constants.DEFAULT_PMG,
-                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                     phase=constants.DEFAULT_PHASE):
         """
             Get a deltaG estimate for the given compound.
         
@@ -355,7 +376,10 @@ class Compound(models.Model):
         if not sg:
             return None
         
-        return sg.DeltaG0Prime(pH, pMg, ionic_strength)
+        dg0_prime = sg.DeltaG0Prime(pH=pH, pMg=pMg, 
+                                    ionic_strength=ionic_strength, 
+                                    phase=phase)
+        return dg0_prime
 
     def WriteStructureThumbnail(self, output_format='png'):
         if not indigo or not indigo_renderer or not openbabel:
@@ -456,10 +480,12 @@ class Compound(models.Model):
     def SpeciesJson(self, species_group=None,
                     pH=constants.DEFAULT_PH,
                     pMg=constants.DEFAULT_PMG,
-                    ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+                    ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                    phase=constants.DEFAULT_PHASE):
         """Returns JSON for the species."""
         sg = species_group or self._species_group
-        dg0_prime = sg.DeltaG0Prime(pH, pMg, ionic_strength)
+        dg0_prime = sg.DeltaG0Prime(pH=pH, pMg=pMg,
+                                    ionic_strength=ionic_strength, phase=phase)
         d = {'source': str(sg.formation_energy_source),
              'dgzero_prime': {'value': round(dg0_prime, 1),
                             'pH': pH,
@@ -475,8 +501,10 @@ class Compound(models.Model):
     
     def AllSpeciesGroupsJson(self, pH=constants.DEFAULT_PH,
                              pMg=constants.DEFAULT_PMG,
-                             ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        return [self.SpeciesJson(sg, pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+                             ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                             phase=constants.DEFAULT_PHASE):
+        return [self.SpeciesJson(sg, pH=pH, pMg=pMg, ionic_strength=ionic_strength,
+                                 phase=phase)
                 for sg in self.all_species_groups]
     
     def ToJson(self, pH=constants.DEFAULT_PH,
@@ -498,14 +526,15 @@ class Compound(models.Model):
     def ToCSVdG0Prime(self, priority=1,
                       pH=constants.DEFAULT_PH,
                       pMg=constants.DEFAULT_PMG,
-                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                      phase=constants.DEFAULT_PHASE):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, name, dG0_prime, pH, ionic_strength, T, Note
         """
         rows = []
         for sg in self.species_groups.filter(priority=priority):
-            dG0_prime = round(sg.DeltaG0Prime(pH, pMg, ionic_strength), 1)
+            dG0_prime = round(sg.DeltaG0Prime(pH=pH, pMg=pMg, ionic_strength=ionic_strength, phase=phase), 1)
             rows.append([self.kegg_id, self.name, dG0_prime, pH, ionic_strength,
                          constants.DEFAULT_TEMP, None])
         return rows

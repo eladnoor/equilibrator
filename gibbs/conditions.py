@@ -3,6 +3,8 @@ import logging
 from gibbs import constants
 
 class _BasePhase(object):
+    def PhaseName(self):
+        return NotImplementedError
     def Name(self):
         return NotImplementedError
     def Subscript(self):
@@ -26,6 +28,8 @@ class _BasePhase(object):
         return '%2g μ%s' % (self.Value() * 1e6, self.Units())
 
 class StandardAqueousPhase(_BasePhase):
+    def PhaseName(self):
+        return constants.AQUEOUS_PHASE_NAME
     def Name(self):
         return constants.STANDARD_AQUEOUS_PHASE_NAME
     def Subscript(self):
@@ -34,6 +38,8 @@ class StandardAqueousPhase(_BasePhase):
         return 'M'
 
 class StandardGasPhase(_BasePhase):
+    def PhaseName(self):
+        return constants.GAS_PHASE_NAME
     def Name(self):
         return constants.STANDARD_GAS_PHASE_NAME
     def Subscript(self):
@@ -42,6 +48,8 @@ class StandardGasPhase(_BasePhase):
         return 'bar'
 
 class StandardLiquidPhase(_BasePhase):
+    def PhaseName(self):
+        return constants.LIQUID_PHASE_NAME
     def Name(self):
         return constants.STANDARD_LIQUID_PHASE_NAME
     def Subscript(self):
@@ -50,6 +58,8 @@ class StandardLiquidPhase(_BasePhase):
         return 'bar'
 
 class StandardSolidPhase(_BasePhase):
+    def PhaseName(self):
+        return constants.SOLID_PHASE_NAME
     def Name(self):
         return constants.STANDARD_SOLID_PHASE_NAME
     def Subscript(self): 
@@ -82,11 +92,30 @@ class CustomGasPhase(StandardGasPhase):
 
 class _BaseConditions(object):
 
+    def __init__(self,
+                 pH=constants.DEFAULT_PH,
+                 pMg=constants.DEFAULT_PMG,
+                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                 temperature=constants.DEFAULT_TEMP,
+                 e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL):
+        self.pH = pH
+        self.pMg = pMg
+        self.ionic_strength = ionic_strength
+        self.temperature = temperature
+        self.e_reduction_potential = e_reduction_potential
+
     def __str__(self):
         raise NotImplementedError
     
     def _GetUrlParams(self):
         return ['conditions=%s' % self.__str__()]
+
+    def GetTemplateDict(self):
+        return {'ph': self.pH, 'pmg': self.pMg,
+                'ionic_strength': self.ionic_strength,
+                'temperature': self.temperature,
+                'e_reduction_potential': self.e_reduction_potential,
+                'conditions': self.__str__()}
     
     def GetPhase(self, kegg_id):
         raise NotImplementedError
@@ -115,13 +144,25 @@ class MillimolarConditions(_BaseConditions):
             
 class CustomConditions(_BaseConditions):
     
-    def __str__(self):
-        return constants.CUSTOM_CONDITION_STRING
-
-    def __init__(self, all_ids, all_phases, all_ratios):
+    @staticmethod
+    def _GetPhase(phase, value):
+        if phase == constants.AQUEOUS_PHASE_NAME:
+            return CustomAqueousPhase(value)
+        if phase == constants.GAS_PHASE_NAME:
+            return CustomGasPhase(value)
+        if phase == constants.LIQUID_PHASE_NAME:
+            return StandardLiquidPhase()
+        if phase == constants.SOLID_PHASE_NAME:
+            return StandardSolidPhase()    
+        raise NotImplementedError
+    
+    def SetPhasesAndRatios(self, all_ids, all_phases, all_ratios):
         self._phases = {}
         for kegg_id, phase, ratio in zip(all_ids, all_phases, all_ratios):
-            self._phases[kegg_id] = GetPhase(kegg_id, phase, ratio)
+            self._phases[kegg_id] = CustomConditions._GetPhase(phase, ratio)
+
+    def __str__(self):
+        return constants.CUSTOM_CONDITION_STRING
     
     def GetPhase(self, kegg_id):
         if kegg_id not in self._phases:
@@ -139,24 +180,6 @@ class CustomConditions(_BaseConditions):
 
 ###############################################################################
 
-def GetPhase(kegg_id, phase, value):
-    if phase == constants.STANDARD_AQUEOUS_PHASE_NAME:
-        return StandardAqueousPhase()
-    if phase == constants.CUSTOM_AQUEOUS_PHASE_NAME:
-        return CustomAqueousPhase(value)
-    if phase == constants.STANDARD_GAS_PHASE_NAME:
-        return StandardGasPhase()
-    if phase == constants.CUSTOM_GAS_PHASE_NAME:
-        return CustomGasPhase(value)
-    if phase == constants.STANDARD_LIQUID_PHASE_NAME:
-        return StandardLiquidPhase()
-    if phase == constants.STANDARD_SOLID_PHASE_NAME:
-        return StandardSolidPhase()
-    
-    raise NotImplementedError
-
-###############################################################################
-
 def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):
     
     if name == constants.STANDARD_CONDITION_STRING:
@@ -167,7 +190,9 @@ def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):
     
     if name == constants.CUSTOM_CONDITION_STRING:
         assert all_ids and all_phases and all_ratios
-        return CustomConditions(all_ids, all_phases, all_ratios)
+        cc = CustomConditions()        
+        cc.SetPhasesAndRatios(all_ids, all_phases, all_ratios)
+        return cc
 
     logging.error('unrecognized condition name: ' + name)
     return None

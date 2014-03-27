@@ -71,7 +71,7 @@
 
 	  {% for reactant in reaction.reactants %}
 	  <tr class="customConcentrations">
-         {% if reactant.compound.kegg_id == 'C00001' %}
+         {% if reactant.kegg_id == 'C00001' %}
              <td colspan="2">
 		    Water(l):
 	        </td>
@@ -97,9 +97,9 @@
                 {{ reactant.units }}
              </td>
              <td width="50px">
-                {% if reactant.compound.has_multiple_phases %}
+                {% if reactant.has_multiple_phases %}
                     <select name="reactantsPhase">
-                    {% for phase in reactant.compound.possible_phases %}
+                    {% for phase in reactant.possible_phases %}
                       <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
                           {{ phase }}
                       </option>

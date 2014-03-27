@@ -2,15 +2,14 @@ import json
 import logging
 
 import util.django_utils
-import gzip
 from load_kegg_json import GetOrCreateNames, AddPmapToCompound
 
 from gibbs import models
 
-DEFAULT_COMPOUND_DATA_FILENAME = 'data/additional_compound_data.json.gz'
+DEFAULT_ADDITIONAL_DATA_FILENAME = 'data/additional_compound_data.json'
 
-def LoadAdditionalCompoundData(json_filename=DEFAULT_COMPOUND_DATA_FILENAME):
-    parsed_json = json.load(gzip.open(json_filename))
+def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
+    parsed_json = json.load(open(json_filename, 'r'))
 
     for cd in parsed_json:
         try:
@@ -47,9 +46,9 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_COMPOUND_DATA_FILENAME):
             continue
 
 
-def CheckData(filenames=(DEFAULT_COMPOUND_DATA_FILENAME,)):
+def CheckData(filenames=(DEFAULT_ADDITIONAL_DATA_FILENAME,)):
     for json_fname in filenames:
-        json.load(gzip.open(json_fname))
+        json.load(open(json_fname, 'r'))
 
 
 def LoadAllAdditionalData():

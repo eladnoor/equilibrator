@@ -1,0 +1,306 @@
+[
+    {
+        "CID": "C00001",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "liquid",
+                        "dG0_f": -237.2,
+                        "nH": 2                        
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "liquid",
+                        "dG0_f": -237.2,
+                        "nH": 2                        
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CID": "C00007",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": 16.4, 
+                        "nH": 0, 
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": 0
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": 16.4, 
+                        "nH": 0, 
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CID": "C00003",
+        "names": [
+            "Nicotinamide adenine dinucleotide (oxidized)" 
+        ],
+        "preferred name": "NAD+"
+    },
+    {
+        "CID": "C00004",
+        "names": [
+            "Nicotinamide adenine dinucleotide (reduced)" 
+        ],
+        "preferred name": "NADH"
+
+    },
+    {
+        "CID": "C00009",
+        "names": [
+            "Pi" 
+        ]
+    },
+    {
+        "CID": "C00011",
+        "names": [
+            "CO2(aq)" 
+        ],
+        "preferred name": "CO2(aq)",
+        "note": "CO2(aq) is dissolved CO2. This is different from CO2(total), which includes the hydrated forms of CO2 - carbonate, bicarbonate and carbonic acid.",
+    	  "details_link": "/faq#aqueousCO2"
+    },
+    {
+        "CID": "C00026",
+        "names": [
+            "alpha-Ketoglutarate" 
+        ]
+    },
+    {
+        "CID": "C00067",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "phase": "aqueous",
+                "species": [
+                    {
+                        "dG0_f": -121.5, 
+                        "nH": 2, 
+                        "nMg": 0, 
+                        "z": 0
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Maden (2000)", 
+                "phase": "aqueous",
+                "species": [
+                    {
+                        "dG0_f": -121.5, 
+                        "nH": 2, 
+                        "nMg": 0, 
+                        "z": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CID": "C00085",
+        "names": [
+            "F6P" 
+        ]
+    },  
+    {
+        "CID": "C00092",
+        "names": [
+            "G6P" 
+        ]
+    },  
+    {
+        "CID": "C00111",
+        "names": [
+            "DHAP" 
+        ]
+    }, 
+    {
+        "CID": "C00117",
+        "names": [
+            "R5P"
+        ]
+    }, 
+    {
+        "CID": "C00118",
+        "names": [
+            "G3P",
+            "GADP",
+            "GA3P"
+        ]
+    }, 
+    {
+        "CID": "C00127",
+        "names": [
+            "Glutathione(ox)"
+        ]
+    },
+    {
+        "CID": "C00186",
+        "names": [
+            "Lactate" 
+        ]
+    },
+    {
+        "CID": "C00197",
+        "names": [
+            "3PG" 
+        ]
+    },
+    {
+        "CID": "C00199",
+        "names": [
+            "Ru5P" 
+        ]
+    },  
+    {
+        "CID": "C00198",
+        "names": [
+            "GDL" 
+        ]
+    },
+    {
+        "CID": "C00204",
+        "names": [
+            "KDG"
+        ]
+    },
+    {
+        "CID": "C00236",
+        "names": [
+            "BPG",
+            "Glycerate-1,3-Bisphosphate",
+            "1,3-Bisphosphoglycerate"
+        ]
+    }, 
+    {
+        "CID": "C00288",
+        "names": [
+            "CO2(total)",
+            "Carbonate",
+            "Carbonic acid"
+        ],
+        "preferred name": "CO2(total)",
+        "note": "CO2(total) is a collection of the hydrated and dehydrated forms of CO2 - aqueous CO2, carbonate, carbonic acid and bicarbonate. These forms are often considered to be in equilibrium in biochemical systems.",
+    	"details_link": "/faq#aqueousCO2"
+    },
+    {
+        "CID": "C00342",
+        "names": [
+            "Thioredoxin(red)"
+        ]
+    },
+    {
+        "CID": "C00343",
+        "names": [
+            "Thioredoxin(ox)"
+        ]
+    },
+    {
+        "CID": "C00345",
+        "names": [
+            "6-Phosphogluconate"
+        ]
+    },
+    {
+        "CID": "C00354",
+        "names": [
+            "F1,6BP" 
+        ]
+    }, 
+    {
+        "CID": "C00637",
+        "names": [
+            "2PG" 
+        ]
+    },
+    {
+        "CID": "C00665",
+        "names": [
+            "F2,6BP" 
+        ]
+    },
+    {
+        "CID": "C01182",
+        "names": [
+            "RuBP" 
+        ]
+    },    
+    {
+        "CID": "C04442",
+        "names": [
+            "KDPG" 
+        ]
+    },
+    {
+        "CID": "C00440",
+        "names": [
+            "5-Methyl-THF" 
+        ]
+    },
+        {
+        "CID": "C00445",
+        "names": [
+            "5,10-Methyl-THF" 
+        ]
+    },
+    {
+        "CID": "C00862",
+        "names": [
+            "MFR" 
+        ]
+    },
+    {
+        "CID": "C01001",
+        "names": [
+            "Formyl-MFR" 
+        ]
+    },
+    {
+        "CID": "C04330",
+        "names": [
+            "5,10-Methenyl-H4MPT" 
+        ]
+    },
+    {
+        "CID": "C04377",
+        "names": [
+            "5,10-Methylene-H4MPT" 
+        ]
+    }
+]

@@ -28,9 +28,7 @@ class ReactionForm(form_utils.BaseForm):
     ionic_strength = forms.FloatField(required=False)
     electronReductionPotential = forms.FloatField(required=False)
     conditions = forms.ChoiceField(required=False,
-                                   choices=[(conditions.STANDARD_CONDITION_STRING, conditions.STANDARD_CONDITION_STRING),
-                                            (conditions.MILLIMOLAR_CONDITION_STRING, conditions.MILLIMOLAR_CONDITION_STRING),
-                                            (conditions.CUSTOM_CONDITION_STRING, conditions.CUSTOM_CONDITION_STRING)])
+                                   choices=constants.CONDITION_CHOICES)
     
     query = forms.CharField(max_length=2048, required=False)
     balance_w_water = forms.BooleanField(required=False)

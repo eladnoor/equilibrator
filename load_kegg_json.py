@@ -102,21 +102,36 @@ def AddPmapToCompound(pmap, compound):
     sg.save()
 
     for sdict in pmap['species']:
+        formation_energy = sdict.get('dG0_f', None)
+        if formation_energy is None:
+            logging.error('A specie of %s is missing its formation energy' %
+                           compound.kegg_id)
+
+        number_of_hydrogens = sdict.get('nH', None)
+        number_of_mgs = sdict.get('nMg', None)
+        net_charge = sdict.get('z', None)
         phase = sdict.get('phase', constants.DEFAULT_PHASE)
-        if phase == constants.AQUEOUS_PHASE_SHORT:
-            specie = models.Specie(kegg_id=compound.kegg_id,
-                                   number_of_hydrogens=sdict['nH'],
-                                   number_of_mgs=sdict['nMg'],
-                                   net_charge=sdict['z'],
-                                   formation_energy=sdict['dG0_f'],
-                                   phase=phase)
+    
+
+        if phase == constants.AQUEOUS_PHASE_NAME:
+            if None in [number_of_hydrogens, number_of_mgs, net_charge]:
+                logging.error('An aqueous specie of %s is missing essential info' %
+                              compound.kegg_id)
+                raise ValueError
         else:
-            specie = models.Specie(kegg_id=compound.kegg_id,
-                                   number_of_hydrogens=0,
-                                   number_of_mgs=0,
-                                   net_charge=0,
-                                   formation_energy=sdict['dG0_f'],
-                                   phase=phase)
+            if number_of_hydrogens is None:
+                number_of_hydrogens = 0
+            if number_of_mgs is None:
+                number_of_mgs = 0
+            if net_charge is None:
+                net_charge = 0
+        
+        specie = models.Specie(kegg_id=compound.kegg_id,
+                               number_of_hydrogens=number_of_hydrogens,
+                               number_of_mgs=number_of_mgs,
+                               net_charge=net_charge,
+                               formation_energy=formation_energy,
+                               phase=phase)
         specie.save()
         sg.species.add(specie)
     

@@ -17,7 +17,8 @@ def ReactionPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid reaction form.')
     
-    # Figure out which template to render (based on which submit button they pressed).
+    # Figure out which template to render (based on which submit button they
+    # pressed).
     template_name = _REACTION_TEMPLATES_BY_SUBMIT.get(form.cleaned_submit,
                                                       'reaction_page.html')
 
@@ -37,9 +38,7 @@ def ReactionPage(request):
     if form.cleaned_replace_co2:
         rxn.TryReplaceCO2()
         query = rxn.GetQueryString()
-        
-    print rxn.CheckConservationLaws()
-        
+    
     # Render the template.
     balance_with_water_link = rxn.GetBalanceWithWaterLink(query)
     balance_electrons_link = rxn.GetBalanceElectronsLink(query)
@@ -47,13 +46,9 @@ def ReactionPage(request):
     replace_co2_link = rxn.GetReplaceCO2Link(query)
     template_data = {'reaction': rxn,
                      'query': query,
-                     'ph': rxn.ph,
-                     'pmg': rxn.pmg,
-                     'ionic_strength': rxn.i_s,
-                     'e_reduction_potential': rxn.e_reduction_potential,
-                     'conditions': str(rxn.conditions),
                      'balance_with_water_link': balance_with_water_link,
                      'balance_electrons_link': balance_electrons_link,
                      'replace_co2_link': replace_co2_link,
                      'half_reaction_link': half_reaction_link}
+    template_data.update(rxn.conditions.GetTemplateDict())
     return render_to_response(template_name, template_data)
