@@ -222,6 +222,16 @@ class Reaction(object):
         self._all_stored_reactions = None
         self._catalyzing_enzymes = None
         self._SetCompoundPriorities()
+
+    def Clone(self):
+        other = Reaction(self.reactants, self.ph, self.pmg, self.i_s,
+                         self.e_reduction_potential)
+        other._dg0_prime = self._dg0_prime
+        other._conditions = self._conditions
+        other._stored_reaction = self._stored_reaction
+        other._all_stored_reactions = self._all_stored_reactions
+        other._catalyzing_enzymes = self._catalyzing_enzymes
+        return other
     
     def _SetCompoundPriorities(self):
         """
@@ -552,31 +562,58 @@ class Reaction(object):
             
         return params
     
+    def GetHyperlink(self, query=None):
+        return '/reaction?%s' % '&'.join(self._GetUrlParams(query))
+    
     def GetBalanceWithWaterLink(self, query=None):
         """Returns a link to balance this reaction with water."""
-        params = self._GetUrlParams(query)
-        params.append('balance_w_water=1')
-    
-        return '/reaction?%s' % '&'.join(params)
+        other = self.Clone()
+        other.TryBalanceWithWater()
+        return other.GetHyperlink(query)
 
     def GetBalanceElectronsLink(self, query=None):
-        """Returns a link to balance this reaction with NAD:NADH."""
-        params = self._GetUrlParams(query)
-        params.append('balance_electrons=1')
-    
-        return '/reaction?%s' % '&'.join(params)
+        """
+            Returns a link to the same reaction,
+            balanced by extra NAD+/NADH pairs.
+        """
+        other = self.Clone()
+        other.BalanceElectrons()
+        return other.GetHyperlink(query)
+
+    def GetReplaceCO2Link(self, query=None):
+        """
+            Returns a link to the same reaction, but with HCO3-
+            instead of CO2.
+        """
+        other = self.Clone()
+        co2_id = 'C00011'
+        bic_id = 'C00288'
+        other._ReplaceCompound(co2_id, bic_id)        
+        other.TryBalanceWithWater()
+        return other.GetHyperlink(query)
 
     def GetHalfReactionLink(self, query=None):
-        """Returns a link to balance this reaction with water."""
+        """
+            Returns a link to the same reaction,
+            balanced by extra H2O molecules.
+        """
         params = self._GetUrlParams(query)
         return '/half_reaction?%s' % '&'.join(params)
 
-    def GetReplaceCO2Link(self, query=None):
-        """Returns a link to balance this reaction with water."""
-        params = self._GetUrlParams(query)
-        params.append('replace_co2=1')
-    
-        return '/reaction?%s' % '&'.join(params)
+    def GetTemplateData(self, query=None):
+        balance_with_water_link = self.GetBalanceWithWaterLink(query)
+        balance_electrons_link = self.GetBalanceElectronsLink(query)
+        half_reaction_link = self.GetHalfReactionLink(query)
+        replace_co2_link = self.GetReplaceCO2Link(query)
+        template_data = {'reaction': self,
+                         'query': query,
+                         'balance_with_water_link': balance_with_water_link,
+                         'balance_electrons_link': balance_electrons_link,
+                         'replace_co2_link': replace_co2_link,
+                         'half_reaction_link': half_reaction_link}
+        if self.conditions is not None:
+            template_data.update(self.conditions.GetTemplateDict())
+        return template_data
     
     def GetPhGraphLink(self):
         params = self._GetUrlParams()
@@ -808,18 +845,6 @@ class Reaction(object):
         
         return extra_waters is not None
     
-    def TryReplaceCO2(self):
-        """Attempt to replace CO2(aq) with CO2(total).
-        
-        Returns:
-            True on success.
-        """
-        co2_id = 'C00011'
-        bic_id = 'C00288'
-        self._ReplaceCompound(co2_id, bic_id)
-        
-        return self.TryBalanceWithWater()
-
     def BalanceElectrons(self,
                          acceptor_id='C00003',           # NAD+
                          reduced_acceptor_id='C00004'):  # NADH

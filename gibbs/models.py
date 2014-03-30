@@ -472,10 +472,8 @@ class Compound(models.Model):
     
     def GetSpeciesGroupToUse(self):
         """Gets the SpeciesGroup to use, potentially caching."""
-        if self._species_group_to_use:
-            return self._species_group_to_use
-        
-        self.SetHighestPriority()
+        if not self._species_group_to_use:
+            self.SetHighestPriority()
         return self._species_group_to_use
     
     def GetSpecies(self):

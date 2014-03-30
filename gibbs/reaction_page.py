@@ -23,32 +23,17 @@ def ReactionPage(request):
                                                       'reaction_page.html')
 
     rxn = reaction.Reaction.FromForm(form)
-    query = form.cleaned_query
     if form.cleaned_reactionId:
         query = rxn.GetQueryString()
-    if form.cleaned_submit == 'Reverse':
+    elif form.cleaned_submit == 'Reverse':
         rxn.SwapSides()
         query = rxn.GetQueryString()
-    if form.cleaned_balance_w_water:
-        rxn.TryBalanceWithWater()
-        query = rxn.GetQueryString()
-    if form.cleaned_balance_electrons:
-        rxn.BalanceElectrons()
-        query = rxn.GetQueryString()
-    if form.cleaned_replace_co2:
+    elif form.cleaned_replace_co2:
         rxn.TryReplaceCO2()
         query = rxn.GetQueryString()
+    else:
+        query = form.cleaned_query
     
     # Render the template.
-    balance_with_water_link = rxn.GetBalanceWithWaterLink(query)
-    balance_electrons_link = rxn.GetBalanceElectronsLink(query)
-    half_reaction_link = rxn.GetHalfReactionLink(query)
-    replace_co2_link = rxn.GetReplaceCO2Link(query)
-    template_data = {'reaction': rxn,
-                     'query': query,
-                     'balance_with_water_link': balance_with_water_link,
-                     'balance_electrons_link': balance_electrons_link,
-                     'replace_co2_link': replace_co2_link,
-                     'half_reaction_link': half_reaction_link}
-    template_data.update(rxn.conditions.GetTemplateDict())
+    template_data = rxn.GetTemplateData(query)
     return render_to_response(template_name, template_data)
