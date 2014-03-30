@@ -98,6 +98,21 @@ class CompoundWithCoeff(object):
             
         return d
     
+    def GetCompoundList(self):
+        sg = self.compound._species_group
+        species = sg.GetPhaseSpecies(self.phase.PhaseName())
+        logging.info('KEGG ID = %s' % self.kegg_id)
+        logging.info('# species in phase %s = %d' % (self.phase.PhaseName(), len(species)))
+        
+        l = []
+        for s in species:
+            l.append({'nh': int(s.number_of_hydrogens),
+                      'charge': int(s.net_charge),
+                      'nmg': int(s.number_of_mgs),
+                      'dgzero': float(s.formation_energy)})
+        logging.info('compound_list = %s' % str(l))
+        return l
+    
     def GetName(self):
         """Gives a string name for this compound."""
         if self.compound.preferred_name:
@@ -201,6 +216,7 @@ class Reaction(object):
         self.pmg = pMg
         self.i_s = ionic_strength
         self.e_reduction_potential = e_reduction_potential
+        self._dg0_prime = None
         self._conditions = None
         self._stored_reaction = None
         self._all_stored_reactions = None
@@ -246,10 +262,11 @@ class Reaction(object):
         Args:
             cond: a _BaseConditions object.
         """
+        self._dg0_prime = None
         self._conditions = cond
         for c in self.reactants:
             c.phase = self._conditions.GetPhase(c.kegg_id)
-    conditions = property(GetConditions, ApplyConditions)    
+    conditions = property(GetConditions, ApplyConditions)
     
     def __str__(self):
         """Simple text reaction representation."""
@@ -355,6 +372,10 @@ class Reaction(object):
         pmg = form.cleaned_pmg
         i_s = form.cleaned_ionic_strength
         e_red = form.cleaned_e_reduction_potential
+        logging.info('pH = %.1f, pMg = %.1f, ionic strength = %.1f, Ered = %.1f' %
+                     (ph, pmg, i_s, e_red))
+        
+        logging.info(str(form.cleaned_reactantsPhase))        
         
         zipped_reactants = zip(form.cleaned_reactantsCoeff,
                                form.cleaned_reactantsId,
@@ -510,10 +531,13 @@ class Reaction(object):
         """Get the URL params for this reaction."""
         params = []
         for compound in self.reactants:
-            params.append('reactantsId=%s' % compound.compound.kegg_id)
+            kegg_id = compound.compound.kegg_id
+            params.append('reactantsId=%s' % kegg_id)
             params.append('reactantsCoeff=%d' % compound.coeff)
             if compound.name:
                 params.append('reactantsName=%s' % compound.name)
+            if self._conditions:
+                params.extend(self._conditions._GetUrlParams(kegg_id))
         
         if self.ph:
             params.append('ph=%f' % self.ph)
@@ -521,8 +545,6 @@ class Reaction(object):
             params.append('pmg=%f' % self.pmg)
         if self.i_s:
             params.append('ionic_strength=%f' % self.i_s)
-        if self._conditions:
-            params.extend(self._conditions._GetUrlParams())
                 
         if query:
             tmp_query = query.replace(u'→', '=>')
@@ -840,6 +862,12 @@ class Reaction(object):
         pmg = pMg or self.pmg
         i_s = ionic_strength or self.i_s
 
+        if self._dg0_prime is not None:
+            if (ph, pmg, i_s) == (self.ph, self.pmg, self.i_s):
+                return self._dg0_prime
+            else:
+                self._dg0_prime = None
+
         c_dg0_prime_list = [c.DeltaG0Prime(pH=ph, pMg=pmg, ionic_strength=i_s)
                             for c in self.reactants]
 
@@ -853,7 +881,8 @@ class Reaction(object):
             logging.warning("Failed to get formation energy for: " +
                             ', '.join(unknown_kegg_ids))
             return None
-        return sum(c_dg0_prime_list)
+        self._dg0_prime = sum(c_dg0_prime_list)
+        return self._dg0_prime
 
     def DeltaGPrime(self, pH=None, pMg=None, ionic_strength=None):
         """Compute the DeltaG' for a reaction.
@@ -928,9 +957,9 @@ class Reaction(object):
 
     def AllCompoundsWithTransformedEnergies(self):
         for c_w_coeff in self.reactants:
-            dgt = c_w_coeff.compound.DeltaG(pH=self.ph,
-                                            pMg=self.pmg,
-                                            ionic_strength=self.i_s)
+            dgt = c_w_coeff.compound.DeltaG0Prime(pH=self.ph,
+                                                  pMg=self.pmg,
+                                                  ionic_strength=self.i_s)
             c_w_coeff.transformed_energy = dgt
             yield c_w_coeff
 

@@ -1,7 +1,6 @@
 from django import forms
 from gibbs import form_utils
 from gibbs import constants
-from gibbs import conditions
 
 class ReactionForm(form_utils.BaseForm):
     

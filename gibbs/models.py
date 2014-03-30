@@ -185,6 +185,13 @@ class SpeciesGroup(models.Model):
         return self._all_species
     all_species = property(GetSpecies)
     
+    def GetPhaseSpecies(self, phase=constants.DEFAULT_PHASE):
+        """
+            Get a list of all species corresponding to a certain phase
+        """
+        return [s for s in self.GetSpecies()
+                if s.get_phase_display() == phase]   
+    
     def GetSpeciesWithoutMg(self):
         """Gets the list of species without Mg bound."""
         for s in self.all_species:
@@ -216,10 +223,12 @@ class SpeciesGroup(models.Model):
             Returns:
                 The estimated delta G in the given conditions or None.
         """
-        species = [s for s in self.all_species if s.get_phase_display() == phase]        
+        species = self.GetPhaseSpecies(phase)
         
         if not species:
-            logging.warning('No data for this compound in this phase and priority')
+            logging.warning('No data for this compound (%s) in this '
+                            'phase (%s) and priority (%d)' %
+                            (self.kegg_id, phase, self.priority))
             return None
         
         transform = lambda x: x.Transform(pH=pH, pMg=pMg, 
@@ -485,11 +494,13 @@ class Compound(models.Model):
         """Returns JSON for the species."""
         sg = species_group or self._species_group
         dg0_prime = sg.DeltaG0Prime(pH=pH, pMg=pMg,
-                                    ionic_strength=ionic_strength, phase=phase)
+                                    ionic_strength=ionic_strength,
+                                    phase=phase)
+        logging.info(dg0_prime)
         d = {'source': str(sg.formation_energy_source),
              'dgzero_prime': {'value': round(dg0_prime, 1),
-                            'pH': pH,
-                            'ionic_strength': ionic_strength}}
+                              'pH': pH,
+                              'ionic_strength': ionic_strength}}
         l = []
         for s in sg.all_species:
             l.append({'nh': int(s.number_of_hydrogens),

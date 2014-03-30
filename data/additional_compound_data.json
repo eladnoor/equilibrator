@@ -89,11 +89,47 @@
     {
         "CID": "C00011",
         "names": [
-            "CO2(aq)" 
+            "CO2" 
         ],
-        "preferred name": "CO2(aq)",
+        "preferred name": "CO2",
         "note": "CO2(aq) is dissolved CO2. This is different from CO2(total), which includes the hydrated forms of CO2 - carbonate, bicarbonate and carbonic acid.",
-    	  "details_link": "/faq#aqueousCO2"
+    	"details_link": "/faq#aqueousCO2",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": -386.0, 
+                        "nH": 0, 
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": -394.36
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": -386.0, 
+                        "nH": 0, 
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": -394.36
+                    }
+                ]
+            }
+        ]
     },
     {
         "CID": "C00026",
@@ -207,7 +243,87 @@
             "Glycerate-1,3-Bisphosphate",
             "1,3-Bisphosphoglycerate"
         ]
-    }, 
+    },
+    {
+        "CID": "C00237",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": -119.9, 
+                        "nH": 0,
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": -137.17
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": -119.9, 
+                        "nH": 0,
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": -137.17
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "CID": "C00282",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": 17.6, 
+                        "nH": 2,
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": 0, 
+                        "nH": 2
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": 17.6, 
+                        "nH": 2,
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": 0, 
+                        "nH": 2
+                    }
+                ]
+            }
+        ]
+    },
     {
         "CID": "C00288",
         "names": [
@@ -253,6 +369,45 @@
         "CID": "C00665",
         "names": [
             "F2,6BP" 
+        ]
+    },
+    {
+        "CID": "C00697",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": 18.7, 
+                        "nH": 0,
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": 0
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "aqueous",
+                        "dG0_f": 18.7, 
+                        "nH": 0,
+                        "nMg": 0, 
+                        "z": 0
+                    },
+                    {
+                        "phase": "gas",
+                        "dG0_f": 0
+                    }
+                ]
+            }
         ]
     },
     {

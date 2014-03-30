@@ -17,14 +17,17 @@ def ReactionGraph(request):
     if form.cleaned_vary_is:
         mode = 'varyIs'
 
+    logging.info('reading reaction graph form')
+
     rxn = reaction.Reaction.FromForm(form)
-    compound_list = [c.compound.SpeciesJson()['species'] for c in rxn.reactants]
+    logging.info([c.phase for c in rxn.reactants])
+    compound_list = [c.GetCompoundList() for c in rxn.reactants]
     coeff_list = [c.coeff for c in rxn.reactants]
     concentration_list = [c.phase.Value() for c in rxn.reactants]
-    template_data = {"compound_data": json.dumps(compound_list),
-                     "coeff_data": json.dumps(coeff_list),
-                     "concentration_list": json.dumps(concentration_list),
-                     "mode": mode,
-                     "reaction": rxn}
-    
+    template_data = {'compound_data': json.dumps(compound_list),
+                     'coeff_data': json.dumps(coeff_list),
+                     'concentration_list': json.dumps(concentration_list),
+                     'mode': mode,
+                     'reaction': rxn}
+    template_data.update(rxn.conditions.GetTemplateDict())
     return render_to_response('reaction_graph.html', template_data)

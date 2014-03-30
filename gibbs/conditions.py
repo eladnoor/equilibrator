@@ -107,7 +107,7 @@ class _BaseConditions(object):
     def __str__(self):
         raise NotImplementedError
     
-    def _GetUrlParams(self):
+    def _GetUrlParams(self, kegg_id):
         return ['conditions=%s' % self.__str__()]
 
     def GetTemplateDict(self):
@@ -170,13 +170,11 @@ class CustomConditions(_BaseConditions):
 
         return self._phases[kegg_id]
 
-    def _GetUrlParams(self):
-        params = []
-        params.append('conditions=%s' % self.__str__())
-        for kegg_id, phase in self._phases.iteritems():
-            params.append('reactantsPhase=%s' % phase.Name())
-            params.append('reactantsConcentration=%s' % phase.Value())
-        return params
+    def _GetUrlParams(self, kegg_id):
+        phase = self.GetPhase(kegg_id)
+        return ['conditions=%s' % self.__str__(),
+                'reactantsPhase=%s' % phase.PhaseName(),
+                'reactantsConcentration=%s' % phase.Value()]
 
 ###############################################################################
 

@@ -9,28 +9,27 @@
                 Estimated <a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a>
             </strong>
         </td>
-        <td colspan="2">
-            <strong>
+        <td colspan="5">
             {% if delta_g0_prime_estimate != None %}
-                {{ delta_g0_prime_estimate|floatformat:1 }} kJ / mol
+                <strong>{{ delta_g0_prime_estimate|floatformat:1 }}</strong>
+                &nbsp;&nbsp;[kJ/mol]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
-            </strong>
         </td>
     </tr>    
     
     {% if no_dg_explanation %}
         <tr>
             <td width="150px">Note</td>
-            <td colspan="2">{{ no_dg_explanation }}</td>
+            <td colspan="5">{{ no_dg_explanation }}</td>
         </tr>
     {% endif %}
     
     {% if compound.dg_source %}
         <tr>
         <td width="150px">Source</td>
-        <td colspan="2">
+        <td colspan="5">
                 <a href="/data_refs" title="Reference list">{{ compound.dg_source }}</a>
         </td>
         </tr>
@@ -56,9 +55,9 @@
         <tr class="speciesHeader">
             <td>Phase</td>
             <td>Net charge</td>
-            <td>#Hydrogen</td>
-            <td><a href="faq#dgf">&Delta;<sub>f</sub>G&deg;</a> [kJ / mol]</td>
-            <td><a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a> [kJ / mol]</td>
+            <td>#Hydrogens</td>
+            <td><a href="faq#dgf">&Delta;<sub><i>f</i></sub>G&deg;</a> [kJ/mol]</td>
+            <td><a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'&deg;</a> [kJ/mol]</td>
             <td>Reference</td>
         </tr>
     

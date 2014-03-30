@@ -1,178 +1,160 @@
 <html>
-	<head>
-		<title>Graph</title>
-		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-		<link href="/media/main.css" rel="stylesheet" type="text/css">
-		<link href="/media/style.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
-		<script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
-		<script type="text/javascript" src="/media/jquery.lightbox-0.5.min.js"></script>
-		
-		<!-- Tangle and TangleKit -->
-		<link rel="stylesheet" href="media/Tangle/TangleKit/TangleKit.css" type="text/css"> 
-    	<script type="text/javascript" src="media/Tangle/Tangle.js"></script>
-		<script type="text/javascript" src="media/Tangle/TangleKit/mootools.js"></script> 
-    	<script type="text/javascript" src="media/Tangle/TangleKit/sprintf.js"></script> 
-    	<script type="text/javascript" src="media/Tangle/TangleKit/BVTouchable.js"></script> 
-    	<script type="text/javascript" src="media/Tangle/TangleKit/TangleKit.js"></script>
-    	 
-    	<!-- flot plotting -->
-    	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="flot/excanvas.min.js"></script><![endif]-->
-    	<script language="javascript" type="text/javascript" src="media/flot/jquery.flot.js"></script>
+    <head>
+        <title>Graph</title>
+        <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+        <link href="/media/main.css" rel="stylesheet" type="text/css">
+        <link href="/media/style.css" rel="stylesheet" type="text/css">
+        <link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
+        <link href="/media/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
+        <script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
+        <script type="text/javascript" src="/media/jquery.lightbox-0.5.min.js"></script>
+        
+        <!-- Tangle and TangleKit -->
+        <link rel="stylesheet" href="media/Tangle/TangleKit/TangleKit.css" type="text/css"> 
+        <script type="text/javascript" src="media/Tangle/Tangle.js"></script>
+        <script type="text/javascript" src="media/Tangle/TangleKit/mootools.js"></script> 
+        <script type="text/javascript" src="media/Tangle/TangleKit/sprintf.js"></script> 
+        <script type="text/javascript" src="media/Tangle/TangleKit/BVTouchable.js"></script> 
+        <script type="text/javascript" src="media/Tangle/TangleKit/TangleKit.js"></script>
+         
+        <!-- flot plotting -->
+        <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="flot/excanvas.min.js"></script><![endif]-->
+        <script language="javascript" type="text/javascript" src="media/flot/jquery.flot.js"></script>
 
     <script type="text/javascript">
 
         function setUp () {
-			
+            
             var element = document.getElementById("plotContainer");
             var mode = "{{ mode }}";
-
-          	if (mode == 'varyIs') {
-				      $("#plotTitle").append("&Delta;G' as a function of ionic strength " +
-				            "(pH = <span data-var='ph' class='TKAdjustableNumber' " +
-				            "data-min='0.01' data-max='14.0' data-step='0.1' "+
-				            "data-format='%.1f'></span>)");
-        	} else {
-				      $("#plotTitle").append("&Delta;G' as a function of pH " +
-				            "(ionic strength = <span data-var='is' " +
-						    "class='TKAdjustableNumber' data-min='0.0' data-max='0.35' " +
-					        "data-step='0.01' data-format='%.2f'>  mM</span>)");
-			}
-			      
-	        compounds = jQuery.parseJSON('{{ compound_data|safe }}');
-	        coeffs = jQuery.parseJSON('{{ coeff_data|safe }}');
-	        concentrations = jQuery.parseJSON('{{ concentration_list|safe }}');
+                  
+            compounds = jQuery.parseJSON('{{ compound_data|safe }}');
+            coeffs = jQuery.parseJSON('{{ coeff_data|safe }}');
+            concentrations = jQuery.parseJSON('{{ concentration_list|safe }}');
 
             var tangle = new Tangle(element, {
                 initialize: function () {
-                	this.ph = 7.0;				 // ph units (unitless)
-                	this.pmg = 14.0;			 // pmg units (unitless)
-                	this.is = 0.1;				 // ionic strength
-                	this.rt = 8.31e-3 * 298.15;  // kJ/(mol K)
-                	this.dgf_mg = -455.3;		 // kJ/mol
-                	this.compounds = compounds;
-                	this.coeffs = coeffs;
-                	this.concentrations = concentrations;
-                	this.mode = mode;
+                    this.ph = 7.0;               // ph units (unitless)
+                    this.pmg = 14.0;             // pmg units (unitless)
+                    this.is = 0.1;               // ionic strength
+                    this.rt = 8.31e-3 * 298.15;  // kJ/(mol K)
+                    this.dgf_mg = -455.3;        // kJ/mol
+                    this.compounds = compounds;
+                    this.coeffs = coeffs;
+                    this.concentrations = concentrations;
+                    this.mode = mode;
                 },
 
-				getDeltaGSpecie: function (specie, ph, is) {
-					var nh = specie.nh;
-					var nmg = specie.nmg;
-					var nc = specie.charge;
-					var dgf = specie.dgzero;
-					var prot_pot = nh * this.rt * Math.log(10) * ph;
-					var ionic_pot = 2.91482 * (Math.pow(nc, 2) - nh) * Math.sqrt(is);
+                getDeltaGSpecie: function (specie, ph, is) {
+                    var nh = specie.nh;
+                    var nmg = specie.nmg;
+                    var nc = specie.charge;
+                    var dgf = specie.dgzero;
+                    var prot_pot = nh * this.rt * Math.log(10) * ph;
+                    var ionic_pot = 2.91482 * (Math.pow(nc, 2) - nh) * Math.sqrt(is);
                     ionic_pot /= 1 + 1.6 * Math.sqrt(is);
                     var mg_pot = nmg * (this.rt * Math.log(10) * this.pmg - this.dgf_mg);
                     return dgf + mg_pot + prot_pot - ionic_pot;
-				},
+                },
                 
                 getDeltaGSpecies: function (species, ph, is) {
-                	var scaled_transforms = [];
-                	           
-                	for (var i = 0; i < species.length; ++i) {
-                		var species_dg = this.getDeltaGSpecie(species[i], ph, is);
-                		var st = -(species_dg / this.rt);
-                		scaled_transforms.push(st);
-                	}
-                	var offset = Math.min.apply(Math, scaled_transforms);
-                	var sum_exp = 0;
-                	for (var i = 0; i < scaled_transforms.length; ++i) {
-                		var st = scaled_transforms[i];
-                		sum_exp += Math.exp(st - offset);
-                	}
-                	
-                	return -this.rt * (offset + Math.log(sum_exp));
+                    var scaled_transforms = [];
+                               
+                    for (var i = 0; i < species.length; ++i) {
+                        var species_dg = this.getDeltaGSpecie(species[i], ph, is);
+                        var st = -(species_dg / this.rt);
+                        scaled_transforms.push(st);
+                    }
+                    var offset = Math.min.apply(Math, scaled_transforms);
+                    var sum_exp = 0;
+                    for (var i = 0; i < scaled_transforms.length; ++i) {
+                        var st = scaled_transforms[i];
+                        sum_exp += Math.exp(st - offset);
+                    }
+                    
+                    return -this.rt * (offset + Math.log(sum_exp));
                 },
                 
                 getDeltaGPrime0: function (ph, is) {
-                	var DeltaGPrime0 = 0;
-                	for (var i = 0; i < this.compounds.length; ++i) {
-                		var species = this.compounds[i];
-                		var coeff = this.coeffs[i];
-                		
-                		DeltaGPrime0 += coeff * this.getDeltaGSpecies(species, ph, is);
-                	}
-                	
-                	return DeltaGPrime0;
+                    var DeltaGPrime0 = 0;
+                    for (var i = 0; i < this.compounds.length; ++i) {
+                        var species = this.compounds[i];
+                        var coeff = this.coeffs[i];
+                        
+                        DeltaGPrime0 += coeff * this.getDeltaGSpecies(species, ph, is);
+                    }
+                    
+                    return DeltaGPrime0;
                 }, 
                 
                 getDeltaGPrime: function (ph, is) {
-                	var DeltaGPrime = this.getDeltaGPrime0(ph, is);
-                	
-                	// Correct for concentrations.
-                	for (var i = 0; i < this.compounds.length; ++i) {
-						var c = this.concentrations[i];
-                		DeltaGPrime += this.rt * this.coeffs[i] * Math.log(c);
-                	}
-                	return DeltaGPrime;
+                    var DeltaGPrime = this.getDeltaGPrime0(ph, is);
+                    
+                    {% if conditions and conditions != "standard" %}
+                        // Correct for concentrations.
+                        for (var i = 0; i < this.compounds.length; ++i) {
+                            var c = this.concentrations[i];
+                            DeltaGPrime += this.rt * this.coeffs[i] * Math.log(c);
+                        }
+                    {% endif %}
+                    return DeltaGPrime;
                 },
                 
                 varyPh: function () {
-                	var curPh = 4.001;
-                	var points = [];
-                	
-                	while (curPh < 11.0) {
-                		var DeltaGPrime = this.getDeltaGPrime(curPh, this.is).toFixed(2);
-                		points.push([curPh, DeltaGPrime]);
-                		
-                		curPh += 0.1;
-                	}
-                	
-                	var series = {
-                		label: "&Delta;<sub>r</sub>G' (ionic strength = " + (this.is).toFixed(2) + ")",
-                		data: points
-                	};
-                	return series;
+                    var points = [];
+                    
+                    for (curPh = 0; curPh <= 14; curPh += 0.1) {
+                        var DeltaGPrime = this.getDeltaGPrime(curPh, this.is).toFixed(4);
+                        points.push([curPh, DeltaGPrime]);
+                    }
+                    
+                    var series = {
+                        data: points
+                    };
+                    return series;
                 },
 
                 varyIonicStrength: function () {
-                	var curIs = 0.0;
-                	var points = [];
-                	
-                	while (curIs < 0.35) {
-                		var DeltaGPrime = this.getDeltaGPrime(this.ph, curIs).toFixed(2);
-                		points.push([curIs, DeltaGPrime]);
-                		
-                		curIs += 0.0001;
-                	}
-                	
-                	var series = {
-                		label: "&Delta;<sub>r</sub>G' (pH = " + (this.ph).toFixed(1) + ")",
-                		data: points
-                	};
-                	return series;
+                    var points = [];
+                    
+                    for (curIs = 0; curIs <= 0.35; curIs += 0.001) {
+                        var DeltaGPrime = this.getDeltaGPrime(this.ph, curIs).toFixed(4);
+                        points.push([curIs, DeltaGPrime]);
+                    }
+                    
+                    var series = {
+                        data: points
+                    };
+                    return series;
                 },
 
-				dgTickFormatter: function(num, axis) {
-					return (num).toFixed(1) + " kJ/M";
-				},
+                dgTickFormatter: function(num, axis) {
+                    return (num).toFixed(1) + " kJ/mol";
+                },
 
-				isTickFormatter: function(num, axis) {
-					return (num).toFixed(2) + " mM";
-				},
-				
-				phTickFormatter: function(num, axis) {
-					return "pH " + (num).toFixed(1);
-				},
-				
+                isTickFormatter: function(num, axis) {
+                    return (num).toFixed(2) + " mM";
+                },
+                
+                phTickFormatter: function(num, axis) {
+                    return "pH " + (num).toFixed(0);
+                },
+                
                 update: function () {
-                	var all_series = [];
-                	var options = {
-                		yaxis: { tickFormatter: this.dgTickFormatter },
-                		legend: { container: "#legendContainer" }
-					};
-					
-                	if (this.mode == 'varyIs') {
-                		var isSeries = this.varyIonicStrength();
-                		all_series.push(isSeries);
-                		options.xaxis = { tickFormatter: this.isTickFormatter };
-                	} else {
-                		var phSeries = this.varyPh();
+                    var all_series = [];
+                    var options = {
+                        yaxis: { tickFormatter: this.dgTickFormatter },
+                        legend: { container: "#legendContainer" }
+                    };
+                    
+                    if (this.mode == 'varyIs') {
+                        var isSeries = this.varyIonicStrength();
+                        all_series.push(isSeries);
+                        options.xaxis = { tickFormatter: this.isTickFormatter };
+                    } else {
+                        var phSeries = this.varyPh();
                 		all_series.push(phSeries);
                 		options.xaxis = { tickFormatter: this.phTickFormatter };
                 	}
@@ -189,7 +171,7 @@
 	<body onload="setUp();">
 
 	<div class="centerize">
-		<a href="/"><img src="/media/images/equilibrator_logo_small.png" /></a>
+		<a href="/"><img src="/media/images/equilibrator_logo_small_beta.png" /></a>
 
 		{% include "parsed_reaction.html" %}
 
@@ -203,18 +185,39 @@
 			
 			<p id="plotTitle">
 			</p>
-			
-			<p>
-				Concentrations: 
-			{% for compound in reaction.all_compounds %}
-					[{{ compound.name }}{{ compound.subscript }}] = {{ compound.human_string }} {% if not forloop.last %},{% endif %}
-			{% endfor %}
-			</p>
-			
-		</div>
-		
-	</div>
-	</body>
-	
-	</html>
+                <p>
+                    {% if conditions and conditions != "standard" %}
+                        &Delta;<sub>r</sub>G'
+                    {% else %}
+                        &Delta;<sub>r</sub>G'&deg;
+                    {% endif %}
+                    [kJ/mol] as a function of 
+                    {% if mode == "varyIs" %}
+                        Ionic Strength [mM]</br></br>
+                        at pH = <span data-var='ph' class='TKAdjustableNumber' data-min='0.0' data-max='14.0' data-step='0.25' data-format='%.2f'></span>
+                    {% else %}
+                        pH</br></br>
+                        at ionic strength = <span data-var='is' class='TKAdjustableNumber' data-min='0.0' data-max='0.35' data-step='0.01' data-format='%.2f'>  mM</span>
+                    {% endif %}
+                </p>
+            {% if conditions and conditions != "standard" %}
+                <table class="results">
+                    <tr bgcolor="#B1D0FC">
+                        <th colspan="3">Reactant Concentrations</th>
+                    </tr>
+                    {% for reactant in reaction.reactants %}
+                    <tr>
+                        <td>{{ reactant.name }} {{ reactant.subscript }}</td>
+                        <td width="450px">{{ reactant.value_string }} {{ reactant.units }}</td>
+                    </tr>
+                   {% endfor %}
+                </table>
+            {% endif %}
+
+        </div>
+       
+    </div>
+    </body>
+    
+    </html>
 

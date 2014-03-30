@@ -41,20 +41,19 @@
             </td>
         </tr>
         {% endif %}
-
         {% if reaction.dg0_prime != None %}
         <tr>
             <td width="150px">
                 pH<a href="{{ reaction.ph_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of pH"><img src="/media/images/graph_icon.png" /></a>
             </td>
-            <td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
+            <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.ph }}" size="5"/></td>
             <td colspan="2"><div id="phSlider"></div></td>
         </tr>
         <tr>
             <td width="150px">
             Ionic strength (M) <a href="{{ reaction.is_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of ionic strength"><img src="/media/images/graph_icon.png" /></a>
             </td>
-            <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
+            <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.i_s }}" size="5"/></td>
             <td colspan="2"><div id="ionStrengthSlider"></div></td>
         </tr>
         <tr>
