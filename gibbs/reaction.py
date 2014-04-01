@@ -411,8 +411,9 @@ class Reaction(object):
         cond = cond or conditions.StandardConditions()
         
         for c_w_c in rxn.reactants:
-            cond.SetPhase(c_w_c.kegg_id,
-                          c_w_c.compound.GetDefaultPhaseName())
+            if cond.GetPhase(c_w_c.kegg_id) is None:
+                cond.SetPhase(c_w_c.kegg_id,
+                              c_w_c.compound.GetDefaultPhaseName())
         rxn.ApplyConditions(cond)
         
         return rxn

@@ -134,6 +134,7 @@ class _BaseConditions(object):
     def GetPhase(self, kegg_id):
         if kegg_id not in self._phases:
             logging.error('Condition requested for unknown id: %s', kegg_id)
+            return None
 
         return self._phases[kegg_id]
 
@@ -165,6 +166,8 @@ class CustomConditions(_BaseConditions):
         return constants.CUSTOM_CONDITION_STRING
 
     def SetPhase(self, kegg_id, phase, ratio=1):
+        logging.info('For %s, setting phase to %s and ratio to %g' % 
+                     (kegg_id, phase, ratio))
         self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, ratio)
     
 ###############################################################################
