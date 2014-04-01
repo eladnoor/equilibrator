@@ -283,19 +283,19 @@ class Reaction(object):
         """
             Find all stored reactions matching this compound (using the hash)
         """
-        logging.info('looking for stored reactions matching this one')
+        logging.debug('looking for stored reactions matching this one')
         my_hash = self.GetHash()
         my_string = self.GetHashableReactionString()
 
         matching_stored_reactions = models.StoredReaction.objects.select_related(
             ).filter(reaction_hash=my_hash)
-        logging.info('my hash = %s (%d matches)' %
-                     (my_hash, len(matching_stored_reactions)))
+        logging.debug('my hash = %s (%d matches)' %
+                      (my_hash, len(matching_stored_reactions)))
         
         matching_stored_reactions = [m for m in matching_stored_reactions
             if m.GetHashableReactionString() == my_string]
-        logging.info('my hashable string = %s (%d matches)' %
-                     (my_string, len(matching_stored_reactions)))
+        logging.debug('my hashable string = %s (%d matches)' %
+                      (my_string, len(matching_stored_reactions)))
         
         return matching_stored_reactions
     
@@ -304,7 +304,7 @@ class Reaction(object):
             Get all the enzymes catalyzing this reaction.
         """
         if self._catalyzing_enzymes is None:
-            logging.info('looking for enzymes catalyzing this reaction')
+            logging.debug('looking for enzymes catalyzing this reaction')
             self._catalyzing_enzymes = []
             for stored_reaction in self._GetAllStoredReactions():
                 enzymes = stored_reaction.enzyme_set.all()
@@ -363,7 +363,7 @@ class Reaction(object):
         logging.info('pH = %.1f, pMg = %.1f, ionic strength = %.1f, Ered = %.1f' %
                      (ph, pmg, i_s, e_red))
         
-        logging.info(str(form.cleaned_reactantsPhase))        
+        logging.debug(str(form.cleaned_reactantsPhase))        
         
         zipped_reactants = zip(form.cleaned_reactantsCoeff,
                                form.cleaned_reactantsId,
@@ -401,7 +401,7 @@ class Reaction(object):
         reactants = []                
         # Get products and substrates.
         for coeff, kegg_id, name in compound_list:
-            logging.info('Adding compound %s with coeff %d' % (kegg_id, coeff))
+            logging.debug('Adding compound %s with coeff %d' % (kegg_id, coeff))
             c_w_c = CompoundWithCoeff.FromId(coeff, kegg_id, name=name)
             reactants.append(c_w_c)
         
@@ -564,8 +564,8 @@ class Reaction(object):
                          'balance_electrons_link': balance_electrons_link,
                          'replace_co2_link': replace_co2_link,
                          'half_reaction_link': half_reaction_link}
-        if self.conditions is not None:
-            template_data.update(self.conditions.GetTemplateDict())
+        if self._conditions is not None:
+            template_data.update(self._conditions.GetTemplateDict())
         return template_data
     
     def GetPhGraphLink(self):

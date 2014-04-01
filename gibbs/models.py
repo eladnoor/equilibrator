@@ -201,13 +201,13 @@ class SpeciesGroup(models.Model):
                 yield s
     all_species_no_mg = property(GetSpeciesWithoutMg)
 
-    def StashTransformedSpeciesEnergies(self, ph, pmg, ionic_strength):
+    def StashTransformedSpeciesEnergies(self, pH, pMg, ionic_strength):
         """
             Stash the transformed species formation energy in each one.
         """
         for species in self.all_species:
             species.transformed_energy = species.Transform(
-                pH=ph, pMg=pmg, ionic_strength=ionic_strength)
+                pH=pH, pMg=pMg, ionic_strength=ionic_strength)
 
     def DeltaG0Prime(self,
                      pH=constants.DEFAULT_PH,
@@ -634,10 +634,10 @@ class Compound(models.Model):
     dgf_zero_prime = property(DeltaG0Prime)
     dg_source = property(_GetDGSource)
     
-    def StashTransformedSpeciesEnergies(self, ph, pmg, ionic_strength):
+    def StashTransformedSpeciesEnergies(self, pH, pMg, ionic_strength):
         """Stash the transformed species formation energy in each one."""
         for sg in self.all_species_groups:
-            sg.StashTransformedSpeciesEnergies(ph, pmg, ionic_strength)
+            sg.StashTransformedSpeciesEnergies(pH, pMg, ionic_strength)
     
     def __unicode__(self):
         """Return a single string identifier of this Compound."""
@@ -719,10 +719,18 @@ class StoredReaction(models.Model):
     
     @staticmethod
     def _CompoundToString(kegg_id, coeff):
+        try:
+            compound = Compound.objects.get(kegg_id=kegg_id)
+            name = compound.FirstName()
+        except Exception as e:
+            logging.warning('Cannot find the name for %s' % kegg_id)
+            logging.warning(str(e))
+            name = kegg_id
+            
         if coeff == 1:
-            return kegg_id
+            return name
         else:
-            return "%g %s" % (coeff, kegg_id)
+            return "%g %s" % (coeff, name)
 
     def ToString(self):
         """
@@ -782,8 +790,14 @@ class StoredReaction(models.Model):
         return self.ToString()
     
     def Link(self):
-        """Returns a link to this reaction's page."""
-        return '/reaction?reactionId=%s' % self.kegg_id
+        """
+            Returns a link to this reaction's page.
+        """
+        from gibbs import reaction
+        reactants = [reaction.CompoundWithCoeff.FromId(coeff, kegg_id)
+                     for coeff, kegg_id in json.loads(self.reactants)]
+        rxn = reaction.Reaction(reactants)
+        return rxn.GetHyperlink(self.ToString())
 
     def ToCSVdG0Prime(self, priority=1,
                       pH=constants.DEFAULT_PH,

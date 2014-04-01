@@ -1,7 +1,7 @@
 <tr>
     <td width="150px">Concentrations</td>
     <td colspan="3">
-        <input type="radio" name="conditions" value="standard" checked><a href="/faq#stdConditions">Standard conditions</a> (1 M)
+        <input type="radio" name="conditions" value="standard" {% if not conditions or conditions == "standard" %}checked{% endif %}><a href="/faq#stdConditions">Standard conditions</a> (1 M)
         <input type="radio" name="conditions" value="mM" {% if conditions == "mM" %}checked{% endif %}>1 mM
         <input type="radio" name="conditions" id="customConcRadio" value="custom" {% if conditions == "custom" %}checked{% endif %}>Custom
     </td>

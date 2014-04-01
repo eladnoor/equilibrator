@@ -14,7 +14,7 @@ def ResultsPage(request):
     if not form.is_valid():
         raise Http404
     
-    logging.info('Generating a search result page')
+    logging.debug('Generating a search result page')
     query_parser = service_config.Get().query_parser
     reaction_matcher = service_config.Get().reaction_matcher
     matcher = service_config.Get().compound_matcher
@@ -30,7 +30,7 @@ def ResultsPage(request):
         
     # Check if we should parse and process the input as a reaction.
     if query_parser.IsReactionQuery(query):
-        logging.info('Parsing the query as a reaction')
+        logging.debug('Parsing the query as a reaction')
         try:
             parsed_reaction = query_parser.ParseReactionQuery(query)
         except Exception:
@@ -42,7 +42,7 @@ def ResultsPage(request):
         if not best_reaction:
             return render_to_response('search_error_page.html', template_data)
         
-        logging.info('Generating a reaction from the matched KEGG IDs')
+        logging.debug('Generating a reaction from the matched KEGG IDs')
         rxn = reaction.Reaction.FromIds(best_reaction,
                                         cond=conditions.StandardConditions(),
                                         pH=ph, pMg=pmg,
@@ -53,7 +53,7 @@ def ResultsPage(request):
 
     else:
         # Otherwise we try to parse it as a single compound.
-        logging.info('Parsing the query as a single compound')
+        logging.debug('Parsing the query as a single compound')
         results = matcher.Match(query)
         compound_matches = [m for m in results if m.IsCompound()]
         enzyme_matches = [m for m in results if m.IsEnzyme()]

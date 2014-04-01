@@ -7,17 +7,18 @@
 		<div class="printable">
 			{% for compound in reaction.substrates %}
 				{% if compound.coeff > 1 %} {{ compound.coeff }} {% endif %}
-				{{ compound.name }} ({{ compound.human_concentration_w_units }})
+				{{ compound.name }}{{ compound.subscript }} [{{ compound.human_string }}]
 				
 				{% if not forloop.last %} + {% endif %}
 			{% endfor %}
-			&rarr;
+			&rlhar;
 			{% for compound in reaction.products %}
 				{% if compound.coeff > 1 %} {{ compound.coeff }} {% endif %}
-				{{ compound.name }} ({{ compound.human_concentration_w_units }})
+				{{ compound.name }}{{ compound.subscript }} [{{ compound.human_string }}]
 				
 				{% if not forloop.last %} + {% endif %}
 			{% endfor %} = {{ reaction.dg_prime|floatformat:1 }} kJ / mol
+                  [pH = {{ reaction.ph }}, I = {{reaction.i_s}} M]
 		</div>
 	</body>
 </html>

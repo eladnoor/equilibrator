@@ -30,7 +30,6 @@ class ReactionForm(form_utils.BaseForm):
                                    choices=constants.CONDITION_CHOICES)
     
     query = forms.CharField(max_length=2048, required=False)
-    replace_co2 = forms.BooleanField(required=False)
     submit = forms.ChoiceField(required=False,
                                choices=[('Update', 'update'),
                                         ('Save', 'save'),
@@ -51,5 +50,4 @@ class ReactionForm(form_utils.BaseForm):
                                                     constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
     cleaned_conditions = property(lambda self: self.cleaned_data['conditions'])
     cleaned_query = property(lambda self: self.cleaned_data['query'])
-    cleaned_replace_co2 = property(lambda self: self._GetWithDefault('replace_co2', False))
     cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))

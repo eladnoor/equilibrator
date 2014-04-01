@@ -3,18 +3,32 @@
 {% endwith %}
 
 	<div class="centerize">
+            {% for c_w_c in reaction.reactants %}
+                <div class="compound">
+                    {{ c_w_c.name }}{{ c_w_c.subscript }}
+                </div>
+            {% endfor %}
 
-		<div class="compound">
-			{{ compound }}
-			{% if is_superuser %}
-				<a class="adminLink" href="/admin/gibbs/compound/{{ compound.pk }}">Edit in admin</a>
-			{% endif %}
-		</div>
-	
-		{% include "compound_result_table.html" %}
+            <form name="compoundForm" action="/compound" method="get">
+                <input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
+                
+                {{ reaction.conditions.name }}
+                <table class="results">
+                    {% include "compound_result_table.html" %}
+                    {% include "concentration_sub_table.html" %}
+                </table>
+                
+                <div class="buttonSet">
+                    <input type="submit" value="Update" name="submit" />
+                </div>
 
-		{% include "compound_info_table.html" %}
-	
+                <table class="results">
+                    {% include "compound_species_table.html" %}
+                </table>
+
+            </form>
+
+            {% include "compound_info_table.html" %}
 	</div>
 		
 {% include "footer.html" %}

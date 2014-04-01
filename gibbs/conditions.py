@@ -133,7 +133,7 @@ class _BaseConditions(object):
 
     def GetPhase(self, kegg_id):
         if kegg_id not in self._phases:
-            logging.error('Condition requested for unknown id: %s', kegg_id)
+            logging.debug('Condition requested for unknown id: %s', kegg_id)
             return None
 
         return self._phases[kegg_id]

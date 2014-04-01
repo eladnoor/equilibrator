@@ -7,7 +7,8 @@ from gibbs import reaction_form
 
 
 _REACTION_TEMPLATES_BY_SUBMIT = {'Update': 'reaction_page.html',
-                                 'Save': 'print_reaction.html'}
+                                 'Save': 'print_reaction.html',
+                                 'Reverse': 'reaction_page.html'}
 
 
 def ReactionPage(request):    
@@ -17,22 +18,13 @@ def ReactionPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid reaction form.')
     
-    # Figure out which template to render (based on which submit button they
+    # Figure out which template to render (based on which submit button was
     # pressed).
-    template_name = _REACTION_TEMPLATES_BY_SUBMIT.get(form.cleaned_submit,
-                                                      'reaction_page.html')
     rxn = reaction.Reaction.FromForm(form)
-    if form.cleaned_reactionId:
-        query = rxn.GetQueryString()
-    elif form.cleaned_submit == 'Reverse':
+    if form.cleaned_submit == 'Reverse':
         rxn.SwapSides()
-        query = rxn.GetQueryString()
-    elif form.cleaned_replace_co2:
-        rxn.TryReplaceCO2()
-        query = rxn.GetQueryString()
-    else:
-        query = form.cleaned_query
+    query = rxn.GetQueryString()
     
     # Render the template.
-    template_data = rxn.GetTemplateData(query)
-    return render_to_response(template_name, template_data)
+    template_name = _REACTION_TEMPLATES_BY_SUBMIT[form.cleaned_submit]
+    return render_to_response(template_name, rxn.GetTemplateData(query))
