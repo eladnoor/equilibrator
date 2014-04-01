@@ -1,12 +1,12 @@
 #!/usr/bin/python
 
-import itertools
+import itertools, json
 import unittest
-from util import django_utils
+import util.django_utils
+from gibbs.reaction import Reaction
 
 # NOTE(flamholz): This is crappy. We're using the real database for
 # a unit test. I wish I knew of a better way.
-django_utils.SetupDjango()
 
 from gibbs import models
 
@@ -100,7 +100,7 @@ class CompoundTest(unittest.TestCase):
                      (7.0, 0.2, 390.505))
 
         for ph, i_s, expected_dg0 in test_data:
-            actual_dg0 = compound.DeltaG0(pH=ph, ionic_strength=i_s)
+            actual_dg0 = compound.DeltaG0Prime(pH=ph, ionic_strength=i_s)
             self.assertAlmostEqual(expected_dg0, actual_dg0, 3,
                                    'ph: %f, i_s: %f, expected dG: %f, actual dG: %f' %
                                    (ph, i_s, expected_dg0, actual_dg0))
@@ -109,98 +109,111 @@ class StoredReactionTest(unittest.TestCase):
     """Tests for StoredReaction"""
     
     def testHashableReactionString(self):
-        """Ensure that hashable strings for different reactions are different."""
+        """
+            Ensure that hashable strings for different reactions are different
+            and the same for equivalent reactions.
+        """
+        
         compound_a = models.Compound(kegg_id='C00010')
         compound_b = models.Compound(kegg_id='C00009')
         compound_c = models.Compound(kegg_id='C00021')
         compound_d = models.Compound(kegg_id='C00032')
         compound_e = models.Compound(kegg_id='C00190')
-        hydrogen = models.Compound(kegg_id='C00080')
         
         # 1 a + 1 b = 1 c + 1 d
-        reactants_a = [models.Reactant(coeff=1, compound=compound_a),
-                       models.Reactant(coeff=1, compound=compound_b)]
-        products_a  = [models.Reactant(coeff=1, compound=compound_c),
+        reactants_a = [models.Reactant(coeff=-1, compound=compound_a),
+                       models.Reactant(coeff=-1, compound=compound_b),
+                       models.Reactant(coeff=1, compound=compound_c),
                        models.Reactant(coeff=1, compound=compound_d)]
-        hashable_a  = models.StoredReaction.HashableReactionString(reactants_a,
-                                                                   products_a)
-        
+        sr_a = models.StoredReaction.HashableReactionString(reactants_a)
         
         # 1 a + 1 b = 1 c + 2 d
-        reactants_b = [models.Reactant(coeff=1, compound=compound_a),
-                       models.Reactant(coeff=1, compound=compound_b)]
-        products_b  = [models.Reactant(coeff=1, compound=compound_c),
+        reactants_b = [models.Reactant(coeff=-1, compound=compound_a),
+                       models.Reactant(coeff=-1, compound=compound_b),
+                       models.Reactant(coeff=1, compound=compound_c),
                        models.Reactant(coeff=2, compound=compound_d)]
-        hashable_b  = models.StoredReaction.HashableReactionString(reactants_b,
-                                                                   products_b)
+        sr_b = models.StoredReaction.HashableReactionString(reactants_b)
         
         # 1 a + 1 b = 1 c + 1 e
-        reactants_c = [models.Reactant(coeff=1, compound=compound_a),
-                       models.Reactant(coeff=1, compound=compound_b)]
-        products_c  = [models.Reactant(coeff=1, compound=compound_c),
+        reactants_c = [models.Reactant(coeff=-1, compound=compound_a),
+                       models.Reactant(coeff=-1, compound=compound_b),
+                       models.Reactant(coeff=1, compound=compound_c),
                        models.Reactant(coeff=1, compound=compound_e)]
-        hashable_c  = models.StoredReaction.HashableReactionString(reactants_c,
-                                                                   products_c)
+        sr_c = models.StoredReaction.HashableReactionString(reactants_c)
         
         # 3 a + 1 b = 2 c
-        reactants_d = [models.Reactant(coeff=3, compound=compound_a),
-                       models.Reactant(coeff=1, compound=compound_b)]
-        products_d  = [models.Reactant(coeff=2, compound=compound_c)]
-        hashable_d  = models.StoredReaction.HashableReactionString(reactants_d,
-                                                                   products_d)
-        
-        all_hashables = (hashable_a, hashable_b, hashable_c, hashable_d)
-        for a, b in itertools.combinations(all_hashables, 2):
-            self.assertNotEqual(a, b)
-            
+        reactants_d = [models.Reactant(coeff=-3, compound=compound_a),
+                       models.Reactant(coeff=-1, compound=compound_b),
+                       models.Reactant(coeff=2, compound=compound_c)]
+        sr_d = models.StoredReaction.HashableReactionString(reactants_d)
+
         # 1 a + 1 b = 1 d + 1 c
-        reactants_a2 = [models.Reactant(coeff=1, compound=compound_a),
-                        models.Reactant(coeff=1, compound=compound_b)]
-        products_a2  = [models.Reactant(coeff=1, compound=compound_d),
+        reactants_a2 = [models.Reactant(coeff=-1, compound=compound_a),
+                        models.Reactant(coeff=-1, compound=compound_b),
+                        models.Reactant(coeff=1, compound=compound_d),
                         models.Reactant(coeff=1, compound=compound_c)]
-        hashable_a2  = models.StoredReaction.HashableReactionString(reactants_a2,
-                                                                    products_a2)
-        self.assertEqual(hashable_a2, hashable_a)
+        sr_a2 = models.StoredReaction.HashableReactionString(reactants_a2)
         
         # 1 d + 1 c = 1 a + 1 b 
-        products_a3  = [models.Reactant(coeff=1, compound=compound_a),
-                        models.Reactant(coeff=1, compound=compound_b)]
-        reactants_a3 = [models.Reactant(coeff=1, compound=compound_d),
-                        models.Reactant(coeff=1, compound=compound_c)]
-        hashable_a3  = models.StoredReaction.HashableReactionString(reactants_a3,
-                                                                    products_a3)
-        self.assertEqual(hashable_a3, hashable_a)
+        reactants_a3  = [models.Reactant(coeff=1, compound=compound_a),
+                         models.Reactant(coeff=1, compound=compound_b),
+                         models.Reactant(coeff=-1, compound=compound_d),
+                         models.Reactant(coeff=-1, compound=compound_c)]
+        sr_a3 = models.StoredReaction.HashableReactionString(reactants_a3)
         
         # 1 b + 3 a = 2 c
-        reactants_d2 = [models.Reactant(coeff=1, compound=compound_b),
-                        models.Reactant(coeff=3, compound=compound_a)]
-        products_d2  = [models.Reactant(coeff=2, compound=compound_c)]
-        hashable_d2  = models.StoredReaction.HashableReactionString(reactants_d2,
-                                                                    products_d2)
-        self.assertEqual(hashable_d2, hashable_d)
+        reactants_d2 = [models.Reactant(coeff=-1, compound=compound_b),
+                        models.Reactant(coeff=-3, compound=compound_a),
+                        models.Reactant(coeff=2, compound=compound_c)]
+        sr_d2 = models.StoredReaction.HashableReactionString(reactants_d2)
         
         # 2 c = 1 b + 3 a
-        products_d3  = [models.Reactant(coeff=1, compound=compound_b),
-                        models.Reactant(coeff=3, compound=compound_a)]
-        reactants_d3 = [models.Reactant(coeff=2, compound=compound_c)]
-        hashable_d3  = models.StoredReaction.HashableReactionString(reactants_d3,
-                                                                    products_d3)
-        self.assertEqual(hashable_d3, hashable_d)
+        reactants_d3  = [models.Reactant(coeff=1, compound=compound_b),
+                         models.Reactant(coeff=3, compound=compound_a),
+                         models.Reactant(coeff=-2, compound=compound_c)]
+        sr_d3 = models.StoredReaction.HashableReactionString(reactants_d3)
 
         # 1 b + 3 a = 2 c + 2 h+
-        reactants_d4 = [models.Reactant(coeff=1, compound=compound_b),
-                        models.Reactant(coeff=3, compound=compound_a)]
-        products_d4  = [models.Reactant(coeff=2, compound=compound_c),
-                        models.Reactant(coeff=2, compound=hydrogen)]
-        hashable_d4  = models.StoredReaction.HashableReactionString(reactants_d4,
-                                                                    products_d4)
-        self.assertEqual(hashable_d4, hashable_d)
+        reactants_d4 = [models.Reactant(coeff=-1, compound=compound_b),
+                        models.Reactant(coeff=-3, compound=compound_a),
+                        models.Reactant(coeff=2, compound=compound_c)]
+        sr_d4 = models.StoredReaction.HashableReactionString(reactants_d4)
+
+        # make sure all the 4 reactions have different hashable strings
+        for a, b in itertools.combinations((sr_a, sr_b, sr_c, sr_d), 2):
+            self.assertNotEqual(a, b)
+            
+        # make sure all the 3 versions of reaction a have the same
+        # hashable strings
+        for a, b in itertools.combinations((sr_a, sr_a2, sr_a3), 2):
+            self.assertEqual(a, b)
+
+        # make sure all the 4 versions of reaction a have the same
+        # hashable strings
+        for a, b in itertools.combinations((sr_d, sr_d2, sr_d3, sr_d4), 2):
+            self.assertEqual(a, b)
         
+
+class ReactionTest(unittest.TestCase):
+
+    def testJsonParsing(self):
+        parsed_json = json.loads(
+            """{ 
+                "ECS": [ "4.1.1.39" ],
+                "RID": "R00024",
+                "names": [ "3-phospho-D-glycerate carboxy-lyase" ],          
+                "reaction": [[-1, "C00001"], [-1, "C00011"],
+                             [2.0, "C00197"], [-1, "C01182"]]  
+                }
+            """)
+        rxn = Reaction.FromJson(parsed_json)
+        print str(rxn)
 
 def Suite():
     suites = (unittest.makeSuite(SpeciesFormationEnergyTest, 'test'),
               unittest.makeSuite(CompoundTest, 'test'),
-              unittest.makeSuite(StoredReactionTest, 'test'))
+              unittest.makeSuite(StoredReactionTest, 'test'),
+              unittest.makeSuite(ReactionTest, 'test'))
     return unittest.TestSuite(suites)
     
 

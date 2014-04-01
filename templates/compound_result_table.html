@@ -37,14 +37,24 @@
 
     {% if delta_g0_prime_estimate != None %}
         <tr>
-            <td width="150px">pH </td>
-            <td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="5"/></td>
-            <td colspan="4"><div id="phSlider"></div></td>
+            <td width="150px">
+                pH
+            </td>
+            <td width="50px"><input type="text" name="ph" id="phField" value="{{ ph }}" size="3"/></td>
+            <td colspan="4">
+                <div id="phSlider" />
+            </td>
         </tr>
         <tr>
-            <td width="150px">Ionic strength (M)</td>
-            <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="5"/></td>
-            <td colspan="4"><div id="ionStrengthSlider"></div></td>
+            <td width="150px">
+                Ionic strength [M]
+            </td>
+            <td width="50px">
+                <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ ionic_strength }}" size="3"/>
+            </td>
+            <td colspan="4">
+                <div id="ionStrengthSlider" />
+            </td>
         </tr>
     {% endif %}
 

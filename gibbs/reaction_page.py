@@ -21,7 +21,6 @@ def ReactionPage(request):
     # pressed).
     template_name = _REACTION_TEMPLATES_BY_SUBMIT.get(form.cleaned_submit,
                                                       'reaction_page.html')
-
     rxn = reaction.Reaction.FromForm(form)
     if form.cleaned_reactionId:
         query = rxn.GetQueryString()

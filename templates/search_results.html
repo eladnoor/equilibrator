@@ -1,19 +1,23 @@
 {% with "Search Results" as title %}
-	{% include "header.html" %}
+    {% include "header.html" %}
 {% endwith %}
 
-	<div id="searchResults">
+    <div id="searchResults">
   {% if enzymes_first %}
     {% include "enzyme_results.html" %}
     {% include "compound_results.html" %}
     {% else %}
       {% include "compound_results.html" %}
       {% include "enzyme_results.html" %}
-	{% endif %}
-	
-	{% if not compound_results and not enzyme_results %}
-		No results. Try again?
-	{% endif %}
-	</div>
+    {% endif %}
+    
+    {% if not compound_results and not enzyme_results %}
+        <div class="centerize">
+            <div class="warning">
+                No results. <a href="/">Try again?</a>
+            </div>
+        </div>
+    {% endif %}
+    </div>
 
 {% include "footer.html" %}

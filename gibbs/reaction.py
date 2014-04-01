@@ -8,29 +8,6 @@ from gibbs import conditions
 from gibbs import constants
 from gibbs import models
 
-# volatile compounds by order in KEGG: O2, NH3, CO, H2, N2
-# CO2 has special treatment and is not included in this list
-VOLATILE_COMPOUNDS_KEGG_IDS = ['C00011', # CO2 (only carbon dioxide without carbonates)
-                               'C00007', # O2
-                               'C00014', # NH3
-                               'C00237', # CO
-                               'C00282', # H2
-                               'C00697', # N2
-                               'C00058', # formic acid (COOH)                            
-                               'C00067', # formaldehyde (CH2O)
-                               'C00132', # methanol (CH3OH)
-                               'C01438', # methane (CH4)
-                               'C00469', # ethanol
-                               'C80045', # ethane
-                               'C06547', # ethylene
-                               'C80047', # propane
-                               'C11505', # propene
-                               'C00533', # nitric oxide (NO)
-                               'C00887', # nitrous oxide (N2O)
-                               'C05361', # hydrazine (N2H4)
-                               'C00283'  # hydrogen sulfide (H2S)
-                               ]
-
 class ReactantFormulaMissingError(Exception):
     
     def __init__(self, c):
@@ -57,7 +34,11 @@ class CompoundWithCoeff(object):
         self._name = name
         self.transformed_energy = None
         self.phase = phase
-        logging.info('ID = %s, phase = %s' % (compound.kegg_id, phase.PhaseName()))
+    
+    def Clone(self):
+        other = CompoundWithCoeff(self.coeff, self.compound,
+                                  self.phase, self.name)
+        return other
     
     def AbsoluteCoefficient(self):
         return numpy.abs(self.coeff)
@@ -69,10 +50,16 @@ class CompoundWithCoeff(object):
                                  name=reactant.compound.FirstName())
     
     @staticmethod
-    def FromId(coeff, kegg_id, phase, name=None):
-        compound = models.Compound.objects.get(kegg_id=kegg_id)
+    def FromId(coeff, kegg_id, phase=None, name=None):
+        try:
+            compound = models.Compound.objects.get(kegg_id=kegg_id)
+        except Exception:
+            return None
+        my_phase = phase or conditions.StandardAqueousPhase()
         my_name = name or compound.FirstName()
-        return CompoundWithCoeff(coeff, compound, phase, name=my_name)
+        
+        return CompoundWithCoeff(coeff, compound,
+                                 phase=my_phase, name=my_name)
         
     def Minus(self):
         """Returns a new CompoundWithCoeff with coeff = -self.coeff."""
@@ -101,8 +88,8 @@ class CompoundWithCoeff(object):
     def GetCompoundList(self):
         sg = self.compound._species_group
         species = sg.GetPhaseSpecies(self.phase.PhaseName())
-        logging.info('KEGG ID = %s' % self.kegg_id)
-        logging.info('# species in phase %s = %d' % (self.phase.PhaseName(), len(species)))
+        logging.debug('KEGG ID = %s' % self.kegg_id)
+        logging.debug('# species in phase %s = %d' % (self.phase.PhaseName(), len(species)))
         
         l = []
         for s in species:
@@ -110,7 +97,7 @@ class CompoundWithCoeff(object):
                       'charge': int(s.net_charge),
                       'nmg': int(s.number_of_mgs),
                       'dgzero': float(s.formation_energy)})
-        logging.info('compound_list = %s' % str(l))
+        logging.debug('compound_list = %s' % str(l))
         return l
     
     def GetName(self):
@@ -149,20 +136,11 @@ class CompoundWithCoeff(object):
     def GetPhaseName(self):
         return self.phase.PhaseName()
         
-    def GetPossiblePhases(self):
-        phase_list = []
-        if self.GetKeggID() == 'C00001':
-            phase_list.append(constants.LIQUID_PHASE_NAME)
-        else:
-            phase_list.append(constants.AQUEOUS_PHASE_NAME)
-            
-        if self.GetKeggID() in VOLATILE_COMPOUNDS_KEGG_IDS:
-            phase_list.append(constants.GAS_PHASE_NAME)
-        
-        return phase_list
+    def GetPossiblePhaseNames(self):
+        return self.compound.GetPossiblePhaseNames()
         
     def HasMultiplePhases(self):
-        return len(self.GetPossiblePhases()) > 1
+        return len(self.GetPossiblePhaseNames()) > 1
 
     def GetPhaseSubscript(self):
         return self.phase.Subscript()
@@ -190,7 +168,7 @@ class CompoundWithCoeff(object):
     human_string = property(GetPhaseHumanString)
     units = property(GetPhaseUnits)
     is_constant = property(GetPhaseIsConstant)
-    possible_phases = property(GetPossiblePhases)
+    possible_phases = property(GetPossiblePhaseNames)
     has_multiple_phases = property(HasMultiplePhases)
     kegg_id = property(GetKeggID)
 
@@ -218,21 +196,24 @@ class Reaction(object):
         self.e_reduction_potential = e_reduction_potential
         self._dg0_prime = None
         self._conditions = None
-        self._stored_reaction = None
-        self._all_stored_reactions = None
+        self._kegg_id = None
+
+        # used only as cache, no need to copy while cloning        
         self._catalyzing_enzymes = None
+        
         self._SetCompoundPriorities()
 
     def Clone(self):
-        other = Reaction(self.reactants, self.ph, self.pmg, self.i_s,
+        """
+            Make a copy of the 
+        """
+        rs = [r.Clone() for r in self.reactants]
+        other = Reaction(rs, self.ph, self.pmg, self.i_s,
                          self.e_reduction_potential)
         other._dg0_prime = self._dg0_prime
         other._conditions = self._conditions
-        other._stored_reaction = self._stored_reaction
-        other._all_stored_reactions = self._all_stored_reactions
-        other._catalyzing_enzymes = self._catalyzing_enzymes
         return other
-    
+
     def _SetCompoundPriorities(self):
         """
             Returns a set of (int, SpeciesGroup) tuples for the reaction.
@@ -245,8 +226,8 @@ class Reaction(object):
         if priorities == []:
             return
         priority_to_use = min([max(l) for l in priorities if l])
-        logging.info('All priorities: %s' % str(priorities))        
-        logging.info('Using the priority %d' % priority_to_use)        
+        logging.debug('All priorities: %s' % str(priorities))        
+        logging.debug('Using the priority %d' % priority_to_use)        
         
         for c in self.reactants:
             c.compound.SetSpeciesGroupPriority(priority_to_use)
@@ -279,64 +260,63 @@ class Reaction(object):
     conditions = property(GetConditions, ApplyConditions)
     
     def __str__(self):
-        """Simple text reaction representation."""
+        """
+            Simple text reaction representation.
+        """
         rlist = map(str, self.substrates)
         plist = map(str, self.products)
         return '%s <=> %s' % (' + '.join(rlist), ' + '.join(plist))
+
+    def GetSparseRepresentation(self):
+        sparse = {}
+        for r in self.reactants:
+            sparse[r.kegg_id] = r.coeff
+        return sparse
+
+    def GetHashableReactionString(self):
+        return models.StoredReaction.HashableReactionString(self.GetSparseRepresentation())
     
-    def SameChemicalReaction(self, stored_reaction):
-        """Checks that the two chemical reactions are the same."""
-        my_string = models.StoredReaction.HashableReactionString(self.substrates,
-                                                                 self.products)
-        their_string = stored_reaction.GetHashableReactionString()
-        return my_string == their_string
-    
-    def _GetHash(self):
-        """Get the hash for this reaction."""
-        if self._stored_reaction:
-            return self._stored_reaction.GetHash()
-        
-        return models.StoredReaction.HashReaction(self.substrates,
-                                                  self.products)
+    def GetHash(self):
+        return models.StoredReaction.HashReaction(self.GetSparseRepresentation())
     
     def _GetAllStoredReactions(self):
-        """Find all stored reactions matching this compound."""
-        if not self._all_stored_reactions:
-            self._all_stored_reactions = []
-            hash = self._GetHash()
-            matching_reactions = models.StoredReaction.objects.select_related(
-                ).filter(hash=hash)
-            self._all_stored_reactions = filter(self.SameChemicalReaction,
-                                                matching_reactions)
+        """
+            Find all stored reactions matching this compound (using the hash)
+        """
+        logging.info('looking for stored reactions matching this one')
+        my_hash = self.GetHash()
+        my_string = self.GetHashableReactionString()
+
+        matching_stored_reactions = models.StoredReaction.objects.select_related(
+            ).filter(reaction_hash=my_hash)
+        logging.info('my hash = %s (%d matches)' %
+                     (my_hash, len(matching_stored_reactions)))
         
-        return self._all_stored_reactions
-    all_stored_reactions = property(_GetAllStoredReactions)
+        matching_stored_reactions = [m for m in matching_stored_reactions
+            if m.GetHashableReactionString() == my_string]
+        logging.info('my hashable string = %s (%d matches)' %
+                     (my_string, len(matching_stored_reactions)))
+        
+        return matching_stored_reactions
     
-    def GetStoredReaction(self):
-        """Get the stored reaction if any."""
-        return self._stored_reaction
-    
-    def SetStoredReaction(self, stored_reaction):
-        """Setter for stored reaction."""
-        self._stored_reaction = stored_reaction
-    stored_reaction = property(GetStoredReaction,
-                               SetStoredReaction)
-    
-    def GetCatalyzingEnzymes(self):
-        """Get all the enzymes catalyzing this reaction."""        
-        if not self._catalyzing_enzymes:
+    def _GetCatalyzingEnzymes(self):
+        """
+            Get all the enzymes catalyzing this reaction.
+        """
+        if self._catalyzing_enzymes is None:
+            logging.info('looking for enzymes catalyzing this reaction')
             self._catalyzing_enzymes = []
-            for stored_reaction in self.all_stored_reactions:
+            for stored_reaction in self._GetAllStoredReactions():
                 enzymes = stored_reaction.enzyme_set.all()
                 self._catalyzing_enzymes.extend(enzymes)
-        
         return self._catalyzing_enzymes
-    catalyzing_enzymes = property(GetCatalyzingEnzymes)
     
     def ToJson(self):
-        """Return this reaction as a JSON-compatible object."""
+        """
+            Return this reaction as a JSON-compatible object.
+        """
         cdicts = [c.ToJson(include_species=False) for c in self.reactants]
-        enzdicts = [e.ToJson() for e in self.catalyzing_enzymes]
+        enzdicts = [e.ToJson() for e in self._GetCatalyzingEnzymes()]
         d = {'reaction_string': str(self), 
              'reactants': cdicts,
              'enzymes': enzdicts,
@@ -345,7 +325,7 @@ class Reaction(object):
              'dgzero': None,
              'dgzero_prime': None,
              'keq_prime': None,
-             'KEGG_ID': None}
+             'KEGG_ID': self._kegg_id}
         
         if self.dg0_prime is not None:
             d['dgzero_prime'] = {
@@ -358,26 +338,24 @@ class Reaction(object):
                 'pH': self.ph,
                 'ionic_strength': self.i_s}
         
-        if self.stored_reaction:
-            d['KEGG_ID'] = self.stored_reaction.kegg_id
-        
         return d
-    
+
     @staticmethod
     def FromForm(form):
-        """Build a reaction object from a ReactionForm.
-        
-        Args:
-            form: a ReactionForm object.
-        
-        Returns:
-            A Reaction object or None if there's an error.
+        """
+            Build a reaction object from a ReactionForm.
+            
+            Args:
+                form: a ReactionForm object.
+            
+            Returns:
+                A Reaction object or None if there's an error.
         """
         if form.cleaned_reactionId:
             stored_reaction = models.StoredReaction.objects.get(
                 kegg_id=form.cleaned_reactionId)
             return Reaction.FromStoredReaction(stored_reaction)
-        
+
         ph = form.cleaned_ph
         pmg = form.cleaned_pmg
         i_s = form.cleaned_ionic_strength
@@ -405,28 +383,7 @@ class Reaction(object):
                                 e_reduction_potential=e_red)
     
     @staticmethod
-    def FromStoredReaction(stored_reaction,
-                           cond=None,
-                           pH=constants.DEFAULT_PH,
-                           pMg=constants.DEFAULT_PMG,
-                           ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        """Build a reaction object from a stored reaction.
-        
-        Args:
-            stored_reaction: models.StoredReaction object.
-            
-        Returns:
-            A Reaction object.
-        """
-        rxn = Reaction.FromIds(stored_reaction.reactants,
-                               cond=cond,
-                               pH=pH, pMg=pMg,
-                               ionic_strength=ionic_strength)
-        rxn.SetStoredReaction(stored_reaction)
-        return rxn
-    
-    @staticmethod
-    def FromIds(reactants,
+    def FromIds(compound_list,
                 cond=None,
                 pH=constants.DEFAULT_PH,
                 pMg=constants.DEFAULT_PMG,
@@ -435,33 +392,28 @@ class Reaction(object):
         """Build a reaction object from lists of IDs.
         
         Args:
-            substrates: an iterable of (coeff, kegg_id, name) of substrates.
-            products: an iterable of (coeff, kegg_id, name) of products.
+            compound_list: an iterable of (coeff, kegg_id, name) of reactants.
             concentration_profile: a ConcentrationProfile object.
             
         Returns:
             A properly set-up Reaction object or None if there's an error.
         """
-        r_ids = [id for unused_coeff, id, unused_name in reactants]
-        compounds = models.Compound.GetCompoundsByKeggId(r_ids)
-        
+        reactants = []                
         # Get products and substrates.
-        rs = []
-        for coeff, id, name in reactants:
-            if id not in compounds:
-                logging.error('Unknown reactant %s', id)
-                return None
-            rs.append(CompoundWithCoeff(coeff, compounds[id],
-                                        conditions.StandardAqueousPhase(),
-                                        name))
+        for coeff, kegg_id, name in compound_list:
+            logging.info('Adding compound %s with coeff %d' % (kegg_id, coeff))
+            c_w_c = CompoundWithCoeff.FromId(coeff, kegg_id, name=name)
+            reactants.append(c_w_c)
         
-        rxn = Reaction(rs, pH=pH, pMg=pMg,
+        rxn = Reaction(reactants, pH=pH, pMg=pMg,
                        ionic_strength=ionic_strength,
                        e_reduction_potential=e_reduction_potential)
-        if cond:
-            rxn.ApplyConditions(cond)
-        else:
-            rxn.ApplyConditions(conditions.StandardConditions())
+        cond = cond or conditions.StandardConditions()
+        
+        for c_w_c in rxn.reactants:
+            cond.SetPhase(c_w_c.kegg_id,
+                          c_w_c.compound.GetDefaultPhaseName())
+        rxn.ApplyConditions(cond)
         
         return rxn
     
@@ -659,28 +611,7 @@ class Reaction(object):
         return '%s <=> %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
     def ContainsCO2(self):
-        co2_id = 'C00011'
-        return self._FindCompoundIndex(self.reactants, co2_id) is not None
-
-    def ContainsVolatile(self):
-        """Checks if at least one of the reactants is volatile
-        
-        Returns:
-            True if there is a volatile reactant
-        """
-        for v_id in VOLATILE_COMPOUNDS_KEGG_IDS:
-            if self._FindCompoundIndex(self.reactants, v_id) is not None:
-                return True
-        return False
-
-    def GetVolatileReactants(self):
-        volatiles = []
-        for v_id in VOLATILE_COMPOUNDS_KEGG_IDS:
-            ind = self._FindCompoundIndex(self.reactants, v_id)
-            if ind is not None:
-                volatiles.append(self.reactants[ind])
-            
-        return volatiles
+        return self._FindCompoundIndex('C00011') is not None
             
     def IsReactantFormulaMissing(self):
         try:
@@ -710,14 +641,6 @@ class Reaction(object):
             True if the collection is electron-wise balanced.
         """
         return self._GetElectronDiff() == 0
-    
-    def IsHalfReaction(self):
-        """Checks if the reaction is a half-reaction (excess electrons).
-        
-        Returns:
-            True if the collection is electron-wise balanced.
-        """
-        return self._GetElectronDiff() != 0
     
     def StandardizeHalfReaction(self):
         """Checks if the reaction is a half-reaction (excess electrons).
@@ -763,8 +686,10 @@ class Reaction(object):
         """
             Returns the first index of the compound with the given KEGG id.
         """
+        logging.debug('Looking for the index of %s' % kegg_id)
         for i, c in enumerate(self.reactants):
             if c.compound.kegg_id == kegg_id:
+                logging.debug('Found %s at index %d' % (kegg_id, i))
                 return i
         return None
 
@@ -778,11 +703,10 @@ class Reaction(object):
         i = self._FindCompoundIndex(from_id)
         if i is None:
             return
-        from_c_w_c = self.reactants[i]
-        coeff = from_c_w_c.coeff
-        phase = from_c_w_c.phase
-        to_c_w_c = CompoundWithCoeff.FromId(coeff, to_id, phase)
-        self.reactants[i] = to_c_w_c
+        how_many = self.reactants[i].coeff
+        self._AddCompound(from_id, -how_many)
+        self._AddCompound(to_id, how_many)
+        self._Dedup()
 
     def _Dedup(self):
         """
@@ -816,10 +740,10 @@ class Reaction(object):
         if i is not None:
             self.reactants[i].coeff += how_many
         else:
-            phase = self._conditions.GetPhase(kegg_id)
-            c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id, phase)
-            self.reactants.append(c_w_coeff)    
-        self._Dedup()
+            c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id)
+            self.reactants.append(c_w_coeff)
+            self._conditions.SetPhase(kegg_id,
+                                      c_w_coeff.compound.GetDefaultPhaseName())
 
     def TryBalanceWithWater(self):
         """Try to balance the reaction with water.
@@ -832,8 +756,9 @@ class Reaction(object):
         if extra_waters is None:
             # cannot balance the reaction with H2O only
             return False
-        
-        self._AddCompound('C00001', extra_waters)
+        if extra_waters != 0:
+            self._AddCompound('C00001', extra_waters)
+            self._Dedup()
         return True
     
     def CanBalanceWithWater(self):
@@ -850,8 +775,10 @@ class Reaction(object):
                          reduced_acceptor_id='C00004'):  # NADH
         """Try to balance the reaction electons."""        
         net_electrons = self._GetElectronDiff()
-        self._AddCompound(reduced_acceptor_id, -net_electrons/2)
-        self._AddCompound(acceptor_id, net_electrons/2)
+        if net_electrons != 0:
+            self._AddCompound(reduced_acceptor_id, -net_electrons/2)
+            self._AddCompound(acceptor_id, net_electrons/2)
+            self._Dedup()
         
     def FilterHydrogen(self):
         """Removes Hydrogens from the list of compounds."""
@@ -1047,14 +974,11 @@ class Reaction(object):
     substrates = property(GetSubstrates)
     products = property(GetProducts)
     contains_co2 = property(ContainsCO2)
-    contains_volatile = property(ContainsVolatile)
-    volatile_reactants = property(GetVolatileReactants)
     is_conserving = property(CheckConservationLaws)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
     is_empty = property(IsEmpty)    
     is_balanced = property(IsBalanced)
     is_electron_balanced = property(IsElectronBalanced)
-    is_half_reaction = property(IsHalfReaction)
     balanced_with_water = property(CanBalanceWithWater)
     extra_atoms = property(ExtraAtoms)
     missing_atoms = property(MissingAtoms)
@@ -1072,4 +996,5 @@ class Reaction(object):
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)
+    catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     

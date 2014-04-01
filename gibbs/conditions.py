@@ -103,49 +103,10 @@ class _BaseConditions(object):
         self.ionic_strength = ionic_strength
         self.temperature = temperature
         self.e_reduction_potential = e_reduction_potential
+        self._phases = {}
 
-    def __str__(self):
-        raise NotImplementedError
-    
-    def _GetUrlParams(self, kegg_id):
-        return ['conditions=%s' % self.__str__()]
-
-    def GetTemplateDict(self):
-        return {'ph': self.pH, 'pmg': self.pMg,
-                'ionic_strength': self.ionic_strength,
-                'temperature': self.temperature,
-                'e_reduction_potential': self.e_reduction_potential,
-                'conditions': self.__str__()}
-    
-    def GetPhase(self, kegg_id):
-        raise NotImplementedError
-        
-class StandardConditions(_BaseConditions):
-    
-    def __str__(self):
-        return constants.STANDARD_CONDITION_STRING
-        
-    def GetPhase(self, kegg_id):
-        if kegg_id == 'C00001':
-            return StandardLiquidPhase()
-        else:
-            return CustomAqueousPhase()
-
-class MillimolarConditions(_BaseConditions):
-
-    def __str__(self):
-        return constants.MILLIMOLAR_CONDITION_STRING
-    
-    def GetPhase(self, kegg_id):
-        if kegg_id == 'C00001':
-            return StandardLiquidPhase()
-        else:
-            return CustomAqueousPhase(1e-3)
-            
-class CustomConditions(_BaseConditions):
-    
     @staticmethod
-    def _GetPhase(phase, value):
+    def _GeneratePhase(phase, value):
         if phase == constants.AQUEOUS_PHASE_NAME:
             return CustomAqueousPhase(value)
         if phase == constants.GAS_PHASE_NAME:
@@ -155,15 +116,21 @@ class CustomConditions(_BaseConditions):
         if phase == constants.SOLID_PHASE_NAME:
             return StandardSolidPhase()    
         raise NotImplementedError
-    
-    def SetPhasesAndRatios(self, all_ids, all_phases, all_ratios):
-        self._phases = {}
-        for kegg_id, phase, ratio in zip(all_ids, all_phases, all_ratios):
-            self._phases[kegg_id] = CustomConditions._GetPhase(phase, ratio)
 
-    def __str__(self):
-        return constants.CUSTOM_CONDITION_STRING
-    
+    def GetTemplateDict(self):
+        return {'ph': self.pH, 'pmg': self.pMg,
+                'ionic_strength': self.ionic_strength,
+                'temperature': self.temperature,
+                'e_reduction_potential': self.e_reduction_potential,
+                'conditions': self.__str__()}
+
+    def SetPhasesAndRatios(self, all_ids, all_phases, all_ratios):
+        for kegg_id, phase, ratio in zip(all_ids, all_phases, all_ratios):
+            self.SetPhase(kegg_id, phase, ratio)
+
+    def SetPhase(self, kegg_id, phase, ratio=1):
+        raise NotImplementedError
+
     def GetPhase(self, kegg_id):
         if kegg_id not in self._phases:
             logging.error('Condition requested for unknown id: %s', kegg_id)
@@ -175,7 +142,31 @@ class CustomConditions(_BaseConditions):
         return ['conditions=%s' % self.__str__(),
                 'reactantsPhase=%s' % phase.PhaseName(),
                 'reactantsConcentration=%s' % phase.Value()]
+        
+class StandardConditions(_BaseConditions):
 
+    def __str__(self):
+        return constants.STANDARD_CONDITION_STRING
+
+    def SetPhase(self, kegg_id, phase, ratio=1):
+        self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, 1)
+        
+class MillimolarConditions(_BaseConditions):
+
+    def __str__(self):
+        return constants.MILLIMOLAR_CONDITION_STRING
+
+    def SetPhase(self, kegg_id, phase, ratio=1):
+        self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, 1e-3)
+    
+class CustomConditions(_BaseConditions):
+
+    def __str__(self):
+        return constants.CUSTOM_CONDITION_STRING
+
+    def SetPhase(self, kegg_id, phase, ratio=1):
+        self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, ratio)
+    
 ###############################################################################
 
 def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):

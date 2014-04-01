@@ -38,7 +38,6 @@ def GetReactions(rids_list):
             continue
     return rxns
         
-
 def GetCompounds(cids_list):
     """Find all the given compounds in the database.
     
@@ -138,6 +137,15 @@ def AddPmapToCompound(pmap, compound):
     sg.save()
     compound.species_groups.add(sg)
 
+def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
+    parsed_json = json.load(gzip.open(gc_nullspace_filename))
+    
+    for rd in parsed_json:
+        claw = models.ConservationLaw()
+        claw.msg = rd['msg']
+        claw.reactants = json.dumps(rd['reaction'])
+        claw.save()
+
 def LoadKeggCompounds(kegg_json_filename=COMPOUND_FILE, draw_thumbnails=True):
     parsed_json = json.load(gzip.open(kegg_json_filename, 'r'))
     
@@ -206,31 +214,13 @@ def LoadKeggReactions(reactions_json_filename=REACTION_FILE):
     for rd in parsed_json:
         try:
             rid = rd['RID']
-            rxn = rd['reaction']
-            substrates = []
-            products = []
-            for coeff, cid in rxn:
-                reactant = models.Reactant.GetOrCreate(cid, abs(coeff))
-                if coeff < 0:
-                    substrates.append(reactant)
-                else:
-                    products.append(reactant)
-                
-            # Need to save once.
-            rxn = models.StoredReaction(kegg_id=rid)
-            rxn.save()
-            
-            for reactant in substrates:
-                rxn.substrates.add(reactant)
-            for product in products:
-                rxn.products.add(product)
-            rxn.hash = rxn.GetHash()
+            rxn = models.StoredReaction.FromJson(rd)
+            rxn.GenerateHash()
             rxn.save()
         except Exception, e:
-            logging.warning('Missing data for rid %s', rid)
+            logging.warning('Missing data for reaction %s', rid)           
             logging.warning(e)
             continue
-
 
 def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
     parsed_json = json.load(gzip.open(enzymes_json_filename))
@@ -252,10 +242,6 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
                 logging.info('Ignoring EC %s since we found no reactions.' % ec)
                 continue
             
-            substrates = GetCompounds(ed.get('substrates'))
-            products = GetCompounds(ed.get('products'))
-            cofactors = GetCompounds(ed.get('cofactors'))
-            
             # Save first so we can do many-to-many mappings.
             enz = models.Enzyme(ec=ec)
             enz.save()
@@ -263,9 +249,6 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             # Add names, reactions, and compound mappings.
             map(enz.common_names.add, names)
             map(enz.reactions.add, reactions)
-            map(enz.substrates.add, substrates)
-            map(enz.products.add, products)
-            map(enz.cofactors.add, cofactors)
             enz.save()
             
         except Exception, e:
@@ -273,36 +256,11 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             logging.warning(e)
             continue
 
-
-#def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
-#    parsed_json = json.load(gzip.open(gc_nullspace_filename))
-#    
-#    for rd in parsed_json:
-#        claw = models.ConservationLaw()
-#        claw.msg = rd['msg']
-#        claw.save()
-#        for coeff, cid in rd['reaction']:
-#            reactant = models.Reactant.GetOrCreate(cid, coeff)
-#            claw.reactants.add(reactant)
-#        claw.save()
-
-
-def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
-    parsed_json = json.load(gzip.open(gc_nullspace_filename))
-    
-    for rd in parsed_json:
-        claw = models.ConservationLaw()
-        claw.msg = rd['msg']
-        claw.reactants = json.dumps(rd['reaction'])
-        claw.save()
-
-
 def CheckData(filenames=(COMPOUND_FILE,
                          REACTION_FILE,
                          ENZYME_FILE)):
     for json_fname in filenames:
         json.load(gzip.open(json_fname, 'r'))
-
 
 def LoadAllKeggData(draw_thumbnails=True):
     LoadKeggGCNullspace()

@@ -27,7 +27,7 @@ class CommonName(models.Model):
     """
         A common name of a compound.
     """
-    name = models.CharField(max_length=500, db_index=True)
+    name = models.CharField(max_length=500)
     enabled = models.BooleanField(True)
     
     @staticmethod
@@ -139,7 +139,9 @@ class Specie(models.Model):
             dG += self.number_of_mgs * \
                    (constants.RTlog10 * pMg - constants.MG_FORMATION_ENERGY)
 
-        logging.info('dG0 = %.1f --> dG0\' = %.1f' % (self.formation_energy, dG))
+        logging.debug('nH = %d, z = %d, dG0 = %.1f --> dG0\' = %.1f' % 
+                      (self.number_of_hydrogens, self.net_charge,
+                       self.formation_energy, dG))
         return dG
     
     def __unicode__(self):
@@ -233,6 +235,7 @@ class SpeciesGroup(models.Model):
         
         transform = lambda x: x.Transform(pH=pH, pMg=pMg, 
                                           ionic_strength=ionic_strength)
+        logging.debug('Calculating dG0\' for %s' % (self.kegg_id))
         if phase == constants.DEFAULT_PHASE:
             # Compute per-species transforms, scaled down by R*T.
             scaled_transforms = [(-transform(s) / constants.RT)
@@ -255,7 +258,7 @@ class SpeciesGroup(models.Model):
                 # equilibrium between pseudoisomers in that phase
                 dg0_prime = transform(species[0])
         
-        logging.info('dG0\' for %s = %.1f' % (self.kegg_id, dg0_prime))
+        logging.debug('total: dG0\' = %.1f' % dg0_prime)
         return dg0_prime
             
 class Compound(models.Model):
@@ -331,8 +334,8 @@ class Compound(models.Model):
         for sg in self.species_groups.all():
             if sg.priority == priority:
                 self._species_group_to_use = sg
-                logging.info('Setting priority for %s to %d' % 
-                             (self.kegg_id, priority))
+                logging.debug('Setting priority for %s to %d' % 
+                              (self.kegg_id, priority))
                 break
     
     def SetHighestPriority(self):
@@ -432,7 +435,7 @@ class Compound(models.Model):
             Returns a dictionary of atoms and their counts for this compound.
         """
         if not self.formula:
-            logging.warning('Formula is not defined for KEGG ID %s', self.kegg_id)
+            logging.debug('Formula is not defined for KEGG ID %s', self.kegg_id)
             return None
         
         atom_bag = self.FORMULA_PARSER.GetAtomBag(self.formula)
@@ -583,6 +586,21 @@ class Compound(models.Model):
                 sources_set.add(source)
                 yield sg
 
+    def GetPossiblePhaseNames(self):
+        possible_phases = set()
+        for sg in self.all_species_groups:
+            for s in sg.all_species:
+                possible_phases.add(s.phase)
+        
+        return sorted(possible_phases)
+
+    def GetDefaultPhaseName(self):
+        possible_phases = self.GetPossiblePhaseNames()
+        if constants.DEFAULT_PHASE in possible_phases:
+            return constants.DEFAULT_PHASE
+        else:
+            return possible_phases[0]
+
     def _GetDGSource(self):
         """Returns the source of the dG data."""
         if not self._species_group:
@@ -651,6 +669,9 @@ class Reactant(models.Model):
     # The coeff.
     coeff = models.FloatField(default=1.0)
 
+    def __init__(self, *args, **kwargs):        
+        super(Reactant, self).__init__(*args, **kwargs)
+        
     @staticmethod
     def GetOrCreate(kegg_id, coeff):
         """Attempts to fetch the CommonName object, or creates it if not present.
@@ -676,48 +697,49 @@ class StoredReaction(models.Model):
     """A reaction stored in the database."""
     # The ID of this reaction in KEGG.
     kegg_id = models.CharField(max_length=10, null=True)
-    
-    # The list of substrates.
-    substrates = models.ManyToManyField(Reactant, related_name='substrate_in')
-    
-    # The list of products.
-    products = models.ManyToManyField(Reactant, related_name='product_in')
 
+    # a JSON representation of the reaction (i.e. the reactants and coefficients)
+    reactants = models.TextField(null=True)
+    
     # a hash string for fast lookup of enzyme names by reaction    
-    hash = models.CharField(max_length=2048)
-    
-    @staticmethod
-    def _SideString(side):
-        """Returns a string representation for a single side of a reaction.
-        
-        Args:
-            side: the list of CompoundWithCoeff objects representing the side.
-        """
-        l = []
-        for r in side:
-            if r.coeff == 1:
-                l.append(r.compound.FirstName())
-            else:
-                l.append('%d %s' % (r.coeff,
-                                    r.compound.FirstName()))
-        return ' + '.join(l)
+    reaction_hash = models.CharField(max_length=128, db_index=True)
 
-    def ReactionString(self):
-        """Get the string representation of this reaction."""
-        return '%s <=> %s' % (self._SideString(self.substrates.all()),
-                              self._SideString(self.products.all()))
+    @staticmethod
+    def FromJson(rd):
+        return StoredReaction(kegg_id=rd['RID'],
+                              reactants=json.dumps(rd['reaction']))
     
-    def GetReactants(self):
-        all_reactants = []
-        for r in self.substrates.all():
-            all_reactants.append((-r.coeff, r.compound.kegg_id, r.compound.FirstName()))
-        for r in self.products.all():
-            all_reactants.append((r.coeff, r.compound.kegg_id, r.compound.FirstName()))
-        return all_reactants
-    reactants = property(GetReactants)
+    def GetSparseRepresentation(self):
+        sparse = {}
+        for coeff, kegg_id in json.loads(self.reactants):
+            sparse[kegg_id] = coeff
+        if 'C00080' in sparse: # ignore H+ in stored reactions
+            sparse.pop('C00080')
+        return sparse
     
     @staticmethod
-    def HashableReactionString(substrates, products):
+    def _CompoundToString(kegg_id, coeff):
+        if coeff == 1:
+            return kegg_id
+        else:
+            return "%g %s" % (coeff, kegg_id)
+
+    def ToString(self):
+        """
+            String representation.
+        """
+        #TODO: need to replace the KEGG IDs with the common names of the compounds
+        left = []
+        right = []
+        for coeff, kegg_id in json.loads(self.reactants):
+            if coeff < 0:
+                left.append(StoredReaction._CompoundToString(kegg_id, -coeff))
+            elif coeff > 0:
+                right.append(StoredReaction._CompoundToString(kegg_id, coeff))
+        return "%s <=> %s" % (' + '.join(left), ' + '.join(right))
+        
+    @staticmethod
+    def HashableReactionString(sparse):
         """Return a hashable string for a biochemical reaction.
         
         The string fully identifies the biochemical reaction up to directionality.
@@ -725,53 +747,39 @@ class StoredReaction(models.Model):
         stoichiometry up to their directionality.
         
         Args:
-            substrates: the substrates; a list of Reactants or like objects.
-            products: the products; a list of Reactants or like objects.
+            sparse: a dictionary whose keys are kegg_id and values are 
+                    stoichiometric coefficients
         """
-        sort_key = lambda r: r.compound.kegg_id
-        make_str = lambda r: '%g %s' % (r.coeff, r.compound.kegg_id)
-        is_not_hydrogen = lambda r: r.compound.kegg_id != 'C00080'
+        if len(sparse) == 0:
+            return ''
         
-        substrates_strs = map(make_str,
-                              sorted(filter(is_not_hydrogen, substrates),
-                                     key=sort_key))
-        rside_str = ' + '.join(substrates_strs)
-        rside_hash = str(hash(rside_str))
-        
-        products_strs = map(make_str,
-                            sorted(filter(is_not_hydrogen, products),
-                                   key=sort_key))
-        pside_str = ' + '.join(products_strs)
-        pside_hash = str(hash(pside_str))
-        
-        sides = ['%s%s' % (rside_hash, rside_str),
-                 '%s%s' % (pside_hash, pside_str)]
-        sides.sort()
-        return '%s <=> %s' % (sides[0], sides[1])
-    
-    def GetHashableReactionString(self):
-        """Get a hashable string identifying this chemical reaction."""
-        return self.HashableReactionString(self.substrates.all(),
-                                           self.products.all())
+        # sort according to KEGG ID and normalize the stoichiometric coefficients
+        # such that the coeff of the reactant with the lowest ID will be 1
+        kegg_id_list = sorted(sparse.keys())
+        if sparse[kegg_id_list[0]] == 0:
+            raise Exception('One of the stoichiometric coefficients is 0')
+        norm_factor = 1.0 / sparse[kegg_id_list[0]]
+        return ' + '.join(['%g %s' % (norm_factor*sparse[kegg_id], kegg_id)
+                           for kegg_id in kegg_id_list])
     
     @staticmethod
-    def HashReaction(substrates, products):
+    def HashReaction(sparse):
         md5 = hashlib.md5()
-        md5.update(StoredReaction.HashableReactionString(substrates, products))
+        md5.update(StoredReaction.HashableReactionString(sparse))
         return md5.hexdigest()
     
-    def GetHash(self):
-        """Returns a string hash of this reaction for easy identification."""
-        return self.HashReaction(self.substrates.all(),
-                                 self.products.all())
+    def GetHashableReactionString(self):
+        return StoredReaction.HashableReactionString(self.GetSparseRepresentation())
     
-    def __hash__(self):
-        """Makes stored reactions hashable."""
-        return hash(self.GetHash())
+    def GetHash(self):
+        return StoredReaction.HashReaction(self.GetSparseRepresentation())
+
+    def GenerateHash(self):
+        self.reaction_hash = self.GetHash()
     
     def __str__(self):
         """String representation."""
-        return self.ReactionString()
+        return self.ToString()
     
     def Link(self):
         """Returns a link to this reaction's page."""
@@ -785,33 +793,27 @@ class StoredReaction(models.Model):
             returns a list of CSV rows with the following columns:
             kegg ID, dG0_prime, pH, ionic_strength, T, Note
         """
-        coeff_compound_pairs = []
-        for reactant in self.substrates.all():
-            coeff_compound_pairs.append((-reactant.coeff, reactant.compound))
-        for reactant in self.products.all():
-            coeff_compound_pairs.append((reactant.coeff, reactant.compound))
-        
         dG0_prime = 0
-        for coeff, compound in coeff_compound_pairs:
-            dG0_f_prime = compound.DeltaG0Prime(pH, pMg, ionic_strength)
-            if dG0_f_prime is not None:
-                dG0_prime += coeff * dG0_f_prime
-            else:
+        for kegg_id, coeff in json.loads(self.reactants):
+            try:
+                compound = models.Compound.objects.get(kegg_id=kegg_id)
+                dG0_f_prime = compound.DeltaG0Prime(pH, pMg, ionic_strength)
+                if dG0_f_prime is not None:
+                    dG0_prime += coeff * dG0_f_prime
+            except Exception:
                 return [(self.kegg_id, None, pH, ionic_strength,
-                         constants.DEFAULT_TEMP,
-                         "One of the compounds has no formation energy")]
+                        constants.DEFAULT_TEMP,
+                        "One of the compounds has no formation energy")]
         
-        dG0_prime = round(dG0_prime, 1)
-        return [(self.kegg_id, dG0_prime, pH, ionic_strength,
+        return [(self.kegg_id, round(dG0_prime, 1), pH, ionic_strength,
                  constants.DEFAULT_TEMP, None)]
         
     link = property(Link)
-    reaction_string = property(ReactionString)
+    reaction_string = property(ToString)
 
 class ConservationLaw(models.Model):
     """ conservation laws which every reaction query must be checked against. """
-    # The list of products.
-    #reactants = models.ManyToManyField(Reactant, related_name='reactant_in')
+    # a JSON representation of the reaction (i.e. the reactants and coefficients)
     reactants = models.TextField(null=True)
     
     msg = models.TextField(null=True)
@@ -822,41 +824,16 @@ class ConservationLaw(models.Model):
             sparse[kegg_id] = coeff
         return sparse
     
-#    def __str__(self):
-#        s_left = []
-#        s_right = []
-#        for reactant in self.reactants.all():
-#            if abs(reactant.coeff) < 0.01:
-#                continue
-#            if reactant.coeff > 0:
-#                if reactant.coeff == 1:
-#                    s_right.append(reactant.compound.kegg_id)
-#                else:
-#                    s_right.append('%g %s' % (reactant.coeff, reactant.compound.kegg_id))
-#            elif reactant.coeff < 0:
-#                if reactant.coeff == -1:
-#                    s_right.append(reactant.compound.kegg_id)
-#                else:
-#                    s_right.append('%g %s' % (-reactant.coeff, reactant.compound.kegg_id))
-#        return ' + '.join(s_left) + ' => ' + ' + '.join(s_right)
-    
 class Enzyme(models.Model):
     """A single enzyme."""
     # EC class enzyme.
     ec = models.CharField(max_length=10)
     
-    # A list of common names of the compound, used for searching.
+    # A list of common names of the enzyme, used for searching.
     common_names = models.ManyToManyField(CommonName)
     
     # List of reactions this enzyme catalyzes.
     reactions = models.ManyToManyField(StoredReaction)
-    
-    # Compounds that this reaction
-    substrates = models.ManyToManyField(Compound, related_name='substrate_for_enzymes')
-    products = models.ManyToManyField(Compound, related_name='product_of_enzymes')
-    cofactors = models.ManyToManyField(Compound, related_name='cofactor_of_enzymes')
-    
-    # TODO(flamholz): add more fields.
     
     def HasData(self):
         """Checks if it has enough data to display."""

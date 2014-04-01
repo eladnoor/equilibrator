@@ -1,117 +1,74 @@
-    <table class="results">
-
-        {% if conditions and conditions != "standard" %}
-        <tr>
-            <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
-            <td colspan="3">
-            <strong>
+{% if conditions and conditions != "standard" %}
+<tr>
+    <td width="150px">
+        <strong>
+            Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</a>
+        </strong>
+    </td>
+    <td colspan="3">
+        <strong>
             {% if reaction.dg_prime != None %}
                 {{ reaction.dg_prime|floatformat:1 }} kJ / mol
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
-            </strong>
-            </td>
-        </tr>
-        {% endif %}
+        </strong>
+    </td>
+</tr>
+{% endif %}
 
-        <tr>
-            <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'&deg;</strong></a></td>
-            <td colspan="3">
-            {% if reaction.dg0_prime != None %}
-              <strong>
-                {{ reaction.dg0_prime|floatformat:1 }} kJ / mol
-                </strong>
-                &nbsp;&nbsp;&nbsp; [ K'<sub>eq</sub> = {{ reaction.k_eq_prime_human|safe }} ]
-            {% else %}
-              <strong>
-                <a href="/faq#notAvailable">Not available</a>
-          </strong>
-            {% endif %}
-            </td>
-        </tr>
-
-        {% if reaction.catalyzing_enzymes %}
-        <tr>
-            <td width="150px"><strong>Catalyzed by</strong></td>
-            <td colspan="3">
-            {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
-                <div><a href="{{ enzyme.link }}">{{ enzyme }}</a></div>
-            {% endfor %}
-            </td>
-        </tr>
-        {% endif %}
+<tr>
+    <td width="150px">
+        <strong>
+            Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'&deg;</a>
+        </strong>
+    </td>
+    <td colspan="3">
         {% if reaction.dg0_prime != None %}
-        <tr>
-            <td width="150px">
-                pH<a href="{{ reaction.ph_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of pH"><img src="/media/images/graph_icon.png" /></a>
-            </td>
-            <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.ph }}" size="5"/></td>
-            <td colspan="2"><div id="phSlider"></div></td>
-        </tr>
-        <tr>
-            <td width="150px">
-            Ionic strength (M) <a href="{{ reaction.is_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of ionic strength"><img src="/media/images/graph_icon.png" /></a>
-            </td>
-            <td width="50px"><input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.i_s }}" size="5"/></td>
-            <td colspan="2"><div id="ionStrengthSlider"></div></td>
-        </tr>
-        <tr>
-            <td width="150px">Concentrations</td>
-            <td colspan="3">
-                <input type="radio" name="conditions" value="standard" checked><a href="/faq#stdConditions">Standard conditions</a> (1 M)
-                <input type="radio" name="conditions" value="mM" {% if conditions == "mM" %}checked{% endif %}>1 mM
-                <input type="radio" name="conditions" id="customConcRadio" value="custom" {% if conditions == "custom" %}checked{% endif %}>Custom
-		</td>
-	  </tr>
-	  <tr bgcolor="#B1D0FC" class="customConcentrations">
-	    <th colspan="4">Reactant Concentrations</th>
-	  </tr>
+            <strong>
+                {{ reaction.dg0_prime|floatformat:1 }} kJ / mol
+            </strong>
+            &nbsp;&nbsp;&nbsp; [ K'<sub>eq</sub> = {{ reaction.k_eq_prime_human|safe }} ]
+        {% else %}
+            <strong>
+                <a href="/faq#notAvailable">Not available</a>
+            </strong>
+        {% endif %}
+    </td>
+</tr>
 
-	  {% for reactant in reaction.reactants %}
-	  <tr class="customConcentrations">
-         {% if reactant.kegg_id == 'C00001' %}
-             <td colspan="2">
-		    Water(l):
-	        </td>
-             <td>
-               55 M <a href="/faq#waterConcentration"> Learn more &raquo;</a>
-               <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
-             </td>
-             <td width="50px">
-               liquid
-               <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
-             </td>
-         {% else %}
-             <td colspan="2">
-		    {{ reactant.name }}{{ reactant.subscript }}:
-	        </td>
-             <td>
-                {% if reactant.is_constant %}
-                    <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
-                    {{ reactant.value_string }} 
-                {% else %}
-                    <input type="text" size="10" value="{{ reactant.value_string }}" name="reactantsConcentration" />
-                {% endif %}
-                {{ reactant.units }}
-             </td>
-             <td width="50px">
-                {% if reactant.has_multiple_phases %}
-                    <select name="reactantsPhase">
-                    {% for phase in reactant.possible_phases %}
-                      <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
-                          {{ phase }}
-                      </option>
-                    {% endfor %}
-                    </select>
-                {% else %}
-                    {{ reactant.phase_name }}
-                    <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
-                {% endif %}
-             </td>
-         {% endif %}
+{% if reaction.catalyzing_enzymes %}
+    <tr>
+        <td width="150px"><strong>Catalyzed by</strong></td>
+        <td colspan="3">
+        {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
+            <div><a href="{{ enzyme.link }}">{{ enzyme }}</a>&nbsp;&nbsp;[{{ enzyme.ec }}]</div>
+        {% endfor %}
+        </td>
+    </tr>
+{% endif %}
 
-       </tr>
-       {% endfor %}
-       {% endif %}
-    </table>
+{% if reaction.dg0_prime != None %}
+    <tr>
+        <td width="150px">
+            pH
+            <a href="{{ reaction.ph_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of pH"><img src="/media/images/graph_icon.png" /></a>
+        </td>
+        <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.ph }}" size="3"/></td>
+        <td colspan="2">
+            <div id="phSlider" />
+        </td>
+    </tr>
+    <tr>
+        <td width="150px">
+            Ionic strength [M]
+            <a href="{{ reaction.is_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of ionic strength"><img src="/media/images/graph_icon.png" /></a>
+        </td>
+        <td width="50px">
+            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.i_s }}" size="3"/>
+        </td>
+        <td colspan="2">
+            <div id="ionStrengthSlider" />
+        </td>
+    </tr>
+{% endif %}
