@@ -399,6 +399,7 @@ class Compound(models.Model):
             logging.error('Indigo/Openbabel are not installed, cannot draw structures.')
 
         if self.inchi is None:
+            self.thumbnail = 'error'
             return
 
         _obConversion = openbabel.OBConversion()
@@ -429,6 +430,7 @@ class Compound(models.Model):
         except indigo.IndigoException as e:
             logging.warning("Cannot draw structure of %s: %s" % (self.kegg_id,
                                                                          str(e)))
+            self.thumbnail = 'error'
 
     def GetAtomBag(self):
         """

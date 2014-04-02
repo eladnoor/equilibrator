@@ -9,7 +9,7 @@
         {% for atom, count in reaction.missing_atoms %}
             <span class="missingCount">{{ count }}</span>
             {% if reaction.balanced_with_water %}
-            <span class="missingAtom">Water</span>
+            <span class="missingAtom">H<sub>2</sub>O(l)</span>
             {% else %}
             <span class="missingAtom">{{ atom }}</span>
             {% endif %}

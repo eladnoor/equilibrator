@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 from gibbs import constants
+import numpy
 
 class _BasePhase(object):
     def PhaseName(self):
@@ -18,14 +19,48 @@ class _BasePhase(object):
         return '%.2g' % self.Value()
     def IsConstant(self):
         return True
+    def HumanValueAndUnits(self):
+        """
+            convert the value to human readable numbers by changing
+            the units (adding milli, micro modifiers)
+        """
+        
+        # make an exception for standard values (e.g. instead of 1 M the
+        # default value will be 1000 mM). This is more convenient for users.
+        if self.Value() == 1:
+            return (1e3, 1e-3, 'x10<sup>-3</sup>&nbsp;%s' % self.Units())
+            
+        logv = numpy.log10(self.Value())
+        exp = numpy.floor(logv / 3.0)*3
+        prefactor = 10**(logv - exp)
+        
+        if exp != 0:
+            return (prefactor, 10**(exp),
+                    'x10<sup>%d</sup>&nbsp;%s' % (exp, self.Units()))
+        else:
+            # avoid writing 10^0 as a prefix for the units
+            return (self.Value(), 1, self.Units())
+            
+        
+    def HumanValueAndUnits_letters(self):
+        """
+            convert the value to human readable numbers by changing
+            the units (adding milli, micro modifiers)
+        """
+        logging.info('phase = %s %g %s' % (self.Name(), self.Value(), self.Units()))
+        #if self.Value() > 1e-2:
+        #    return (self.Value(), self.Units())
+        
+        if self.Value() >= 1e-4:
+            return (self.Value() * 1e3, 1e-3, 'm' + self.Units())
+
+        if self.Value() >= 1e-7:
+            return (self.Value() * 1e6, 1e-6, 'μ' + self.Units())
+        
+        return (self.Value() * 1e9, 1e-9, 'n' + self.Units())
+        
     def __str__(self):
-        if self.Value() > 1e-2:
-            return '%.2g %s' % (self.Value(), self.Units())
-        
-        if self.Value() > 1e-4:
-            return '%.2g m%s' % (self.Value() * 1e3, self.Units())
-        
-        return '%2g μ%s' % (self.Value() * 1e6, self.Units())
+        return '%g %s' % self.HumanValueAndUnits()
 
 class StandardAqueousPhase(_BasePhase):
     def PhaseName(self):

@@ -1,17 +1,9 @@
-import logging
-import json
-
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
-from django.http import HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
-from gibbs import constants
 from gibbs import models
-from gibbs import reaction
 import base64
-import os
 from equilibrator.settings import MEDIA_ROOT
-from django.core.files import File
 
 NO_STRUCTURE_THUMBNAIL = '/'.join([MEDIA_ROOT, 'images', 'structure_not_available.png'])
 
@@ -27,7 +19,7 @@ def CompoundImage(request):
         return HttpResponseBadRequest('No such compound.')
     
     compound = compounds[0]
-    if not compound.thumbnail:
+    if not compound.thumbnail or compound.thumbnail == 'error':
         image_data = open(NO_STRUCTURE_THUMBNAIL, 'r').read()
     else:
         image_data = base64.decodestring(compound.thumbnail)

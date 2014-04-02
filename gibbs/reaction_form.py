@@ -5,22 +5,25 @@ from gibbs import constants
 class ReactionForm(form_utils.BaseForm):
     
     def GetReactantConcentrations(self):
-        for c in self.cleaned_data['reactantsConcentration']:
+        prefactors = map(float, self.cleaned_data['reactantsConcentrationPrefactor'])
+
+        for f, c in zip(prefactors, self.cleaned_data['reactantsConcentration']):
             try:
-                conc = float(c)
+                conc = f * float(c)
                 if conc <= 0:
                     yield 1e-9
                 else:
                     yield conc
             except ValueError:
                 yield 1e-9
-    
+                
     reactionId = forms.CharField(required=False)
     reactantsId = form_utils.ListFormField(required=False)
     reactantsCoeff = form_utils.ListFormField(required=False)
     reactantsName = form_utils.ListFormField(required=False)
     reactantsPhase = form_utils.ListFormField(required=False)
     reactantsConcentration = form_utils.ListFormField(required=False)
+    reactantsConcentrationPrefactor = form_utils.ListFormField(required=False)
 
     ph = forms.FloatField(required=False)
     pmg = forms.FloatField(required=False)

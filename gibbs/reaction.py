@@ -153,10 +153,13 @@ class CompoundWithCoeff(object):
         return self.phase.Subscript()
     
     def GetPhaseValueString(self):
-        return self.phase.ValueString()
-    
+        return self.phase.HumanValueAndUnits()[0]
+
+    def GetPhasePrefactor(self):
+        return self.phase.HumanValueAndUnits()[1]
+        
     def GetPhaseUnits(self):
-        return self.phase.Units()
+        return self.phase.HumanValueAndUnits()[2]
 
     def GetPhaseIsConstant(self):
         return self.phase.IsConstant()
@@ -171,9 +174,10 @@ class CompoundWithCoeff(object):
     abs_coeff = property(AbsoluteCoefficient)
     subscript = property(GetPhaseSubscript)
     phase_name = property(GetPhaseName)
-    value_string = property(GetPhaseValueString)
     human_string = property(GetPhaseHumanString)
-    units = property(GetPhaseUnits)
+    phase_value_string = property(GetPhaseValueString)
+    phase_prefactor = property(GetPhasePrefactor)
+    phase_units = property(GetPhaseUnits)
     is_constant = property(GetPhaseIsConstant)
     possible_phases = property(GetPossiblePhaseNames)
     has_multiple_phases = property(HasMultiplePhases)
@@ -249,10 +253,12 @@ class Reaction(object):
         return self._conditions
     
     def GetSubstrates(self):
-        return [c for c in self.reactants if c.coeff < 0]
+        s = [c for c in self.reactants if c.coeff < 0]
+        return s
         
     def GetProducts(self):
-        return [c for c in self.reactants if c.coeff > 0]
+        p = [c for c in self.reactants if c.coeff > 0]
+        return p
     
     def SetConditions(self, cond):
         """Apply this concentration profile to this reaction.
@@ -419,7 +425,7 @@ class Reaction(object):
             logging.debug('Adding compound %s with coeff %d' % (kegg_id, coeff))
             c_w_c = CompoundWithCoeff.FromId(coeff, kegg_id, name=name)
             reactants.append(c_w_c)
-        
+
         rxn = Reaction(reactants, pH=pH, pMg=pMg,
                        ionic_strength=ionic_strength,
                        e_reduction_potential=e_reduction_potential)
@@ -731,6 +737,14 @@ class Reaction(object):
                 c.coeff = 0
                 
         self.reactants = filter(lambda x: x.coeff != 0, self.reactants)
+        
+        # always make sure that H2O is the last reactant (so that it will
+        # appear last in the chemical formula)
+        i_h2o = self._FindCompoundIndex('C00001')
+        if i_h2o is not None:
+            self.reactants = self.reactants[:i_h2o] + \
+                             self.reactants[(i_h2o + 1):] + \
+                             [self.reactants[i_h2o]]
 
     def _FilterProtons(self):
         """

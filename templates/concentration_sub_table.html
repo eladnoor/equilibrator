@@ -17,7 +17,7 @@
         </td>
         <td>
             55 M <a href="/faq#waterConcentration"> Learn more &raquo;</a>
-            <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
+            <input type="hidden" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
         </td>
         <td width="50px">
             liquid
@@ -29,12 +29,13 @@
         </td>
         <td>
             {% if reactant.is_constant %}
-                <input type="hidden" value="{{ reactant.value_string }}" name="reactantsConcentration" />
-                {{ reactant.value_string }} 
+                <input type="hidden" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
+                {{ reactant.phase_value_string }} 
             {% else %}
-                <input type="text" size="10" value="{{ reactant.value_string }}" name="reactantsConcentration" />
+                <input type="text" size="10" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
             {% endif %}
-            {{ reactant.units }}
+            <input type="hidden" value="{{ reactant.phase_prefactor }}" name="reactantsConcentrationPrefactor" />
+            {{ reactant.phase_units|safe }}
          </td>
          <td width="50px">
             {% if reactant.has_multiple_phases %}

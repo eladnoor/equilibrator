@@ -39,9 +39,10 @@ def GetReactions(rids_list):
     return rxns
         
 def GetCompounds(cids_list):
-    """Find all the given compounds in the database.
+    """
+        Find all the given compounds in the database.
     
-    Skip those that are not present.
+        Skip those that are not present.
     """
     if not cids_list:
         return []
