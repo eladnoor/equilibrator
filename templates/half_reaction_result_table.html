@@ -19,7 +19,7 @@
     <td colspan="3">
     <strong>
     {% if reaction.e_prime != None %}
-        {{ reaction.e_prime|floatformat:1 }} mV
+        {{ reaction.e_prime|floatformat:0 }} mV
     {% else %}
         <a href="/faq#notAvailable">Not available</a>
     {% endif %}

@@ -1,10 +1,8 @@
-from util import django_utils
 import csv
 import gzip
 import json
 import logging
-
-django_utils.SetupDjango()
+import util.django_utils
 
 from gibbs import models
 from gibbs import constants

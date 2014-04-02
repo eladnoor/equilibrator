@@ -143,6 +143,13 @@ class CompoundWithCoeff(object):
         return len(self.GetPossiblePhaseNames()) > 1
 
     def GetPhaseSubscript(self):
+        # The compound C00288 represents the group of all carbonate species
+        # and CO2 and is called CO2(total). It is technically aqueous, but
+        # also contains a gas component, so the phase is not well defined
+        # and hence the (total) subscript. In this case, we don't need to
+        # add another subscript so we return an empty string
+        if self.name == 'CO2(total)':
+            return ''
         return self.phase.Subscript()
     
     def GetPhaseValueString(self):
@@ -247,7 +254,7 @@ class Reaction(object):
     def GetProducts(self):
         return [c for c in self.reactants if c.coeff > 0]
     
-    def ApplyConditions(self, cond):
+    def SetConditions(self, cond):
         """Apply this concentration profile to this reaction.
         
         Args:
@@ -255,9 +262,17 @@ class Reaction(object):
         """
         self._dg0_prime = None
         self._conditions = cond
+
         for c in self.reactants:
             c.phase = self._conditions.GetPhase(c.kegg_id)
-    conditions = property(GetConditions, ApplyConditions)
+            if c.phase is None:
+                phase_name = c.compound.GetDefaultPhaseName()
+                self._conditions.SetPhase(c.kegg_id, phase_name)
+                c.phase = self._conditions.GetPhase(c.kegg_id)
+                logging.info('Using default phase for %s: %s' %
+                             (c.kegg_id, phase_name))
+
+    conditions = property(GetConditions, SetConditions)
     
     def __str__(self):
         """
@@ -408,13 +423,8 @@ class Reaction(object):
         rxn = Reaction(reactants, pH=pH, pMg=pMg,
                        ionic_strength=ionic_strength,
                        e_reduction_potential=e_reduction_potential)
-        cond = cond or conditions.StandardConditions()
         
-        for c_w_c in rxn.reactants:
-            if cond.GetPhase(c_w_c.kegg_id) is None:
-                cond.SetPhase(c_w_c.kegg_id,
-                              c_w_c.compound.GetDefaultPhaseName())
-        rxn.ApplyConditions(cond)
+        rxn.conditions = cond or conditions.StandardConditions()
         
         return rxn
     
@@ -654,13 +664,13 @@ class Reaction(object):
             
     def E0_prime(self, pH=None, pMg=None, ionic_strength=None):
         """Returns the standard transformed reduction potential of this reaction."""
-        delta_electrons = abs(self._GetElectronDiff())
+        delta_electrons = self._GetElectronDiff()
         assert delta_electrons != 0
         return - self.DeltaG0Prime(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
 
     def E_prime(self, pH=None, pMg=None, ionic_strength=None):
         """Returns the standard transformed reduction potential of this reaction."""
-        delta_electrons = abs(self._GetElectronDiff())
+        delta_electrons = self._GetElectronDiff()
         assert delta_electrons != 0
         return - self.DeltaGPrime(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
     
@@ -781,10 +791,6 @@ class Reaction(object):
             self._AddCompound(acceptor_id, net_electrons/2)
             self._Dedup()
         
-    def FilterHydrogen(self):
-        """Removes Hydrogens from the list of compounds."""
-        self.reactants = filter(lambda c: c.compound.kegg_id != 'C00080', self.reactants)
-
     def _GetConcentrationCorrection(self):
         """Get the concentration term in DeltaG' for these concentrations.
         
