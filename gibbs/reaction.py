@@ -231,7 +231,7 @@ class Reaction(object):
         """
         
         priorities = [c.compound.GetSpeciesGroupPriorities() for c in self.reactants]
-        priorities = filter(lambda l: l is not [], priorities)
+        priorities = filter(lambda l: len(l) > 0, priorities)
         
         # Someone is missing data!
         if priorities == []:
@@ -395,6 +395,9 @@ class Reaction(object):
                                         form.cleaned_reactantsId,
                                         form.cleaned_reactantsPhase,
                                         form.cleaned_reactantsConcentration)
+
+        if cond is None:
+            cond = conditions.StandardConditions()
 
         # Return the built reaction object.
         return Reaction.FromIds(zipped_reactants,
@@ -570,16 +573,20 @@ class Reaction(object):
         return '/half_reaction?%s' % '&'.join(params)
 
     def GetTemplateData(self, query=None):
-        balance_with_water_link = self.GetBalanceWithWaterLink(query)
-        balance_electrons_link = self.GetBalanceElectronsLink(query)
-        half_reaction_link = self.GetHalfReactionLink(query)
-        replace_co2_link = self.GetReplaceCO2Link(query)
         template_data = {'reaction': self,
-                         'query': query,
-                         'balance_with_water_link': balance_with_water_link,
-                         'balance_electrons_link': balance_electrons_link,
-                         'replace_co2_link': replace_co2_link,
-                         'half_reaction_link': half_reaction_link}
+                         'query': query}
+        try:
+            balance_with_water_link = self.GetBalanceWithWaterLink(query)
+            balance_electrons_link = self.GetBalanceElectronsLink(query)
+            half_reaction_link = self.GetHalfReactionLink(query)
+            replace_co2_link = self.GetReplaceCO2Link(query)
+            template_data.update({
+                'balance_with_water_link': balance_with_water_link,
+                'balance_electrons_link': balance_electrons_link,
+                'replace_co2_link': replace_co2_link,
+                'half_reaction_link': half_reaction_link})
+        except ReactantFormulaMissingError:
+            pass
         if self._conditions is not None:
             template_data.update(self._conditions.GetTemplateDict())
         return template_data
@@ -631,14 +638,19 @@ class Reaction(object):
         return self._FindCompoundIndex('C00011') is not None
             
     def IsReactantFormulaMissing(self):
-        try:
-            self._GetAtomDiff()
-            return False
-        except ReactantFormulaMissingError:
-            return True
+        for compound_w_coeff in self.reactants:
+            if compound_w_coeff.compound.GetAtomBag() is None:
+                return True
+        
+        return False
+
+    def GetReactantFormulaMissing(self):
+        for compound_w_coeff in self.reactants:
+            if compound_w_coeff.compound.GetAtomBag() is None:
+                yield compound_w_coeff
     
     def IsEmpty(self):
-        return len(self._GetAtomDiff()) == 0
+        return len(self.reactants) == 0
     
     def IsBalanced(self):
         """Checks if the collection is atom-wise balanced.
@@ -649,7 +661,7 @@ class Reaction(object):
         try:
             return self._IsBalanced(self._GetAtomDiff())
         except ReactantFormulaMissingError:
-            return True
+            return False
     
     def IsElectronBalanced(self):
         """Checks if the collection is electron-wise balanced.
@@ -710,6 +722,22 @@ class Reaction(object):
                 return i
         return None
 
+    def _AddCompound(self, kegg_id, how_many):
+        """Adds "how_many" of the compound with the given id.
+        
+        Args:
+            kegg_id: the KEGG id.
+            how_many: by how much to change the reactant's coefficient.
+        """
+        i = self._FindCompoundIndex(kegg_id)
+        if i is not None:
+            self.reactants[i].coeff += how_many
+        else:
+            c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id)
+            self.reactants.append(c_w_coeff)
+            self._conditions.SetPhase(kegg_id,
+                                      c_w_coeff.compound.GetDefaultPhaseName())
+
     def _ReplaceCompound(self, from_id, to_id):
         """
             Replace a compound in the reaction with another compound according
@@ -717,13 +745,25 @@ class Reaction(object):
             The stoichiometric coefficient and concentration are copied from
             the old compound to the new one.
         """
+        
+        # set the coefficient of the original compound to 0
         i = self._FindCompoundIndex(from_id)
         if i is None:
             return
         how_many = self.reactants[i].coeff
-        self._AddCompound(from_id, -how_many)
-        self._AddCompound(to_id, how_many)
-        self._Dedup()
+        self.reactants[i].coeff = 0
+
+        # create a new compound with the new kegg_id and the same coefficient
+        # or add the number to the coefficient if it already is a reactant
+        j = self._FindCompoundIndex(to_id)
+        if j is None:
+            c_w_c = CompoundWithCoeff.FromId(how_many, to_id)
+            self._conditions.SetPhase(to_id,
+                                      c_w_c.compound.GetDefaultPhaseName())
+            self.reactants[i] = c_w_c
+        else:
+            self.reactants[j] += how_many
+            self._Dedup()
 
     def _Dedup(self):
         """
@@ -754,22 +794,6 @@ class Reaction(object):
         """
         self.reactants = filter(lambda c: c.compound.kegg_id != 'C00080', self.reactants)
         
-    def _AddCompound(self, kegg_id, how_many):
-        """Adds "how_many" of the compound with the given id.
-        
-        Args:
-            kegg_id: the KEGG id.
-            how_many: by how much to change the reactant's coefficient.
-        """
-        i = self._FindCompoundIndex(kegg_id)
-        if i is not None:
-            self.reactants[i].coeff += how_many
-        else:
-            c_w_coeff = CompoundWithCoeff.FromId(how_many, kegg_id)
-            self.reactants.append(c_w_coeff)
-            self._conditions.SetPhase(kegg_id,
-                                      c_w_coeff.compound.GetDefaultPhaseName())
-
     def TryBalanceWithWater(self):
         """Try to balance the reaction with water.
         
@@ -997,6 +1021,7 @@ class Reaction(object):
     contains_co2 = property(ContainsCO2)
     is_conserving = property(CheckConservationLaws)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
+    reactants_with_missing_formula = property(GetReactantFormulaMissing)
     is_empty = property(IsEmpty)    
     is_balanced = property(IsBalanced)
     is_electron_balanced = property(IsElectronBalanced)
@@ -1018,4 +1043,3 @@ class Reaction(object):
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
-    

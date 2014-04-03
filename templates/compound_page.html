@@ -21,10 +21,12 @@
                 <div class="buttonSet">
                     <input type="submit" value="Update" name="submit" />
                 </div>
-
+                
+                {% if compound.has_species_groups %}
                 <table class="results">
                     {% include "compound_species_table.html" %}
                 </table>
+                {% endif %}
 
             </form>
 

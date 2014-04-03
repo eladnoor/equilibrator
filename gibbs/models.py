@@ -598,7 +598,7 @@ class Compound(models.Model):
 
     def GetDefaultPhaseName(self):
         possible_phases = self.GetPossiblePhaseNames()
-        if constants.DEFAULT_PHASE in possible_phases:
+        if possible_phases == [] or constants.DEFAULT_PHASE in possible_phases:
             return constants.DEFAULT_PHASE
         else:
             return possible_phases[0]
