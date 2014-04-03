@@ -1,5 +1,7 @@
 import numpy as np
 
+POSSIBLE_REACTION_ARROWS = ('=', '=>', '<=>', '->', '<->', u'\u2192', u'\u21CC')
+
 R = 8.31e-3   # kJ/(K*mol)
 F = 0.096485  # (kJ/mol)/mV
 JOULES_PER_CAL = 4.184

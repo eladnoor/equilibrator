@@ -4,7 +4,7 @@ import logging
 import pyparsing
 import re
 import numpy
-
+from gibbs import constants
 
 class ParseError(Exception):
     pass
@@ -53,7 +53,7 @@ def _MakeReactionParser():
     reaction_side.setParseAction(lambda l: [l])
     reaction_side.setResultsName("reaction_side")
     
-    side_separators = [pyparsing.Literal(s) for s in ("=", "->", "=>", "<=>", u'→')]
+    side_separators = [pyparsing.Literal(s) for s in constants.POSSIBLE_REACTION_ARROWS]
     side_separator = pyparsing.Or(side_separators).suppress()
     
     reaction = pyparsing.Forward()
@@ -98,7 +98,7 @@ class ParsedReactionQuery(object):
 class QueryParser(object):
     """Parses search queries."""
     
-    REACTION_PATTERN = u'.*(=>|<=>|=|->|<->|→).*'
+    REACTION_PATTERN = u'.*(' + '|'.join(constants.POSSIBLE_REACTION_ARROWS) + ').*'
     REACTION_MATCHER = re.compile(REACTION_PATTERN)
     
     def __init__(self):
@@ -126,6 +126,8 @@ class QueryParser(object):
         try:
             results = self._rparser.parseString(query)
             substrates, products = results
+            logging.info('substrates = %s' % str(substrates))
+            logging.info('products = %s' % str(products))
             return ParsedReactionQuery(substrates, products)
         except pyparsing.ParseException,msg:
             logging.error('Failed to parse query %s', query)

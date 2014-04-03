@@ -5,6 +5,7 @@
     <div class="centerize">
     {% if reaction.is_reactant_formula_missing %}
         <div class="warning">Reaction balancing cannot be checked!</div>
+        {% include "parsed_reaction.html" %}
         The following compounds do not have an explicit chemical formula:
         <table class="results">  
             <tr bgcolor="#B1D0FC">

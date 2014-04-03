@@ -529,7 +529,8 @@ class Reaction(object):
             params.append('ionic_strength=%f' % self.i_s)
                 
         if query:
-            tmp_query = query.replace(u'→', '=>')
+            for arrow in constants.POSSIBLE_REACTION_ARROWS:
+                tmp_query = query.replace(arrow, '=>')
             params.append('query=%s' % urllib.quote(tmp_query))
             
         return params

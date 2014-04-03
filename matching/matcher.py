@@ -1,8 +1,7 @@
 import logging
 import itertools
 from gibbs import models
-from util import topk
-
+import re
 
 
 class Error(Exception):
@@ -125,10 +124,12 @@ class Matcher(object):
             A list of CommonName objects matching the query.
         """
         try:
+            query = re.sub('\((aq|s|l|g)\)$', '', query, count=1)
+            logging.info('Matching name from query: ' + query)
             name = models.CommonName.objects.select_related().get(
                 name__iexact=query)
             return [name]
-        except Exception, msg:
+        except Exception:
             return []
     
     def _MakeMatchObjects(self, common_names):
