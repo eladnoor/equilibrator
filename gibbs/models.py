@@ -4,6 +4,7 @@ import hashlib
 import logging
 import numpy
 import re
+import base64
 from scipy.misc import logsumexp
 
 from django.http import Http404
@@ -11,17 +12,8 @@ from django.db import models
 from gibbs import constants
 from gibbs import formula_parser
 #from django.core.files.base import ContentFile
-import base64
 import json
-
-try:
-    import indigo
-    import indigo_renderer
-    import openbabel
-except ImportError:
-    indigo = None
-    indigo_renderer = None
-    openbabel = None
+from util.thumbnail import InChI2Thumbnail
 
 class CommonName(models.Model):
     """
@@ -178,7 +170,7 @@ class SpeciesGroup(models.Model):
     def __str__(self):
         s = "KEGG ID = %s\npriority = %d\nformation_energy_source = %s\n" % \
             (self.kegg_id, self.priority, self.formation_energy_source)
-        return s + '\n'.join([str(s) for s in self.all_species])
+        return s + '\n'.join([str(sp) for sp in self.all_species])
 
     def GetSpecies(self):
         """Gets the list of Species, potentially caching."""
@@ -393,44 +385,17 @@ class Compound(models.Model):
                                     phase=phase)
         return dg0_prime
 
-    def WriteStructureThumbnail(self, output_format='png'):
-        if not indigo or not indigo_renderer or not openbabel:
-            # the web server is not supposed to be running this function
-            logging.error('Indigo/Openbabel are not installed, cannot draw structures.')
+    def WriteStructureThumbnail(self):
+        self.thumbnail = 'error'
 
         if self.inchi is None:
-            self.thumbnail = 'error'
             return
 
-        _obConversion = openbabel.OBConversion()
-        _obConversion.SetInFormat("inchi")
-        _obConversion.SetOutFormat("smiles")
-        obmol = openbabel.OBMol()
-        _obConversion.ReadString(obmol, str(self.inchi))
-        smiles = _obConversion.WriteString(obmol)
-
-        _indigo = indigo.Indigo()
-        _renderer = indigo_renderer.IndigoRenderer(_indigo)
-        _indigo.setOption('render-output-format', output_format)
-        _indigo.setOption('render-image-size', 250, 200)
-        _indigo.setOption('render-margins', 10, 10)
-        _indigo.setOption('render-stereo-style', 'none')
-        _indigo.setOption('render-implicit-hydrogens-visible', False)
-        _indigo.setOption('render-coloring', True)
-        _indigo.setOption('render-bond-length', 50.0)
-        _indigo.setOption('render-label-mode', 'hetero')
-
-        try:
-            indigo_mol = _indigo.loadMolecule(smiles)
-            indigo_mol.aromatize()
-            indigo_mol.layout()
-            
-            data = _renderer.renderToBuffer(indigo_mol).tostring()
-            self.thumbnail = base64.encodestring(data)
-        except indigo.IndigoException as e:
-            logging.warning("Cannot draw structure of %s: %s" % (self.kegg_id,
-                                                                         str(e)))
-            self.thumbnail = 'error'
+        th_string = InChI2Thumbnail(str(self.inchi), output_format='png')
+        if th_string is None:
+            return
+        
+        self.thumbnail = base64.encodestring(th_string)
 
     def GetAtomBag(self):
         """
