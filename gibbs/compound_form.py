@@ -42,5 +42,6 @@ class CompoundForm(form_utils.BaseForm):
     cleaned_reactantsCoeff = property(lambda self: [1])
     cleaned_reactantsId = property(lambda self: [self.cleaned_compoundId])
     cleaned_reactantsName = property(lambda self: [None])
+    cleaned_reactantsPhase = property(lambda self: [None])
     cleaned_e_reduction_potential = property(lambda self: 0)
     cleaned_reactionId = property(lambda self: None)

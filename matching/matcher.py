@@ -99,7 +99,8 @@ class Matcher(object):
         Returns:
             The pre-processed query as a string.
         """
-        return query.strip().lower()
+        query = query.strip().lower()
+        return query
     
     def _PrepocessCandidate(self, candidate):
         """Perform pre-match candidate manipulation.
@@ -124,8 +125,6 @@ class Matcher(object):
             A list of CommonName objects matching the query.
         """
         try:
-            query = re.sub('\((aq|s|l|g)\)$', '', query, count=1)
-            logging.info('Matching name from query: ' + query)
             name = models.CommonName.objects.select_related().get(
                 name__iexact=query)
             return [name]

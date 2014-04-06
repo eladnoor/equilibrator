@@ -50,16 +50,15 @@ class CompoundWithCoeff(object):
                                  name=reactant.compound.FirstName())
     
     @staticmethod
-    def FromId(coeff, kegg_id, phase=None, name=None):
+    def FromId(coeff, kegg_id, name=None):
         try:
             compound = models.Compound.objects.get(kegg_id=kegg_id)
         except Exception:
             return None
-        my_phase = phase or conditions.StandardAqueousPhase()
         my_name = name or compound.FirstName()
         
         return CompoundWithCoeff(coeff, compound,
-                                 phase=my_phase, name=my_name)
+                                 phase=None, name=my_name)
         
     def Minus(self):
         """Returns a new CompoundWithCoeff with coeff = -self.coeff."""
@@ -384,23 +383,31 @@ class Reaction(object):
         logging.info('pH = %.1f, pMg = %.1f, ionic strength = %.1f, Ered = %.1f' %
                      (ph, pmg, i_s, e_red))
         
-        logging.debug(str(form.cleaned_reactantsPhase))        
-        
-        zipped_reactants = zip(form.cleaned_reactantsCoeff,
-                               form.cleaned_reactantsId,
-                               form.cleaned_reactantsName)
+        if form.cleaned_reactantsPhase == []:
+            phases = [None] * len(form.cleaned_reactantsCoeff)
+        else:
+            phases = form.cleaned_reactantsPhase
+
+        zipped_reactant_data = zip(form.cleaned_reactantsCoeff,
+                                   form.cleaned_reactantsId,
+                                   phases,
+                                   form.cleaned_reactantsName)
+
+        compound_list = []
+        for coeff, kegg_id, phase, name in zipped_reactant_data:
+            compound_list.append({'coeff': coeff,
+                                  'kegg_id': kegg_id,
+                                  'phase': phase,
+                                  'name': name})
 
         # Build the appropriate concentration profile.
-        cond = conditions.GetConditions(form.cleaned_conditions,
-                                        form.cleaned_reactantsId,
-                                        form.cleaned_reactantsPhase,
-                                        form.cleaned_reactantsConcentration)
-
-        if cond is None:
-            cond = conditions.StandardConditions()
-
+        cond = conditions.CreateConditions(form.cleaned_conditions,
+                                           form.cleaned_reactantsId,
+                                           form.cleaned_reactantsPhase,
+                                           form.cleaned_reactantsConcentration)
+        
         # Return the built reaction object.
-        return Reaction.FromIds(zipped_reactants,
+        return Reaction.FromIds(compound_list,
                                 cond=cond,
                                 pH=ph, pMg=pmg,
                                 ionic_strength=i_s,
@@ -422,12 +429,22 @@ class Reaction(object):
         Returns:
             A properly set-up Reaction object or None if there's an error.
         """
-        reactants = []                
+        cond = cond or conditions.StandardConditions()
+        
+        reactants = []
         # Get products and substrates.
-        for coeff, kegg_id, name in compound_list:
-            logging.debug('Adding compound %s with coeff %d' % (kegg_id, coeff))
+        for c in compound_list:
+            coeff = c['coeff']
+            kegg_id = c['kegg_id']
+            phase = c.get('phase', None)
+            name = c.get('name', None)
+            logging.info('Adding compound %s with coeff %d and phase %s' %
+                         (kegg_id, coeff, phase))
             c_w_c = CompoundWithCoeff.FromId(coeff, kegg_id, name=name)
             reactants.append(c_w_c)
+            
+            if phase is not None:
+                cond.SetPhase(kegg_id, phase)
 
         rxn = Reaction(reactants, pH=pH, pMg=pMg,
                        ionic_strength=ionic_strength,

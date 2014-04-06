@@ -93,7 +93,6 @@ class ParsedReactionQuery(object):
         joined_rs = ['%s %s' % (numpy.abs(c),r) for c,r in self.substrates]
         joined_ps = ['%s %s' % (numpy.abs(c),p) for c,p in self.products]
         return '%s => %s' % (' + '.join(joined_rs), ' + '.join(joined_ps))
-    
 
 class QueryParser(object):
     """Parses search queries."""

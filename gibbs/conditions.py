@@ -207,7 +207,7 @@ class CustomConditions(_BaseConditions):
     
 ###############################################################################
 
-def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):
+def CreateConditions(name, all_ids=None, all_phases=None, all_ratios=None):
     
     if name == constants.STANDARD_CONDITION_STRING:
         return StandardConditions()
@@ -221,5 +221,5 @@ def GetConditions(name, all_ids=None, all_phases=None, all_ratios=None):
         cc.SetPhasesAndRatios(all_ids, all_phases, all_ratios)
         return cc
 
-    logging.error('unrecognized condition name: ' + name)
+    logging.warning('unrecognized condition name: ' + name)
     return None
