@@ -200,9 +200,9 @@ class Reaction(object):
         self._FilterProtons()
         self._Dedup()
         
-        self.ph = pH
-        self.pmg = pMg
-        self.i_s = ionic_strength
+        self.pH = pH
+        self.pMg = pMg
+        self.ionic_strength = ionic_strength
         self.e_reduction_potential = e_reduction_potential
         self._dg0_prime = None
         self._conditions = None
@@ -218,7 +218,7 @@ class Reaction(object):
             Make a copy of the 
         """
         rs = [r.Clone() for r in self.reactants]
-        other = Reaction(rs, self.ph, self.pmg, self.i_s,
+        other = Reaction(rs, self.pH, self.pMg, self.ionic_strength,
                          self.e_reduction_potential)
         other._dg0_prime = self._dg0_prime
         other._conditions = self._conditions
@@ -350,13 +350,13 @@ class Reaction(object):
         if self.dg0_prime is not None:
             d['dgzero_prime'] = {
                 'value': round(self.dg0_prime, 1),
-                'pH': self.ph,
-                'ionic_strength': self.i_s}
+                'pH': self.pH,
+                'ionic_strength': self.ionic_strength}
         if self.k_eq_prime is not None:
             d['keq_prime'] = {
                 'value': self.k_eq_prime,
-                'pH': self.ph,
-                'ionic_strength': self.i_s}
+                'pH': self.pH,
+                'ionic_strength': self.ionic_strength}
         
         return d
 
@@ -376,18 +376,11 @@ class Reaction(object):
                 kegg_id=form.cleaned_reactionId)
             return Reaction.FromStoredReaction(stored_reaction)
 
-        ph = form.cleaned_ph
-        pmg = form.cleaned_pmg
-        i_s = form.cleaned_ionic_strength
-        e_red = form.cleaned_e_reduction_potential
-        logging.info('pH = %.1f, pMg = %.1f, ionic strength = %.1f, Ered = %.1f' %
-                     (ph, pmg, i_s, e_red))
-        
-        if form.cleaned_reactantsPhase == []:
+        phases = list(form.cleaned_reactantsPhase)
+        if phases == []:
             phases = [None] * len(form.cleaned_reactantsCoeff)
-        else:
-            phases = form.cleaned_reactantsPhase
 
+        logging.info(str(phases))
         zipped_reactant_data = zip(form.cleaned_reactantsCoeff,
                                    form.cleaned_reactantsId,
                                    phases,
@@ -408,18 +401,11 @@ class Reaction(object):
         
         # Return the built reaction object.
         return Reaction.FromIds(compound_list,
-                                cond=cond,
-                                pH=ph, pMg=pmg,
-                                ionic_strength=i_s,
-                                e_reduction_potential=e_red)
+                                cond=cond)
     
     @staticmethod
     def FromIds(compound_list,
-                cond=None,
-                pH=constants.DEFAULT_PH,
-                pMg=constants.DEFAULT_PMG,
-                ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
-                e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL):
+                cond=None):
         """Build a reaction object from lists of IDs.
         
         Args:
@@ -446,13 +432,17 @@ class Reaction(object):
             if phase is not None:
                 cond.SetPhase(kegg_id, phase)
 
-        rxn = Reaction(reactants, pH=pH, pMg=pMg,
-                       ionic_strength=ionic_strength,
-                       e_reduction_potential=e_reduction_potential)
+        rxn = Reaction(reactants)
         
         rxn.conditions = cond or conditions.StandardConditions()
         
         return rxn
+    
+    def SetAqueousParams(self, aq_params):
+        self.pH = aq_params.pH
+        self.pMg = aq_params.pMg
+        self.ionic_strength = aq_params.ionic_strength
+        self.e_reduction_potential = aq_params.e_reduction_potential
     
     @staticmethod
     def _GetCollectionAtomDiff(collection):
@@ -538,12 +528,12 @@ class Reaction(object):
             if self._conditions:
                 params.extend(self._conditions._GetUrlParams(kegg_id))
         
-        if self.ph:
-            params.append('ph=%f' % self.ph)
-        if self.pmg:
-            params.append('pmg=%f' % self.pmg)
-        if self.i_s:
-            params.append('ionic_strength=%f' % self.i_s)
+        if self.pH:
+            params.append('ph=%f' % self.pH)
+        if self.pMg:
+            params.append('pmg=%f' % self.pMg)
+        if self.ionic_strength:
+            params.append('ionic_strength=%f' % self.ionic_strength)
                 
         if query:
             for arrow in constants.POSSIBLE_REACTION_ARROWS:
@@ -873,12 +863,12 @@ class Reaction(object):
         Returns:
             The DeltaG0' for this reaction, or None if data was missing.
         """
-        ph = pH or self.ph
-        pmg = pMg or self.pmg
-        i_s = ionic_strength or self.i_s
+        ph = pH or self.pH
+        pmg = pMg or self.pMg
+        i_s = ionic_strength or self.ionic_strength
 
         if self._dg0_prime is not None:
-            if (ph, pmg, i_s) == (self.ph, self.pmg, self.i_s):
+            if (ph, pmg, i_s) == (self.pH, self.pMg, self.ionic_strength):
                 return self._dg0_prime
             else:
                 self._dg0_prime = None
@@ -972,9 +962,9 @@ class Reaction(object):
 
     def AllCompoundsWithTransformedEnergies(self):
         for c_w_coeff in self.reactants:
-            dgt = c_w_coeff.compound.DeltaG0Prime(pH=self.ph,
-                                                  pMg=self.pmg,
-                                                  ionic_strength=self.i_s)
+            dgt = c_w_coeff.compound.DeltaG0Prime(pH=self.pH,
+                                                  pMg=self.pMg,
+                                                  ionic_strength=self.ionic_strength)
             c_w_coeff.transformed_energy = dgt
             yield c_w_coeff
 

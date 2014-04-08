@@ -3,7 +3,7 @@ import logging
 from django.http import HttpResponseBadRequest, Http404
 from django.shortcuts import render_to_response
 from gibbs import reaction
-from gibbs import reaction_form
+from gibbs.forms import ReactionForm
 from gibbs import conditions
 
 _REACTION_TEMPLATES_BY_SUBMIT = {'': 'reaction_page.html',
@@ -14,7 +14,7 @@ _REACTION_TEMPLATES_BY_SUBMIT = {'': 'reaction_page.html',
 
 def ReactionPage(request):    
     """Renders a page for a particular reaction."""
-    form = reaction_form.ReactionForm(request.GET)
+    form = ReactionForm(request.GET)
     if not form.is_valid():
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid reaction form.')
@@ -22,6 +22,11 @@ def ReactionPage(request):
     # Figure out which template to render (based on which submit button was
     # pressed).
     rxn = reaction.Reaction.FromForm(form)
+
+    aq_params = conditions.AqueousParams(form, request.COOKIES) 
+    logging.info('Aqueous parameters: ' + str(aq_params))
+    rxn.SetAqueousParams(aq_params)
+
     if form.cleaned_submit == 'Reverse':
         rxn.SwapSides()
         rxn.conditions = conditions.StandardConditions()
@@ -32,4 +37,8 @@ def ReactionPage(request):
         logging.error('Unknown submit term for reaction page: ' + form.cleaned_submit)
         raise Http404
     template_name = _REACTION_TEMPLATES_BY_SUBMIT[form.cleaned_submit]
-    return render_to_response(template_name, rxn.GetTemplateData(query))
+    response = render_to_response(template_name, rxn.GetTemplateData(query))
+    
+    aq_params.SetCookies(response)
+    # Return response back to the user, updating any cookies that need changed.
+    return response

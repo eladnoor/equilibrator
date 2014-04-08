@@ -223,3 +223,30 @@ def CreateConditions(name, all_ids=None, all_phases=None, all_ratios=None):
 
     logging.warning('unrecognized condition name: ' + name)
     return None
+    
+###############################################################################
+
+class AqueousParams(object):
+
+    def __init__(self, form, cookies=None):
+        if cookies is None:
+            cookies = {}
+        
+        self.pH = form.cleaned_ph or \
+            float(cookies.get('pH', constants.DEFAULT_PH))
+        self.pMg = form.cleaned_pmg or \
+            float(cookies.get('pMg', constants.DEFAULT_PMG))
+        self.ionic_strength = form.cleaned_ionic_strength or \
+            float(cookies.get('ionic_strength', constants.DEFAULT_IONIC_STRENGTH))
+        self.e_reduction_potential = form.cleaned_e_reduction_potential or \
+            float(cookies.get('e_reduction_potential', constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
+            
+    def __str__(self):
+        return 'pH = %.2g, pMg = %.2g, I = %.2g M, Ered = %g' % \
+            (self.pH, self.pMg, self.ionic_strength, self.e_reduction_potential) 
+            
+    def SetCookies(self, response):
+        response.set_cookie('pH', str(self.pH))
+        response.set_cookie('pMg', str(self.pMg))
+        response.set_cookie('ionic_strength', str(self.ionic_strength))
+        response.set_cookie('e_reduction_potential', str(self.e_reduction_potential))

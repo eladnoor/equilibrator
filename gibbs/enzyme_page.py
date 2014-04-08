@@ -2,14 +2,14 @@ import logging
 
 from django.http import Http404
 from django.shortcuts import render_to_response
-from gibbs import enzyme_form
+from gibbs.forms import EnzymeForm
 from gibbs import models
 from util import django_utils
 
 
 def EnzymePage(request):    
     """Renders a page for a particular enzyme."""
-    form = enzyme_form.EnzymeForm(request.GET)
+    form = EnzymeForm(request.GET)
     if not form.is_valid():
         logging.error(form.errors)
         raise Http404

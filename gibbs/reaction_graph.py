@@ -2,13 +2,14 @@ import json
 import logging
 
 from gibbs import reaction
-from gibbs import reaction_graph_form
+from gibbs.forms import ReactionGraphForm
 from django.shortcuts import render_to_response
+from django.http import Http404
 
 
 def ReactionGraph(request):
     """Renders the graph page."""
-    form = reaction_graph_form.ReactionGraphForm(request.GET)
+    form = ReactionGraphForm(request.GET)
     if not form.is_valid():
         logging.error(form.errors)
         raise Http404

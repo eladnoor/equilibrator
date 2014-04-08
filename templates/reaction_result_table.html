@@ -54,7 +54,7 @@
             pH
             <a href="{{ reaction.ph_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of pH"><img src="/media/images/graph_icon.png" /></a>
         </td>
-        <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.ph }}" size="3"/></td>
+        <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.pH }}" size="3"/></td>
         <td colspan="2">
             <div id="phSlider" />
         </td>
@@ -65,7 +65,7 @@
             <a href="{{ reaction.is_graph_link }}" class="graphLink" target="_blank" title="Plot &Delta;G' as a function of ionic strength"><img src="/media/images/graph_icon.png" /></a>
         </td>
         <td width="50px">
-            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.i_s }}" size="3"/>
+            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.ionic_strength }}" size="3"/>
         </td>
         <td colspan="2">
             <div id="ionStrengthSlider" />
