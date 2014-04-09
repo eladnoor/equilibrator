@@ -7,7 +7,7 @@
     {% if reaction.missing_atoms %}
         +
         {% for atom, count in reaction.missing_atoms %}
-            <span class="missingCount">{{ count }}</span>
+            <span class="missingCount">{{ count|floatformat:-2 }}</span>
             {% if reaction.balanced_with_water %}
             <span class="missingAtom">H<sub>2</sub>O(l)</span>
             {% else %}
@@ -17,7 +17,7 @@
     {% endif %}
     
     {% if reaction.extra_electrons and reaction.is_balanced %}
-        + <span class="missingCount">{{ reaction.extra_electrons }}</span>
+        + <span class="missingCount">{{ reaction.extra_electrons|floatformat:-2 }}</span>
           <span class="missingAtom">e<sup>-</sup></span>
     {% endif %}
     
@@ -30,7 +30,7 @@
     {% if reaction.extra_atoms %}
         +
         {% for atom, count in reaction.extra_atoms %}
-            <span class="missingCount">{{ count }}</span>
+            <span class="missingCount">{{ count|floatformat:-2 }}</span>
             {% if reaction.balanced_with_water %}
             <span class="missingAtom">Water</span>
             {% else %}
@@ -40,7 +40,7 @@
     {% endif %}
     
     {% if reaction.missing_electrons and reaction.is_balanced %}
-        + <span class="missingCount">{{ reaction.missing_electrons }}</span>
+        + <span class="missingCount">{{ reaction.missing_electrons|floatformat:-2 }}</span>
           <span class="missingAtom">e<sup>-</sup></span>
     {% endif %}
 </div>

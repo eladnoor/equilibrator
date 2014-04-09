@@ -2,35 +2,34 @@
 	{% include "header.html" %}
 {% endwith %}
 
-	<div class="centerize">
-            {% for c_w_c in reaction.reactants %}
-                <div class="compound">
-                    {{ c_w_c.name }}{{ c_w_c.subscript }}
-                </div>
-            {% endfor %}
+    <div class="centerize">
+        {% for c_w_c in reaction.reactants %}
+            <div class="compound">
+                {{ c_w_c.name }}{{ c_w_c.subscript }}
+            </div>
+        {% endfor %}
 
-            <form name="compoundForm" action="/compound" method="get">
-                <input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
-                
-                {{ reaction.conditions.name }}
-                <table class="results">
-                    {% include "compound_result_table.html" %}
-                    {% include "concentration_sub_table.html" %}
-                </table>
-                
-                <div class="buttonSet">
-                    <input type="submit" value="Update" name="submit" />
-                </div>
-                
-                {% if compound.has_species_groups %}
-                <table class="results">
-                    {% include "compound_species_table.html" %}
-                </table>
-                {% endif %}
+        <form name="compoundForm" action="/compound" method="get">
+            <input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
+            {{ reaction.conditions.name }}
 
-            </form>
+            {% include "compound_result_table.html" %}
 
-            {% include "compound_info_table.html" %}
-	</div>
+            {% include "concentration_sub_table.html" %}
+
+            <div class="buttonSet">
+                <input type="submit" value="Update" name="submit" />
+            </div>
+                
+            {% if compound.has_species_groups %}
+            <table class="results">
+                {% include "compound_species_table.html" %}
+            </table>
+            {% endif %}
+
+        </form>
+
+        {% include "compound_info_table.html" %}
+    </div>
 		
 {% include "footer.html" %}

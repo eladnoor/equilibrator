@@ -1,56 +1,64 @@
-<tr>
-    <td width="150px">Concentrations</td>
-    <td colspan="3">
-        <input type="radio" name="conditions" value="standard" {% if not conditions or conditions == "standard" %}checked{% endif %}><a href="/faq#stdConditions">Standard conditions</a> (1 M)
-        <input type="radio" name="conditions" value="mM" {% if conditions == "mM" %}checked{% endif %}>1 mM
-        <input type="radio" name="conditions" id="customConcRadio" value="custom" {% if conditions == "custom" %}checked{% endif %}>Custom
-    </td>
-</tr>
-<tr bgcolor="#B1D0FC" class="customConcentrations">
-    <th colspan="4">Reactant Concentrations</th>
-</tr>
-{% for reactant in reaction.reactants %}
-<tr class="customConcentrations">
-    {% if reactant.compound.kegg_id == 'C00001' %}
-        <td colspan="2">
-            Water(l)
-        </td>
-        <td>
-            55 M <a href="/faq#waterConcentration"> Learn more &raquo;</a>
-            <input type="hidden" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
-        </td>
-        <td width="50px">
-            liquid
-            <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
-        </td>
-    {% else %}
-        <td colspan="2">
-            {{ reactant.name }}{{ reactant.subscript }}
-        </td>
-        <td>
-            {% if reactant.is_constant %}
-                <input type="hidden" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
-                {{ reactant.phase_value_string }} 
+<div id="showConc" style={% if reaction.is_phys_conc %}"display:block"{% else %}"display:none"{% endif %}>
+    <p>
+    <a href="#" onclick="toggle_visibility('hideConc');toggle_visibility('showConc');">+ Show</a> concentrations
+    </p>
+</div>
+<div id="hideConc" style={% if reaction.is_phys_conc %}"display:none"{% else %}"display:block"{% endif %}>
+    <p>
+    <a href="#" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">- Hide</a> concentrations
+    </p>
+    <table class="results">
+        <tr class="infoTableHeader">
+            <th colspan="4">Reactant Concentrations</th>
+        </tr>
+        {% for reactant in reaction.reactants %}
+        <input type="hidden" name="reactantsCoeff" value="{{ reactant.coeff }}" />
+        <input type="hidden" name="reactantsId" value="{{ reactant.kegg_id }}" />
+        <input type="hidden" name="reactantsName" value="{{ reactant.name }}" />
+        <tr>
+            {% if reactant.compound.kegg_id == 'C00001' %}
+                <td colspan="2">
+                    Water(l)
+                </td>
+                <td>
+                    55 M <a href="/faq#waterConcentration"> Learn more &raquo;</a>
+                    <input type="hidden" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
+                    <input type="hidden" value="{{ reactant.phase_prefactor }}" name="reactantsConcentrationPrefactor" />
+                </td>
+                <td width="50px">
+                    liquid
+                    <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
+                </td>
             {% else %}
-                <input type="text" size="10" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
+                <td colspan="2">
+                    {{ reactant.name }}{{ reactant.subscript }}
+                </td>
+                <td>
+                    {% if reactant.is_constant %}
+                        <input type="hidden" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
+                        {{ reactant.phase_value_string }} 
+                    {% else %}
+                        <input type="text" size="10" value="{{ reactant.phase_value_string }}" name="reactantsConcentration" />
+                    {% endif %}
+                    <input type="hidden" value="{{ reactant.phase_prefactor }}" name="reactantsConcentrationPrefactor" />
+                    {{ reactant.phase_units|safe }}
+                 </td>
+                 <td width="50px">
+                    {% if reactant.has_multiple_phases %}
+                        <select name="reactantsPhase">
+                        {% for phase in reactant.possible_phases %}
+                          <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
+                              {{ phase }}
+                          </option>
+                        {% endfor %}
+                        </select>
+                    {% else %}
+                        {{ reactant.phase_name }}
+                        <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
+                    {% endif %}
+                </td>
             {% endif %}
-            <input type="hidden" value="{{ reactant.phase_prefactor }}" name="reactantsConcentrationPrefactor" />
-            {{ reactant.phase_units|safe }}
-         </td>
-         <td width="50px">
-            {% if reactant.has_multiple_phases %}
-                <select name="reactantsPhase">
-                {% for phase in reactant.possible_phases %}
-                  <option value="{{ phase }}" {% if phase == reactant.phase_name %} selected {% endif %}>
-                      {{ phase }}
-                  </option>
-                {% endfor %}
-                </select>
-            {% else %}
-                {{ reactant.phase_name }}
-                <input type="hidden" value="{{ reactant.phase_name }}" name="reactantsPhase" />
-            {% endif %}
-        </td>
-    {% endif %}
-</tr>
-{% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -39,7 +39,7 @@ class SearchForm(forms.Form):
     cleaned_ionic_strength = property(lambda self: self._GetWithDefault('ionic_strength', None))
     cleaned_e_reduction_potential = property(lambda self: self._GetWithDefault('electronReductionPotential', None))
 
-class ReactionForm(SearchForm):
+class BaseReactionForm(SearchForm):
     
     def GetReactantConcentrations(self):
         prefactors = map(float, self.cleaned_data['reactantsConcentrationPrefactor'])
@@ -53,17 +53,22 @@ class ReactionForm(SearchForm):
                     yield conc
             except ValueError:
                 yield 1e-9
-                
-    reactionId = forms.CharField(required=False)
-    reactantsId = ListFormField(required=False)
-    reactantsCoeff = ListFormField(required=False)
-    reactantsName = ListFormField(required=False)
+
     reactantsPhase = forms.MultipleChoiceField(required=False,
                                                choices=constants.PHASE_CHOICES)
     reactantsConcentration = ListFormField(required=False)
     reactantsConcentrationPrefactor = ListFormField(required=False)
-    conditions = forms.ChoiceField(required=False,
-                                   choices=constants.CONDITION_CHOICES)
+
+    # Convenience accessors for clean data with defaults.
+    cleaned_reactantsPhase = property(lambda self: self.cleaned_data['reactantsPhase'])
+    cleaned_reactantsConcentration = property(GetReactantConcentrations)
+    
+class ReactionForm(BaseReactionForm):
+    
+    reactionId = forms.CharField(required=False)
+    reactantsId = ListFormField(required=False)
+    reactantsCoeff = ListFormField(required=False)
+    reactantsName = ListFormField(required=False)
     
     submit = forms.ChoiceField(required=False,
                                choices=[('Update', 'update'),
@@ -75,9 +80,6 @@ class ReactionForm(SearchForm):
     cleaned_reactantsId = property(lambda self: self.cleaned_data['reactantsId'])
     cleaned_reactantsCoeff = property(lambda self: [float(c) for c in self.cleaned_data['reactantsCoeff']])
     cleaned_reactantsName = property(lambda self: self.cleaned_data['reactantsName'])
-    cleaned_reactantsPhase = property(lambda self: self.cleaned_data['reactantsPhase'])
-    cleaned_reactantsConcentration = property(GetReactantConcentrations)
-    cleaned_conditions = property(lambda self: self.cleaned_data['conditions'])
     cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))
 
 class ReactionGraphForm(ReactionForm):
@@ -90,32 +92,9 @@ class ReactionGraphForm(ReactionForm):
     cleaned_vary_pmg = property(lambda self: self._GetWithDefault('vary_pmg', False))
     cleaned_vary_is  = property(lambda self: self._GetWithDefault('vary_is', False)) 
     
-class CompoundForm(SearchForm):
+class CompoundForm(BaseReactionForm):
    
-    def GetReactantConcentrations(self):
-        for c in self.cleaned_data['reactantsConcentration']:
-            try:
-                conc = float(c)
-                if conc <= 0:
-                    yield 1e-9
-                else:
-                    yield conc
-            except ValueError:
-                yield 1e-9
-
-    def GetReactantPhases(self):
-        for p in self.cleaned_data['reactantsPhase']:
-            if p == '':
-                yield None
-            else:
-                yield p
-
     compoundId = forms.CharField(max_length=50)
-    reactantsPhase = forms.MultipleChoiceField(required=False,
-                                               choices=constants.PHASE_CHOICES)
-    reactantsConcentration = ListFormField(required=False)
-    conditions = forms.ChoiceField(required=False,
-                                   choices=constants.CONDITION_CHOICES)
 
     # Convenience accessors for clean data with defaults.
     cleaned_compoundId = property(lambda self: self.cleaned_data['compoundId'])
@@ -127,6 +106,3 @@ class CompoundForm(SearchForm):
     cleaned_reactantsId = property(lambda self: [self.cleaned_compoundId])
     cleaned_reactantsCoeff = property(lambda self: [1])
     cleaned_reactantsName = property(lambda self: [None])
-    cleaned_reactantsPhase = property(GetReactantPhases)
-    cleaned_reactantsConcentration = property(GetReactantConcentrations)
-    cleaned_conditions = property(lambda self: self.cleaned_data['conditions'])

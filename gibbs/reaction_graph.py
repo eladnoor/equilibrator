@@ -30,5 +30,5 @@ def ReactionGraph(request):
                      'concentration_list': json.dumps(concentration_list),
                      'mode': mode,
                      'reaction': rxn}
-    template_data.update(rxn.conditions.GetTemplateDict())
+    template_data.update(rxn.aq_params.GetTemplateData())
     return render_to_response('reaction_graph.html', template_data)

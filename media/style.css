@@ -1,121 +1,121 @@
 .printable {
-	margin: 10%;
-	font-size: 18px;
+    margin: 10%;
+    font-size: 18px;
 }
 
 .adminLink {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 .header {
-	margin: 15px 0px 0px 10px;
+    margin: 15px 0px 0px 10px;
 }
 
 .header #searchForm {
-	padding-top: 40px;
-	padding-left: 10px;
+    padding-top: 40px;
+    padding-left: 10px;
 }
 
 .header #queryField {
-	width: 70%;
+    width: 70%;
 }
 
 .logoSmall img {
-	width: 150px;
-	height: 120px;
-	border: none;
-	float: left;
-	margin: 7px;
+    width: 150px;
+    height: 120px;
+    border: none;
+    float: left;
+    margin: 7px;
 }
 
 .errorMsg {
-	background-color: #C00;
+    background-color: #C00;
 }
 
 .warning {
-	background-color: #FFF1A8;
+    background-color: #FFF1A8;
 }
 
 .errorMsg, .warning {
-	border-radius: 5px;
-	font-weight: bold;
-	margin: 10px auto;
-	padding: 3px;
-	max-width: 450px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin: 10px auto;
+    padding: 3px;
+    max-width: 450px;
 }
 
 .missingCount {
-	color: red;
+    color: red;
 }
 
 .customConcentrations {
-	display: none;
+    display: none;
 }
 
 #searchResults {
-	margin-left: 20px;
-	width: 85%;
-	text-align: left;
+    margin-left: 20px;
+    width: 85%;
+    text-align: left;
 }
 
 #searchResults .searchResult {
-	display: block;
-	margin: 10px;
-	padding: 5px;
-	border: solid 1px black;
+    display: block;
+    margin: 10px;
+    padding: 5px;
+    border: solid 1px black;
 }
 
 #searchResults a:hover {
-	background-color: #CCFFCC;
+    background-color: #CCFFCC;
 }
 
 #searchResults .searchResult span {
-	display: block;
-	color: black;
-	padding-left: 6px;
+    display: block;
+    color: black;
+    padding-left: 6px;
 }
 
 #searchResults .resultsSection .title {
-	text-align: left;
-	font-size: 22px;
-	margin: 5px 0 5px 0;
+    text-align: left;
+    font-size: 22px;
+    margin: 5px 0 5px 0;
 }
 
 #searchResults .searchResult .name {
-	color: #0066CC;
-	padding-left: 0px;
+    color: #0066CC;
+    padding-left: 0px;
 }
 
 #searchResults .searchResult .image {
-	float: right;
+    float: right;
 }
 
 #searchResults .searchResult .note {
-	font-size: 9px;
-	color: #FF3300;
+    font-size: 9px;
+    color: #FF3300;
 }
 
 #searchResults .searchResult .reactionLink {
-	color: #006633;
+    color: #006633;
 }
 
 #searchResults .searchResult .viewAllLink {
-	color: #0066CC;
+    color: #0066CC;
 }
 
 #searchResults .image img {
-	border: solid 1px black;
-	max-height: 100px;
+    border: solid 1px black;
+    max-height: 100px;
 }
 
 .parsedRxn, .compoundSelector, .compound, .enzyme {
-	font-size: 20px;
-	font-weight: bold;
-	margin: 15px auto;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px auto;
 }
 
 .reactionController, .parsedRxn {
-	text-align: center;
+    text-align: center;
 }
 
 table.results,
@@ -124,19 +124,19 @@ table.speciesInfo,
 table.enzymeInfo,
 table.reactionInfo,
 table.formationEnergyInfo {
-	margin: 10px auto;
-	width: 900px;
-	border: solid 1px black;
-	padding: 0px;
+    margin: 10px auto;
+    width: 900px;
+    border: solid 1px black;
+    padding: 0px;
     border-spacing: 0px;
 }
 
 .graphLink {
-  float: right;
+    float: right;
 }
 
 .graphLink img {
-  border: 0px;
+    border: 0px;
 }
 
 .results td,
@@ -145,50 +145,50 @@ table.formationEnergyInfo {
 .enzymeInfo td,
 .reactionInfo td,
 .formationEnergyInfo td {
-  padding: 5px;
+    padding: 5px;
 }
 
 .reactionHeader td,
 .reactionSource td,
 td.reference.border {
-  border-bottom: black 1px solid;
+    border-bottom: black 1px solid;
 }
 
 table.reactionInfo,
 table.speciesInfo,
 table.formationEnergyInfo {
-	text-align: center;
-	padding: 0px;
+    text-align: center;
+    padding: 0px;
 }
 
 .speciesHeader td,
 .speciesSource.last td,
 td.reference.border {
-  border-bottom: black 1px solid;
+    border-bottom: black 1px solid;
 }
 
-.reactionRowOdd {
-	background-color: #CCFFCC;
+.infoTableHeader {
+    background-color: #CCFFCC;
 }
 
 .refsList {
-  text-align: left;
+    text-align: left;
 }
 
 .refsList a {
-  color: black;
+    color: black;
 }
 
 #figureContainer {
-  margin: 5px auto 35px auto;
-  width:600px;
-  height:300px;
+    margin: 5px auto 35px auto;
+    width:600px;
+    height:300px;
 }
 
 #figureContainer #legendContainer {
-  float:right; 
+    float:right; 
 }
 
 #figureContainer #dgFigure {
-  clear: both; 
+    clear: both; 
 }

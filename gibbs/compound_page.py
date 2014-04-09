@@ -15,10 +15,13 @@ def CompoundPage(request):
     
     rxn = reaction.Reaction.FromForm(form)
 
-    aq_params = conditions.AqueousParams(form, request.COOKIES) 
-    logging.info('Aqueous parameters: ' + str(aq_params))
-    rxn.SetAqueousParams(aq_params)
+    if len(rxn.reactants) != 1:
+        logging.error('There must be only 1 reactant in a "compound" page')
+        raise Http404
 
+    rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+    logging.info('Aqueous parameters: ' + str(rxn.aq_params))
+    
     compound = rxn.reactants[0].compound
     compound.StashTransformedSpeciesEnergies(pH=rxn.pH,
                                              pMg=rxn.pMg,
@@ -27,5 +30,5 @@ def CompoundPage(request):
     template_data = rxn.GetTemplateData(None)
     template_data.update({'compound': rxn.reactants[0].compound})
     response = render_to_response('compound_page.html', template_data)
-    aq_params.SetCookies(response)
+    rxn.aq_params.SetCookies(response)
     return response

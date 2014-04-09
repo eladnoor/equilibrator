@@ -711,7 +711,7 @@ class StoredReaction(models.Model):
                 left.append(StoredReaction._CompoundToString(kegg_id, -coeff))
             elif coeff > 0:
                 right.append(StoredReaction._CompoundToString(kegg_id, coeff))
-        return "%s <=> %s" % (' + '.join(left), ' + '.join(right))
+        return "%s = %s" % (' + '.join(left), ' + '.join(right))
         
     @staticmethod
     def HashableReactionString(sparse):

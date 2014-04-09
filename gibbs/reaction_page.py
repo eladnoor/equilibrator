@@ -23,13 +23,11 @@ def ReactionPage(request):
     # pressed).
     rxn = reaction.Reaction.FromForm(form)
 
-    aq_params = conditions.AqueousParams(form, request.COOKIES) 
-    logging.info('Aqueous parameters: ' + str(aq_params))
-    rxn.SetAqueousParams(aq_params)
+    rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+    logging.info('Aqueous parameters: ' + str(rxn.aq_params))
 
     if form.cleaned_submit == 'Reverse':
         rxn.SwapSides()
-        rxn.conditions = conditions.StandardConditions()
     query = rxn.GetQueryString()
     
     # Render the template.
@@ -37,8 +35,6 @@ def ReactionPage(request):
         logging.error('Unknown submit term for reaction page: ' + form.cleaned_submit)
         raise Http404
     template_name = _REACTION_TEMPLATES_BY_SUBMIT[form.cleaned_submit]
-    response = render_to_response(template_name, rxn.GetTemplateData(query))
-    
-    aq_params.SetCookies(response)
-    # Return response back to the user, updating any cookies that need changed.
+    response = render_to_response(template_name, rxn.GetTemplateData(query))    
+    rxn.aq_params.SetCookies(response)
     return response

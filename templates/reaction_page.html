@@ -8,7 +8,7 @@
         {% include "parsed_reaction.html" %}
         The following compounds do not have an explicit chemical formula:
         <table class="results">  
-            <tr bgcolor="#B1D0FC">
+            <tr class="infoTableHeader">
                 <td><strong>Name</strong></td>
                 <td><strong>Formula</strong></td>
             </tr>
@@ -47,14 +47,15 @@
                     {% include "parsed_reaction.html" %}
     
                     {% if reaction.is_conserving %}
-                        <table class="results">
+
                         {% if reaction.is_electron_balanced %}
                             {% include "reaction_result_table.html" %}
                         {% else %}
                             {% include "half_reaction_result_table.html" %}
                         {% endif %}
+
                         {% include "concentration_sub_table.html" %}
-                        </table>
+
                         <div class="buttonSet">
                             <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
                             <input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />

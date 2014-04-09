@@ -23,11 +23,11 @@
 </table>
 {% if enzyme.all_reactions %}
 <table class="reactionInfo">
-    <tr class="reactionRow">
+    <tr class="infoTableHeader">
         <th>Reactions</th>        
     </tr>
     {% for reaction in enzyme.all_reactions %}
-        <tr class="{% cycle 'reactionRowOdd' 'reactionRowEven' %}">
+        <tr>
             <td><a href="{{reaction.link}}">{{reaction.reaction_string}}</a></td>
         </tr>
     {% endfor %}

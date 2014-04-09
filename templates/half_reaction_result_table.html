@@ -1,80 +1,82 @@
-{% if reaction.half_reaction_dg_prime != None %}
-<tr>
-    <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
-    <td colspan="3">
-    <strong>
-      {{ reaction.half_reaction_dg_prime|floatformat:1 }} kJ / mol
-    </strong>
-    </td>
-</tr>
-{% endif %}
-
-{% if conditions and conditions != "standard" %}
-<tr>
-    <td width="150px">
+<table class="results">
+    {% if reaction.half_reaction_dg_prime != None %}
+    <tr>
+        <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
+        <td colspan="3">
         <strong>
-            Estimated E'</a>
+          {{ reaction.half_reaction_dg_prime|floatformat:1 }} kJ / mol
         </strong>
-    </td>
-    <td colspan="3">
-    <strong>
-    {% if reaction.e_prime != None %}
-        {{ reaction.e_prime|floatformat:0 }} mV
-    {% else %}
-        <a href="/faq#notAvailable">Not available</a>
+        </td>
+    </tr>
     {% endif %}
-    </strong>
-    </td>
-</tr>
-{% endif %}
-
-<tr>
-    <td width="150px">
+    
+    {% if conditions and conditions != "standard" %}
+    <tr>
+        <td width="150px">
+            <strong>
+                Estimated E'</a>
+            </strong>
+        </td>
+        <td colspan="3">
         <strong>
-            Estimated E'&deg;</a>
-        </strong>
-    </td>
-    <td colspan="3">
-        <strong>
-        {% if reaction.e0_prime != None %}
-            {{ reaction.e0_prime|floatformat:0 }} mV
+        {% if reaction.e_prime != None %}
+            {{ reaction.e_prime|floatformat:0 }} mV
         {% else %}
             <a href="/faq#notAvailable">Not available</a>
         {% endif %}
         </strong>
-    </td>
-</tr>
-
-{% if reaction.e0_prime != None %}
-    <tr>
-        <td width="150px">
-            pH
-        </td>
-        <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.ph }}" size="3"/></td>
-        <td colspan="2">
-            <div id="phSlider" />
         </td>
     </tr>
+    {% endif %}
+    
     <tr>
         <td width="150px">
-            Ionic strength [M]
+            <strong>
+                Estimated E'&deg;</a>
+            </strong>
         </td>
-        <td width="50px">
-            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.i_s }}" size="3"/>
-        </td>
-        <td colspan="2">
-            <div id="ionStrengthSlider" />
-        </td>
-    </tr>
-    <tr>
-        <td width="150px">
-            e<sup>-</sup> potential [mV]
-        </td>
-        <td width="50px">
-            <input type="text" name="electronReductionPotential" id="electronReductionPotentialField" value="{{ reaction.e_reduction_potential|floatformat:-1 }}" size="3" />
-        </td>
-        <td colspan="2">
-            <div id="electronReductionPotentialSlider" />
+        <td colspan="3">
+            <strong>
+            {% if reaction.e0_prime != None %}
+                {{ reaction.e0_prime|floatformat:0 }} mV
+            {% else %}
+                <a href="/faq#notAvailable">Not available</a>
+            {% endif %}
+            </strong>
         </td>
     </tr>
-{% endif %}
+    
+    {% if reaction.e0_prime != None %}
+        <tr>
+            <td width="150px">
+                pH
+            </td>
+            <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.aq_params.pH }}" size="3"/></td>
+            <td colspan="2">
+                <div id="phSlider" />
+            </td>
+        </tr>
+        <tr>
+            <td width="150px">
+                Ionic strength [M]
+            </td>
+            <td width="50px">
+                <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.aq_params.ionic_strength }}" size="3"/>
+            </td>
+            <td colspan="2">
+                <div id="ionStrengthSlider" />
+            </td>
+        </tr>
+        <tr>
+            <td width="150px">
+                e<sup>-</sup> potential [mV]
+            </td>
+            <td width="50px">
+                <input type="text" name="electronReductionPotential" id="electronReductionPotentialField" value="{{ reaction.aq_params.e_reduction_potential|floatformat:-1 }}" size="3" />
+            </td>
+            <td colspan="2">
+                <div id="electronReductionPotentialSlider" />
+            </td>
+        </tr>
+    {% endif %}
+</table>

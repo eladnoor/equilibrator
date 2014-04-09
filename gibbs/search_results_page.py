@@ -36,14 +36,13 @@ def ResultsPage(request):
             return render_to_response('search_error_page.html')
 
         logging.debug('Generating a reaction from the matched KEGG IDs')
-        rxn = reaction.Reaction.FromIds(best_reaction,
-                                        cond=conditions.StandardConditions())
+        rxn = reaction.Reaction.FromIds(best_reaction)
 
-        aq_params = conditions.AqueousParams(form, request.COOKIES) 
-        logging.info('Aqueous parameters: ' + str(aq_params))
-        rxn.SetAqueousParams(aq_params)
+        rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+        logging.info('Aqueous parameters: ' + str(rxn.aq_params))
         
-        return render_to_response('reaction_page.html', rxn.GetTemplateData(query))
+        response = render_to_response('reaction_page.html', rxn.GetTemplateData(query))
+        return response
 
     else:
         # Otherwise we try to parse it as a single compound.
@@ -62,6 +61,7 @@ def ResultsPage(request):
             enzymes_first = True
         template_data['enzymes_first'] = enzymes_first
             
-        return render_to_response('search_results.html', template_data)
+        response = render_to_response('search_results.html', template_data)
+        return response
 
     raise Http404

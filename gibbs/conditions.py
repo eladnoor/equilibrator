@@ -41,13 +41,11 @@ class _BasePhase(object):
             # avoid writing 10^0 as a prefix for the units
             return (self.Value(), 1, self.Units())
             
-        
     def HumanValueAndUnits_letters(self):
         """
             convert the value to human readable numbers by changing
             the units (adding milli, micro modifiers)
         """
-        logging.info('phase = %s %g %s' % (self.Name(), self.Value(), self.Units()))
         #if self.Value() > 1e-2:
         #    return (self.Value(), self.Units())
         
@@ -58,9 +56,17 @@ class _BasePhase(object):
             return (self.Value() * 1e6, 1e-6, 'μ' + self.Units())
         
         return (self.Value() * 1e9, 1e-9, 'n' + self.Units())
-        
+
     def __str__(self):
-        return '%g %s' % self.HumanValueAndUnits()
+        return 'phase = %s (%g %s)' % (self.PhaseName(), self.Value(), self.Units())
+
+    def IsPhysiological(self):
+        """
+            Checks if the condition matches standard physiological conditions
+            i.e. 1 mM for aqueous and 1 bar for liquid.
+            gas and solid phases are always considered non-physiological
+        """
+        return False
 
 class StandardAqueousPhase(_BasePhase):
     def PhaseName(self):
@@ -91,6 +97,8 @@ class StandardLiquidPhase(_BasePhase):
         return '(l)'
     def Units(self):
         return 'bar'
+    def IsPhysiological(self):
+        return True
 
 class StandardSolidPhase(_BasePhase):
     def PhaseName(self):
@@ -111,6 +119,8 @@ class CustomAqueousPhase(StandardAqueousPhase):
         return False
     def Value(self):
         return self._concentration
+    def IsPhysiological(self):
+        return self._concentration == 1e-3
 
 class CustomGasPhase(StandardGasPhase):
     def __init__(self, partial_pressure=1.0):
@@ -152,13 +162,6 @@ class _BaseConditions(object):
             return StandardSolidPhase()    
         raise NotImplementedError
 
-    def GetTemplateDict(self):
-        return {'ph': self.pH, 'pmg': self.pMg,
-                'ionic_strength': self.ionic_strength,
-                'temperature': self.temperature,
-                'e_reduction_potential': self.e_reduction_potential,
-                'conditions': self.__str__()}
-
     def SetPhasesAndRatios(self, all_ids, all_phases, all_ratios):
         for kegg_id, phase, ratio in zip(all_ids, all_phases, all_ratios):
             self.SetPhase(kegg_id, phase, ratio)
@@ -178,7 +181,7 @@ class _BaseConditions(object):
         return ['conditions=%s' % self.__str__(),
                 'reactantsPhase=%s' % phase.PhaseName(),
                 'reactantsConcentration=%s' % phase.Value()]
-        
+    
 class StandardConditions(_BaseConditions):
 
     def __str__(self):
@@ -186,7 +189,7 @@ class StandardConditions(_BaseConditions):
 
     def SetPhase(self, kegg_id, phase, ratio=1):
         self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, 1)
-        
+            
 class MillimolarConditions(_BaseConditions):
 
     def __str__(self):
@@ -194,7 +197,7 @@ class MillimolarConditions(_BaseConditions):
 
     def SetPhase(self, kegg_id, phase, ratio=1):
         self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, 1e-3)
-    
+
 class CustomConditions(_BaseConditions):
 
     def __str__(self):
@@ -204,7 +207,7 @@ class CustomConditions(_BaseConditions):
         logging.info('For %s, setting phase to %s and ratio to %g' % 
                      (kegg_id, phase, ratio))
         self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, ratio)
-    
+            
 ###############################################################################
 
 def CreateConditions(name, all_ids=None, all_phases=None, all_ratios=None):
@@ -228,18 +231,34 @@ def CreateConditions(name, all_ids=None, all_phases=None, all_ratios=None):
 
 class AqueousParams(object):
 
-    def __init__(self, form, cookies=None):
+    def __init__(self,
+                 pH=constants.DEFAULT_PH,
+                 pMg=constants.DEFAULT_PMG,
+                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                 e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL):
+        self.pH = pH
+        self.pMg = pMg
+        self.ionic_strength = ionic_strength
+        self.e_reduction_potential = e_reduction_potential
+
+    @staticmethod
+    def FromForm(form, cookies=None):
         if cookies is None:
             cookies = {}
         
-        self.pH = form.cleaned_ph or \
+        pH = form.cleaned_ph or \
             float(cookies.get('pH', constants.DEFAULT_PH))
-        self.pMg = form.cleaned_pmg or \
+        pMg = form.cleaned_pmg or \
             float(cookies.get('pMg', constants.DEFAULT_PMG))
-        self.ionic_strength = form.cleaned_ionic_strength or \
+        ionic_strength = form.cleaned_ionic_strength or \
             float(cookies.get('ionic_strength', constants.DEFAULT_IONIC_STRENGTH))
-        self.e_reduction_potential = form.cleaned_e_reduction_potential or \
+        e_reduction_potential = form.cleaned_e_reduction_potential or \
             float(cookies.get('e_reduction_potential', constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
+        return AqueousParams(pH, pMg, ionic_strength, e_reduction_potential)          
+
+    def Clone(self):
+        return AqueousParams(self.pH, self.pMg, self.ionic_strength,
+                             self.e_reduction_potential)
             
     def __str__(self):
         return 'pH = %.2g, pMg = %.2g, I = %.2g M, Ered = %g' % \
@@ -250,3 +269,8 @@ class AqueousParams(object):
         response.set_cookie('pMg', str(self.pMg))
         response.set_cookie('ionic_strength', str(self.ionic_strength))
         response.set_cookie('e_reduction_potential', str(self.e_reduction_potential))
+        
+    def GetTemplateData(self):
+        return {'ph': self.pH, 'pmg': self.pMg,
+                'ionic_strength': self.ionic_strength,
+                'e_reduction_potential': self.e_reduction_potential}
