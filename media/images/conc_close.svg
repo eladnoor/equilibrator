@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg3293"
+   viewBox="0 0 128 128"
+   version="1.0"
+   inkscape:version="0.48.4 r9939"
+   width="100%"
+   height="100%"
+   sodipodi:docname="conc_close.svg">
+  <defs
+     id="defs14" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="22.190948"
+     inkscape:cy="17.085756"
+     inkscape:window-x="65"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3293"
+     inkscape:snap-page="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2996" />
+  </sodipodi:namedview>
+  <path
+     style="fill:#0066cc;fill-opacity:1"
+     inkscape:connector-curvature="0"
+     d="m 55.868217,30.586536 -1.150273,46.77777 c 0,9.969033 -9.969033,14.95355 -14.953549,14.95355 -4.984517,0 -14.95355,-4.984517 -14.95355,-14.95355 l 1.150273,-46.77777 h 29.907099 z"
+     id="path4667" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 19.826329,2.5965588 H 59.702461 C 54.717944,7.5810749 54.717944,11.571756 54.717944,17.550108 v 59.814198 c 0,9.969033 -9.969033,14.95355 -14.953549,14.95355 -4.984517,0 -14.95355,-4.984517 -14.95355,-14.95355 V 17.550108 c 0,-5.978352 0,-9.9690331 -4.984516,-14.9535492 z"
+     id="rect3162" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 54.717944,22.534625 H 39.764395"
+     id="path3165" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 54.717944,37.488174 H 39.764395"
+     id="path3167" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 54.717944,52.441724 H 39.764395"
+     id="path3169" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+     inkscape:connector-curvature="0"
+     d="M 54.717944,67.395273 H 39.764395"
+     id="path3171" />
+  <metadata
+     id="metadata10">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title />
+        <dc:date>2009-03-20T14:11:31</dc:date>
+        <dc:description>chemistry, chemistry, clip art, clipart, icon, icon, image, laboratory, laboratory, media, png, public domain, science, science, svg, test tube, test tube, </dc:description>
+        <dc:source>http://openclipart.org/detail/22632/lab-icon-4-by-pitr</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>pitr</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>chemistry</rdf:li>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>icon</rdf:li>
+            <rdf:li>image</rdf:li>
+            <rdf:li>laboratory</rdf:li>
+            <rdf:li>media</rdf:li>
+            <rdf:li>png</rdf:li>
+            <rdf:li>public domain</rdf:li>
+            <rdf:li>science</rdf:li>
+            <rdf:li>svg</rdf:li>
+            <rdf:li>test tube</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <path
+     sodipodi:nodetypes="ccsccc"
+     id="path2993"
+     d="m 105.36245,52.630187 -1.15027,24.734119 c 0,9.969033 -9.969035,14.95355 -14.953552,14.95355 -4.984516,0 -14.953549,-4.984517 -14.953549,-14.95355 l 1.150273,-24.734119 z"
+     inkscape:connector-curvature="0"
+     style="fill:#00cc00;fill-opacity:1" />
+  <path
+     id="path2995"
+     d="m 69.320562,2.5965588 h 39.876128 c -4.98451,4.9845161 -4.98451,8.9751972 -4.98451,14.9535492 v 59.814198 c 0,9.969033 -9.969035,14.95355 -14.953552,14.95355 -4.984516,0 -14.953549,-4.984517 -14.953549,-14.95355 V 17.550108 c 0,-5.978352 0,-9.9690331 -4.984517,-14.9535492 z"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+  <path
+     id="path2997"
+     d="M 104.21218,22.534625 H 89.258628"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none" />
+  <path
+     id="path2999"
+     d="M 104.21218,37.488174 H 89.258628"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none" />
+  <path
+     id="path3001"
+     d="M 104.21218,52.441724 H 89.258628"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none" />
+  <path
+     id="path3003"
+     d="M 104.21218,67.395273 H 89.258628"
+     inkscape:connector-curvature="0"
+     style="fill:none;stroke:#000000;stroke-width:2.30054617;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none" />
+  <path
+     style="fill:none;stroke:#999999;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+     d="m 38.99819,122.85688 25,-10 25,10"
+     id="path2998"
+     inkscape:connector-curvature="0" />
+</svg>

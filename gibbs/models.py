@@ -11,6 +11,7 @@ from django.http import Http404
 from django.db import models
 from gibbs import constants
 from gibbs import formula_parser
+from gibbs import conditions
 #from django.core.files.base import ContentFile
 import json
 from util.thumbnail import InChI2Thumbnail
@@ -110,31 +111,35 @@ class Specie(models.Model):
                              choices=constants.PHASE_CHOICES,
                              default=constants.DEFAULT_PHASE)
         
-    def Transform(self,
-                  pH=constants.DEFAULT_PH,
-                  pMg=constants.DEFAULT_PMG,
-                  ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        """Transform this individual estimate to difference conditions."""
-
+    def Transform(self, aq_params):
+        """
+            Transform this individual estimate to difference conditions.
+        """
+        
+        sqrt_I = numpy.sqrt(aq_params.ionic_strength)
+        pH = aq_params.pH
+        pMg = aq_params.pMg
+        nH = self.number_of_hydrogens
+        nMg = self.number_of_mgs
+        z = self.net_charge
         dG = self.formation_energy
+        dG_prime = dG
         
         # add the potential related to the pH
-        if self.number_of_hydrogens > 0:
-            dG += self.number_of_hydrogens * constants.RTlog10 * pH
+        if nH > 0:
+            dG_prime += nH * constants.RTlog10 * pH
         
         # add the potential related to the ionic strength
-        dG -= 2.91482 * (self.net_charge ** 2 - self.number_of_hydrogens) * \
-               numpy.sqrt(ionic_strength) / (1 + 1.6 * numpy.sqrt(ionic_strength))
+        dG_prime -= 2.91482 * (z ** 2 - nH) * sqrt_I / (1 + 1.6 * sqrt_I)
         
-        # add the potential related to the magnesium ions
-        if self.number_of_mgs > 0:
-            dG += self.number_of_mgs * \
-                   (constants.RTlog10 * pMg - constants.MG_FORMATION_ENERGY)
+        # add the potential related to the Mg ions
+        if nMg > 0:
+            dG_prime += nMg * \
+                  (constants.RTlog10 * pMg - constants.MG_FORMATION_ENERGY)
 
         logging.debug('nH = %d, z = %d, dG0 = %.1f --> dG0\' = %.1f' % 
-                      (self.number_of_hydrogens, self.net_charge,
-                       self.formation_energy, dG))
-        return dG
+                      (nH, z, dG, dG_prime))
+        return dG_prime
     
     def __unicode__(self):
         return self.kegg_id
@@ -193,18 +198,14 @@ class SpeciesGroup(models.Model):
                 yield s
     all_species_no_mg = property(GetSpeciesWithoutMg)
 
-    def StashTransformedSpeciesEnergies(self, pH, pMg, ionic_strength):
+    def StashTransformedSpeciesEnergies(self, aq_params):
         """
             Stash the transformed species formation energy in each one.
         """
         for species in self.all_species:
-            species.transformed_energy = species.Transform(
-                pH=pH, pMg=pMg, ionic_strength=ionic_strength)
+            species.transformed_energy = species.Transform(aq_params)
 
-    def DeltaG0Prime(self,
-                     pH=constants.DEFAULT_PH,
-                     pMg=constants.DEFAULT_PMG,
-                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+    def DeltaG0Prime(self, aq_params,
                      phase=constants.DEFAULT_PHASE):
         """
             Get a deltaG estimate for this group of species.
@@ -225,8 +226,7 @@ class SpeciesGroup(models.Model):
                             (self.kegg_id, phase, self.priority))
             return None
         
-        transform = lambda x: x.Transform(pH=pH, pMg=pMg, 
-                                          ionic_strength=ionic_strength)
+        transform = lambda x: x.Transform(aq_params)
         logging.debug('Calculating dG0\' for %s' % (self.kegg_id))
         if phase == constants.DEFAULT_PHASE:
             # Compute per-species transforms, scaled down by R*T.
@@ -360,10 +360,7 @@ class Compound(models.Model):
         names = list(self.common_names.all())
         return names[0].name
     
-    def DeltaG0Prime(self,
-                     pH=constants.DEFAULT_PH,
-                     pMg=constants.DEFAULT_PMG,
-                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+    def DeltaG0Prime(self, aq_params,
                      phase=constants.DEFAULT_PHASE):
         """
             Get a deltaG estimate for the given compound.
@@ -380,9 +377,7 @@ class Compound(models.Model):
         if not sg:
             return None
         
-        dg0_prime = sg.DeltaG0Prime(pH=pH, pMg=pMg, 
-                                    ionic_strength=ionic_strength, 
-                                    phase=phase)
+        dg0_prime = sg.DeltaG0Prime(aq_params, phase)
         return dg0_prime
 
     def WriteStructureThumbnail(self):
@@ -454,21 +449,17 @@ class Compound(models.Model):
         # TODO(flamholz): Should we return something here?
         return None
     
-    def SpeciesJson(self, species_group=None,
-                    pH=constants.DEFAULT_PH,
-                    pMg=constants.DEFAULT_PMG,
-                    ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+    def SpeciesJson(self, species_group=None, aq_params=None,
                     phase=constants.DEFAULT_PHASE):
         """Returns JSON for the species."""
         sg = species_group or self._species_group
-        dg0_prime = sg.DeltaG0Prime(pH=pH, pMg=pMg,
-                                    ionic_strength=ionic_strength,
-                                    phase=phase)
-        logging.info(dg0_prime)
+        aq_params = aq_params or conditions.AqueousParams()
+        dg0_prime = sg.DeltaG0Prime(aq_params, phase)
+        logging.debug('dG0\' = %.1f ' % dg0_prime)
         d = {'source': str(sg.formation_energy_source),
              'dgzero_prime': {'value': round(dg0_prime, 1),
-                              'pH': pH,
-                              'ionic_strength': ionic_strength}}
+                              'pH': aq_params.pH,
+                              'ionic_strength': aq_params.ionic_strength}}
         l = []
         for s in sg.all_species:
             l.append({'nh': int(s.number_of_hydrogens),
@@ -478,43 +469,35 @@ class Compound(models.Model):
         d['species'] = l
         return d
     
-    def AllSpeciesGroupsJson(self, pH=constants.DEFAULT_PH,
-                             pMg=constants.DEFAULT_PMG,
-                             ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
-                             phase=constants.DEFAULT_PHASE):
-        return [self.SpeciesJson(sg, pH=pH, pMg=pMg, ionic_strength=ionic_strength,
-                                 phase=phase)
+    def AllSpeciesGroupsJson(self, aq_params, phase=constants.DEFAULT_PHASE):
+        return [self.SpeciesJson(sg, aq_params, phase)
                 for sg in self.all_species_groups]
     
-    def ToJson(self, pH=constants.DEFAULT_PH,
-               pMg=constants.DEFAULT_PMG,
-               ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+    def ToJson(self, aq_params):
         d = {'name': str(self.name), 
              'KEGG_ID': self.kegg_id,
              'InChI': self.inchi,
              'mass': self.mass,
              'formula': self.formula,
              'num_electrons': self.num_electrons,
-             'thermodynamic_data': self.AllSpeciesGroupsJson(
-                                pH=pH, pMg=pMg, ionic_strength=ionic_strength),
+             'thermodynamic_data': self.AllSpeciesGroupsJson(aq_params),
              'note': None}
         if self.note:
             d['note'] = self.note
         return d
     
-    def ToCSVdG0Prime(self, priority=1,
-                      pH=constants.DEFAULT_PH,
-                      pMg=constants.DEFAULT_PMG,
-                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+    def ToCSVdG0Prime(self, priority=1, aq_params=None,
                       phase=constants.DEFAULT_PHASE):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, name, dG0_prime, pH, ionic_strength, T, Note
         """
+        aq_params = aq_params or conditions.AqueousParams()
         rows = []
         for sg in self.species_groups.filter(priority=priority):
-            dG0_prime = round(sg.DeltaG0Prime(pH=pH, pMg=pMg, ionic_strength=ionic_strength, phase=phase), 1)
-            rows.append([self.kegg_id, self.name, dG0_prime, pH, ionic_strength,
+            dG0_prime = round(sg.DeltaG0Prime(aq_params, phase=phase), 1)
+            rows.append([self.kegg_id, self.name, dG0_prime,
+                         aq_params.pH, aq_params.ionic_strength,
                          constants.DEFAULT_TEMP, None])
         return rows
             
@@ -601,10 +584,10 @@ class Compound(models.Model):
     dgf_zero_prime = property(DeltaG0Prime)
     dg_source = property(_GetDGSource)
     
-    def StashTransformedSpeciesEnergies(self, pH, pMg, ionic_strength):
+    def StashTransformedSpeciesEnergies(self, aq_params):
         """Stash the transformed species formation energy in each one."""
         for sg in self.all_species_groups:
-            sg.StashTransformedSpeciesEnergies(pH, pMg, ionic_strength)
+            sg.StashTransformedSpeciesEnergies(aq_params)
     
     def __unicode__(self):
         """Return a single string identifier of this Compound."""
@@ -766,27 +749,27 @@ class StoredReaction(models.Model):
         rxn = reaction.Reaction(reactants)
         return rxn.GetHyperlink(self.ToString())
 
-    def ToCSVdG0Prime(self, priority=1,
-                      pH=constants.DEFAULT_PH,
-                      pMg=constants.DEFAULT_PMG,
-                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+    def ToCSVdG0Prime(self, priority=1, aq_params=None):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, dG0_prime, pH, ionic_strength, T, Note
         """
+        aq_params = aq_params or conditions.AqueousParams()        
         dG0_prime = 0
         for kegg_id, coeff in json.loads(self.reactants):
             try:
                 compound = models.Compound.objects.get(kegg_id=kegg_id)
-                dG0_f_prime = compound.DeltaG0Prime(pH, pMg, ionic_strength)
+                dG0_f_prime = compound.DeltaG0Prime(aq_params)
                 if dG0_f_prime is not None:
                     dG0_prime += coeff * dG0_f_prime
             except Exception:
-                return [(self.kegg_id, None, pH, ionic_strength,
-                        constants.DEFAULT_TEMP,
-                        "One of the compounds has no formation energy")]
+                return [(self.kegg_id, None, 
+                         aq_params.pH, aq_params.ionic_strength,
+                         constants.DEFAULT_TEMP,
+                         "One of the compounds has no formation energy")]
         
-        return [(self.kegg_id, round(dG0_prime, 1), pH, ionic_strength,
+        return [(self.kegg_id, round(dG0_prime, 1), 
+                 aq_params.pH, aq_params.ionic_strength,
                  constants.DEFAULT_TEMP, None)]
         
     link = property(Link)

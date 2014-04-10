@@ -73,7 +73,8 @@ class ReactionForm(BaseReactionForm):
     submit = forms.ChoiceField(required=False,
                                choices=[('Update', 'update'),
                                         ('Save', 'save'),
-                                        ('Reverse', 'reverse')])
+                                        ('Reverse', 'reverse'),
+                                        ('Reset', 'reset')])
     
     # Convenience accessors for clean data with defaults.
     cleaned_reactionId = property(lambda self: self.cleaned_data['reactionId'])

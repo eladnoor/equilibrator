@@ -9,7 +9,8 @@ from gibbs import conditions
 _REACTION_TEMPLATES_BY_SUBMIT = {'': 'reaction_page.html',
                                  'Update': 'reaction_page.html',
                                  'Save': 'print_reaction.html',
-                                 'Reverse': 'reaction_page.html'}
+                                 'Reverse': 'reaction_page.html',
+                                 'Reset': 'reaction_page.html'}
 
 
 def ReactionPage(request):    
@@ -28,6 +29,8 @@ def ReactionPage(request):
 
     if form.cleaned_submit == 'Reverse':
         rxn.SwapSides()
+    elif form.cleaned_submit == 'Reset':
+        rxn.aq_params = conditions.AqueousParams()
     query = rxn.GetQueryString()
     
     # Render the template.

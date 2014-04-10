@@ -6,15 +6,16 @@ from django.http import HttpResponseBadRequest
 from django.http import HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 from gibbs import constants
+from gibbs import conditions
 from gibbs import models
-from gibbs import reaction
-
 
 MAX_COMPOUNDS = 50
 
 @csrf_exempt
 def CompoundAPI(request):
-    """Outputs JSON data for up to MAX_COMPOUNDS compounds."""
+    """
+        Outputs JSON data for up to MAX_COMPOUNDS compounds.
+    """
     data = request.raw_post_data
     if not data:
         return HttpResponseBadRequest('No request data.')
@@ -43,6 +44,7 @@ def CompoundAPI(request):
     
     ph = parsed_data.get('pH', constants.DEFAULT_PH)
     i_s = parsed_data.get('ionic_strength', constants.DEFAULT_IONIC_STRENGTH)
+    aq_params = conditions.AqueousParams(pH=ph, ionic_strength=i_s)
     
     # Fetch compounds from DB.
     stored_compounds = []
@@ -58,7 +60,7 @@ def CompoundAPI(request):
         logging.error(e)
         return HttpResponseServerError('DB Query failed. Try again.')
         
-    json_compounds = [c.ToJson() for c in stored_compounds]
+    json_compounds = [c.ToJson(aq_params) for c in stored_compounds]
     json_dict = {'compounds': json_compounds,
                  'pH': ph,
                  'ionic_strength': i_s}

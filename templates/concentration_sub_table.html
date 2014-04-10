@@ -1,11 +1,13 @@
 <div id="showConc" style={% if reaction.is_phys_conc %}"display:block"{% else %}"display:none"{% endif %}>
     <p>
-    <a href="#" onclick="toggle_visibility('hideConc');toggle_visibility('showConc');">+ Show</a> concentrations
+    <a href="#" title="Open concentration panel" onclick="toggle_visibility('hideConc');toggle_visibility('showConc');">
+    <img src="/media/images/conc_open.svg" height="32" width="32"/></a>
     </p>
 </div>
 <div id="hideConc" style={% if reaction.is_phys_conc %}"display:none"{% else %}"display:block"{% endif %}>
     <p>
-    <a href="#" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">- Hide</a> concentrations
+    <a href="#" title="Close concentration panel" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">
+    <img src="/media/images/conc_close.svg" height="32" width="32"/></a>
     </p>
     <table class="results">
         <tr class="infoTableHeader">

@@ -274,3 +274,11 @@ class AqueousParams(object):
         return {'ph': self.pH, 'pmg': self.pMg,
                 'ionic_strength': self.ionic_strength,
                 'e_reduction_potential': self.e_reduction_potential}
+
+    def _GetUrlParams(self):
+        """
+            Get the URL params for this reaction.
+        """
+        return ['ph=%f' % self.pH,
+                'pmg=%f' % self.pMg,
+                'ionic_strength=%f' % self.ionic_strength]

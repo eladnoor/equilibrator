@@ -156,11 +156,9 @@ class CompoundWithCoeff(object):
         
         return True
 
-    def DeltaG0Prime(self, pH, pMg, ionic_strength):
-        dg0_prime = self.compound.DeltaG0Prime(pH=pH,
-                                               pMg=pMg,
-                                               ionic_strength=ionic_strength,
-                                               phase=self.phase.PhaseName())
+    def DeltaG0Prime(self, aq_params):
+        dg0_prime = self.compound.DeltaG0Prime(aq_params,
+                                               self.phase.PhaseName())
         return self.coeff * dg0_prime
         
     def GetPhaseName(self):
@@ -224,17 +222,25 @@ class Reaction(object):
             products: a list of CompoundWithCoeff objects.
         """
         self.reactants = reactants or []
-        self.aq_params = conditions.AqueousParams()
+        self.aq_params = aq_params or conditions.AqueousParams()
 
         self._FilterProtons()
         self._Dedup()
+        self._SetCompoundPriorities()
+
         self._kegg_id = None
 
         # used only as cache, no need to copy while cloning        
         self._catalyzing_enzymes = None
-        self._dg0_prime = None
         
-        self._SetCompoundPriorities()
+    def SetAqueousParams(self, aq_params):
+        self._dg0_prime = None
+        self._aq_params = aq_params
+    
+    def GetAqueousParams(self):
+        return self._aq_params
+        
+    aq_params = property(GetAqueousParams, SetAqueousParams)
 
     def Clone(self):
         """
@@ -275,21 +281,6 @@ class Reaction(object):
     def GetProducts(self):
         p = [c for c in self.reactants if c.coeff > 0]
         return p
-    
-    def ApplyConditions(self, cond):
-        """Apply this concentration profile to this reaction.
-        
-        Args:
-            cond: a _BaseConditions object.
-        """
-        self._dg0_prime = None
-
-        for c in self.reactants:
-            default_phase_name = c.compound.GetDefaultPhaseName()
-            c.phase = cond.GetPhase(c.kegg_id) or \
-                      cond._GeneratePhase(default_phase_name)
-            logging.info('Applying phase for %s: %s' % 
-                         (c.kegg_id, c.phase.Name()))
     
     def __str__(self):
         """
@@ -360,13 +351,13 @@ class Reaction(object):
         if self.dg0_prime is not None:
             d['dgzero_prime'] = {
                 'value': round(self.dg0_prime, 1),
-                'pH': self.pH,
-                'ionic_strength': self.ionic_strength}
+                'pH': self.aq_params.pH,
+                'ionic_strength': self.aq_params.ionic_strength}
         if self.k_eq_prime is not None:
             d['keq_prime'] = {
                 'value': self.k_eq_prime,
-                'pH': self.pH,
-                'ionic_strength': self.ionic_strength}
+                'pH': self.aq_params.pH,
+                'ionic_strength': self.aq_params.ionic_strength}
         
         return d
 
@@ -387,7 +378,6 @@ class Reaction(object):
             return Reaction.FromStoredReaction(stored_reaction)
 
         n_react = len(form.cleaned_reactantsCoeff)
-        
         coeffs = list(form.cleaned_reactantsCoeff)
         kegg_ids = list(form.cleaned_reactantsId)
         names = list(form.cleaned_reactantsName)
@@ -494,13 +484,13 @@ class Reaction(object):
         return max([abs(x) for x in atom_diff.values()]) < 0.01
     
     def _GetUrlParams(self, query=None):
-        """Get the URL params for this reaction."""
+        """
+            Get the URL params for this reaction.
+        """
         params = sum([c_w_c._GetUrlParams() for c_w_c in self.reactants], [])
-        params += ['ph=%f' % self.pH,
-                   'pmg=%f' % self.pMg,
-                   'ionic_strength=%f' % self.ionic_strength]
+        params.extend(self.aq_params._GetUrlParams())
                 
-        if query:
+        if query is not None:
             for arrow in constants.POSSIBLE_REACTION_ARROWS:
                 tmp_query = query.replace(arrow, '=>')
             params.append('query=%s' % urllib.quote(tmp_query))
@@ -535,15 +525,8 @@ class Reaction(object):
         bic_id = 'C00288'
         other._ReplaceCompound(co2_id, bic_id)        
         other.TryBalanceWithWater()
-        return other.GetHyperlink(query)
-
-    def GetHalfReactionLink(self, query=None):
-        """
-            Returns a link to the same reaction,
-            balanced by extra H2O molecules.
-        """
-        params = self._GetUrlParams(query)
-        return '/half_reaction?%s' % '&'.join(params)
+        link = other.GetHyperlink(query)
+        return link
 
     def GetTemplateData(self, query=None):
         template_data = {'reaction': self,
@@ -551,13 +534,11 @@ class Reaction(object):
         try:
             balance_with_water_link = self.GetBalanceWithWaterLink(query)
             balance_electrons_link = self.GetBalanceElectronsLink(query)
-            half_reaction_link = self.GetHalfReactionLink(query)
             replace_co2_link = self.GetReplaceCO2Link(query)
             template_data.update({
                 'balance_with_water_link': balance_with_water_link,
                 'balance_electrons_link': balance_electrons_link,
-                'replace_co2_link': replace_co2_link,
-                'half_reaction_link': half_reaction_link})
+                'replace_co2_link': replace_co2_link})
         except ReactantFormulaMissingError:
             pass
         template_data.update(self.aq_params.GetTemplateData())
@@ -652,17 +633,19 @@ class Reaction(object):
         if self._GetElectronDiff() < 0:
             self.SwapSides()
             
-    def E0_prime(self, pH=None, pMg=None, ionic_strength=None):
-        """Returns the standard transformed reduction potential of this reaction."""
+    def E0_prime(self):
+        """
+            Returns the standard transformed reduction potential of this reaction.
+        """
         delta_electrons = self._GetElectronDiff()
         assert delta_electrons != 0
-        return - self.DeltaG0Prime(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
+        return - self.DeltaG0Prime() / (constants.F*delta_electrons)
 
-    def E_prime(self, pH=None, pMg=None, ionic_strength=None):
+    def E_prime(self):
         """Returns the standard transformed reduction potential of this reaction."""
         delta_electrons = self._GetElectronDiff()
         assert delta_electrons != 0
-        return - self.DeltaGPrime(pH, pMg, ionic_strength) / (constants.F*delta_electrons)
+        return - self.DeltaGPrime() / (constants.F*delta_electrons)
     
     def _ExtraWaters(self):
         atom_diff = self._GetAtomDiff()
@@ -706,6 +689,9 @@ class Reaction(object):
             self.reactants[i].coeff += how_many
         else:
             self.reactants += [CompoundWithCoeff.FromId(how_many, kegg_id)]
+            
+        # clear the cache since the reaction has changed
+        self._catalyzing_enzymes = None
 
     def _ReplaceCompound(self, from_id, to_id):
         """
@@ -730,6 +716,9 @@ class Reaction(object):
         else:
             self.reactants[j] += how_many
             self._Dedup()
+
+        # clear the cache since the reaction has changed
+        self._catalyzing_enzymes = None
 
     def _Dedup(self):
         """
@@ -829,24 +818,17 @@ class Reaction(object):
         _t = constants.DEFAULT_TEMP
         return _r * _t * numpy.log(1e-3) * imbalance
 
-    def DeltaG0Prime(self, pH=None, pMg=None, ionic_strength=None):
+    def DeltaG0Prime(self):
         """Compute the DeltaG0' for a reaction.
         
         Returns:
             The DeltaG0' for this reaction, or None if data was missing.
         """
-        ph = pH or self.pH
-        pmg = pMg or self.pMg
-        i_s = ionic_strength or self.ionic_strength
-
         if self._dg0_prime is not None:
-            if (ph, pmg, i_s) == (self.pH, self.pMg, self.ionic_strength):
-                return self._dg0_prime
-            else:
-                self._dg0_prime = None
+            return self._dg0_prime
 
-        c_dg0_prime_list = [c.DeltaG0Prime(pH=ph, pMg=pmg, ionic_strength=i_s)
-                            for c in self.reactants]
+        logging.info('Aqueous Params = ' + str(self.aq_params))
+        c_dg0_prime_list = [c.DeltaG0Prime(self.aq_params) for c in self.reactants]
 
         # find all the IDs of compounds that have no known formation energy
         # if there are any such compounds, print and error message and 
@@ -861,30 +843,27 @@ class Reaction(object):
         self._dg0_prime = sum(c_dg0_prime_list)
         return self._dg0_prime
 
-    def DeltaGmPrime(self, pH=None, pMg=None, ionic_strength=None):
+    def DeltaGmPrime(self):
         """Compute the DeltaGm' for a reaction (i.e. at 1 mM).
         
         Returns:
             The DeltaGm' for this reaction, or None if data was missing.
         """
-        dg0_prime = self.DeltaG0Prime(pH=pH, pMg=pMg,
-                                      ionic_strength=ionic_strength)
+        dg0_prime = self.DeltaG0Prime()
         correction = self._GetConcentrationCorrectionMilliMolar()
         return dg0_prime + correction
 
-    def DeltaGPrime(self, pH=None, pMg=None, ionic_strength=None):
+    def DeltaGPrime(self):
         """Compute the DeltaG' for a reaction.
         
         Returns:
             The DeltaG' for this reaction, or None if data was missing.
         """
-        dg0_prime = self.DeltaG0Prime(pH=pH, pMg=pMg,
-                                      ionic_strength=ionic_strength)
+        dg0_prime = self.DeltaG0Prime()
         correction = self._GetConcentrationCorrection()
         return dg0_prime + correction
         
-    def HalfReactionDeltaGPrime(self, pH=None, pMg=None, ionic_strength=None,
-                                e_reduction_potential=None):
+    def HalfReactionDeltaGPrime(self):
         """Compute the DeltaG' for a half-reaction, assuming the missing
            electrons are provided in a certain potential 
            (e_reduction_potential)
@@ -892,11 +871,10 @@ class Reaction(object):
         Returns:
             The DeltaG' for this half-reaction, or None if data was missing.
         """
-        dg_prime = self.DeltaGPrime(pH=pH, pMg=pMg,
-                                    ionic_strength=ionic_strength)
-        e_red = e_reduction_potential or self.e_reduction_potential
+        dg_prime = self.DeltaGPrime()
         delta_electrons = abs(self._GetElectronDiff())      
-        return dg_prime + constants.F * delta_electrons * e_red
+        return dg_prime + constants.F * delta_electrons * \
+                          self.aq_params.e_reduction_potential
     
     def KeqPrime(self):
         """
@@ -945,9 +923,7 @@ class Reaction(object):
 
     def AllCompoundsWithTransformedEnergies(self):
         for c_w_coeff in self.reactants:
-            dgt = c_w_coeff.compound.DeltaG0Prime(pH=self.pH,
-                                                  pMg=self.pMg,
-                                                  ionic_strength=self.ionic_strength)
+            dgt = c_w_coeff.compound.DeltaG0Prime()
             c_w_coeff.transformed_energy = dgt
             yield c_w_coeff
 
@@ -1039,19 +1015,3 @@ class Reaction(object):
     is_graph_link = property(GetIonicStrengthGraphLink)
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     is_phys_conc = property(_IsPhysiologicalConcentration)
-
-    @property
-    def pH(self):
-        return self.aq_params.pH
-
-    @property
-    def pMg(self):
-        return self.aq_params.pMg
-        
-    @property
-    def ionic_strength(self):
-        return self.aq_params.ionic_strength
-        
-    @property
-    def e_reduction_potential(self):
-        return self.aq_params.e_reduction_potential

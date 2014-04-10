@@ -23,12 +23,10 @@ def CompoundPage(request):
     logging.info('Aqueous parameters: ' + str(rxn.aq_params))
     
     compound = rxn.reactants[0].compound
-    compound.StashTransformedSpeciesEnergies(pH=rxn.pH,
-                                             pMg=rxn.pMg,
-                                             ionic_strength=rxn.ionic_strength)
+    compound.StashTransformedSpeciesEnergies(rxn.aq_params)
     
-    template_data = rxn.GetTemplateData(None)
-    template_data.update({'compound': rxn.reactants[0].compound})
+    template_data = rxn.GetTemplateData(compound.FirstName())
+    template_data.update({'compound': compound})
     response = render_to_response('compound_page.html', template_data)
     rxn.aq_params.SetCookies(response)
     return response
