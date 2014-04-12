@@ -13,10 +13,9 @@ def GenerateCompoundThumbnails():
         # thumbnail starts as None when the compound is created
         # so an empty string will mean there was an error and the thumbnail
         # cannot be created
-        if compound.thumbnail == '':
-            logging.info('Drawing %s' % compound.kegg_id)
-            compound.WriteStructureThumbnail()
-            compound.save()
+        logging.info('Drawing %s' % compound.kegg_id)
+        compound.WriteStructureThumbnail()
+        compound.save()
     
 if __name__ == '__main__':
     start = time.time()

@@ -10,5 +10,5 @@ Dependencies:
 - PyParsing 1.5.7 (also 2.0.1 tested)
 - NLTK 2.0.4
 - NumPy and SciPy
-- (optional) Indigo Toolkit (for rendering thumbnails - http://www.ggasoftware.com/opensource/indigo)
+- (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
 

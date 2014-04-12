@@ -22,7 +22,7 @@ def main():
     transaction.commit()
         
     logging.info('Loading KEGG data')
-    load_kegg_json.LoadAllKeggData(draw_thumbnails=False)
+    load_kegg_json.LoadAllKeggData()
     transaction.commit()
     
     logging.info('Loading corrections/additions to KEGG')
