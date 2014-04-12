@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mysqldump -u djangouser -p djtest > data/sqldump.txt
+mysqldump -u djangouser -p djtest | gzip -c > data/sqldump.txt.gz

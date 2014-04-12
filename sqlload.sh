@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mysql -u milolab_eqbtr -p milolab_eqbtr < data/sqldump.txt
+gunzip -c data/sqldump.txt.gz | mysql -u milolab_eqbtr -p milolab_eqbtr
