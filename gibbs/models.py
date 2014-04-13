@@ -5,7 +5,6 @@ import logging
 import numpy
 import re
 import base64
-from scipy.misc import logsumexp
 
 from django.http import Http404
 from django.db import models
@@ -236,10 +235,10 @@ class SpeciesGroup(models.Model):
             # Numerical issues: taking a sum of exp(v) for |v| quite large.
             # Use the fact that we take a log later to offset all values by a 
             # constant (the minimum value).
-            if len(scaled_transforms) > 1:
-                dg0_prime = -constants.RT * logsumexp(scaled_transforms)
-            else:
-                dg0_prime = -constants.RT * scaled_transforms[0]
+            total = scaled_transforms[0]
+            for i in xrange(1, len(scaled_transforms)):
+                total = numpy.logaddexp(total, scaled_transforms[i])
+            dg0_prime = -constants.RT * total
         else:
             if len(species) > 1:
                 logging.error('only aqueous phase can have multiple species')
