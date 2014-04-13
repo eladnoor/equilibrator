@@ -1,15 +1,8 @@
 <table class="results">
-    {% if reaction.half_reaction_dg_prime != None %}
-    <tr>
-        <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
-        <td colspan="3">
-        <strong>
-          {{ reaction.half_reaction_dg_prime|floatformat:1 }} kJ / mol
-        </strong>
-        </td>
+    <tr class="infoTableHeader">
+        <th colspan="4">Reduction Potentials</th>
     </tr>
-    {% endif %}
-    
+
     {% if conditions and conditions != "standard" %}
     <tr>
         <td width="150px">
@@ -46,37 +39,51 @@
         </td>
     </tr>
     
-    {% if reaction.e0_prime != None %}
-        <tr>
-            <td width="150px">
-                pH
-            </td>
-            <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.aq_params.pH }}" size="3"/></td>
-            <td colspan="2">
-                <div id="phSlider" />
-            </td>
-        </tr>
-        <tr>
-            <td width="150px">
-                Ionic strength [M]
-            </td>
-            <td width="50px">
-                <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.aq_params.ionic_strength }}" size="3"/>
-            </td>
-            <td colspan="2">
-                <div id="ionStrengthSlider" />
-            </td>
-        </tr>
-        <tr>
-            <td width="150px">
-                e<sup>-</sup> potential [mV]
-            </td>
-            <td width="50px">
-                <input type="text" name="electronReductionPotential" id="electronReductionPotentialField" value="{{ reaction.aq_params.e_reduction_potential|floatformat:-1 }}" size="3" />
-            </td>
-            <td colspan="2">
-                <div id="electronReductionPotentialSlider" />
-            </td>
-        </tr>
+    <tr>
+        <td width="150px">
+            pH
+        </td>
+        <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.aq_params.pH }}" size="3"/></td>
+        <td colspan="2">
+            <div id="phSlider" />
+        </td>
+    </tr>
+    <tr>
+        <td width="150px">
+            Ionic strength [M]
+        </td>
+        <td width="50px">
+            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.aq_params.ionic_strength }}" size="3"/>
+        </td>
+        <td colspan="2">
+            <div id="ionStrengthSlider" />
+        </td>
+    </tr>
+
+    {% if reaction.half_reaction_dg_prime != None %}
+    <tr class="infoTableHeader">
+        <th colspan="4">Reaction Gibbs Energy</th>
+    </tr>
+
+    <tr style="border-top: 1px dotted silver;">
+        <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
+        <td colspan="3">
+        <strong>
+          {{ reaction.half_reaction_dg_prime|floatformat:1 }} kJ / mol
+        </strong>
+        </td>
+    </tr>
     {% endif %}
+
+    <tr>
+        <td width="150px">
+            e<sup>-</sup> potential [mV]
+        </td>
+        <td width="50px">
+            <input type="text" name="electronReductionPotential" id="electronReductionPotentialField" value="{{ reaction.aq_params.e_reduction_potential|floatformat:-1 }}" size="3" />
+        </td>
+        <td colspan="2">
+            <div id="electronReductionPotentialSlider" />
+        </td>
+    </tr>
 </table>

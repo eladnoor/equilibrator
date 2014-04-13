@@ -27,8 +27,8 @@ class _BasePhase(object):
         
         # make an exception for standard values (e.g. instead of 1 M the
         # default value will be 1000 mM). This is more convenient for users.
-        if self.Value() == 1:
-            return (1e3, 1e-3, 'x10<sup>-3</sup>&nbsp;%s' % self.Units())
+        #if self.Value() == 1:
+        #    return (1e3, 1e-3, 'x10<sup>-3</sup>&nbsp;%s' % self.Units())
             
         logv = numpy.log10(self.Value())
         exp = numpy.floor(logv / 3.0)*3
@@ -246,14 +246,26 @@ class AqueousParams(object):
         if cookies is None:
             cookies = {}
         
-        pH = form.cleaned_ph or \
-            float(cookies.get('pH', constants.DEFAULT_PH))
-        pMg = form.cleaned_pmg or \
-            float(cookies.get('pMg', constants.DEFAULT_PMG))
-        ionic_strength = form.cleaned_ionic_strength or \
-            float(cookies.get('ionic_strength', constants.DEFAULT_IONIC_STRENGTH))
-        e_reduction_potential = form.cleaned_e_reduction_potential or \
-            float(cookies.get('e_reduction_potential', constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
+        pH = form.cleaned_ph
+        if pH is None:
+            pH = float(cookies.get('pH', constants.DEFAULT_PH))
+
+        pMg = form.cleaned_pmg
+        if pMg is None:
+            pMg = float(cookies.get('pMg', constants.DEFAULT_PMG))
+
+        ionic_strength = form.cleaned_ionic_strength
+        if ionic_strength is None:
+            ionic_strength = float(cookies.get(
+                'ionic_strength',
+                constants.DEFAULT_IONIC_STRENGTH))
+        
+        e_reduction_potential = form.cleaned_e_reduction_potential
+        if e_reduction_potential is None:
+            e_reduction_potential = float(cookies.get(
+                'e_reduction_potential',
+                constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
+                
         return AqueousParams(pH, pMg, ionic_strength, e_reduction_potential)          
 
     def Clone(self):

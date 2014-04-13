@@ -1,90 +1,90 @@
 <html>
-	<head>
-		<link href="/media/info_page.css" rel="stylesheet" type="text/css">
+    <head>
+        <link href="/media/info_page.css" rel="stylesheet" type="text/css">
     <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
-		<title>eQuilibrator FAQ</title>
+        <title>eQuilibrator FAQ</title>
     {% include "analytics.html" %}
-	</head>
-	<body>
-		<div class="container">
-			{% include "logo_small.html" %}
-			<div class="title">Frequently Asked Questions</div>
-			
-			<div>
-				<ul>
-					<li><a href="#compoundSearch">How do I search for a compound or enzyme?</a></li>
-					<li><a href="#rxnSearch">How do I search for a reaction?</a></li>
-					<li><a href="#stdConditions">What are "standard conditions?"</a></li>
-					<li><a href="#gases">How do you deal with gases like O<sub>2</sub> and H<sub>2</sub>? How can I set for standard conditions in reactions involving a gas?</a></li>
-					<li><a href="#dgr">What are &Delta;<sub>r</sub>G&deg;, &Delta;<sub>r</sub>G'&deg; and &Delta;<sub>r</sub>G'?</a></li>
-					<li><a href="#dgf">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</a></li>
-					<li><a href="#notAvailable">Why is &Delta;G "not available?"</a></li>
-					<li><a href="#hConcentration">Why can't I change the concentration of Hydrogen ions?</a></li>
-					<li><a href="#waterConcentration">Why can't I change the concentration of water?</a></li>
-					<li><a href="#changeTemp">Why can't I change the temperature?</a></li>
-					<li><a href="#aqueousCO2">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</a></li>
-					<li><a href="#halfReactions">What do you mean "electrons are not balanced?" What about half-reactions?</a></li>
-				</ul>
-			</div>
-			
-			<div class="faqEntry" id="compoundSearch">
-				<div class="faqQuestion">How do I search for a compound or enzyme?</div>
-				
-				<div class="faqAnswer">
-				<p>You can search for a compound or enzyme by entering their common name into the search box.
-				For example, try "<a href="/search?query=Succinyl-CoA">Succinyl-CoA</a>" or
-				"<a href="/search?query=pyruvate+formate-lyase">pyruvate formate-lyase</a>."
-				As you type, you should see a list of potential matches which should give you a sense of
-				what eQuilibrator thinks you are looking for. To the right of each suggestion you will
-				see they type of the match: "Compound" or "Enzyme".
-				
-			  	Complete your search by selecting a compound or enzyme from the list or typing the
-			  	name in full. When you've finished typing your query, click 'Search' or press
-			  	'Enter' to see search results.
-			  	</p>
-				
-				<p>
-				The search results page shows the top matches for your query. Results are shown in two
-				sections: one for compounds and another for enzymes. If you're interested in a compound,
-				click on it to see more details and to find &Delta;<sub>f</sub>G.
-				If you're interested in an enzyme, click on the enzyme name to see
-				detailed information about it. If you want to explore the thermodynamics of an
-				enzyme-catalyzed reaction, choose a reaction listed under the enzyme name to get
-				a &Delta;<sub>r</sub>G estimation.
-				</p>
-				</div>
-			</div>
-			
-			<div class="faqEntry" id="rxnSearch">
-				<div class="faqQuestion">How do I search for a reaction?</div>
-				
-				<div class="faqAnswer">
-				<p>You can search for a reaction by entering an (almost) free-text string of the reaction.
-				For example, you can type
-				"<a href="/search?query=glucose+%3D+2+ethanol+%2B+2+co2">glucose &lt;=&gt; 2 ethanol + 2 co2</a>".</p>
-				
-				<p>In general, write your reaction using " = " or " &lt;=&gt; " to separate the substrates from the products.
-				The spaces around " = " are required. Always use spaces before and after compound names, "+"
-				and stoichiometric coefficients.</p>
-				
-				<p>
-				Also note that it is possible to find reactions through the enzymes that catalyze them.
-				For example, instead of typing in the full reaction
-				"<a href="/search?query=Fructose+1%2C6-bisphosphate+%3D+Glycerone+phosphate+%2B+Glyceraldehyde+3-phosphate">Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate</a>"
-				you can instead search for "<a href="/search?query=aldolase">aldolase</a>" or
-				"<a href="/search?query=fructose+bisphosphate+aldolase">fructose bisphosphate aldolase</a>."
-				</p>
-				</div>
-			</div>
-			
-			<div class="faqEntry" id="stdConditions">
-				<div class="faqQuestion">What are "standard conditions?"</div>
-				
-				<div class="faqAnswer">
-				<p>"Standard conditions" implies that all substrates and products of a reaction are at 1 M concentration.
-				If their concentrations are different, it will affect the &Delta;<sub>r</sub>G'.</p>
-				</div>
-			</div>
+    </head>
+    <body>
+        <div class="container">
+            {% include "logo_small.html" %}
+            <div class="title">Frequently Asked Questions</div>
+            
+            <div>
+                <ul>
+                    <li><a href="#compoundSearch">How do I search for a compound or enzyme?</a></li>
+                    <li><a href="#rxnSearch">How do I search for a reaction?</a></li>
+                    <li><a href="#stdConditions">What are "standard conditions?"</a></li>
+                    <li><a href="#gases">How do you deal with gases like O<sub>2</sub> and H<sub>2</sub>? How can I set for standard conditions in reactions involving a gas?</a></li>
+                    <li><a href="#dgr">What are &Delta;<sub>r</sub>G&deg;, &Delta;<sub>r</sub>G'&deg; and &Delta;<sub>r</sub>G'?</a></li>
+                    <li><a href="#dgf">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</a></li>
+                    <li><a href="#notAvailable">Why is &Delta;G "not available?"</a></li>
+                    <li><a href="#hConcentration">Why can't I change the concentration of Hydrogen ions?</a></li>
+                    <li><a href="#waterConcentration">Why can't I change the concentration of water?</a></li>
+                    <li><a href="#changeTemp">Why can't I change the temperature?</a></li>
+                    <li><a href="#aqueousCO2">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</a></li>
+                    <li><a href="#halfReactions">What do you mean "electrons are not balanced?" What about half-reactions?</a></li>
+                </ul>
+            </div>
+
+            <div class="faqEntry" id="compoundSearch">
+                <div class="faqQuestion">How do I search for a compound or enzyme?</div>
+                
+                <div class="faqAnswer">
+                <p>You can search for a compound or enzyme by entering their common name into the search box.
+                For example, try "<a href="/search?query=Succinyl-CoA">Succinyl-CoA</a>" or
+                "<a href="/search?query=pyruvate+formate-lyase">pyruvate formate-lyase</a>."
+                As you type, you should see a list of potential matches which should give you a sense of
+                what eQuilibrator thinks you are looking for. To the right of each suggestion you will
+                see they type of the match: "Compound" or "Enzyme".
+                
+                  Complete your search by selecting a compound or enzyme from the list or typing the
+                  name in full. When you've finished typing your query, click 'Search' or press
+                  'Enter' to see search results.
+                  </p>
+                
+                <p>
+                The search results page shows the top matches for your query. Results are shown in two
+                sections: one for compounds and another for enzymes. If you're interested in a compound,
+                click on it to see more details and to find &Delta;<sub>f</sub>G.
+                If you're interested in an enzyme, click on the enzyme name to see
+                detailed information about it. If you want to explore the thermodynamics of an
+                enzyme-catalyzed reaction, choose a reaction listed under the enzyme name to get
+                a &Delta;<sub>r</sub>G estimation.
+                </p>
+                </div>
+            </div>
+            
+            <div class="faqEntry" id="rxnSearch">
+                <div class="faqQuestion">How do I search for a reaction?</div>
+                
+                <div class="faqAnswer">
+                <p>You can search for a reaction by entering an (almost) free-text string of the reaction.
+                For example, you can type
+                "<a href="/search?query=glucose+%3D+2+ethanol+%2B+2+co2">glucose = 2 ethanol + 2 co2</a>".</p>
+                
+                <p>In general, write your reaction using " = " or " &lt;=&gt; " to separate the substrates from the products.
+                The spaces around " = " are required. Always use spaces before and after compound names, "+"
+                and stoichiometric coefficients.</p>
+                
+                <p>
+                Also note that it is possible to find reactions through the enzymes that catalyze them.
+                For example, instead of typing in the full reaction
+                "<a href="/search?query=Fructose+1%2C6-bisphosphate+%3D+Glycerone+phosphate+%2B+Glyceraldehyde+3-phosphate">Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate</a>"
+                you can instead search for "<a href="/search?query=aldolase">aldolase</a>" or
+                "<a href="/search?query=fructose+bisphosphate+aldolase">fructose bisphosphate aldolase</a>."
+                </p>
+                </div>
+            </div>
+            
+            <div class="faqEntry" id="stdConditions">
+                <div class="faqQuestion">What are "standard conditions?"</div>
+                
+                <div class="faqAnswer">
+                <p>"Standard conditions" implies that all substrates and products of a reaction are at 1 M concentration.
+                If their concentrations are different, it will affect the &Delta;<sub>r</sub>G'.</p>
+                </div>
+            </div>
 
             <div class="faqEntry" id="gases">
                 <div class="faqQuestion">How do you deal with gases like O<sub>2</sub> and H<sub>2</sub>?
@@ -115,187 +115,184 @@
                 </div>
             </div>
 
-			<div class="faqEntry" id="dgr">
-				<div class="faqQuestion">What are &Delta;<sub>r</sub>G&deg;, &Delta;<sub>r</sub>G'&deg; and &Delta;<sub>r</sub>G'?</div>
-			
-				<div class="faqAnswer">
-					<p>G is the Gibbs free energy of a physical system.
-					It quantifies the amount of energy available for work in a system that is 
-					at constant temperature and pressure. Biological systems do not often
-					experience radical changes in temperature or pressure, so G is appropriate
-					for their analysis. On eQuilibrator we assume that the temperature is
-					25 &deg;C (298.15 Kelvin) and the pressue is 1 bar. As a consequence of the
-					second law of thermodynamics, spontaneous changes in systems at constant temperature and pressure
-					must lead to a reduction in G. Chemical reactions change biochemical systems,
-					so the same must be true of them: in order to occur, a reaction must lead
-					to a reduction in the Gibbs free energy - &Delta;<sub>r</sub>G' &lt; 0.
-					</p>
-					
-					<p>&Delta;<sub>r</sub>G&deg; is the change in Gibbs free energy due to a 
-					chemical reaction in standard conditions and without accounting for pH,
-					ionic strength or any other cellular factors (i.e. they are taken as 0).
-					&Delta;<sub>r</sub>G'&deg; is the change in Gibbs free energy due to a
-					chemical reaction due a reaction at a particular pH and ionic strength.
-					These are convenient reference points, but neither &Delta;<sub>r</sub>G&deg;
-					nor &Delta;<sub>r</sub>G'&deg; account for the effect of reactant
-					concentrations on the free energy.
-					</p>
-					
-					<p>In cells there are certain prevailing metabolite concentrations. 
-					Concentrations affect the entropic component of the free energy:
-					if substrate concentrations are higher than product concentrations then
-					forward flow of the reaction will balance the concentrations and increase 
-					the entropy of the system. &Delta;<sub>r</sub>G' accounts for the effect
-					of concentrations. It is very important to use &Delta;<sub>r</sub>G' values
-					derived from physiologically plausible concentrations in thermodynamic analysis
-					because reactant concentrations have a substantial effect on &Delta;<sub>r</sub>G'
-					and because the laws of thermodynamics constrain only &Delta;<sub>r</sub>G',
-					not &Delta;<sub>r</sub>G&deg; or &Delta;<sub>r</sub>G'&deg;.  
-					</p>
-				</div>
-			</div>
+            <div class="faqEntry" id="dgr">
+                <div class="faqQuestion">What are &Delta;<sub>r</sub>G&deg;, &Delta;<sub>r</sub>G'&deg; and &Delta;<sub>r</sub>G'?</div>
+            
+                <div class="faqAnswer">
+                    <p>G is the Gibbs free energy of a physical system.
+                    It quantifies the amount of energy available for work in a system that is 
+                    at constant temperature and pressure. Biological systems do not often
+                    experience radical changes in temperature or pressure, so G is appropriate
+                    for their analysis. On eQuilibrator we assume that the temperature is
+                    25 &deg;C (298.15 Kelvin) and the pressue is 1 bar. As a consequence of the
+                    second law of thermodynamics, spontaneous changes in systems at constant temperature and pressure
+                    must lead to a reduction in G. Chemical reactions change biochemical systems,
+                    so the same must be true of them: in order to occur, a reaction must lead
+                    to a reduction in the Gibbs free energy - &Delta;<sub>r</sub>G' &lt; 0.
+                    </p>
+                    
+                    <p>&Delta;<sub>r</sub>G&deg; is the change in Gibbs free energy due to a 
+                    chemical reaction in standard conditions and without accounting for pH,
+                    ionic strength or any other cellular factors (i.e. they are taken as 0).
+                    &Delta;<sub>r</sub>G'&deg; is the change in Gibbs free energy due to a
+                    chemical reaction due a reaction at a particular pH and ionic strength.
+                    These are convenient reference points, but neither &Delta;<sub>r</sub>G&deg;
+                    nor &Delta;<sub>r</sub>G'&deg; account for the effect of reactant
+                    concentrations on the free energy.
+                    </p>
+                    
+                    <p>In cells there are certain prevailing metabolite concentrations. 
+                    Concentrations affect the entropic component of the free energy:
+                    if substrate concentrations are higher than product concentrations then
+                    forward flow of the reaction will balance the concentrations and increase 
+                    the entropy of the system. &Delta;<sub>r</sub>G' accounts for the effect
+                    of concentrations. It is very important to use &Delta;<sub>r</sub>G' values
+                    derived from physiologically plausible concentrations in thermodynamic analysis
+                    because reactant concentrations have a substantial effect on &Delta;<sub>r</sub>G'
+                    and because the laws of thermodynamics constrain only &Delta;<sub>r</sub>G',
+                    not &Delta;<sub>r</sub>G&deg; or &Delta;<sub>r</sub>G'&deg;.  
+                    </p>
+                </div>
+            </div>
 
-			<div class="faqEntry" id="dgf">
-				<div class="faqQuestion">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</div>
-			
-				<div class="faqAnswer">
-					<p>The formation energy of a compound is the change in free energy due to the
-					compound's formation reaction - the reaction forming it from elements in their
-					standard form. For example, the formation reaction of carbon dioxide is
-					O<sub>2</sub> + C &lt;=&gt; CO<sub>2</sub>. &Delta;<sub>f</sub>G&deg; is the
-					formation energy of a compound in standard conditions and without accounting for pH,
-					ionic strength or any other cellular factors (i.e. they are taken as 0).
-					</p>
-					
-					<p>In contrast, &Delta;<sub>f</sub>G'&deg; is the formation energy of a compound
-					at a particular set of cellular conditions. When we show a &Delta;<sub>f</sub>G'&deg;
-					on eQuilibrator, as we do on compound and reaction pages, it has been transformed 
-					to the pH and ionic strength values. The default pH is 7 and the default ionic strength
-					is 0.1 mM.
-					</p>			
-					
-				</div>
-			</div>
+            <div class="faqEntry" id="dgf">
+                <div class="faqQuestion">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</div>
+            
+                <div class="faqAnswer">
+                    <p>The formation energy of a compound is the change in free energy due to the
+                    compound's formation reaction - the reaction forming it from elements in their
+                    standard form. For example, the formation reaction of carbon dioxide is
+                    O<sub>2</sub> + C &rlhar; CO<sub>2</sub>. &Delta;<sub>f</sub>G&deg; is the
+                    formation energy of a compound in standard conditions and without accounting for pH,
+                    ionic strength or any other cellular factors (i.e. they are taken as 0).
+                    </p>
+                    
+                    <p>In contrast, &Delta;<sub>f</sub>G'&deg; is the formation energy of a compound
+                    at a particular set of cellular conditions. When we show a &Delta;<sub>f</sub>G'&deg;
+                    on eQuilibrator, as we do on compound and reaction pages, it has been transformed 
+                    to the pH and ionic strength values. The default pH is 7 and the default ionic strength
+                    is 0.1 mM.
+                    </p>            
+                    
+                </div>
+            </div>
 
-			<div class="faqEntry" id="notAvailable">
-				<div class="faqQuestion">Why is &Delta;G "not available?"</div>
-				
-				<div class="faqAnswer">
-				<p>There are several reasons that a &Delta;G value might not be available.</p>
-				
-				<p>In the case of a reaction, &Delta;<sub>r</sub>G is not available when
-				&Delta;<sub>f</sub>G is missing for one of the reactants.
-				&Delta;<sub>f</sub>G is very difficult to measure experimentally. We use the group contribution
-				method to estimate &Delta;<sub>f</sub>G for compounds that have not been characterized experimentally [3-4].
-				However, we need certain data about a compound in order to approximate &Delta;<sub>f</sub>G.</p>
+            <div class="faqEntry" id="notAvailable">
+                <div class="faqQuestion">Why is &Delta;G "not available?"</div>
+                
+                <div class="faqAnswer">
+                <p>There are several reasons that a &Delta;G value might not be available.</p>
+                
+                <p>In the case of a reaction, &Delta;<sub>r</sub>G is not available when
+                &Delta;<sub>f</sub>G is missing for one of the reactants.
+                &Delta;<sub>f</sub>G is very difficult to measure experimentally. We use the group contribution
+                method to estimate &Delta;<sub>f</sub>G for compounds that have not been characterized experimentally [3-4].
+                However, we need certain data about a compound in order to approximate &Delta;<sub>f</sub>G.</p>
 
-				<p>Our list of compounds is taken from the Kyoto Encyclopedia of Genomes and Genes (<a href="http://www.kegg.jp">KEGG</a>) [5].
-				Occasionally, KEGG compound entries don't contain an InChI identifier. Without an InChI identifier we cannot 
-				compute the structure of the compound and without structural information we can't estimate &Delta;<sub>f</sub>G.</p>
-				
-				<p>In some cases, a compound may contain a chemical group that was not observed in any of the compounds that have experimental
-				&Delta;<sub>f</sub>G measurements. We cannot produce estimates for these compounds as we cannot estimate the contribution
-				of unknown groups. In other cases, our algorithm for analyzing compound structure fails to decompose the compound
-				into groups. If we are unable to decompose the compound then we cannot use the group contribution method.</p>
-				
-				<p>Moreover, we can't estimate &Delta;<sub>r</sub>G for any reaction that contains a compound that we cannot estimate
-				&Delta;<sub>f</sub>G for.</p>
-	
-				</div>
-			</div>
+                <p>Our list of compounds is taken from the Kyoto Encyclopedia of Genomes and Genes (<a href="http://www.kegg.jp">KEGG</a>) [5].
+                Occasionally, KEGG compound entries don't contain an InChI identifier. Without an InChI identifier we cannot 
+                compute the structure of the compound and without structural information we can't estimate &Delta;<sub>f</sub>G.</p>
+                
+                <p>In some cases, a compound may contain a chemical group that was not observed in any of the compounds that have experimental
+                &Delta;<sub>f</sub>G measurements. We cannot produce estimates for these compounds as we cannot estimate the contribution
+                of unknown groups. In other cases, our algorithm for analyzing compound structure fails to decompose the compound
+                into groups. If we are unable to decompose the compound then we cannot use the group contribution method.</p>
+                
+                <p>Moreover, we can't estimate &Delta;<sub>r</sub>G for any reaction that contains a compound that we cannot estimate
+                &Delta;<sub>f</sub>G for.</p>
+    
+                </div>
+            </div>
 
-			<div class="faqEntry" id="hConcentration">
-				<div class="faqQuestion">Why can't I change the concentration of Hydrogen ions?</div>
-				
-				<div class="faqAnswer">
-				<p>eQuilibrator uses the "Alberty method" for biochemical thermodynamics.
-				In the Alberty method, H<sup>+</sup> is defined to have 0 free energy [1-2].
-				Instead of correcting for H<sup>+</sup> concentration, a pH correction accounts for the abundance of H<sup>+</sup>.
-				You can use the pH "slider" to see the effect of H<sup>+</sup> concentration on your reaction. 
-				</p>
-				</div>
-			</div>
-			
-			<div class="faqEntry" id="waterConcentration">
-				<div class="faqQuestion">Why can't I change the concentration of water?</div>
-				
-				<div class="faqAnswer">
-				<p>Biochemical systems are generally assumed to be aqueous environments [1-2].
-				Therefore, the concentration of water is fixed.
-				</p>
-				</div>
-			</div>
-			
-			<div class="faqEntry" id="changeTemp">
-				<div class="faqQuestion">Why can't I change the temperature?</div>
-				
-				<div class="faqAnswer">
-				<p>The temperature is fixed at 25 &deg;C (298.15 K) for all &Delta;G values given.
-				
-				The group contribution method enables us to approximate &Delta;<sub>f</sub>G of compounds at
-				a particular temperature (the temperature at which they were measured) [4]. As the change in free energy
-				is defined as &Delta;G = &Delta;H - T&Delta;S and we don't know the value of &Delta;S in most cases, we
-				cannot predict how changes in temperature will affect &Delta;<sub>f</sub>G.
-				</p>
-				</div>
-			</div>
-			
-	      <div class="faqEntry" id="aqueousCO2">
-	        <div class="faqQuestion">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</div>
-	        
-	        <div class="faqAnswer">
-	        <p>CO2(aq) is dissolved CO2. Dissolved CO2 undergoes a spontaneous hydration reaction:</p>
-	        
-	        <p>
-	        CO<sub>2</sub> + H<sub>2</sub>O <=> H<sub>2</sub>CO<sub>3</sub>
-	        </p>
-	        
-	        <p>The rate of the uncatalyzed hydration reaction is t<sub>1/2</sub> = 15 seconds. In some
-	        species this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds it up
-	        by a factor of 10<sup>6</sup> [6]. In aqueous environments, CO2 is generally considered to be
-	        in equilibrium with its hydrated forms - carbonic acid, bicarbonate and carbonate. CO2(total)
-	        represents the collection of species including dissolved CO2 (CO<sub>2</sub> + H<sub>2</sub>O)
-	        and its 3 hydrated forms (H<sub>2</sub>CO<sub>3</sub>, HCO<sub>3</sub><sup>-</sup>
-	        and CO<sub>3</sub><sup>2-</sup>). Note that CO2(total) contains a water molecule in addition to
-	        CO2.</p>
-	        
-	        <p>
-	        It is generally simpler to measure the concentration of CO2(total) than it is to measure
-	        the individual species. As such, it is common to apply the equilibrium assumption and use
-	        CO2(total) in place of CO2(aq) in biochemical reactions. If you can measure the concentration
-	        of CO2(aq), then it is reasonable to use it as a reactant.
-	        </p>
-	        </div>
-	      </div>
-	      
-	      <div class="faqEntry" id="halfReactions">
-	        <div class="faqQuestion">What do you mean "electrons are not balanced?" What about half-reactions?</div>
-	        
-	        <div class="faqAnswer">
-	        <p>
-	        There are no free electrons in solution. As such, reactions entered in eQuilibrator must be
-	        redox balanced. That is, the products must contain the same number of electrons as the reactants.
-	        eQuilibrator checks the redox balance of reactions when you search for them and provides
-	        automatic balancing using the electron donor/acceptor NAD<sup>+</sup>/NADH. If you wish to use another
-	        donor/acceptor pair, you can do so manually. You can adjust the concentrations of the donor
-	        and acceptor in order to adjust the reduction potential of your chosen redox carrier.
-	        </p>
-	        
-	        <p>
-	        <strong>Update</strong>: eQuilibrator now supports half-reactions. You can search for a half-reaction like 
-	        <a href="/search?query=NAD%2B+<%3D>+NADH">NAD<sup>+</sup> <=> NADH</a> and eQuilibrator will allow you to
-	        calculate its reduction potential. Calculating the reduction potential enables you to pair half-reactions
-	        with redox carriers not found in our database, including electrodes and soluble metal ions with known
-	        reduction potentials.
-	        </p>
-	        
-	        <p>If the above paragraphs were not clear to you, <a href="/redox_review">click here</a> for a review of the
-	        basics of the energetics of redox reactions.</p>
-			</div>
-	      </div>
-			
-			{% include "references.html" %}
-			
+            <div class="faqEntry" id="hConcentration">
+                <div class="faqQuestion">Why can't I change the concentration of Hydrogen ions?</div>
+                
+                <div class="faqAnswer">
+                <p>eQuilibrator uses the "Alberty method" for biochemical thermodynamics.
+                In the Alberty method, H<sup>+</sup> is defined to have 0 free energy [1-2].
+                Instead of correcting for H<sup>+</sup> concentration, a pH correction accounts for the abundance of H<sup>+</sup>.
+                You can use the pH "slider" to see the effect of H<sup>+</sup> concentration on your reaction. 
+                </p>
+                </div>
+            </div>
+            
+            <div class="faqEntry" id="waterConcentration">
+                <div class="faqQuestion">Why can't I change the concentration of water?</div>
+                
+                <div class="faqAnswer">
+                <p>Biochemical systems are generally assumed to be aqueous environments [1-2].
+                Therefore, the concentration of water is fixed.
+                </p>
+                </div>
+            </div>
+            
+            <div class="faqEntry" id="changeTemp">
+                <div class="faqQuestion">Why can't I change the temperature?</div>
+                
+                <div class="faqAnswer">
+                <p>The temperature is fixed at 25 &deg;C (298.15 K) for all &Delta;G values given.
+                
+                The group contribution method enables us to approximate &Delta;<sub>f</sub>G of compounds at
+                a particular temperature (the temperature at which they were measured) [4]. As the change in free energy
+                is defined as &Delta;G = &Delta;H - T&Delta;S and we don't know the value of &Delta;S in most cases, we
+                cannot predict how changes in temperature will affect &Delta;<sub>f</sub>G.
+                </p>
+                </div>
+            </div>
+            
+          <div class="faqEntry" id="aqueousCO2">
+            <div class="faqQuestion">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</div>
+            
+            <div class="faqAnswer">
+            <p>CO2(aq) is dissolved CO2. Dissolved CO2 undergoes a spontaneous hydration reaction:</p>
+            
+            <p>
+            CO<sub>2</sub> + H<sub>2</sub>O &rlhar; H<sub>2</sub>CO<sub>3</sub>
+            </p>
+            
+            <p>The rate of the uncatalyzed hydration reaction is t<sub>1/2</sub> = 15 seconds. In some
+            species this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds it up
+            by a factor of 10<sup>6</sup> [6]. In aqueous environments, CO2 is generally considered to be
+            in equilibrium with its hydrated forms - carbonic acid, bicarbonate and carbonate. CO2(total)
+            represents the collection of species including dissolved CO2 (CO<sub>2</sub> + H<sub>2</sub>O)
+            and its 3 hydrated forms (H<sub>2</sub>CO<sub>3</sub>, HCO<sub>3</sub><sup>-</sup>
+            and CO<sub>3</sub><sup>2-</sup>). Note that CO2(total) contains a water molecule in addition to
+            CO2.</p>
+            
+            <p>
+            It is generally simpler to measure the concentration of CO2(total) than it is to measure
+            the individual species. As such, it is common to apply the equilibrium assumption and use
+            CO2(total) in place of CO2(aq) in biochemical reactions. If you can measure the concentration
+            of CO2(aq), then it is reasonable to use it as a reactant.
+            </p>
+            </div>
+          </div>
+          
+          <div class="faqEntry" id="halfReactions">
+            <div class="faqQuestion">What is a "Half-reaction"?</div>
+            
+            <div class="faqAnswer">
+            <p>
+            There are no free electrons in solution. As such, full reactions entered in eQuilibrator must be
+            redox balanced. That is, the products must contain the same number of electrons as the reactants.
+            eQuilibrator checks the redox balance of reactions when you search for them and provides
+            automatic balancing using the electron donor/acceptor NAD<sup>+</sup>/NADH. If you wish to use another
+            donor/acceptor pair, you can do so manually. You can adjust the concentrations of the donor
+            and acceptor in order to adjust the reduction potential of your chosen redox carrier.
+            Alternatively, you can search for a half-reaction like 
+            <a href="/search?query=NAD%2B+<%3D>+NADH">NAD<sup>+</sup> &rlhar; NADH</a> and eQuilibrator will 
+            calculate its reduction potential. By adjusting the reduction potential of the free electrons (e<sup>-</sup>)
+            you can couple the half-reaction with redox carriers not found in our database,
+            including electrodes and soluble metal ions with known reduction potentials.
+            </p>
+            
+            <p>If the above paragraphs were not clear to you, <a href="/redox_review">click here</a> for a review of the
+            basics of the energetics of redox reactions.</p>
+            </div>
+          </div>
+            
+            {% include "references.html" %}
+            
     <div id="footer">
     {% include "about_links.html" %}
     </div>
