@@ -4,53 +4,45 @@
     </tr>
     {% if not reaction.is_phys_conc %}
     <tr>
-        <td width="150px">
+        <td width="170px">
             <strong>
-                Estimated <a href="faq#dgr">&Delta;<sub>f</sub>G'</a>
+                Estimated <a href="faq#dgr">&Delta;<sub><i>f</i></sub>G'</a>
             </strong>
         </td>
         <td colspan="3">
-            <strong>
                 {% if reaction.dg_prime != None %}
-                    {{ reaction.dg_prime|floatformat:1 }} kJ / mol
+                    <strong>{{ reaction.dg_prime|floatformat:1 }}</strong> [kJ/mol]
                 {% else %}
                     <a href="/faq#notAvailable">Not available</a>
                 {% endif %}
-            </strong>
         </td>
     </tr>
     {% endif %}
 
     <tr>
-        <td width="150px">
+        <td width="170px">
             <strong>
-                Estimated <a href="faq#dgf">&Delta;<sub>f</sub>G'<sup>m</sup></a>
+                Estimated <a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'<sup>m</sup></a>
             </strong>
         </td>
         <td colspan="3">
             {% if reaction.dgm_prime != None %}
-                <strong>
-                    {{ reaction.dgm_prime|floatformat:1 }} kJ / mol
-                </strong>
+                <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong> [kJ/mol]
             {% else %}
-                <strong>
-                    <a href="/faq#notAvailable">Not available</a>
-                </strong>
+                <a href="/faq#notAvailable">Not available</a>
             {% endif %}
         </td>
     </tr>
         
     <tr>
-        <td width="150px">
+        <td width="170px">
             <strong>
-                Estimated <a href="faq#dgf">&Delta;<sub>f</sub>G'&deg;</a>
+                Estimated <a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'&deg;</a>
             </strong>
         </td>
         <td colspan="5">
             {% if reaction.dg0_prime != None %}
-                <strong>
-                    {{ reaction.dg0_prime|floatformat:1 }} kJ / mol
-                </strong>
+                <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong> [kJ/mol]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -59,7 +51,7 @@
     
     {% if compound.no_dg_explanation %}
         <tr>
-            <td width="150px">
+            <td width="170px">
                 Note
             </td>
             <td colspan="5">
@@ -70,7 +62,7 @@
     
     {% if compound.dg_source %}
         <tr>
-            <td width="150px">
+            <td width="170px">
                 Source
             </td>
             <td colspan="5">
@@ -79,26 +71,5 @@
         </tr>
     {% endif %}
     
-    {% if reaction.dg0_prime != None %}
-        <tr>
-            <td width="150px">
-                pH
-            </td>
-            <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.aq_params.pH }}" size="3"/></td>
-            <td colspan="4">
-                <div id="phSlider" />
-            </td>
-        </tr>
-        <tr>
-            <td width="150px">
-                Ionic strength [M]
-            </td>
-            <td width="50px">
-                <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.aq_params.ionic_strength }}" size="3"/>
-            </td>
-            <td colspan="4">
-                <div id="ionStrengthSlider" />
-            </td>
-        </tr>
-    {% endif %}
+    {% include "reaction_sliders.html" %}
 </table>

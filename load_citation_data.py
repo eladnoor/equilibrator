@@ -19,16 +19,9 @@ def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
 
     for cd in parsed_json:
         try:
+            data = json.dumps(cd)
             name = cd['name']
-            year = int(cd['year'])
-            ref = cd['ref']
-            link = cd.get('url', None)
-            doi = cd.get('doi', None)
-            pubmed_id = cd.get('pmid', None)
-            
-            logging.info('Loading source "%s"', name)
-            source = models.ValueSource(name=name, citation=ref, year=year,
-                                        pubmed_id=pubmed_id, doi=doi, link=link)
+            source = models.ValueSource(name=name, data=data)
             source.save()
         except Exception, e:
             logging.error('Error parsing reference %s', cd)

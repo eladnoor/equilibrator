@@ -3,44 +3,40 @@
         <th colspan="4">Reduction Potentials</th>
     </tr>
 
-    {% if conditions and conditions != "standard" %}
+    {% if not reaction.is_phys_conc %}
     <tr>
-        <td width="150px">
+        <td width="170px">
             <strong>
                 Estimated E'</a>
             </strong>
         </td>
         <td colspan="3">
-        <strong>
         {% if reaction.e_prime != None %}
-            {{ reaction.e_prime|floatformat:0 }} mV
+            <strong>{{ reaction.e_prime|floatformat:0 }}</strong> [mV]
         {% else %}
             <a href="/faq#notAvailable">Not available</a>
         {% endif %}
-        </strong>
         </td>
     </tr>
     {% endif %}
     
     <tr>
-        <td width="150px">
+        <td width="170px">
             <strong>
                 Estimated E'&deg;</a>
             </strong>
         </td>
         <td colspan="3">
-            <strong>
             {% if reaction.e0_prime != None %}
-                {{ reaction.e0_prime|floatformat:0 }} mV
+                <strong>{{ reaction.e0_prime|floatformat:0 }}</strong> [mV]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
-            </strong>
         </td>
     </tr>
     
     <tr>
-        <td width="150px">
+        <td width="170px">
             pH
         </td>
         <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.aq_params.pH }}" size="3"/></td>
@@ -49,7 +45,7 @@
         </td>
     </tr>
     <tr>
-        <td width="150px">
+        <td width="170px">
             Ionic strength [M]
         </td>
         <td width="50px">
@@ -66,17 +62,15 @@
     </tr>
 
     <tr style="border-top: 1px dotted silver;">
-        <td width="150px"><strong>Estimated <a href="faq#dgr">&Delta;<sub>r</sub>G'</strong></a></td>
+        <td width="170px"><strong>Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'</strong></a></td>
         <td colspan="3">
-        <strong>
-          {{ reaction.half_reaction_dg_prime|floatformat:1 }} kJ / mol
-        </strong>
+        <strong>{{ reaction.half_reaction_dg_prime|floatformat:1 }}</strong> [kJ/mol]
         </td>
     </tr>
     {% endif %}
 
     <tr>
-        <td width="150px">
+        <td width="170px">
             e<sup>-</sup> potential [mV]
         </td>
         <td width="50px">

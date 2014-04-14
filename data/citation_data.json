@@ -1,73 +1,99 @@
 [
     {
-        "ref": "",
-        "year": 0,
-        "name": "Element"
+        "name": "Element",
+        "author": "",
+        "title": "",
+        "journal": "",
+        "year": 0
     },
     {
-        "ref": "Thauer RK, Jungermann K, Decker K (1977) Energy conservation in chemotrophic anaerobic bacteria. Bacteriological reviews. 41(3):809",
-        "year": 1977,
         "name": "Thauer (1977)",
+        "author": ["Thauer RK", "Jungermann K", "Decker K"],
+        "title": "Energy conservation in chemotrophic anaerobic bacteria",
+        "journal": "Bacteriological reviews, 41(3):809",
+        "year": 1977,
         "pmid": 16350228,
         "url": "http://mmbr.asm.org/content/41/3/809.long"
     },
     {
-        "ref": "Wagman D, Evans W, Parker V, Schumm R, Halow I, Bailey S, Churney K, Nuttall R (1982) The NBS Tables of Chemical Thermodynamic Properties. J. Phys. Chem. Ref. Data 11, (Supplement No. 2)",
-        "year": 1982,
-        "name": "Wagman (1982)"
+        "name": "Wagman (1982)",
+        "author": ["Wagman D", "Evans W", "Parker V", "Schumm R", "Halow I", "Bailey S", "Churney K", "Nuttall R"],
+        "title": "The NBS Tables of Chemical Thermodynamic Properties",
+        "journal": "J. Phys. Chem. Ref. Data 11, (Supplement No. 2)",
+        "year": 1982
     },
     {
-        "ref": "Saeki K, Haruna T, Kakuno T, Yamashita J, and Horio T (1986) A novel FAD-protein that allows effective reduction of methyl viologen by NADH (NADH-methyl viologen reductase) from photosynthetic bacterium, Rhodospirillum rubrum: purification and characterization. Journal of biochemistry. 99: 423-35",
-        "year": 1985,
         "name": "Saeki (1985)",
+        "author": ["Saeki K", "Haruna T", "Kakuno T", "Yamashita J", "Horio T"],
+        "title": "A novel FAD-protein that allows effective reduction of methyl viologen by NADH (NADH-methyl viologen reductase) from photosynthetic bacterium, Rhodospirillum rubrum: purification and characterization",
+        "journal": "Journal of biochemistry, 99: 423-35",
+        "year": 1985,
         "pmid": 3084461,
         "url": "http://jb.oxfordjournals.org/content/99/2/423.long"
     },
     {
-        "ref": "Dolfing J, Janssen DB (1994) Estimates of Gibbs free energies of formation of chlorinated aliphatic compounds. Biodegradation. 5(1):21-28",
-        "year": 1994,
         "name": "Dolfing (1994)",
+        "author": ["Dolfing J", "Janssen DB"],
+        "title": "Estimates of Gibbs free energies of formation of chlorinated aliphatic compounds",
+        "journal": "Biodegradation. 5(1):21-28",
+        "year": 1994,
         "doi": "10.1007/BF00695210",
         "url": "http://link.springer.com/content/pdf/10.1007%2FBF00695210"
     },
     {
-        "ref": "Unden G and Bongaerts J (1997) Alternative respiratory pathways of Escherichia coli: energetics and transcriptional regulation in response to electron acceptors. Biochimica et biophysica acta. 1320: 217-34",
-        "year": 1997,
         "name": "Unden (1997)",
+        "author": ["Unden G", "Bongaerts J"],
+        "title": "Alternative respiratory pathways of Escherichia coli: energetics and transcriptional regulation in response to electron acceptors",
+        "journal": "Biochimica et biophysica acta, 1320: 217-34",
+        "year": 1997,
         "doi": "10.1016/S0005-2728(97)00034-0",
         "url": "http://www.sciencedirect.com/science/article/pii/S0005272897000340"
     },
     {
-        "ref": "Alberty RA (2003) Thermodynamics of Biochemical Reactions. 1st ed. Hoboken, New Jersey: John Wiley & Sons",
-        "year": 2003,
-        "name": "Alberty (2003)"
+        "name": "Alberty (2003)",
+        "author": ["Alberty RA"],
+        "title": "Thermodynamics of Biochemical Reactions (1st ed.)",
+        "journal": "Hoboken, New Jersey: John Wiley & Sons",
+        "year": 2003
     },
     {
-        "ref": "Alberty RA (2006) Biochemical Thermodynamics: Applications of Mathematica, Wiley, Hoboken, NJ",
-        "year": 2006,
-        "name": "Alberty (2006)"
+        "name": "Alberty (2006)",
+        "author": ["Alberty RA"],
+        "title": "Biochemical Thermodynamics: Applications of Mathematica",
+        "journal": "Hoboken, New Jersey: John Wiley & Sons",
+        "year": 2006
     },
     {
-        "ref": "Loach PA (2010) Handbook of Biochemistry and Molecular Biology: Oxidation-Reduction Potentials, Absorbance Bands and Molar Absorbance of Compounds used in Biochemical Studies. 4th ed., pp. 557-562. CRC Press",
-        "year": 2010,
-        "name": "CRC Biochemistry (2010)"
+        "name": "CRC Biochemistry (2010)",
+        "author": ["Loach PA"],
+        "title": "Handbook of Biochemistry and Molecular Biology: Oxidation-Reduction Potentials, Absorbance Bands and Molar Absorbance of Compounds used in Biochemical Studies (4th ed.)",
+        "journal": "pp. 557-562. CRC Press",
+        "year": 2010
     },
     {
-        "ref": "Noor E, Bar-Even A, Flamholz A, Lubling Y, Davidi D, and Milo R (2012) An integrated open framework for thermodynamics of reactions that combines accuracy and coverage. Bioinformatics. 28: 2037–2044",
+        "name": "Group Contribution (2012)",
+        "author": ["Noor E", "Bar-Even A", "Flamholz A", "Lubling Y", "Davidi D", "Milo R"],
+        "title": "An integrated open framework for thermodynamics of reactions that combines accuracy and coverage",
+        "journal": "Bioinformatics, 28: 2037–2044",
         "year": 2012,
-        "name": "Group Contribution",
         "doi": "10.1093/bioinformatics/bts317",
         "url": "http://bioinformatics.oxfordjournals.org/content/28/15/2037.long"
     },
     {
-        "ref": "Noor E, Haraldsdottir HS, Milo R, and Fleming RMT (2013) Consistent Estimation of Gibbs Energy using Component Contributions",
+        "name": "Component Contribution (2013)",
+        "author": ["Noor E", "Haraldsdottir HS", "Milo R", "Fleming RMT"],
+        "title": "Consistent Estimation of Gibbs Energy using Component Contributions",
+        "journal": "PLoS Computations Biology, 9(7): e1003098",
         "year": 2013,
-        "name": "Component Contribution (2013)"
+        "doi": "10.1371/journal.pcbi.1003098",
+        "url": "http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003098"
     },
     {
-        "ref": "Maden BEH (2000) Tetrahydrofolate and tetrahydromethanopterin compared: functionally distinct carriers in C1",
-        "year": 2000,
         "name": "Maden (2000)",
+        "author": ["Maden BEH"],
+        "title": "Tetrahydrofolate and tetrahydromethanopterin compared: functionally distinct carriers in C1",
+        "journal": "The Biochemical Journal, 350: 609–629",
+        "year": 2000,
         "pmid": 10970772,
         "url": "http://www.biochemj.org/bj/350/0609/bj3500609.htm"
     }

@@ -1,36 +1,46 @@
 <html>
-	<head>
-		<title>Thermodynamic Data References</title>
-		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-		<link href="/media/main.css" rel="stylesheet" type="text/css">
-		<link href="/media/style.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
-		<script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
-		<script type="text/javascript" src="/media/jquery.lightbox-0.5.min.js"></script>
-	</head>
-	<body>
-		<div class="centerize">
-			<a href="/"><img src="/media/images/equilibrator_logo_small.png" /></a>
-			
+    <head>
+        <title>Thermodynamic Data References</title>
+        <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+        <link href="/media/main.css" rel="stylesheet" type="text/css">
+        <link href="/media/style.css" rel="stylesheet" type="text/css">
+        <link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
+        <link href="/media/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
+        <script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
+        <script type="text/javascript" src="/media/jquery.lightbox-0.5.min.js"></script>
+    </head>
+    <body>
+        <div class="centerize">
+            <a href="/"><img src="/media/images/equilibrator_logo_small.png" /></a>
+            
 			<div class="refsList">
+                <table>
 				{% for source in sources %}
 				  {% if source.citation %}
-					<p>
-					&bull;&nbsp;&nbsp;<a name="{{source.name|slugify}}">{{source.citation}}</a>
-                    {% if source.link %}
-                      <a href="{{source.link}}"><img src="/media/images/document.png" /></a>
-                    {% endif %}
-                    </p>
-				  {% endif %}
-				{% endfor %}
-			</div>
-			
-		</div>
-		
-		{% include "footer.html" %}
-	</body>
+				    <tr>
+                            <td width="250" height="50">{{source.name}}</td>
+                            <td>{{source.citation|safe}}</td>
+                            <td width="300" align="right">
+                                {% if source.doi %}
+                                    doi:{{source.doi}}
+                                {% else %}
+                                    {% if source.pmid %}
+                                        pmid:{{source.pmid}}
+                                    {% else %}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                  {% endif %}
+                {% endfor %}
+                </table>
+            </div>
+            
+        </div>
+        
+        {% include "footer.html" %}
+    </body>
 </html>
 

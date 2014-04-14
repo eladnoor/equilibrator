@@ -21,9 +21,11 @@ a {
 }
 
 .container {
+  font-family: arial;
+  margin: 0 auto;
+  text-align: justify;
   width: 650px;
-  margin-left: 30px;
-}
+} 
 
 .section {
   margin: 10px;
@@ -32,6 +34,7 @@ a {
 .title {
   font-weight: bold;
   font-size: 22px;
+  margin-bottom: 5px;
 }
 
 .faqEntry {

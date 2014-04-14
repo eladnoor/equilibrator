@@ -193,8 +193,9 @@ class CompoundWithCoeff(object):
         return self.phase.IsConstant()
         
     def GetPhaseHumanString(self):
-        return str(self.phase)
-    
+        value, prefactor, units = self.phase.HumanValueAndUnits_letters()
+        return '%g %s' % (value, units)
+
     def GetKeggID(self):
         return self.compound.kegg_id
     

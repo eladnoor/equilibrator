@@ -48,23 +48,15 @@ class ValueSource(models.Model):
     """
         The source of a particular numeric value.
     """
-    # The name of the source.
-    name = models.CharField(max_length=100)
+    # A JSON of all the relevant data.
+    name = models.CharField(max_length=30)
     
-    # A citation name for the source. May be null.
-    citation = models.CharField(max_length=4096, null=True)
-    
-    # The year of publication
-    year = models.IntegerField()
-    
-    # The pubmed ID of the source if available.
-    pubmed_id = models.CharField(max_length=128, null=True)
+    # A JSON of all the relevant data.
+    data = models.CharField(max_length=2048)
 
-    # The DOI of the source if available.
-    doi = models.CharField(max_length=128, null=True)
-    
-    # A link explaining the source.
-    link = models.URLField(null=True)
+    def __init__(self, *args, **kwargs):        
+        super(ValueSource, self).__init__(*args, **kwargs)
+        self._data_dict = json.loads(self.data)
     
     def __unicode__(self):
         return self.name
@@ -81,8 +73,46 @@ class ValueSource(models.Model):
             return False
         
         return self.name == other.name
-    
 
+    def GetAuthorList(self):
+        return ', '.join(self._data_dict.get('author', []))
+    author = property(GetAuthorList)
+
+    def GetYear(self):
+        return self._data_dict.get('year', '2000 BC')
+    year = property(GetYear)
+
+    def GetTitle(self):
+        return self._data_dict.get('title', None)
+    title = property(GetTitle)
+        
+    def GetJournal(self):
+        return self._data_dict.get('journal', '')
+    journal = property(GetJournal)
+    
+    def GetURL(self):
+        return self._data_dict.get('url', None)
+    url = property(GetURL)
+    
+    def GetDOI(self):
+        return self._data_dict.get('doi', None)
+    doi = property(GetDOI)
+
+    def GetPMID(self):
+        return self._data_dict.get('pmid', None)
+    pmid = property(GetPMID)
+    
+    def GetCitation(self):
+        if not self.title:
+            return None
+        if self.url is not None:
+            return '%s. <a href="%s"><strong>%s</strong></a>. <i>%s</i>' % \
+                (self.author, self.url, self.title, self.journal)
+        else:
+            return '%s. <strong>%s</strong>. <i>%s</i>' % \
+                (self.author, self.title, self.journal)
+    citation = property(GetCitation)
+    
 class Specie(models.Model):
     """
         A single specie of a compound.
