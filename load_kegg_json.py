@@ -148,7 +148,7 @@ def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
         claw.reactants = json.dumps(rd['reaction'])
         claw.save()
 
-def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE, draw_thumbnails=True):
+def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE):
     for row in csv.reader(open(kegg_names_filename, 'r'), delimiter='\t'):
         compound_id = row[0]
         name = models.CommonName.GetOrCreate(row[1])
@@ -186,8 +186,6 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
             if num_electrons is not None:
                 c.num_electrons = int(num_electrons)
 
-            c.WriteStructureThumbnail()
-
             # Add the thermodynamic data.
             pmap = cd.get('pmap')
             if not pmap:
@@ -203,6 +201,11 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
             logging.error(e)
             continue
             
+def DrawThumbnails():
+    for c in models.Compound.objects.all():
+        c.WriteStructureThumbnail()
+        c.save()
+
 def LoadKeggReactions(reactions_json_filename=REACTION_FILE):
     parsed_json = json.load(gzip.open(reactions_json_filename))
 
@@ -262,6 +265,7 @@ def LoadAllKeggData():
     #LoadKeggGCNullspace()
     LoadKeggCompoundNames()
     LoadFormationEnergies()
+    #DrawThumbnails()
     LoadKeggReactions()
     LoadKeggEnzymes()
 
