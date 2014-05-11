@@ -1,4 +1,4 @@
-import json
+import json, csv
 import logging
 
 import util.django_utils
@@ -59,10 +59,11 @@ def GetCompounds(cids_list):
     return compounds
         
 
-COMPOUND_FILE = 'data/kegg_compounds.json.gz'
+COMPOUND_NAME_FILE = 'data/kegg_compound_names.tsv'
 REACTION_FILE = 'data/kegg_reactions.json.gz'
 ENZYME_FILE = 'data/kegg_enzymes.json.gz'
 GC_NULLSPACE_FILENAME = 'data/kegg_gc_nullspace.json.gz'
+CC_FILENAME = 'data/cc_compounds.json.gz'
 
 def GetSource(source_string):
     if not source_string:
@@ -83,7 +84,7 @@ def GetSource(source_string):
         
     return None
 
-def AddPmapToCompound(pmap, compound):
+def AddPmapToCompound(pmap, compound, priority=1):
     source_string = pmap.get('source')
     source = GetSource(source_string)
     if not source:
@@ -92,12 +93,12 @@ def AddPmapToCompound(pmap, compound):
 
     logging.debug('Writing data from source %s', source.name)
     
-    if 'priority' not in pmap or 'species' not in pmap:
+    if 'species' not in pmap:
         logging.error('Malformed pmap field for %s', compound.kegg_id)
         return
     
     sg = models.SpeciesGroup(kegg_id=compound.kegg_id,
-                             priority=pmap['priority'],
+                             priority=priority,
                              formation_energy_source=source)
     sg.save()
 
@@ -147,68 +148,61 @@ def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
         claw.reactants = json.dumps(rd['reaction'])
         claw.save()
 
-def LoadKeggCompounds(kegg_json_filename=COMPOUND_FILE, draw_thumbnails=True):
-    parsed_json = json.load(gzip.open(kegg_json_filename, 'r'))
+def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE, draw_thumbnails=True):
+    for row in csv.reader(open(kegg_names_filename, 'r'), delimiter='\t'):
+        compound_id = row[0]
+        name = models.CommonName.GetOrCreate(row[1])
+        
+        # split the list of common names (delimiter is |) and also add the 
+        # KEGG compound ID as one of them
+        common_names = GetOrCreateNames(row[2].split('|') + [compound_id])
+        
+        c = models.Compound(kegg_id=compound_id, name=name)
+        c.save()
+
+        for common_name in common_names:
+            c.common_names.add(common_name)
+
+        c.save()
     
+def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
+    parsed_json = json.load(gzip.open(energy_json_filenane, 'r'))
+
     for cd in parsed_json:
         try:
-            cid = cd['CID']
-            logging.debug('Handling compound %s', cid)
+            compound_id = cd['CID']
+            logging.debug('Handling compound %s', compound_id)
+            c = models.Compound.objects.get(kegg_id=compound_id)
             
-            formula = cd.get('formula')
+            c.formula = cd.get('formula')
+            c.inchi = cd.get('InChI')
+            c.group_vector = cd.get('group_vector')
+
             mass = cd.get('mass')
             if mass is not None:
-                mass = float(mass)
-            inchi = cd.get('InChI')
-            num_electrons = cd.get('num_electrons')
-            group_vector = cd.get('group_vector')
-            name = models.CommonName.GetOrCreate(cd['name'])
+                c.mass = float(mass)
         
-            """
-            if formula is None:
-                raise KeyError('Missing formula for CID %s' % cid)
-            
-            if mass is None:
-                raise KeyError('Missing mass for CID %s' % cid)
-
-            if inchi is None:
-                raise KeyError('Missing inchi for CID %s' % cid)
-            """
-             
-            c = models.Compound(kegg_id=cid,
-                                formula=formula,
-                                inchi=inchi,
-                                mass=mass,
-                                name=name,
-                                group_vector=group_vector)
-            
+            num_electrons = cd.get('num_electrons')
             if num_electrons is not None:
                 c.num_electrons = int(num_electrons)
-            if draw_thumbnails:
-                c.WriteStructureThumbnail()
-            
-            c.save()
+
+            c.WriteStructureThumbnail()
 
             # Add the thermodynamic data.
-            pmaps = cd.get('pmaps')
-            if not pmaps:
+            pmap = cd.get('pmap')
+            if not pmap:
                 error = cd.get('error')
                 if error:
                     c.no_dg_explanation = error
             else:
-                for pmap in pmaps:
-                    AddPmapToCompound(pmap, c)
+                AddPmapToCompound(pmap, c, priority=priority)
             
-            # Add the common names.
-            names = GetOrCreateNames(cd['names'])
-            for n in names:
-                c.common_names.add(n)
             c.save()
+
         except Exception, e:
             logging.error(e)
             continue
-        
-
+            
 def LoadKeggReactions(reactions_json_filename=REACTION_FILE):
     parsed_json = json.load(gzip.open(reactions_json_filename))
 
@@ -257,15 +251,17 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             logging.warning(e)
             continue
 
-def CheckData(filenames=(COMPOUND_FILE,
+def CheckData(filenames=(GC_NULLSPACE_FILENAME,
+                         CC_FILENAME,
                          REACTION_FILE,
                          ENZYME_FILE)):
     for json_fname in filenames:
         json.load(gzip.open(json_fname, 'r'))
 
-def LoadAllKeggData(draw_thumbnails=True):
-    LoadKeggGCNullspace()
-    LoadKeggCompounds(draw_thumbnails=draw_thumbnails)
+def LoadAllKeggData():
+    #LoadKeggGCNullspace()
+    LoadKeggCompoundNames()
+    LoadFormationEnergies()
     LoadKeggReactions()
     LoadKeggEnzymes()
 

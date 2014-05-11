@@ -37,7 +37,8 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
                 # kegg_compound.json file
                 compound.species_groups.clear()
                 for pmap in pmaps:
-                    AddPmapToCompound(pmap, compound)
+                    priority = pmap['priority']
+                    AddPmapToCompound(pmap, compound, priority=priority)
                     
             compound.save()
         except Exception, e:

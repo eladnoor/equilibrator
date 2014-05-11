@@ -322,9 +322,6 @@ class Compound(models.Model):
     # Group vector encoded as a sparse vector in dictionary format.
     group_vector = models.TextField(null=True)
     
-    # Replace this compound with another one.
-    replace_with = models.ForeignKey('self', null=True)
-    
     # An explanation for when no DeltaG0 estimate is available.
     no_dg_explanation = models.CharField(max_length=2048,
                                          blank=True,
