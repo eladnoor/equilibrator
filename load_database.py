@@ -1,40 +1,74 @@
-import util.django_utils
-import export_database
-import logging
+import logging, time, datetime, sys
 import numpy as np
-import time, datetime
-
-import load_additional_data
-import load_citation_data
-import load_kegg_json
-
+from util import database_io as db
 from django.db import transaction
+from distutils.util import strtobool
 
-def main():
+def main(draw_thumb=False, export_csv=False):
     transaction.set_autocommit(False)
 
-    load_citation_data.CheckData()
-    load_kegg_json.CheckData()
-    load_additional_data.CheckData()
+    db.CheckData()
 
     logging.info('Loading citation data')
-    load_citation_data.LoadCitationData()
+    db.LoadCitationData()
     transaction.commit()
         
-    logging.info('Loading KEGG data')
-    load_kegg_json.LoadAllKeggData()
+    #LoadKeggGCNullspace()
+
+    logging.info('Loading KEGG compound names')
+    db.LoadKeggCompoundNames()
     transaction.commit()
+
+    logging.info('Loading KEGG compound thermodynamic data')
+    db.LoadFormationEnergies()
+    transaction.commit()
+
+    logging.info('Loading KEGG reaction data')
+    db.LoadKeggReactions()
+    transaction.commit()
+
+    logging.info('Loading KEGG enzyme data')
+    db.LoadKeggEnzymes()
+    transaction.commit()
+
+    if draw_thumb:
+        logging.info('Drawing thumbnails for all KEGG compounds')
+        db.GenerateCompoundThumbnails()
+        transaction.commit()
     
     logging.info('Loading corrections/additions to KEGG')
-    load_additional_data.LoadAdditionalCompoundData()
+    db.LoadAdditionalCompoundData()
     transaction.commit()
     
-    #logging.info('Exporting database to JSON and CSV files')
-    #export_database.export_database()
+    if export_csv:
+        logging.info('Exporting database to JSON and CSV files')
+        db.export_database()
     
+def user_yes_no_query(question, default=False):
+    if default:
+        sys.stdout.write('%s? [(yes)/no] ' % question)
+    else:
+        sys.stdout.write('%s? [yes/(no)] ' % question)
+    
+    while True:
+        try:
+            ri = raw_input().lower()
+            if not ri:
+                return default
+            return strtobool(ri)
+        except ValueError:
+            sys.stdout.write('Please respond with \'y\' or \'n\'.\n')
+            
 if __name__ == '__main__':
+    print 'Welcome to the load_database script.'
+    print 'Drawing thumbnails for all the compounds takes about 30 minutes'
+    draw_thumb = user_yes_no_query('Draw thumbnails')
+
+    print 'Exporting the raw data as CSV files takes about 1 hour'
+    export_csv = user_yes_no_query('Export raw data')
+    
     start = time.time()
-    main()
+    main(draw_thumb, export_csv)
     end = time.time()
     elapsed = datetime.timedelta(seconds=np.floor(end - start))
     logging.info('Elapsed loading time = %s' % str(elapsed))
