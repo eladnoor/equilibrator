@@ -5,6 +5,7 @@ from gibbs import models, constants
 
 DEFAULT_CITATION_DATA_FILENAME = 'data/citation_data.json'
 COMPOUND_NAME_FILE = 'data/kegg_compound_names.tsv'
+COMPOUND_RENAME_FILE = 'data/kegg_compound_renaming.tsv'
 REACTION_FILE = 'data/kegg_reactions.json.gz'
 ENZYME_FILE = 'data/kegg_enzymes.json.gz'
 GC_NULLSPACE_FILENAME = 'data/kegg_gc_nullspace.json.gz'
@@ -44,15 +45,6 @@ def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
             logging.error(e)
             continue
 
-def GetOrCreateNames(names_list):
-    """Find all the names in the database.
-    
-    Create them if they are not present.
-    """
-    return [models.CommonName.GetOrCreate(n)
-            for n in names_list] 
-    
-    
 def GetReactions(rids_list):
     """Find all the given reactions in the database.
     
@@ -173,22 +165,58 @@ def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
         claw.reactants = json.dumps(rd['reaction'])
         claw.save()
 
-def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE):
-    for row in csv.reader(open(kegg_names_filename, 'r'), delimiter='\t'):
-        compound_id = row[0]
-        name = models.CommonName.GetOrCreate(row[1])
-        
-        # split the list of common names (delimiter is |) and also add the 
-        # KEGG compound ID as one of them
-        common_names = GetOrCreateNames(row[2].split('|') + [compound_id])
-        
-        c = models.Compound(kegg_id=compound_id, name=name)
-        c.save()
+def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
+                          kegg_renaming_filename=COMPOUND_RENAME_FILE):
 
-        for common_name in common_names:
-            c.common_names.add(common_name)
+    cid2names = {} # the first name on the list should be the 'common name'
+    for row in csv.DictReader(open(kegg_names_filename, 'r'), delimiter='\t'):
+        compound_id = row['CID']
+        name = row['common name']
+        names = row['all names'].split('|')
+        if name not in names:
+            raise ValueError('The common name \'%s\' is not in the name list for %s'
+                             % (name, compound_id))
+        if names[0] != name:
+            names.remove(name)
+            names = [name] + names
+        cid2names[compound_id] = names
+    
+    for row in csv.DictReader(open(kegg_renaming_filename, 'r'), delimiter='\t'):
+        compound_id = row['CID']
+        if compound_id not in cid2names:
+            raise ValueError('%s appears in the renaming file, but not in the KEGG list'
+                             % compound_id)
+        
+        command = row['command']
+        name = row['name']
+        if command.lower() == 'remove':
+            try:
+                cid2names[compound_id].remove(name)
+            except ValueError:
+                raise ValueError('The name %s is not one of the options for %s, '
+                                 'so it cannot be removed' % (name, compound_id))
 
-        c.save()
+        elif command.lower() == 'add':
+            if name in cid2names[compound_id]:
+                cid2names[compound_id].remove(name)
+            cid2names[compound_id] = cid2names[compound_id] + [name]
+        
+        elif command.lower() == 'delete':
+            del cid2names[compound_id]
+        
+        else:
+            raise ValueError('Unknown command: %s' % command)
+
+    for compound_id, names in sorted(cid2names.iteritems()):
+        names = map(models.CommonName.GetOrCreate, names + [compound_id])
+        
+        compound = models.Compound(kegg_id=compound_id, name=names[0])
+        compound.save()
+
+        # add the compound_id itself also as an optional name
+        map(compound.common_names.add, names)
+
+        compound.save()
     
 def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
     parsed_json = json.load(gzip.open(energy_json_filenane, 'r'))
@@ -197,30 +225,32 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
         try:
             compound_id = cd['CID']
             logging.debug('Handling compound %s', compound_id)
-            c = models.Compound.objects.get(kegg_id=compound_id)
+            compound = models.Compound.objects.get(kegg_id=compound_id)
+            if compound is None:
+                continue
             
-            c.formula = cd.get('formula')
-            c.inchi = cd.get('InChI')
-            c.group_vector = cd.get('group_vector')
+            compound.formula = cd.get('formula')
+            compound.inchi = cd.get('InChI')
+            compound.group_vector = cd.get('group_vector')
 
             mass = cd.get('mass')
             if mass is not None:
-                c.mass = float(mass)
+                compound.mass = float(mass)
         
             num_electrons = cd.get('num_electrons')
             if num_electrons is not None:
-                c.num_electrons = int(num_electrons)
+                compound.num_electrons = int(num_electrons)
 
             # Add the thermodynamic data.
             pmap = cd.get('pmap')
             if not pmap:
                 error = cd.get('error')
                 if error:
-                    c.no_dg_explanation = error
+                    compound.no_dg_explanation = error
             else:
-                AddPmapToCompound(pmap, c, priority=priority)
+                AddPmapToCompound(pmap, compound, priority=priority)
             
-            c.save()
+            compound.save()
 
         except Exception, e:
             logging.error(e)
@@ -251,7 +281,7 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
     for ed in parsed_json:
         try:
             ec = ed['EC']
-            names = ed['names'] + [ec] # add the EC number also as an optional name
+            names = ed['names'] # add the EC number also as an optional name
             reactions = ed['reaction_ids']
             
             if not ec:
@@ -259,7 +289,6 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             if not names:
                 raise KeyError('Common names are required for enzymes (EC) %s.' % ec )
             
-            names = GetOrCreateNames(names)
             reactions = GetReactions(reactions)
             if not reactions:
                 logging.info('Ignoring EC %s since we found no reactions.' % ec)
@@ -270,6 +299,7 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             enz.save()
             
             # Add names, reactions, and compound mappings.
+            names = map(models.CommonName.GetOrCreate, names + [ec])
             map(enz.common_names.add, names)
             map(enz.reactions.add, reactions)
             enz.save()
@@ -310,8 +340,8 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
             if details_link:
                 compound.details_link = details_link
             if names:
-                for n in GetOrCreateNames(names):
-                    compound.common_names.add(n)
+                names = map(models.CommonName.GetOrCreate, names)
+                map(compound.common_names.add, names)
             if pmaps:
                 # override the pseudoisomer map that appears in the
                 # kegg_compound.json file
@@ -370,8 +400,7 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
         for pH in pH_list:
             rows = r.ToCSVdG0Prime(priority, pH=pH, pMg=pMg,
                                    ionic_strength=ionic_strength)
-            for row in rows:
-                csv_reaction_dict[pH].writerow(row)
+            map(csv_reaction_dict[pH].writerow, rows)
                 
 def export_compounds(priority, name, ionic_strength, pMg, pH_list):
     pseudoisomer_fname = DOWNLOADS_PSEUDOISOMER_PREFIX + '_%s.csv.gz' % name
@@ -393,10 +422,9 @@ def export_compounds(priority, name, ionic_strength, pMg, pH_list):
                                         "!pH", "!I (mM)", "!T (Kelvin)",
                                         "!Note"])
     
-    for c in models.Compound.objects.all():
-        for row in c.ToCSVdG0(priority):
-            csv_pseudoisomers.writerow(row)
+    for compound in models.Compound.objects.all():
+        map(csv_pseudoisomers.writerow, compound.ToCSVdG0(priority))
         for pH in pH_list:
-            for row in c.ToCSVdG0Prime(priority, pH=pH, pMg=pMg,
-                                       ionic_strength=ionic_strength):
-                csv_compound_dict[pH].writerow(row)
+            rows = compound.ToCSVdG0Prime(priority, pH=pH, pMg=pMg,
+                                          ionic_strength=ionic_strength)
+            map(csv_compound_dict[pH].writerow, rows)

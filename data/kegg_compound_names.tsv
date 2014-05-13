@@ -1,3 +1,4 @@
+CID	common name	all names
 C00001	H2O	H2O|H2O(1)|Water|h2o(1)
 C00002	ATP	ATP|Adenosine 5'-triphosphate|atp-4-
 C00003	NAD+	DPN|Diphosphopyridine nucleotide|NAD|NAD(ox)|NAD+|Nadide|Nicotinamide adenine dinucleotide|nad(ox)
@@ -3398,7 +3399,7 @@ C04434	(1E)-4-Oxobut-1-ene-1,2,4-tricarboxylate	(1E)-4-Oxobut-1-ene-1,2,4-tricar
 C04435	(Z)-2-Methyl-5-isopropylhexa-2,5-dienal	(Z)-2-Methyl-5-isopropylhexa-2,5-dienal|cis-2-Methyl-5-isopropylhexa-2,5-dienal
 C04437	1-(5-Phosphoribosyl)imidazole-4-acetate	1-(5-Phosphoribosyl)imidazole-4-acetate
 C04438	1-Acyl-sn-glycero-3-phosphoethanolamine	1-Acyl-sn-glycero-3-phosphoethanolamine|L-2-Lysophosphatidylethanolamine
-C04441	2-(3-amino-3-carboxypropyl)-L-histidine	2-(3-Carboxy-3-aminopropyl)-L-histidine|EF-2 2-(3-carboxy-3-aminopropyl)-L-histidine|Elongation factor 2 2-(3-carboxy-3-aminopropyl)-L-histidine|Peptide 2-(3-carboxy-3-aminopropyl)-L-histidine
+C04441	2-(3-amino-3-carboxypropyl)-L-histidine	2-(3-amino-3-carboxypropyl)-L-histidine|2-(3-Carboxy-3-aminopropyl)-L-histidine|EF-2 2-(3-carboxy-3-aminopropyl)-L-histidine|Elongation factor 2 2-(3-carboxy-3-aminopropyl)-L-histidine|Peptide 2-(3-carboxy-3-aminopropyl)-L-histidine
 C04442	2-Dehydro-3-deoxy-6-phospho-D-gluconate	2-Dehydro-3-deoxy-6-phospho-D-gluconate|2-Dehydro-3-deoxy-D-gluconate 6-phosphate|2-Keto-3-deoxy-6-phosphogluconate|6-Phospho-2-dehydro-3-deoxy-D-gluconate
 C04443	3',4',5,7-Tetrahydroxy-3-methoxyflavone	3',4',5,7-Tetrahydroxy-3-methoxyflavone|3-Methoxy-5,7,3',4'-tetrahydroxyflavone|3-O-Methylquercetin
 C04444	3',5-Dihydroxy-3,4',7-trimethoxyflavone	3',5-Dihydroxy-3,4',7-trimethoxyflavone|3,7,4'-Tri-O-methylquercetin
@@ -3588,7 +3589,7 @@ C04687	(1S,3R,4S)-3,4-Dihydroxycyclohexane-1-carboxylate	(1S,3R,4S)-3,4-Dihydrox
 C04688	(3R)-3-Hydroxytetradecanoyl-[acyl-carrier protein]	(3R)-3-Hydroxytetradecanoyl-[acyl-carrier protein]|(R)-3-Hydroxytetradecanoyl-[acyl-carrier protein]|(r)-3-hydroxytetradecanoyl-[acyl-carrier-protein]|HMA|beta-Hydroxymyristyl-[acyl-carrier protein]
 C04690	2-(Hydroxymethyl)-3-(acetamidomethylene)succinate	2-(Acetamidomethylene)-3-(hydroxymethyl)succinate|2-(Hydroxymethyl)-3-(acetamidomethylene)succinate
 C04691	2-Dehydro-3-deoxy-D-arabino-heptonate 7-phosphate	2-Dahp|2-Dehydro-3-deoxy-D-arabino-heptonate 7-phosphate|3-Deoxy-D-arabino-hept-2-ulosonate 7-phosphate|3-Deoxy-D-arabino-heptulosonic acid 7-phosphate|3-Deoxy-arabino-heptulonate 7-phosphate|DAHP
-C04692	2-[3-carboxy-3-(methylammonio)propyl]-L-histidine	2-[3-Carboxy-3-(methylammonio)propyl]-L-histidine|EF-2 2-[3-carboxy-3-(methylammonio)propyl]-L-histidine|Elongation factor 2 2-[3-carboxy-3-(methylammonio)propyl]-L-histidine|Peptide 2-[3-carboxy-3-(methylammonio)propyl]-L-histidine
+C04692	2-[3-carboxy-3-(methylammonio)propyl]-L-histidine	2-[3-carboxy-3-(methylammonio)propyl]-L-histidine|2-[3-Carboxy-3-(methylammonio)propyl]-L-histidine|EF-2 2-[3-carboxy-3-(methylammonio)propyl]-L-histidine|Elongation factor 2 2-[3-carboxy-3-(methylammonio)propyl]-L-histidine|Peptide 2-[3-carboxy-3-(methylammonio)propyl]-L-histidine
 C04695	5-O-(Indol-3-ylacetyl-myo-inositol) D-galactoside	5-O-(Indol-3-ylacetyl-myo-inositol) D-galactoside
 C04696	7-Methylguanosine 5'-triphospho-5'-polynucleotide	7-Methylguanosine 5'-triphospho-5'-polynucleotide
 C04698	Methyl-2-alpha-L-fucopyranosyl-beta-D-galactoside	Methyl-2-alpha-L-fucopyranosyl-beta-D-galactoside
