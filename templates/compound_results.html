@@ -4,17 +4,27 @@
     {% for result in compound_results|slice:":5" %}
       <a href="{{ result.value.link }}" class="searchResult compoundResult clearfix">
         <span class="image"><img src="{{ result.value.small_image_url }}" /></span>
-        <span class="name">{{ result.key }}</span>
-        <span class="formula">Formula: {{ result.value.html_formula|safe }}</span>
-        <span class="dG">&Delta;<sub>f</sub>G'&deg;:
-          {% with result.value.dgf_zero_prime as fe %}
-            {% if fe != None %}
-            {{ fe|floatformat:1 }} kJ / mol
-              {% else %}
-                Unknown
-            {% endif %}
-          {% endwith %}
-        </span>
+    	<table class="compoundInfo">
+            <tr class="infoTableHeader">
+                <th colspan="2">{{ result.key }}</th>
+            </tr>
+            <tr>
+        		<td width="150px">Formula</td>
+        		<td>{{ result.value.html_formula|safe }}</td>
+        	</tr>
+        	<tr>
+        		<td width="150px">Common names</td>
+        		<td>
+        			{% for name in result.value.all_common_names %}
+        			{{ name }}{% if not forloop.last %}; {% endif %}
+        			{% endfor %}
+        		</td>
+        	</tr>
+        	<tr>
+        		<td width="150px">Mass</td>
+        		<td>{{ result.value.mass|floatformat:2 }} Da</td>
+        	</tr>
+        </table>
       </a>
     {% endfor %}
     </div>

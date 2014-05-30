@@ -48,18 +48,10 @@ def ResultsPage(request):
         # Otherwise we try to parse it as a single compound.
         logging.debug('Parsing the query as a single compound')
         results = matcher.Match(query)
-        compound_matches = [m for m in results if m.IsCompound()]
-        enzyme_matches = [m for m in results if m.IsEnzyme()]
-        
         template_data = {}        
-        template_data['compound_results'] = compound_matches
-        template_data['enzyme_results'] = enzyme_matches
-        
-        
-        enzymes_first = False
-        if results and results[0].IsEnzyme():
-            enzymes_first = True
-        template_data['enzymes_first'] = enzymes_first
+        template_data['compound_results'] = [m for m in results if m.IsCompound()]
+        template_data['enzyme_results'] = [m for m in results if m.IsEnzyme()]
+        template_data['enzymes_first'] = results and results[0].IsEnzyme()
             
         response = render_to_response('search_results.html', template_data)
         return response

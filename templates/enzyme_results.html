@@ -1,21 +1,22 @@
-  {% if enzyme_results %}
-    <div class="resultsSection">
-      <div class="title">Enzymes</div>
+{% if enzyme_results %}
+  <div class="resultsSection">
+    <div class="title">Enzymes</div>
     {% for result in enzyme_results|slice:":5" %}
       <div class="searchResult enzymeResult clearfix">
-        <span class="name"><a href="{{result.value.link}}">{{ result.key }} (EC {{ result.value.ec }})</a></span>
-        <span class="reactions">
-          <ul>
-          {% for reaction in result.value.all_reactions|slice:":3" %}
-            <li><a class="reactionLink" href="{{reaction.link}}">{{reaction.reaction_string}}</a>
+        <table class="enzymeInfo">
+            <tr class="infoTableHeader"><td><a href="{{ result.value.link }}">{{ result.key }}</a> (EC {{ result.value.ec }})</td></tr>
+            {% for reaction in result.value.all_reactions|slice:":3" %}
+            <tr class="reactions"><td>
+              <a class="reactionLink" href="{{ reaction.link }}">{{reaction.reaction_string}}</a>
+            </td></tr>
             {% if forloop.last and result.value.all_reactions|slice:"3:" %}
-            <li><a class="viewAllLink" href="{{result.value.link}}">View all {{ result.key }} reactions &raquo;</a></li>
+            <tr><td>
+              <a class="viewAllLink" href="{{ result.value.link }}">View all {{ result.key }} reactions &raquo;</a>
+            </td></tr>
             {% endif %}
-            </li>
-          {% endfor %}
-          </ul>
-        </span>
-      </div>
-    {% endfor %}
+            {% endfor %}
+        </table>
     </div>
-  {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}

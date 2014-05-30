@@ -61,7 +61,7 @@
 #searchResults .searchResult {
     display: block;
     margin: 10px;
-    padding: 5px;
+    padding: 1px;
     border: solid 1px black;
 }
 
@@ -104,8 +104,8 @@
 }
 
 #searchResults .image img {
-    border: solid 1px black;
-    max-height: 100px;
+    border: solid 0px black;
+    max-height: 150px;
 }
 
 .parsedRxn, .compoundSelector, .compound, .enzyme {
@@ -118,10 +118,24 @@
     text-align: center;
 }
 
+table.compoundInfo {
+    width: 900px;
+}
+
+table.additionalCompoundInfo {
+    margin: 10px auto;
+    width: 900px;
+    border: solid 1px black;
+    padding: 0px;
+    border-spacing: 0px;
+}
+
+table.enzymeInfo {
+    width: 900px;
+}
+
 table.results,
-table.compoundInfo,
 table.speciesInfo,
-table.enzymeInfo,
 table.reactionInfo,
 table.formationEnergyInfo {
     margin: 10px auto;
@@ -169,6 +183,7 @@ td.reference.border {
 
 .infoTableHeader {
     background-color: #CCFFCC;
+    font-weight: bold;
 }
 
 .refsList {

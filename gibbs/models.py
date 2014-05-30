@@ -607,7 +607,7 @@ class Compound(models.Model):
     substrate_of = property(_GetSubstrateEnzymes)
     product_of = property(_GetProductEnzymes)
     cofactor_of = property(_GetCofactorEnzymes)
-    dgf_zero_prime = property(DeltaG0Prime)
+    dg0_prime = property(DeltaG0Prime)
     dg_source = property(_GetDGSource)
     
     def StashTransformedSpeciesEnergies(self, aq_params):
