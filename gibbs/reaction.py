@@ -8,6 +8,8 @@ from gibbs import conditions
 from gibbs import constants
 from gibbs import models
 
+cc_preprocess = numpy.load('data/cc_preprocess.npz')
+
 class ReactantFormulaMissingError(Exception):
     
     def __init__(self, c):
@@ -227,7 +229,7 @@ class Reaction(object):
 
         self._FilterProtons()
         self._Dedup()
-        self._SetCompoundPriorities()
+        self.priority = self._SetCompoundPriorities()
 
         self._kegg_id = None
 
@@ -262,13 +264,14 @@ class Reaction(object):
         
         # Someone is missing data!
         if priorities == []:
-            return
+            return 0
         priority_to_use = min([max(l) for l in priorities if l])
-        logging.debug('All priorities: %s' % str(priorities))        
-        logging.debug('Using the priority %d' % priority_to_use)        
+        logging.info('All priorities: %s' % str(priorities))        
+        logging.info('Using the priority %d' % priority_to_use)        
         
         for c in self.reactants:
             c.compound.SetSpeciesGroupPriority(priority_to_use)
+        return priority_to_use
          
     def SwapSides(self):
         """Swap the sides of this reaction."""
@@ -921,6 +924,39 @@ class Reaction(object):
                 return '%s %s' % (name,
                                   compound.compound.no_dg_explanation.lower())
         return None
+        
+    def DeltaGUncertainty(self):
+        if self.priority != 1:
+            return None
+        C1 = cc_preprocess['C1']
+        C2 = cc_preprocess['C2']
+        C3 = cc_preprocess['C3']
+
+        assert C1.shape[0] == C1.shape[1]
+        assert C1.shape[1] == C2.shape[0]
+        assert C2.shape[1] == C3.shape[0]
+        assert C3.shape[0] == C3.shape[1]
+        
+        # x is the stoichiometric vector of the reaction, only for the
+        # compounds that appeared in the original training set for CC
+        x = numpy.matrix(numpy.zeros((C1.shape[0], 1))) 
+
+        # g is the group incidence vector of all the other compounds
+        g = numpy.matrix(numpy.zeros((C3.shape[0], 1))) 
+        for compound in self.reactants:
+            i = compound.compound.index
+            gv = compound.compound.group_vector
+            if i is not None:
+                logging.info('%s, index = %d' % (compound.compound.kegg_id, i))
+                x[i, 0] = compound.coeff
+            elif gv is not None:
+                logging.info('%s, using gc' % (compound.compound.kegg_id))
+                g += gv
+            else:
+                return None
+
+        s_cc = float(numpy.sqrt(x.T * C1 * x + x.T * C2 * g + g.T * C3 * g))
+        return 1.96*s_cc
 
     def AllCompoundsWithTransformedEnergies(self):
         for c_w_coeff in self.reactants:
@@ -987,6 +1023,16 @@ class Reaction(object):
     def _IsPhysiologicalConcentration(self):
         return all(c_w_c.phase.IsPhysiological() for c_w_c in self.reactants)
     
+    def GetSourceReference(self):
+        """
+            Assuming that all reactants in the chosen priority group have
+            the same source reference, we provide the ref from the first
+            reactant to represent all of them.
+        """
+        #return self.reactants[0].compound._GetDGSource()
+        sources = map(lambda x : str(x.compound._GetDGSource()), self.reactants)
+        return ', '.join(set(sources))
+    
     substrates = property(GetSubstrates)
     products = property(GetProducts)
     contains_co2 = property(ContainsCO2)
@@ -1011,8 +1057,10 @@ class Reaction(object):
     e0_prime = property(E0_prime)
     e_prime = property(E_prime)
     no_dg_explanation = property(NoDeltaGExplanation)
+    dg_uncertainty = property(DeltaGUncertainty)
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     is_phys_conc = property(_IsPhysiologicalConcentration)
+    source_reference = property(GetSourceReference)

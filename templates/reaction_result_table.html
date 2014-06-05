@@ -4,14 +4,18 @@
     </tr>
     {% if not reaction.is_phys_conc %}
     <tr>
-        <td width="170px">
+        <td width="190px">
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'</a>
             </strong>
         </td>
         <td colspan="3">
             {% if reaction.dg_prime != None %}
-                <strong>{{ reaction.dg_prime|floatformat:1 }}</strong> [kJ/mol]
+                <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>               
+                {% if reaction.dg_uncertainty != None %}
+                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                {% endif %}
+                [kJ/mol]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -20,14 +24,18 @@
     {% endif %}
 
     <tr>
-        <td width="170px">
+        <td width="190px">
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a>
             </strong>
         </td>
         <td colspan="3">
             {% if reaction.dgm_prime != None %}
-                <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong> [kJ/mol]
+                <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong> 
+                {% if reaction.dg_uncertainty != None %}
+                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                {% endif %}
+                [kJ/mol]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -35,24 +43,38 @@
     </tr>
     
     <tr>
-        <td width="170px">
+        <td width="190px">
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'&deg;</a>
             </strong>
         </td>
         <td colspan="3">
             {% if reaction.dg0_prime != None %}
-                <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong> [kJ/mol]
-                &nbsp;&nbsp;&nbsp;  K'<sub>eq</sub> = {{ reaction.k_eq_prime_human|safe }} 
+                <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong>
+                {% if reaction.dg_uncertainty != None %}
+                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                {% endif %}
+                [kJ/mol]
+                &nbsp;&nbsp;&nbsp; K'<sub>eq</sub> = {{ reaction.k_eq_prime_human|safe }}
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
         </td>
     </tr>
-    
+
+    <tr>
+        <td width="190px">
+            <strong>
+                Estimated using 
+            </strong>
+        </td>
+        <td colspan="3">
+                <a href="/data_refs">{{ reaction.source_reference }}</a>
+        </td>
+    </tr>    
     {% if reaction.catalyzing_enzymes %}
         <tr>
-            <td width="170px"><strong>Catalyzed by</strong></td>
+            <td width="190px"><strong>Catalyzed by</strong></td>
             <td colspan="3">
             {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
                 <div><a href="{{ enzyme.link }}">{{ enzyme }}</a>&nbsp;&nbsp;[EC {{ enzyme.ec }}]</div>

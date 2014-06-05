@@ -21,6 +21,7 @@ def main(draw_thumb=False, export_csv=False):
 
     logging.info('Loading KEGG compound thermodynamic data')
     db.LoadFormationEnergies()
+    db.LoadAlbertyEnergies()
     transaction.commit()
 
     logging.info('Loading KEGG reaction data')

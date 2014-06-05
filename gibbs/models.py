@@ -319,7 +319,12 @@ class Compound(models.Model):
     # The various estimates of Delta G for this compound.
     species_groups = models.ManyToManyField(SpeciesGroup)
 
+    # The index of this compound in the Component Contribution
+    # training data. This index is needed for calcuating the uncertainty.
+    index = models.IntegerField(null=True)
+
     # Group vector encoded as a sparse vector in dictionary format.
+    # Needed for calculating uncertainty.
     group_vector = models.TextField(null=True)
     
     # An explanation for when no DeltaG0 estimate is available.

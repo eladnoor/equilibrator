@@ -10,6 +10,7 @@ REACTION_FILE = 'data/kegg_reactions.json.gz'
 ENZYME_FILE = 'data/kegg_enzymes.json.gz'
 GC_NULLSPACE_FILENAME = 'data/kegg_gc_nullspace.json.gz'
 CC_FILENAME = 'data/cc_compounds.json.gz'
+ALBERTY_FILENAME = 'data/alberty.json.gz'
 DEFAULT_ADDITIONAL_DATA_FILENAME = 'data/additional_compound_data.json'
 DOWNLOADS_COMPOUND_PREFIX = 'media/downloads/kegg_compounds'
 DOWNLOADS_REACTION_PREFIX = 'media/downloads/kegg_reactions'
@@ -129,7 +130,6 @@ def AddPmapToCompound(pmap, compound, priority=1):
         number_of_mgs = sdict.get('nMg', None)
         net_charge = sdict.get('z', None)
         phase = sdict.get('phase', constants.DEFAULT_PHASE)
-    
 
         if phase == constants.AQUEOUS_PHASE_NAME:
             if None in [number_of_hydrogens, number_of_mgs, net_charge]:
@@ -221,6 +221,7 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
 def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
     parsed_json = json.load(gzip.open(energy_json_filenane, 'r'))
 
+    compound_id = ''
     for cd in parsed_json:
         try:
             compound_id = cd['CID']
@@ -231,6 +232,7 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
             
             compound.formula = cd.get('formula')
             compound.inchi = cd.get('InChI')
+            compound.index = cd.get('compound_index')
             compound.group_vector = cd.get('group_vector')
 
             mass = cd.get('mass')
@@ -254,8 +256,28 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
 
         except Exception, e:
             logging.error(e)
+            logging.info('Last compound ID was %s' % compound_id)
             continue
+
+def LoadAlbertyEnergies(alberty_json_filenane=ALBERTY_FILENAME, priority=2):
+    parsed_json = json.load(gzip.open(alberty_json_filenane, 'r'))
+
+    for cd in parsed_json:
+        try:
+            compound_id = 'C%05d' % int(cd['cid'])
+            logging.debug('Handling compound %s', compound_id)
+            compound = models.Compound.objects.get(kegg_id=compound_id)
+            if compound is None:
+                continue
             
+            # Add the thermodynamic data.
+            AddPmapToCompound(cd, compound, priority=priority)
+            compound.save()
+
+        except Exception, e:
+            logging.error(e)
+            continue
+
 def DrawThumbnails():
     for c in models.Compound.objects.all():
         c.WriteStructureThumbnail()

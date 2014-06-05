@@ -96,5 +96,46 @@
         "year": 2000,
         "pmid": 10970772,
         "url": "http://www.biochemj.org/bj/350/0609/bj3500609.htm"
+    },
+    {
+        "name": "Mazzini (1995)",
+        "author": ["Mazzini S", "Mondelli R", "Ragg E", "Scaglioni L"],
+        "title": "Interaction between metal ions and NAD(P) coenzymes.",
+        "journal": "Journal of the Chemical Society, Perkin Transactions 2",
+        "year": 1995,
+        "doi": "10.1039/p29950000285",
+        "url": "http://xlink.rsc.org/?DOI=p29950000285"
+    },
+    {
+        "name": "Garcia (1996)",
+        "author": ["Garcia AB", "Cameselle JC", "Barros FJC", "Rolando FJH", "Calahorro CV", "Carlos JC"],
+        "title": "Interaction of divalent metal ions with fructose 2,6-bisphosphate and analogs",
+        "journal": "Journal of Inorganic Biochemistry",
+        "year": 1996,
+        "doi": "10.1016/0162-0134(95)00092-5",
+        "url": "http://linkinghub.elsevier.com/retrieve/pii/0162013495000925"
+    },
+    {
+        "name": "Vojinovic (2009)",
+        "author": ["Vojinovic V", "von Stockar U"],
+        "title": "Influence of uncertainties in pH, pMg, activity coefficients, metabolite concentrations, and other factors on the analysis of the thermodynamic feasibility of metabolic pathways.",
+        "journal": "Biotechnology and bioengineering",
+        "year": 2009,
+        "doi": "10.1002/bit.22309",
+        "url": "http://www.ncbi.nlm.nih.gov/pubmed/19365870"
+    },
+    {
+        "name": "Smith (2004)",
+        "author": ["Smith"],
+        "title": "????",
+        "journal": "????",
+        "year": 2004
+    },
+    {
+        "name": "Larssonr (1972)",
+        "author": ["Larssonr"],
+        "title": "????",
+        "journal": "????",
+        "year": 1972
     }
 ]
