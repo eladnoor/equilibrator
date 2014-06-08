@@ -82,8 +82,8 @@ class CompoundWithCoeff(object):
 
         phase = conditions._BaseConditions._GeneratePhase(phase_name, conc)
 
-        logging.info('Compound = %s, name = %s, coeff = %d, %s' %
-                     (kegg_id, name, coeff, phase))
+        logging.debug('Compound = %s, name = %s, coeff = %d, %s' %
+                      (kegg_id, name, coeff, phase))
         return CompoundWithCoeff(coeff, compound, phase, name)
         
     def Minus(self):
@@ -217,7 +217,7 @@ class CompoundWithCoeff(object):
 class Reaction(object):
     """A reaction."""
     
-    def __init__(self, reactants=None, aq_params=None):
+    def __init__(self, reactants=None, aq_params=None, max_priority=99):
         """Construction.
         
         Args:
@@ -229,7 +229,8 @@ class Reaction(object):
 
         self._FilterProtons()
         self._Dedup()
-        self.priority = self._SetCompoundPriorities()
+        self.max_priority = max_priority
+        self.priority = self._SetCompoundPriorities(max_priority)
 
         self._kegg_id = None
 
@@ -249,25 +250,31 @@ class Reaction(object):
         """
             Make a copy of the reaction
         """
+        logging.debug('Cloning reaction...')
         other = Reaction([r.Clone() for r in self.reactants], 
-                         self.aq_params.Clone())
+                         self.aq_params.Clone(),
+                         max_priority=self.max_priority)
         other._kegg_id = self._kegg_id
+        other.priority = self.priority
         return other
 
-    def _SetCompoundPriorities(self):
+    def _SetCompoundPriorities(self, maximal_priority):
         """
             Returns a set of (int, SpeciesGroup) tuples for the reaction.
         """
         
+        # The chosen priority will be the highest number which is common
+        # to all reactants.
         priorities = [c.compound.GetSpeciesGroupPriorities() for c in self.reactants]
         priorities = filter(lambda l: len(l) > 0, priorities)
         
         # Someone is missing data!
         if priorities == []:
             return 0
-        priority_to_use = min([max(l) for l in priorities if l])
-        logging.info('All priorities: %s' % str(priorities))        
-        logging.info('Using the priority %d' % priority_to_use)        
+        priority_to_use = min([max(l) for l in priorities] +
+                              [maximal_priority])
+        logging.debug('All priorities: %s' % str(priorities))        
+        logging.debug('Using the priority %d' % priority_to_use)        
         
         for c in self.reactants:
             c.compound.SetSpeciesGroupPriority(priority_to_use)
@@ -376,11 +383,8 @@ class Reaction(object):
             Returns:
                 A Reaction object or None if there's an error.
         """
-        if form.cleaned_reactionId:
-            stored_reaction = models.StoredReaction.objects.get(
-                kegg_id=form.cleaned_reactionId)
-            return Reaction.FromStoredReaction(stored_reaction)
-
+        max_priority = form.cleaned_max_priority
+        logging.debug('Maximal Gibbs estimation priority = %d' % max_priority)
         n_react = len(form.cleaned_reactantsCoeff)
         coeffs = list(form.cleaned_reactantsCoeff)
         kegg_ids = list(form.cleaned_reactantsId)
@@ -394,15 +398,16 @@ class Reaction(object):
             if phases != []:
                 d['phase'] = phases[i]
             if concentrations != []:
-                logging.info(str(concentrations))
+                logging.debug("concentrations = %s" % str(concentrations))
                 d['conc'] = concentrations[i]
             compound_list.append(d)
 
         # Return the built reaction object.
-        return Reaction.FromIds(compound_list)
+        return Reaction.FromIds(compound_list,
+                                max_priority=max_priority)
     
     @staticmethod
-    def FromIds(compound_list):
+    def FromIds(compound_list, max_priority):
         """Build a reaction object from lists of IDs.
         
         Args:
@@ -413,7 +418,7 @@ class Reaction(object):
             A properly set-up Reaction object or None if there's an error.
         """        
         reactants = map(CompoundWithCoeff.FromDict, compound_list)
-        return Reaction(reactants)        
+        return Reaction(reactants, max_priority=max_priority)
         
     @staticmethod
     def _GetCollectionAtomDiff(collection):
@@ -831,7 +836,7 @@ class Reaction(object):
         if self._dg0_prime is not None:
             return self._dg0_prime
 
-        logging.info('Aqueous Params = ' + str(self.aq_params))
+        logging.debug('Aqueous Params = ' + str(self.aq_params))
         c_dg0_prime_list = [c.DeltaG0Prime(self.aq_params) for c in self.reactants]
 
         # find all the IDs of compounds that have no known formation energy
@@ -947,10 +952,10 @@ class Reaction(object):
             i = compound.compound.index
             gv = compound.compound.group_vector
             if i is not None:
-                logging.info('%s, index = %d' % (compound.compound.kegg_id, i))
+                logging.debug('%s, index = %d' % (compound.compound.kegg_id, i))
                 x[i, 0] = compound.coeff
             elif gv is not None:
-                logging.info('%s, using gc' % (compound.compound.kegg_id))
+                logging.debug('%s, using gc' % (compound.compound.kegg_id))
                 g += gv
             else:
                 return None
