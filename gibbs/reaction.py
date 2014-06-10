@@ -255,10 +255,7 @@ class Reaction(object):
         other._kegg_id = self._kegg_id
         return other
 
-    def _SetCompoundPriorities(self):
-        """
-            Returns a set of (int, SpeciesGroup) tuples for the reaction.
-        """
+    def _GetMaxCommonPriority(self):
         max_priority = self.aq_params.max_priority or 1
         
         # The chosen priority will be the highest number which is common
@@ -269,13 +266,16 @@ class Reaction(object):
         # Someone is missing data!
         if priorities == []:
             return 0
-        priority_to_use = min([max(l) for l in priorities] +
-                              [max_priority])
-        logging.debug('All priorities: %s' % str(priorities))        
-        logging.debug('Using the priority %d' % priority_to_use)        
-        
+        else:
+            return min([max(l) for l in priorities] + [max_priority])
+
+    def _SetCompoundPriorities(self):
+        """
+            Returns a set of (int, SpeciesGroup) tuples for the reaction.
+        """
+        priority = self._GetMaxCommonPriority()
         for c in self.reactants:
-            c.compound.SetSpeciesGroupPriority(priority_to_use)
+            c.compound.SetSpeciesGroupPriority(priority)
          
     def SwapSides(self):
         """Swap the sides of this reaction."""
@@ -932,7 +932,7 @@ class Reaction(object):
         return None
         
     def DeltaGUncertainty(self):
-        if self.priority != 1:
+        if self._GetMaxCommonPriority() != 1:
             return None
         C1 = cc_preprocess['C1']
         C2 = cc_preprocess['C2']

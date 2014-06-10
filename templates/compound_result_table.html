@@ -27,7 +27,11 @@
         </td>
         <td colspan="3">
             {% if reaction.dgm_prime != None %}
-                <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong> [kJ/mol]
+                <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong>
+                {% if reaction.dg_uncertainty != None %}
+                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                {% endif %}
+                [kJ/mol]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
@@ -42,7 +46,11 @@
         </td>
         <td colspan="5">
             {% if reaction.dg0_prime != None %}
-                <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong> [kJ/mol]
+                <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong>
+                {% if reaction.dg_uncertainty != None %}
+                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                {% endif %}
+                [kJ/mol]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
