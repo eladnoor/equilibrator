@@ -20,7 +20,10 @@ def ResultsPage(request):
     matcher = service_config.Get().compound_matcher
     
     query = form.cleaned_query
-        
+    if not query.strip():
+        response = render_to_response('main.html', {})
+        return response
+    
     # Check if we should parse and process the input as a reaction.
     if query_parser.IsReactionQuery(query):
         logging.debug('Parsing the query as a reaction')
@@ -36,7 +39,7 @@ def ResultsPage(request):
             return render_to_response('search_error_page.html')
 
         logging.debug('Generating a reaction from the matched KEGG IDs')
-        rxn = reaction.Reaction.FromIds(best_reaction, max_priority=form.cleaned_max_priority)
+        rxn = reaction.Reaction.FromIds(best_reaction)
         rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
         logging.info('Aqueous parameters: ' + str(rxn.aq_params))
         

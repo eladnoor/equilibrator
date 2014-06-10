@@ -4,7 +4,7 @@
     </tr>
     {% if not reaction.is_phys_conc %}
     <tr>
-        <td width="170px">
+        <td>
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>f</i></sub>G'</a>
             </strong>
@@ -20,7 +20,7 @@
     {% endif %}
 
     <tr>
-        <td width="170px">
+        <td width="190px">
             <strong>
                 Estimated <a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'<sup>m</sup></a>
             </strong>
@@ -35,7 +35,7 @@
     </tr>
         
     <tr>
-        <td width="170px">
+        <td>
             <strong>
                 Estimated <a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'&deg;</a>
             </strong>
@@ -51,7 +51,7 @@
     
     {% if compound.no_dg_explanation %}
         <tr>
-            <td width="170px">
+            <td>
                 Note
             </td>
             <td colspan="5">
@@ -62,11 +62,21 @@
     
     {% if compound.dg_source %}
         <tr>
-            <td width="170px">
-                Source
+            <td>
+                <strong>
+                    Estimated using 
+                </strong>
             </td>
-            <td colspan="5">
-                <a href="/data_refs" title="Reference list">{{ compound.dg_source }}</a>
+            <td width="300px">
+                    <a href="/data_refs">{{ reaction.source_reference }}</a>
+            </td>
+            <td colspan="3">
+                {% if reaction.aq_params.max_priority != 99 %}
+                    <a href="{{ compound.alberty_link }}">Use formation energies where possible</a>
+                {% else %}
+                    <a href="{{ compound.cc_link }}">Use component contribution only</a>
+                {% endif %}
+                <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
             </td>
         </tr>
     {% endif %}

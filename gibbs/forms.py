@@ -1,5 +1,6 @@
 from django import forms
 from gibbs import constants
+import logging
 
 class ListFormField(forms.MultipleChoiceField):
     """
@@ -22,7 +23,7 @@ class EnzymeForm(forms.Form):
 class SearchForm(forms.Form):
     def _GetWithDefault(self, key, default):
         if (key not in self.cleaned_data or
-            self.cleaned_data[key] == None):
+            self.cleaned_data[key] is None):
             return default
         return self.cleaned_data[key]
     
@@ -31,7 +32,7 @@ class SearchForm(forms.Form):
     pmg = forms.FloatField(required=False)
     ionic_strength = forms.FloatField(required=False)
     electronReductionPotential = forms.FloatField(required=False)
-    maxPriority = forms.IntegerField(required=False)
+    max_priority = forms.IntegerField(required=False)
     
     # Convenience accessors for clean data with defaults.
     cleaned_query = property(lambda self: self._GetWithDefault('query', ''))
@@ -39,7 +40,7 @@ class SearchForm(forms.Form):
     cleaned_pmg = property(lambda self: self._GetWithDefault('pmg', None))
     cleaned_ionic_strength = property(lambda self: self._GetWithDefault('ionic_strength', None))
     cleaned_e_reduction_potential = property(lambda self: self._GetWithDefault('electronReductionPotential', None))
-    cleaned_max_priority = property(lambda self: self._GetWithDefault('maxPriority', 99))
+    cleaned_max_priority = property(lambda self: self._GetWithDefault('max_priority', 0))
 
 class BaseReactionForm(SearchForm):
     

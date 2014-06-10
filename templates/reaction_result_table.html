@@ -4,7 +4,7 @@
     </tr>
     {% if not reaction.is_phys_conc %}
     <tr>
-        <td width="190px">
+        <td>
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'</a>
             </strong>
@@ -24,7 +24,7 @@
     {% endif %}
 
     <tr>
-        <td width="190px">
+        <td>
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a>
             </strong>
@@ -43,7 +43,7 @@
     </tr>
     
     <tr>
-        <td width="190px">
+        <td>
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'&deg;</a>
             </strong>
@@ -68,13 +68,21 @@
                 Estimated using 
             </strong>
         </td>
-        <td colspan="3">
+        <td width="300px">
                 <a href="/data_refs">{{ reaction.source_reference }}</a>
+        </td>
+        <td colspan="2">
+            {% if reaction.aq_params.max_priority != 99 %}
+                <a href="{{ reaction.alberty_link }}">Use formation energies where possible</a>
+            {% else %}
+                <a href="{{ reaction.cc_link }}">Use component contribution only</a>
+            {% endif %}
+            <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
         </td>
     </tr>    
     {% if reaction.catalyzing_enzymes %}
         <tr>
-            <td width="190px"><strong>Catalyzed by</strong></td>
+            <td><strong>Catalyzed by</strong></td>
             <td colspan="3">
             {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
                 <div><a href="{{ enzyme.link }}">{{ enzyme }}</a>&nbsp;&nbsp;[EC {{ enzyme.ec }}]</div>
@@ -83,5 +91,4 @@
         </tr>
     {% endif %}
     {% include "reaction_sliders.html" %}
-    
 </table>

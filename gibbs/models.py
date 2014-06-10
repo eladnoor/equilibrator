@@ -439,6 +439,9 @@ class Compound(models.Model):
         
         return atom_bag
 
+    def GetNewPriorityLink(self, max_priority):
+        return self.GetLink() + '&max_priority=%d' % max_priority
+
     def GetLink(self):
         """Returns the link to the stand-alone page for this compound."""
         if not self.kegg_id:
@@ -601,6 +604,8 @@ class Compound(models.Model):
     _species_group = property(GetSpeciesGroupToUse)
     first_name = property(FirstName)
     html_formula = property(GetHtmlFormattedFormula)
+    cc_link = property(lambda self: self.GetNewPriorityLink(1))
+    alberty_link = property(lambda self: self.GetNewPriorityLink(99))
     link = property(GetLink)
     kegg_link = property(GetKeggLink)
     small_image_url = property(GetSmallImageUrl)

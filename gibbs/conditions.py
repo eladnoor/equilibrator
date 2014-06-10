@@ -235,11 +235,13 @@ class AqueousParams(object):
                  pH=constants.DEFAULT_PH,
                  pMg=constants.DEFAULT_PMG,
                  ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
-                 e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL):
+                 e_reduction_potential=constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL,
+                 max_priority=0):
         self.pH = pH
         self.pMg = pMg
         self.ionic_strength = ionic_strength
         self.e_reduction_potential = e_reduction_potential
+        self.max_priority = max_priority
 
     @staticmethod
     def FromForm(form, cookies=None):
@@ -266,26 +268,35 @@ class AqueousParams(object):
                 'e_reduction_potential',
                 constants.DEFAULT_ELECTRON_REDUCTION_POTENTIAL))
                 
-        return AqueousParams(pH, pMg, ionic_strength, e_reduction_potential)          
+        max_priority = form.cleaned_max_priority
+        if max_priority == 0:
+            max_priority = int(cookies.get('max_priority', 1))
+
+        return AqueousParams(pH, pMg, ionic_strength, e_reduction_potential,
+                             max_priority)          
 
     def Clone(self):
         return AqueousParams(self.pH, self.pMg, self.ionic_strength,
-                             self.e_reduction_potential)
+                             self.e_reduction_potential, self.max_priority)
             
     def __str__(self):
-        return 'pH = %.2g, pMg = %.2g, I = %.2g M, Ered = %g' % \
-            (self.pH, self.pMg, self.ionic_strength, self.e_reduction_potential) 
+        return 'pH = %.2g, pMg = %.2g, I = %.2g M, Ered = %g, MaxPriority=%d' % \
+            (self.pH, self.pMg, self.ionic_strength, self.e_reduction_potential,
+             self.max_priority) 
             
     def SetCookies(self, response):
         response.set_cookie('pH', str(self.pH))
         response.set_cookie('pMg', str(self.pMg))
         response.set_cookie('ionic_strength', str(self.ionic_strength))
         response.set_cookie('e_reduction_potential', str(self.e_reduction_potential))
+        response.set_cookie('max_priority', str(self.max_priority))
         
     def GetTemplateData(self):
+        logging.info('max_priorty = %d' % self.max_priority)
         return {'ph': self.pH, 'pmg': self.pMg,
                 'ionic_strength': self.ionic_strength,
-                'e_reduction_potential': self.e_reduction_potential}
+                'e_reduction_potential': self.e_reduction_potential,
+                'max_priority': self.max_priority}
 
     def _GetUrlParams(self):
         """
@@ -293,4 +304,6 @@ class AqueousParams(object):
         """
         return ['ph=%f' % self.pH,
                 'pmg=%f' % self.pMg,
-                'ionic_strength=%f' % self.ionic_strength]
+                'ionic_strength=%f' % self.ionic_strength,
+                'e_reduction_potential=%f' % self.e_reduction_potential,
+                'max_priority=%d' % self.max_priority]

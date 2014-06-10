@@ -217,7 +217,7 @@ class CompoundWithCoeff(object):
 class Reaction(object):
     """A reaction."""
     
-    def __init__(self, reactants=None, aq_params=None, max_priority=99):
+    def __init__(self, reactants=None, aq_params=None):
         """Construction.
         
         Args:
@@ -229,8 +229,6 @@ class Reaction(object):
 
         self._FilterProtons()
         self._Dedup()
-        self.max_priority = max_priority
-        self.priority = self._SetCompoundPriorities(max_priority)
 
         self._kegg_id = None
 
@@ -240,6 +238,7 @@ class Reaction(object):
     def SetAqueousParams(self, aq_params):
         self._dg0_prime = None
         self._aq_params = aq_params
+        self._SetCompoundPriorities()
     
     def GetAqueousParams(self):
         return self._aq_params
@@ -252,16 +251,15 @@ class Reaction(object):
         """
         logging.debug('Cloning reaction...')
         other = Reaction([r.Clone() for r in self.reactants], 
-                         self.aq_params.Clone(),
-                         max_priority=self.max_priority)
+                         self.aq_params.Clone())
         other._kegg_id = self._kegg_id
-        other.priority = self.priority
         return other
 
-    def _SetCompoundPriorities(self, maximal_priority):
+    def _SetCompoundPriorities(self):
         """
             Returns a set of (int, SpeciesGroup) tuples for the reaction.
         """
+        max_priority = self.aq_params.max_priority or 1
         
         # The chosen priority will be the highest number which is common
         # to all reactants.
@@ -272,13 +270,12 @@ class Reaction(object):
         if priorities == []:
             return 0
         priority_to_use = min([max(l) for l in priorities] +
-                              [maximal_priority])
+                              [max_priority])
         logging.debug('All priorities: %s' % str(priorities))        
         logging.debug('Using the priority %d' % priority_to_use)        
         
         for c in self.reactants:
             c.compound.SetSpeciesGroupPriority(priority_to_use)
-        return priority_to_use
          
     def SwapSides(self):
         """Swap the sides of this reaction."""
@@ -384,7 +381,6 @@ class Reaction(object):
                 A Reaction object or None if there's an error.
         """
         max_priority = form.cleaned_max_priority
-        logging.debug('Maximal Gibbs estimation priority = %d' % max_priority)
         n_react = len(form.cleaned_reactantsCoeff)
         coeffs = list(form.cleaned_reactantsCoeff)
         kegg_ids = list(form.cleaned_reactantsId)
@@ -403,11 +399,10 @@ class Reaction(object):
             compound_list.append(d)
 
         # Return the built reaction object.
-        return Reaction.FromIds(compound_list,
-                                max_priority=max_priority)
+        return Reaction.FromIds(compound_list)
     
     @staticmethod
-    def FromIds(compound_list, max_priority):
+    def FromIds(compound_list):
         """Build a reaction object from lists of IDs.
         
         Args:
@@ -418,7 +413,7 @@ class Reaction(object):
             A properly set-up Reaction object or None if there's an error.
         """        
         reactants = map(CompoundWithCoeff.FromDict, compound_list)
-        return Reaction(reactants, max_priority=max_priority)
+        return Reaction(reactants)
         
     @staticmethod
     def _GetCollectionAtomDiff(collection):
@@ -503,11 +498,12 @@ class Reaction(object):
             for arrow in constants.POSSIBLE_REACTION_ARROWS:
                 tmp_query = query.replace(arrow, '=>')
             params.append('query=%s' % urllib.quote(tmp_query))
-            
+        
         return params
     
     def GetHyperlink(self, query=None):
-        return '/reaction?%s' % '&'.join(self._GetUrlParams(query))
+        params = self._GetUrlParams(query)
+        return '/reaction?%s' % '&'.join(params)
     
     def GetBalanceWithWaterLink(self, query=None):
         """Returns a link to balance this reaction with water."""
@@ -552,6 +548,11 @@ class Reaction(object):
             pass
         template_data.update(self.aq_params.GetTemplateData())
         return template_data
+    
+    def GetNewPriorityLink(self, max_priority):
+        params = self._GetUrlParams()
+        params.append('max_priority=%d' % max_priority)
+        return '/reaction?%s' % '&'.join(params)
     
     def GetPhGraphLink(self):
         params = self._GetUrlParams()
@@ -1063,6 +1064,8 @@ class Reaction(object):
     e_prime = property(E_prime)
     no_dg_explanation = property(NoDeltaGExplanation)
     dg_uncertainty = property(DeltaGUncertainty)
+    cc_link = property(lambda self: self.GetNewPriorityLink(1))
+    alberty_link = property(lambda self: self.GetNewPriorityLink(99))
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)

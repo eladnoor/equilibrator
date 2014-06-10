@@ -20,8 +20,6 @@ def ReactionPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid reaction form.')
     
-    # Figure out which template to render (based on which submit button was
-    # pressed).
     rxn = reaction.Reaction.FromForm(form)
 
     rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
