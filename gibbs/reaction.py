@@ -3,12 +3,15 @@
 import logging
 import numpy
 import urllib
+import os
 
 from gibbs import conditions
 from gibbs import constants
 from gibbs import models
 
-cc_preprocess = numpy.load('data/cc_preprocess.npz')
+relpath = os.path.dirname(os.path.realpath(__file__))
+cc_preprocess_fname = os.path.join(relpath, '../data/cc_preprocess.npz')
+cc_preprocess = numpy.load(cc_preprocess_fname)
 
 class ReactantFormulaMissingError(Exception):
     
