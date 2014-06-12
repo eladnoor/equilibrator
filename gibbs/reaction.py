@@ -941,6 +941,9 @@ class Reaction(object):
         C2 = cc_preprocess['C2']
         C3 = cc_preprocess['C3']
 
+        Nc = C1.shape[0]        
+        Ng = C3.shape[0]      
+
         assert C1.shape[0] == C1.shape[1]
         assert C1.shape[1] == C2.shape[0]
         assert C2.shape[1] == C3.shape[0]
@@ -948,23 +951,28 @@ class Reaction(object):
         
         # x is the stoichiometric vector of the reaction, only for the
         # compounds that appeared in the original training set for CC
-        x = numpy.matrix(numpy.zeros((C1.shape[0], 1))) 
+        x = numpy.matrix(numpy.zeros((Nc, 1))) 
 
         # g is the group incidence vector of all the other compounds
-        g = numpy.matrix(numpy.zeros((C3.shape[0], 1))) 
+        g = numpy.matrix(numpy.zeros((Ng, 1)))
+        logging.debug('g.shape = %s' % str(g.shape))
         for compound in self.reactants:
+            logging.debug(compound.compound.kegg_id)
             i = compound.compound.index
-            gv = compound.compound.group_vector
+            gv = compound.compound.sparse_gv
             if i is not None:
-                logging.debug('%s, index = %d' % (compound.compound.kegg_id, i))
+                logging.debug('index = %d' % i)
                 x[i, 0] = compound.coeff
             elif gv is not None:
-                logging.debug('%s, using gc' % (compound.compound.kegg_id))
-                g += gv
+                logging.debug('len(gv) = %d' % len(gv))
+                for g_ind, g_count in gv:
+                    g[g_ind, 0] += g_count
             else:
+                logging.debug('could not find index nor group vector')
                 return None
 
         s_cc = float(numpy.sqrt(x.T * C1 * x + x.T * C2 * g + g.T * C3 * g))
+        logging.debug('s_cc = %g' % s_cc)
         return 1.96*s_cc
 
     def AllCompoundsWithTransformedEnergies(self):

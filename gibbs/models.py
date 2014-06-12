@@ -600,6 +600,12 @@ class Compound(models.Model):
     
     def _GetCofactorEnzymes(self):
         return self.cofactor_of_enzymes.all()
+        
+    def _GetSparseGroupVector(self):
+        if self.group_vector is None:
+            return None
+        else:
+            return json.loads(self.group_vector)
     
     _species_group = property(GetSpeciesGroupToUse)
     first_name = property(FirstName)
@@ -619,6 +625,7 @@ class Compound(models.Model):
     cofactor_of = property(_GetCofactorEnzymes)
     dg0_prime = property(DeltaG0Prime)
     dg_source = property(_GetDGSource)
+    sparse_gv = property(_GetSparseGroupVector)
     
     def StashTransformedSpeciesEnergies(self, aq_params):
         """Stash the transformed species formation energy in each one."""
