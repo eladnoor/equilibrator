@@ -1,6 +1,6 @@
 <table class="results">
     <tr class="infoTableHeader">
-        <th colspan="4">Reaction Gibbs Energy</th>
+        <th colspan="5">Reaction Gibbs Energy</th>
     </tr>
     {% if not reaction.is_phys_conc %}
     <tr>
@@ -9,7 +9,7 @@
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'</a>
             </strong>
         </td>
-        <td colspan="3">
+        <td colspan="4">
             {% if reaction.dg_prime != None %}
                 <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>               
                 {% if reaction.dg_uncertainty != None %}
@@ -29,7 +29,7 @@
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a>
             </strong>
         </td>
-        <td colspan="3">
+        <td colspan="4">
             {% if reaction.dgm_prime != None %}
                 <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong> 
                 {% if reaction.dg_uncertainty != None %}
@@ -48,7 +48,7 @@
                 Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'&deg;</a>
             </strong>
         </td>
-        <td colspan="3">
+        <td colspan="4">
             {% if reaction.dg0_prime != None %}
                 <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong>
                 {% if reaction.dg_uncertainty != None %}
@@ -68,22 +68,22 @@
                 Estimated using 
             </strong>
         </td>
-        <td width="300px">
-                <a href="/data_refs">{{ reaction.source_reference }}</a>
-        </td>
-        <td colspan="2">
-            {% if reaction.aq_params.max_priority != 99 %}
-                <a href="{{ reaction.alberty_link }}">Use formation energies where possible</a>
-            {% else %}
-                <a href="{{ reaction.cc_link }}">Use component contribution only</a>
-            {% endif %}
-            <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
+        <td colspan="4">
+            {{ reaction.source_reference|safe }}
+            <div align="right">
+                {% if reaction.aq_params.max_priority != 99 %}
+                    <a href="{{ reaction.alberty_link }}">Use formation energies where possible</a>
+                {% else %}
+                    <a href="{{ reaction.cc_link }}">Use component contribution only</a>
+                {% endif %}
+                <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
+            </div>        
         </td>
     </tr>    
     {% if reaction.catalyzing_enzymes %}
         <tr>
             <td><strong>Catalyzed by</strong></td>
-            <td colspan="3">
+            <td colspan="4">
             {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
                 <div><a href="{{ enzyme.link }}">{{ enzyme }}</a>&nbsp;&nbsp;[EC {{ enzyme.ec }}]</div>
             {% endfor %}

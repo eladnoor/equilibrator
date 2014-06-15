@@ -8,24 +8,28 @@
 }
 
 .header {
-    margin: 15px 0px 0px 10px;
+    margin-left: 0px;
+    margin-right: 0px;
 }
 
 .header #searchForm {
-    padding-top: 40px;
-    padding-left: 10px;
+    padding: 30px;
+    margin-left: 0px;
+    margin-right: auto;
+    display: block;
+    width: 50%;
 }
 
-.header #queryField {
-    width: 70%;
+.header #queryField #submitButton {
+    height: 24px;
+    font-size: 14px;
 }
 
 .logoSmall img {
-    width: 150px;
-    height: 120px;
+    height: 70px;
     border: none;
     float: left;
-    margin: 7px;
+    margin: 15px;
 }
 
 .errorMsg {

@@ -1,6 +1,9 @@
-<table class="enzymeInfo">
+<table class="results">
+    <tr class="infoTableHeader">
+        <th colspan="2">Enzyme information</th>
+    </tr>
     <tr>
-        <td width="150px">Common names</td>
+        <td width="150px"><b>Common names</b></td>
         <td>
             {% for name in enzyme.all_common_names %}
             <div class="commonName">{{ name }}</div>
@@ -8,14 +11,14 @@
         </td>
     </tr>
   <tr>
-    <td width="150px">EC Number</td>
+    <td width="150px"><b>EC Number</b></td>
     <td>
       <div>{{ enzyme.ec }}</div>
     </td>
   </tr>
     {% if enzyme.kegg_link %}
 	<tr>
-		<td width="150px">Links</td>
+		<td width="150px"><b>Links</b></td>
 	    <td><div><a href="{{enzyme.kegg_link}}">KEGG &raquo;</a></div>
             <div><a href="{{enzyme.brenda_link}}">BRENDA &raquo;</a></div></td>
     </tr>

@@ -659,6 +659,15 @@ class Reaction(object):
         delta_electrons = self._GetElectronDiff()
         assert delta_electrons != 0
         return - self.DeltaGPrime() / (constants.F*delta_electrons)
+
+    def EUncertainty(self):
+        dg_u = self.DeltaGUncertainty()
+        if dg_u is None:
+            return None
+        else:
+            delta_electrons = self._GetElectronDiff()
+            assert delta_electrons != 0
+            return - dg_u / (constants.F*delta_electrons)
     
     def _ExtraWaters(self):
         atom_diff = self._GetAtomDiff()
@@ -1047,8 +1056,21 @@ class Reaction(object):
             reactant to represent all of them.
         """
         #return self.reactants[0].compound._GetDGSource()
-        sources = map(lambda x : str(x.compound._GetDGSource()), self.reactants)
-        return ', '.join(set(sources))
+        source_names = set(map(lambda x : str(x.compound._GetDGSource()), self.reactants))
+        return ', '.join([self.GetSourceReferenceLink(s) for s in source_names])
+    
+    def GetSourceReferenceLink(self, source_name):
+        try:
+            source = models.ValueSource.objects.get(name=source_name)
+            url = source.url
+        except Exception:
+            url = None
+        
+        if url:
+            return '<a href="%s">%s</a>' % (url, source_name)
+        else:
+            return '<a href="/data_refs">%s</a>' % (source_name)
+        
     
     substrates = property(GetSubstrates)
     products = property(GetProducts)
@@ -1073,6 +1095,7 @@ class Reaction(object):
     k_eq_prime_human = property(KeqPrimeHuman)
     e0_prime = property(E0_prime)
     e_prime = property(E_prime)
+    e_uncertainty = property(EUncertainty)
     no_dg_explanation = property(NoDeltaGExplanation)
     dg_uncertainty = property(DeltaGUncertainty)
     cc_link = property(lambda self: self.GetNewPriorityLink(1))

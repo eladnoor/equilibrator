@@ -200,7 +200,7 @@
                         at ionic strength = <span data-var='is' class='TKAdjustableNumber' data-min='0.0' data-max='0.35' data-step='0.01' data-format='%.2f'>  mM</span>
                     {% endif %}
                     </br></br>
-                    Estimated using <a href="/data_refs">{{ reaction.source_reference }}</a>
+                    Estimated using {{ reaction.source_reference|safe }}
                 </p>
             {% if conditions and conditions != "standard" %}
                 <table class="results">

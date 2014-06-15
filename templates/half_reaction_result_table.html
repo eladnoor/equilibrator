@@ -28,33 +28,36 @@
         </td>
         <td colspan="3">
             {% if reaction.e0_prime != None %}
-                <strong>{{ reaction.e0_prime|floatformat:0 }}</strong> [mV]
+                <strong>{{ reaction.e0_prime|floatformat:0 }}</strong>
+                {% if reaction.e_uncertainty != None %}
+                    &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
+                {% endif %}
+                [mV]
             {% else %}
                 <a href="/faq#notAvailable">Not available</a>
             {% endif %}
         </td>
     </tr>
-    
     <tr>
-        <td width="170px">
-            pH
+        <td width="190px">
+            <strong>
+                Estimated using 
+            </strong>
         </td>
-        <td width="50px"><input type="text" name="ph" id="phField" value="{{ reaction.aq_params.pH }}" size="3"/></td>
-        <td colspan="2">
-            <div id="phSlider" />
+        <td colspan="4">
+            {{ reaction.source_reference|safe }}
+            <div align="right">
+                {% if reaction.aq_params.max_priority != 99 %}
+                    <a href="{{ reaction.alberty_link }}">Use formation energies where possible</a>
+                {% else %}
+                    <a href="{{ reaction.cc_link }}">Use component contribution only</a>
+                {% endif %}
+                <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
+            </div>        
         </td>
-    </tr>
-    <tr>
-        <td width="170px">
-            Ionic strength [M]
-        </td>
-        <td width="50px">
-            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ reaction.aq_params.ionic_strength }}" size="3"/>
-        </td>
-        <td colspan="2">
-            <div id="ionStrengthSlider" />
-        </td>
-    </tr>
+    </tr>    
+    {% include "reaction_sliders.html" %}
+
 
     {% if reaction.half_reaction_dg_prime != None %}
     <tr class="infoTableHeader">

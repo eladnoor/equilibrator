@@ -1,13 +1,13 @@
-<table class="additionalCompoundInfo">
+<table class="results">
 	<tr class="infoTableHeader">
 		<th colspan="2">General Properties</td>		
 	</tr>
 	<tr>
-		<td width="150px">Formula</td>
+		<td width="150px"><b>Formula</b></td>
 		<td>{{ compound.html_formula|safe }}</td>
 	</tr>
 	<tr>
-		<td width="150px">Common names</td>
+		<td width="150px"><b>Common names</b></td>
 		<td>
 			{% for name in compound.all_common_names %}
 			{{ name }}{% if not forloop.last %}; {% endif %}
@@ -15,21 +15,21 @@
 		</td>
 	</tr>
 	<tr>
-		<td>Mass (Da)</td>
+		<td><b>Mass (Da)</b></td>
 		<td>{{ compound.mass }}</td>
 	</tr>
 	<tr>
-		<td width="150px">Structure</td>
+		<td width="150px"><b>Structure</b></td>
 		<td><img src="{{ compound.small_image_url }}" /></td>
 	</tr>
 	{% if compound.kegg_link %}
 	<tr>	
-		<td width="150px">Links</td>
+		<td width="150px"><b>Links</b></td>
 		<td><a href="{{compound.kegg_link}}">KEGG &raquo;</a></td>
 	</tr>
 	{% endif %}
 	{% if compound.note %}
-		<td width="150px">Note</td>
+		<td width="150px"><b>Note</b></td>
 		<td>{{compound.note}}
 		{% if compound.details_link %}
 		<a href="{{compound.details_link}}">More info &raquo;</a>

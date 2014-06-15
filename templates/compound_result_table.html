@@ -75,16 +75,16 @@
                     Estimated using 
                 </strong>
             </td>
-            <td width="300px">
-                    <a href="/data_refs">{{ reaction.source_reference }}</a>
-            </td>
-            <td colspan="3">
-                {% if reaction.aq_params.max_priority != 99 %}
-                    <a href="{{ compound.alberty_link }}">Use formation energies where possible</a>
-                {% else %}
-                    <a href="{{ compound.cc_link }}">Use component contribution only</a>
-                {% endif %}
-                <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
+            <td colspan="4">
+                {{ reaction.source_reference|safe }}</a>
+                <div align="right">
+                    {% if reaction.aq_params.max_priority != 99 %}
+                        <a href="{{ compound.alberty_link }}">Use formation energies where possible</a>
+                    {% else %}
+                        <a href="{{ compound.cc_link }}">Use component contribution only</a>
+                    {% endif %}
+                    <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
+                </div>
             </td>
         </tr>
     {% endif %}

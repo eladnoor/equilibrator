@@ -126,16 +126,16 @@
     },
     {
         "name": "Smith (2004)",
-        "author": ["Smith"],
-        "title": "????",
-        "journal": "????",
+        "author": ["Martell AE", "Smith RM", "Motekaitis RJ"],
+        "title": "NIST Critically Selected Stability Constants of Metal Complexes Database, 8.0",
+        "journal": "NIST: Gaithersburg, MD, 2004",
         "year": 2004
     },
     {
         "name": "Larssonr (1972)",
-        "author": ["Larssonr"],
-        "title": "????",
-        "journal": "????",
+        "author": ["Larsson-Raźinikiewicz M"],
+        "title": "Complex, formation between 3-phospho-D-glyceric acid and divalent metal-ions",
+        "journal": "European Journal of Biochemistry",
         "year": 1972
     }
 ]
