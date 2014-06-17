@@ -66,6 +66,31 @@
         ]
     },
     {
+        "CID": "C00087",
+        "pmaps": [
+            {
+                "priority": 1, 
+                "source": "Component Contribution (2013)", 
+                "species": [
+                    {
+                        "phase": "solid",
+                        "dG0_f": 0
+                    }
+                ]
+            }, 
+            {
+                "priority": 2, 
+                "source": "Alberty (2006)", 
+                "species": [
+                    {
+                        "phase": "solid",
+                        "dG0_f": 0
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "CID": "C00003",
         "names": [
             "Nicotinamide adenine dinucleotide (oxidized)" 

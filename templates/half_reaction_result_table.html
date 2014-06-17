@@ -7,12 +7,16 @@
     <tr>
         <td width="170px">
             <strong>
-                Estimated E'</a>
+                Estimated <a href="faq#halfReactions">E'</a>
             </strong>
         </td>
         <td colspan="3">
         {% if reaction.e_prime != None %}
-            <strong>{{ reaction.e_prime|floatformat:0 }}</strong> [mV]
+            <strong>{{ reaction.e_prime|floatformat:0 }}</strong>
+                {% if reaction.e_uncertainty != None %}
+                    &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
+                {% endif %}
+                [mV]
         {% else %}
             <a href="/faq#notAvailable">Not available</a>
         {% endif %}
@@ -23,7 +27,25 @@
     <tr>
         <td width="170px">
             <strong>
-                Estimated E'&deg;</a>
+                Estimated <a href="faq#halfReactions">E'<sup>m</sup></a>
+            </strong>
+        </td>
+        <td colspan="3">
+            {% if reaction.em_prime != None %}
+                <strong>{{ reaction.em_prime|floatformat:0 }}</strong>
+                {% if reaction.e_uncertainty != None %}
+                    &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
+                {% endif %}
+                [mV]
+            {% else %}
+                <a href="/faq#notAvailable">Not available</a>
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <td width="170px">
+            <strong>
+                Estimated <a href="faq#halfReactions">E'&deg;</a>
             </strong>
         </td>
         <td colspan="3">

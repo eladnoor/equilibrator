@@ -24,6 +24,7 @@ class _BasePhase(object):
             convert the value to human readable numbers by changing
             the units (adding milli, micro modifiers)
         """
+        return (self.Value()*1e3, 1e-3, 'm' + self.Units())
         
         # make an exception for standard values (e.g. instead of 1 M the
         # default value will be 1000 mM). This is more convenient for users.

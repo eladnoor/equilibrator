@@ -186,7 +186,7 @@ class CompoundWithCoeff(object):
         return self.phase.Subscript()
     
     def GetPhaseValueString(self):
-        return self.phase.HumanValueAndUnits()[0]
+        return '%.8g' % self.phase.HumanValueAndUnits()[0]
 
     def GetPhasePrefactor(self):
         return self.phase.HumanValueAndUnits()[1]
@@ -654,6 +654,14 @@ class Reaction(object):
         assert delta_electrons != 0
         return - self.DeltaG0Prime() / (constants.F*delta_electrons)
 
+    def Em_prime(self):
+        """
+            Returns the standard transformed reduction potential of this reaction.
+        """
+        delta_electrons = self._GetElectronDiff()
+        assert delta_electrons != 0
+        return - self.DeltaGmPrime() / (constants.F*delta_electrons)
+
     def E_prime(self):
         """Returns the standard transformed reduction potential of this reaction."""
         delta_electrons = self._GetElectronDiff()
@@ -667,7 +675,7 @@ class Reaction(object):
         else:
             delta_electrons = self._GetElectronDiff()
             assert delta_electrons != 0
-            return - dg_u / (constants.F*delta_electrons)
+            return numpy.abs(dg_u / (constants.F*delta_electrons))
     
     def _ExtraWaters(self):
         atom_diff = self._GetAtomDiff()
@@ -834,7 +842,7 @@ class Reaction(object):
         # calculate stoichiometric imbalance (how many more products are there
         # compared to substrates). Note that H2O isn't counted
         imbalance = sum([c.coeff for c in self.reactants
-                         if c.kegg_id != 'C00001'])
+                         if not c.phase.IsConstant()])
         
         _r = constants.R
         _t = constants.DEFAULT_TEMP
@@ -894,7 +902,7 @@ class Reaction(object):
             The DeltaG' for this half-reaction, or None if data was missing.
         """
         dg_prime = self.DeltaGPrime()
-        delta_electrons = abs(self._GetElectronDiff())      
+        delta_electrons = self._GetElectronDiff()  
         return dg_prime + constants.F * delta_electrons * \
                           self.aq_params.e_reduction_potential
     
@@ -1094,6 +1102,7 @@ class Reaction(object):
     k_eq_prime = property(KeqPrime)
     k_eq_prime_human = property(KeqPrimeHuman)
     e0_prime = property(E0_prime)
+    em_prime = property(Em_prime)
     e_prime = property(E_prime)
     e_uncertainty = property(EUncertainty)
     no_dg_explanation = property(NoDeltaGExplanation)
