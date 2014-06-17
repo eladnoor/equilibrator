@@ -142,3 +142,8 @@ LOGGING = {
     }
 }
 
+# DJANGO-PROFILER 2.0
+PROFILING_LOGGER_NAME = 'profiler.log'
+PROFILING_SQL_QUERIES = True
+
+
