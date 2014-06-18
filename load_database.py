@@ -63,10 +63,10 @@ def user_yes_no_query(question, default=False):
 if __name__ == '__main__':
     print 'Welcome to the load_database script.'
     print 'Drawing thumbnails for all the compounds takes about 30 minutes'
-    draw_thumb = user_yes_no_query('Draw thumbnails')
+    draw_thumb = user_yes_no_query('Draw thumbnails', default=True)
 
     print 'Exporting the raw data as CSV files takes about 1 hour'
-    export_csv = user_yes_no_query('Export raw data')
+    export_csv = user_yes_no_query('Export raw data', default=False)
     
     start = time.time()
     main(draw_thumb, export_csv)

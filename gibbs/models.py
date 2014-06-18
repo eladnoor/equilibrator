@@ -553,7 +553,7 @@ class Compound(models.Model):
     def GetSpeciesGroups(self):
         """Gets the list of SpeciesGroups."""
         if self._all_species_groups is None:
-            self._all_species_groups = self.species_groups.all()
+            self._all_species_groups = self.species_groups.all().prefetch_related('species')
             
         return self._all_species_groups
     
@@ -696,6 +696,12 @@ class StoredReaction(models.Model):
     
     # a hash string for fast lookup of enzyme names by reaction    
     reaction_hash = models.CharField(max_length=128, db_index=True)
+    
+    # a cache for the ToString() function which takes too long due to DB comm
+    reaction_string = models.TextField(null=True)
+
+    # a cache for the Link() function which takes too long due to DB comm
+    link = models.TextField(null=True)
 
     @staticmethod
     def FromJson(rd):
@@ -777,6 +783,8 @@ class StoredReaction(models.Model):
 
     def GenerateHash(self):
         self.reaction_hash = self.GetHash()
+        self.reaction_string = self.ToString()
+        self.link = self.Link()
     
     def __str__(self):
         """String representation."""
@@ -789,8 +797,11 @@ class StoredReaction(models.Model):
         from gibbs import reaction
         reactants = [reaction.CompoundWithCoeff.FromId(coeff, kegg_id)
                      for coeff, kegg_id in json.loads(self.reactants)]
-        rxn = reaction.Reaction(reactants)
-        return rxn.GetHyperlink(self.ToString())
+        try:
+            rxn = reaction.Reaction(reactants)
+            return rxn.GetHyperlink(self.ToString())
+        except AttributeError:
+            raise Exception('Cannot find one of the compounds in the database')
 
     def ToCSVdG0Prime(self, priority=1, aq_params=None):
         """
@@ -815,8 +826,8 @@ class StoredReaction(models.Model):
                  aq_params.pH, aq_params.ionic_strength,
                  constants.DEFAULT_TEMP, None)]
         
-    link = property(Link)
-    reaction_string = property(ToString)
+#    link = property(Link)
+#    reaction_string = property(ToString)
 
 class ConservationLaw(models.Model):
     """ conservation laws which every reaction query must be checked against. """

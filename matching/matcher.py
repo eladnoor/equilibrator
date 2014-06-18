@@ -1,7 +1,6 @@
 import logging
 import itertools
-from gibbs import models
-import re
+from gibbs.models import CommonName, Compound, Enzyme
 
 
 class Error(Exception):
@@ -46,10 +45,10 @@ class Match(object):
         return ''
 
     def IsCompound(self):
-        return isinstance(self.value, models.Compound)
+        return isinstance(self.value, Compound)
     
     def IsEnzyme(self):
-        return isinstance(self.value, models.Enzyme)
+        return isinstance(self.value, Enzyme)
     
     def Key(self):
         if self.IsCompound():
@@ -125,9 +124,9 @@ class Matcher(object):
             A list of CommonName objects matching the query.
         """
         try:
-            name = models.CommonName.objects.select_related().get(
-                name__iexact=query)
-            return [name]
+            common_names = CommonName.objects.get(name__iexact=query).prefetch_related(
+                'compound_set', 'enzyme_set')
+            return [common_names]
         except Exception:
             return []
     

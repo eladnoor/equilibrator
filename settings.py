@@ -68,6 +68,9 @@ MEDIA_URL = 'http://127.0.0.1:8000/media/'
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/admin_media/'
 
+# for serving static files
+STATIC_URL = '/static/'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'b88!&88r-69=r*%q8cgnj&9dfm!^1u!ij3+jnkoebh4vrm41we'
 
@@ -101,10 +104,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django_extensions',
     'gibbs',
+    #'debug_toolbar',
 )
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
@@ -144,6 +149,6 @@ LOGGING = {
 
 # DJANGO-PROFILER 2.0
 PROFILING_LOGGER_NAME = 'profiler.log'
-PROFILING_SQL_QUERIES = True
+PROFILING_SQL_QUERIES = False
 
 
