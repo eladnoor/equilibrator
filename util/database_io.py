@@ -202,8 +202,12 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
             cid2names[compound_id] = cid2names[compound_id] + [name]
         
         elif command.lower() == 'delete':
-            del cid2names[compound_id]
-        
+            # TODO: deleting compounds is not a good solution, we need to
+            # map them to another compound instead which has the right 
+            # form and standard name
+
+            #del cid2names[compound_id]
+            pass
         else:
             raise ValueError('Unknown command: %s' % command)
 

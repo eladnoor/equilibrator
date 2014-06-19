@@ -13,8 +13,6 @@ def main(draw_thumb=False, export_csv=False):
     db.LoadCitationData()
     transaction.commit()
         
-    #LoadKeggGCNullspace()
-
     logging.info('Loading KEGG compound names')
     db.LoadKeggCompoundNames()
     transaction.commit()
