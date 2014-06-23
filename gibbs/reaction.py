@@ -56,17 +56,10 @@ class CompoundWithCoeff(object):
     
     @staticmethod
     def FromId(coeff, kegg_id, phase=None, name=None):
-        try:
-            compound = models.Compound.objects.get(kegg_id=kegg_id)
-        except Exception:
-            return None
-        if name is None:
-            name = name or compound.FirstName()
-        if phase is None:
-            def_phase_name = compound.GetDefaultPhaseName()
-            phase = conditions._BaseConditions._GeneratePhase(def_phase_name, 1e-3)
-        
-        return CompoundWithCoeff(coeff, compound, phase, name)
+        d = {'kegg_id': kegg_id, 'coeff': coeff, 'phase': phase}
+        if name is not None:
+            d['name'] = name
+        return CompoundWithCoeff.FromDict(d)
 
     @staticmethod
     def FromDict(d):

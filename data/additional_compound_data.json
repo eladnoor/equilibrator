@@ -1,96 +1,5 @@
 [
     {
-        "CID": "C00001",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "liquid",
-                        "dG0_f": -237.2,
-                        "nH": 2                        
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "liquid",
-                        "dG0_f": -237.2,
-                        "nH": 2                        
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "CID": "C00007",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": 16.4, 
-                        "nH": 0, 
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": 0
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": 16.4, 
-                        "nH": 0, 
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "CID": "C00087",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "solid",
-                        "dG0_f": 0
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "solid",
-                        "dG0_f": 0
-                    }
-                ]
-            }
-        ]
-    },
-    {
         "CID": "C00003",
         "names": [
             "Nicotinamide adenine dinucleotide (oxidized)" 
@@ -118,79 +27,12 @@
         ],
         "preferred name": "CO2",
         "note": "CO2(aq) is dissolved CO2. This is different from CO2(total), which includes the hydrated forms of CO2 - carbonate, bicarbonate and carbonic acid.",
-    	"details_link": "/faq#aqueousCO2",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": -386.0, 
-                        "nH": 0, 
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": -394.36
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": -386.0, 
-                        "nH": 0, 
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": -394.36
-                    }
-                ]
-            }
-        ]
+    	"details_link": "/faq#aqueousCO2"
     },
     {
         "CID": "C00026",
         "names": [
             "alpha-Ketoglutarate" 
-        ]
-    },
-    {
-        "CID": "C00067",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "phase": "aqueous",
-                "species": [
-                    {
-                        "dG0_f": -121.5, 
-                        "nH": 2, 
-                        "nMg": 0, 
-                        "z": 0
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Maden (2000)", 
-                "phase": "aqueous",
-                "species": [
-                    {
-                        "dG0_f": -121.5, 
-                        "nH": 2, 
-                        "nMg": 0, 
-                        "z": 0
-                    }
-                ]
-            }
         ]
     },
     {
@@ -270,86 +112,6 @@
         ]
     },
     {
-        "CID": "C00237",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": -119.9, 
-                        "nH": 0,
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": -137.17
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": -119.9, 
-                        "nH": 0,
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": -137.17
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "CID": "C00282",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": 17.6, 
-                        "nH": 2,
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": 0, 
-                        "nH": 2
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": 17.6, 
-                        "nH": 2,
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": 0, 
-                        "nH": 2
-                    }
-                ]
-            }
-        ]
-    },
-    {
         "CID": "C00288",
         "names": [
             "CO2(total)",
@@ -394,45 +156,6 @@
         "CID": "C00665",
         "names": [
             "F2,6BP" 
-        ]
-    },
-    {
-        "CID": "C00697",
-        "pmaps": [
-            {
-                "priority": 1, 
-                "source": "Component Contribution (2013)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": 18.7, 
-                        "nH": 0,
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": 0
-                    }
-                ]
-            }, 
-            {
-                "priority": 2, 
-                "source": "Alberty (2006)", 
-                "species": [
-                    {
-                        "phase": "aqueous",
-                        "dG0_f": 18.7, 
-                        "nH": 0,
-                        "nMg": 0, 
-                        "z": 0
-                    },
-                    {
-                        "phase": "gas",
-                        "dG0_f": 0
-                    }
-                ]
-            }
         ]
     },
     {

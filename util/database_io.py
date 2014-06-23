@@ -129,7 +129,10 @@ def AddPmapToCompound(pmap, compound, priority=1):
         number_of_hydrogens = sdict.get('nH', None)
         number_of_mgs = sdict.get('nMg', None)
         net_charge = sdict.get('z', None)
-        phase = sdict.get('phase', constants.DEFAULT_PHASE)
+        if compound.kegg_id == 'C00001':
+            phase = constants.LIQUID_PHASE_NAME
+        else:
+            phase = sdict.get('phase', constants.DEFAULT_PHASE)
 
         if phase == constants.AQUEOUS_PHASE_NAME:
             if None in [number_of_hydrogens, number_of_mgs, net_charge]:
