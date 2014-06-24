@@ -1,13 +1,21 @@
 <div id="showConc" style={% if reaction.is_phys_conc %}"display:block"{% else %}"display:none"{% endif %}>
     <p>
     <a href="#" title="Open concentration panel" onclick="toggle_visibility('hideConc');toggle_visibility('showConc');">
+    {% if not reaction.is_balanced or reaction.is_electron_balanced %}
     <img src="/media/images/conc_open.svg" height="32" width="32"/></a>
+    {% else %}
+    <img src="/media/images/red_open.svg" height="32" width="32"/></a>
+    {% endif %}
     </p>
 </div>
 <div id="hideConc" style={% if reaction.is_phys_conc %}"display:none"{% else %}"display:block"{% endif %}>
     <p>
     <a href="#" title="Close concentration panel" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">
+    {% if not reaction.is_balanced or reaction.is_electron_balanced %}
     <img src="/media/images/conc_close.svg" height="32" width="32"/></a>
+    {% else %}
+    <img src="/media/images/red_close.svg" height="32" width="32"/></a>
+    {% endif %}
     </p>
     <table class="results">
         <tr class="infoTableHeader">

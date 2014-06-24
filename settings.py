@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django_extensions',
     'gibbs',
-    #'debug_toolbar',
+    'debug_toolbar',
 )
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'

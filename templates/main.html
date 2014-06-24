@@ -19,13 +19,10 @@
 		<div id="searchForm">
 			<form name="searchForm" action="/search" method="get">
 				<div>
-					<input type="text" name="query" id="queryField" />
+					<input type="text" name="query" id="queryField" placeholder="Type a name of a compound, reaction or enzyme"/>
 					<input type="submit" id="submitButton" value="Search" />
 				</div>
 			</form>
-			<div class="directions">
-				Type a name of a <b>compound</b> or <b>reaction</b> or try an <b>example</b> below
-			</div>
 		</div>
 		
 		{% include "examples.html" %}

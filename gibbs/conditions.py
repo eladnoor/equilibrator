@@ -15,10 +15,21 @@ class _BasePhase(object):
     def Value(self):
         # the value in the given units (i.e. the number shown to the user)
         return 1
+    def PhysiologicalValue(self):
+        # the value in the given units (i.e. the number shown to the user)
+        return 1
+    def IsPhysiological(self):
+        """
+            Checks if the condition matches standard physiological conditions
+            i.e. 1 mM for aqueous and 1 bar for liquid, gas and solid
+        """
+        return self.Value() == self.PhysiologicalValue()
     def ValueString(self):
         return '%.2g' % self.Value()
     def IsConstant(self):
         return True
+    def SetValue(self, v):
+        return NotImplementedError
     def HumanValueAndUnits(self):
         """
             convert the value to human readable numbers by changing
@@ -60,14 +71,6 @@ class _BasePhase(object):
 
     def __str__(self):
         return 'phase = %s (%g %s)' % (self.PhaseName(), self.Value(), self.Units())
-
-    def IsPhysiological(self):
-        """
-            Checks if the condition matches standard physiological conditions
-            i.e. 1 mM for aqueous and 1 bar for liquid.
-            gas and solid phases are always considered non-physiological
-        """
-        return False
 
 class StandardAqueousPhase(_BasePhase):
     def PhaseName(self):
@@ -112,26 +115,32 @@ class StandardSolidPhase(_BasePhase):
         return 'bar'
 
 class CustomAqueousPhase(StandardAqueousPhase):
-    def __init__(self, concentration=1.0): # in units of M
-        self._concentration = concentration
+    def __init__(self, concentration=None): # in units of M
+        self.SetValue(concentration)
     def Name(self):
         return constants.CUSTOM_AQUEOUS_PHASE_NAME
     def IsConstant(self):
         return False
+    def SetValue(self, v=None):
+        self._concentration = v or self.PhysiologicalValue()
     def Value(self):
         return self._concentration
-    def IsPhysiological(self):
-        return self._concentration == 1e-3
-
+    def PhysiologicalValue(self):
+        return constants.PHYS_AQUEOUS_VALUE
+        
 class CustomGasPhase(StandardGasPhase):
     def __init__(self, partial_pressure=1.0):
-        self._partial_pressure = partial_pressure
+        self.SetValue(partial_pressure)
     def Name(self):
         return constants.CUSTOM_GAS_PHASE_NAME
     def IsConstant(self):
         return False
+    def SetValue(self, v=None):
+        self._partial_pressure = v or self.PhysiologicalValue()
     def Value(self):
         return self._partial_pressure
+    def PhysiologicalValue(self):
+        return constants.PHYS_GAS_VALUE
         
 ###############################################################################
 

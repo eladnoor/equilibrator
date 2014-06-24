@@ -29,6 +29,7 @@ def ReactionPage(request):
         rxn.SwapSides()
     elif form.cleaned_submit == 'Reset':
         rxn.aq_params = conditions.AqueousParams()
+        rxn.ResetConcentrations()
     query = rxn.GetQueryString()
     
     # Render the template.

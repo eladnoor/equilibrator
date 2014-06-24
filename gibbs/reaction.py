@@ -74,13 +74,16 @@ class CompoundWithCoeff(object):
         phase_name = d.get('phase', None)
         if phase_name is None:
             phase_name = compound.GetDefaultPhaseName()
-        conc = d.get('conc', 1e-3)
-
+        conc = d.get('conc', None)
         phase = conditions._BaseConditions._GeneratePhase(phase_name, conc)
 
         logging.debug('Compound = %s, name = %s, coeff = %d, %s' %
                       (kegg_id, name, coeff, phase))
         return CompoundWithCoeff(coeff, compound, phase, name)
+
+    def ResetConcentration(self):
+        if not self.phase.IsConstant():
+            self.phase.SetValue(None)
         
     def Minus(self):
         """Returns a new CompoundWithCoeff with coeff = -self.coeff."""
@@ -240,6 +243,10 @@ class Reaction(object):
         return self._aq_params
         
     aq_params = property(GetAqueousParams, SetAqueousParams)
+
+    def ResetConcentrations(self):
+        for c in self.reactants:
+            c.ResetConcentration()
 
     def Clone(self):
         """
@@ -589,7 +596,7 @@ class Reaction(object):
             if c == 1:
                 rdict[s].append(c_w_coeff.GetName())
             else:
-                rdict[s].append('%d %s' % (c, c_w_coeff.GetName()))
+                rdict[s].append('%g %s' % (c, c_w_coeff.GetName()))
                 
         return '%s = %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
@@ -834,13 +841,13 @@ class Reaction(object):
         """
         # calculate stoichiometric imbalance (how many more products are there
         # compared to substrates). Note that H2O isn't counted
-        imbalance = sum([c.coeff for c in self.reactants
-                         if not c.phase.IsConstant()])
+        sum_logs = sum([c.coeff*numpy.log(c.phase.PhysiologicalValue())
+                        for c in self.reactants])
         
         _r = constants.R
         _t = constants.DEFAULT_TEMP
-        return _r * _t * numpy.log(1e-3) * imbalance
-
+        return _r * _t * sum_logs
+        
     def DeltaG0Prime(self):
         """Compute the DeltaG0' for a reaction.
         
@@ -1048,7 +1055,10 @@ class Reaction(object):
         return True
         
     def _IsPhysiologicalConcentration(self):
-        return all(c_w_c.phase.IsPhysiological() for c_w_c in self.reactants)
+        for c in self.reactants:
+            if c.phase and not c.phase.IsPhysiological():
+                return False
+        return True
     
     def GetSourceReference(self):
         """

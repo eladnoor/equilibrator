@@ -12,6 +12,10 @@ def FAQPage(request):
     """Renders the FAQ page."""
     return render_to_response('faq.html', {})
 
+def WhatsNewPage(request):
+    """Renders the FAQ page."""
+    return render_to_response('new_in_2_0.html', {})
+
 
 def CitePage(request):
     """Renders the FAQ page."""
