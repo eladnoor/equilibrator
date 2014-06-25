@@ -44,9 +44,9 @@ a {
 }
 
 .logoLarge img {
-    height: 200px;
+    height: 350px;
     border: none;
-    margin: 15px;
+    margin: 0px;
 }
 
 .title {

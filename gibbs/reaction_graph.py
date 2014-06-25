@@ -20,8 +20,8 @@ def ReactionGraph(request):
 
     logging.info('reading reaction graph form')
 
-    rxn = reaction.Reaction.FromForm(form)
-    rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+    aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+    rxn = reaction.Reaction.FromForm(form, aq_params)
 
     logging.info([c.phase for c in rxn.reactants])
     compound_list = [c.GetCompoundList() for c in rxn.reactants]

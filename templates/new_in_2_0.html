@@ -1,0 +1,26 @@
+<html>
+<head>
+    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
+    <title>New in version 2.0</title>
+    {% include "analytics.html" %}
+</head>
+    <body>
+        <div class="container">
+            {% include "logo_small.html" %}
+            <div class="title">What's new in eQuilibrator 2.0?</div>
+            <ol>
+                <li>Upgraded to the more precise <b>Component Contribution</b> Method, which also means we now provide an <b>uncertainty</b> estimation (namely the 95% confidence interval)</li>
+                <li>A dedicated page for <b>reduction potentials</b> (see for example <a href="/search?query=oxaloacetate+%3D+L-malate">Oxaloacetate reduction</a>)</li>
+                <li>Gas, liquid and solid phase for the relevant compounds (e.g. you can use O<sub>2</sub>(g) and CO<sub>2</sub>(g) in <a href="/search?query=Glucose+%2B+6+O2%28g%29+%3D+6+CO2%28g%29+%2B+6+H2O">glucose oxidation</a>)</li>
+                <li>A fresh design and LOTS of bug fixes</li>
+            </ol>
+            
+    <div id="footer">
+    {% include "about_links.html" %}
+    </div>
+    
+    </div>
+
+  </body>
+</html>

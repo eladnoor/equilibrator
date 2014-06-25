@@ -20,10 +20,8 @@ def ReactionPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid reaction form.')
     
-    rxn = reaction.Reaction.FromForm(form)
-
-    rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
-    logging.info('Aqueous parameters: ' + str(rxn.aq_params))
+    aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+    rxn = reaction.Reaction.FromForm(form, aq_params)
 
     if form.cleaned_submit == 'Reverse':
         rxn.SwapSides()

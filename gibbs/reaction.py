@@ -253,8 +253,10 @@ class Reaction(object):
             Make a copy of the reaction
         """
         logging.debug('Cloning reaction...')
-        other = Reaction([r.Clone() for r in self.reactants], 
-                         self.aq_params.Clone())
+        other = Reaction()
+        other.reactants = [r.Clone() for r in self.reactants]
+        other._dg0_prime = self._dg0_prime
+        other._aq_params = self._aq_params.Clone()
         other._kegg_id = self._kegg_id
         return other
 
@@ -373,7 +375,7 @@ class Reaction(object):
         return d
 
     @staticmethod
-    def FromForm(form):
+    def FromForm(form, aq_params=None):
         """
             Build a reaction object from a ReactionForm.
             
@@ -402,10 +404,10 @@ class Reaction(object):
             compound_list.append(d)
 
         # Return the built reaction object.
-        return Reaction.FromIds(compound_list)
+        return Reaction.FromIds(compound_list, aq_params=aq_params)
     
     @staticmethod
-    def FromIds(compound_list):
+    def FromIds(compound_list, aq_params=None):
         """Build a reaction object from lists of IDs.
         
         Args:
@@ -416,7 +418,7 @@ class Reaction(object):
             A properly set-up Reaction object or None if there's an error.
         """        
         reactants = map(CompoundWithCoeff.FromDict, compound_list)
-        return Reaction(reactants)
+        return Reaction(reactants, aq_params=aq_params)
         
     @staticmethod
     def _GetCollectionAtomDiff(collection):
