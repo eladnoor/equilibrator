@@ -10,11 +10,11 @@
             </strong>
         </td>
         <td colspan="3">
-                {% if reaction.dg_prime != None %}
-                    <strong>{{ reaction.dg_prime|floatformat:1 }}</strong> [kJ/mol]
-                {% else %}
-                    <a href="/faq#notAvailable">Not available</a>
-                {% endif %}
+            <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>
+            {% if reaction.dg_uncertainty != None %}
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+            {% endif %}
+            [kJ/mol]
         </td>
     </tr>
     {% endif %}
@@ -26,15 +26,11 @@
             </strong>
         </td>
         <td colspan="3">
-            {% if reaction.dgm_prime != None %}
-                <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong>
-                {% if reaction.dg_uncertainty != None %}
-                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
-                {% endif %}
-                [kJ/mol]
-            {% else %}
-                <a href="/faq#notAvailable">Not available</a>
+            <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong>
+            {% if reaction.dg_uncertainty != None %}
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
             {% endif %}
+            [kJ/mol]
         </td>
     </tr>
         
@@ -45,28 +41,13 @@
             </strong>
         </td>
         <td colspan="5">
-            {% if reaction.dg0_prime != None %}
-                <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong>
-                {% if reaction.dg_uncertainty != None %}
-                    &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
-                {% endif %}
-                [kJ/mol]
-            {% else %}
-                <a href="/faq#notAvailable">Not available</a>
+            <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong>
+            {% if reaction.dg_uncertainty != None %}
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
             {% endif %}
+            [kJ/mol]
         </td>
     </tr>    
-    
-    {% if compound.no_dg_explanation %}
-        <tr>
-            <td>
-                Note
-            </td>
-            <td colspan="5">
-                {{ compound.no_dg_explanation }}
-            </td>
-        </tr>
-    {% endif %}
     
     {% if compound.dg_source %}
         <tr>
@@ -77,14 +58,6 @@
             </td>
             <td colspan="4">
                 {{ reaction.source_reference|safe }}</a>
-                <div align="right">
-                    {% if reaction.aq_params.max_priority != 99 %}
-                        <a href="{{ compound.alberty_link }}">Use formation energies where possible</a>
-                    {% else %}
-                        <a href="{{ compound.cc_link }}">Use component contribution only</a>
-                    {% endif %}
-                    <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
-                </div>
             </td>
         </tr>
     {% endif %}

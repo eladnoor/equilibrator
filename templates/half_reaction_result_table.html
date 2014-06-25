@@ -11,15 +11,11 @@
             </strong>
         </td>
         <td colspan="3">
-        {% if reaction.e_prime != None %}
-            <strong>{{ reaction.e_prime|floatformat:0 }}</strong>
-                {% if reaction.e_uncertainty != None %}
-                    &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
-                {% endif %}
-                [mV]
-        {% else %}
-            <a href="/faq#notAvailable">Not available</a>
-        {% endif %}
+        <strong>{{ reaction.e_prime|floatformat:0 }}</strong>
+            {% if reaction.e_uncertainty != None %}
+                &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
+            {% endif %}
+            [mV]
         </td>
     </tr>
     {% endif %}
@@ -31,15 +27,11 @@
             </strong>
         </td>
         <td colspan="3">
-            {% if reaction.em_prime != None %}
-                <strong>{{ reaction.em_prime|floatformat:0 }}</strong>
-                {% if reaction.e_uncertainty != None %}
-                    &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
-                {% endif %}
-                [mV]
-            {% else %}
-                <a href="/faq#notAvailable">Not available</a>
+            <strong>{{ reaction.em_prime|floatformat:0 }}</strong>
+            {% if reaction.e_uncertainty != None %}
+                &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
             {% endif %}
+            [mV]
         </td>
     </tr>
     <tr>
@@ -49,15 +41,11 @@
             </strong>
         </td>
         <td colspan="3">
-            {% if reaction.e0_prime != None %}
-                <strong>{{ reaction.e0_prime|floatformat:0 }}</strong>
-                {% if reaction.e_uncertainty != None %}
-                    &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
-                {% endif %}
-                [mV]
-            {% else %}
-                <a href="/faq#notAvailable">Not available</a>
+            <strong>{{ reaction.e0_prime|floatformat:0 }}</strong>
+            {% if reaction.e_uncertainty != None %}
+                &plusmn; {{ reaction.e_uncertainty|floatformat:0 }} 
             {% endif %}
+            [mV]
         </td>
     </tr>
     <tr>

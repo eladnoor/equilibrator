@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="container">
-            {% include "logo_small.html" %}
+            {% include "logo_large.html" %}
             <div class="title">Frequently Asked Questions</div>
             
             <div>
@@ -19,6 +19,7 @@
                     <li><a href="#dgr">What are &Delta;<sub>r</sub>G&deg;, &Delta;<sub>r</sub>G'&deg; and &Delta;<sub>r</sub>G'?</a></li>
                     <li><a href="#dgf">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</a></li>
                     <li><a href="#notAvailable">Why is &Delta;G "not available?"</a></li>
+                    <li><a href="#uncertainties">How do you calculate the uncertainty for each estimation</a></li>
                     <li><a href="#hConcentration">Why can't I change the concentration of Hydrogen ions?</a></li>
                     <li><a href="#waterConcentration">Why can't I change the concentration of water?</a></li>
                     <li><a href="#changeTemp">Why can't I change the temperature?</a></li>
@@ -204,6 +205,21 @@
                 </div>
             </div>
 
+            <div class="faqEntry" id="uncertainties">
+                <div class="faqQuestion">How do you calculate the uncertainty for each estimation</div>
+                <div class="faqAnswer">
+                <p>In order to fully understand how to calculate estimation uncertainties, you'll
+                probably need to read our paper on the Component Contribution method [6]. The short
+                answer would be that we ran a cross-validation benchmark using a set of reactions for which the
+                &Delta;<sub>r</sub>G' has been measured. Any reaction that you type in, is decomposed into
+                compounds and these compounds are decomposed into groups. By comparing this decomposition
+                vector with the ones from our database, we can estimate the &Delta;<sub>r</sub>G'. Along
+                the way, we can also evaluate how good our estimation is, by checking how good we were
+                for similar reactions in our benchmark. 
+                </div>
+            </div>
+            
+
             <div class="faqEntry" id="hConcentration">
                 <div class="faqQuestion">Why can't I change the concentration of Hydrogen ions?</div>
                 
@@ -244,7 +260,7 @@
             <div class="faqQuestion">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</div>
             
             <div class="faqAnswer">
-            <p>CO2(aq) is dissolved CO2. Dissolved CO2 undergoes a spontaneous hydration reaction:</p>
+            <p>CO<sub>2</sub>(aq) is dissolved CO<sub>2</sub>. Dissolved CO<sub>2</sub> undergoes a spontaneous hydration reaction:</p>
             
             <p>
             CO<sub>2</sub> + H<sub>2</sub>O &rlhar; H<sub>2</sub>CO<sub>3</sub>
@@ -252,18 +268,18 @@
             
             <p>The rate of the uncatalyzed hydration reaction is t<sub>1/2</sub> = 15 seconds. In some
             species this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds it up
-            by a factor of 10<sup>6</sup> [6]. In aqueous environments, CO2 is generally considered to be
+            by a factor of 10<sup>6</sup> [6]. In aqueous environments, CO<sub>2</sub> is generally considered to be
             in equilibrium with its hydrated forms - carbonic acid, bicarbonate and carbonate. CO2(total)
-            represents the collection of species including dissolved CO2 (CO<sub>2</sub> + H<sub>2</sub>O)
+            represents the collection of species including dissolved CO<sub>2</sub> (CO<sub>2</sub> + H<sub>2</sub>O)
             and its 3 hydrated forms (H<sub>2</sub>CO<sub>3</sub>, HCO<sub>3</sub><sup>-</sup>
-            and CO<sub>3</sub><sup>2-</sup>). Note that CO2(total) contains a water molecule in addition to
-            CO2.</p>
+            and CO<sub>3</sub><sup>2-</sup>). Note that CO<sub>2</sub>(total) contains a water molecule in addition to
+            CO2<sub>2</sub>.</p>
             
             <p>
-            It is generally simpler to measure the concentration of CO2(total) than it is to measure
+            It is generally simpler to measure the concentration of CO<sub>2</sub>(total) than it is to measure
             the individual species. As such, it is common to apply the equilibrium assumption and use
-            CO2(total) in place of CO2(aq) in biochemical reactions. If you can measure the concentration
-            of CO2(aq), then it is reasonable to use it as a reactant.
+            CO<sub>2</sub>(total) in place of CO<sub>2</sub>(aq) in biochemical reactions. If you can measure the concentration
+            of CO<sub>2</sub>(aq), then it is reasonable to use it as a reactant.
             </p>
             </div>
           </div>

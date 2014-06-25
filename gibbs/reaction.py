@@ -111,7 +111,7 @@ class CompoundWithCoeff(object):
         
     def _GetUrlParams(self):
         return ['reactantsId=%s' % self.kegg_id,
-                'reactantsCoeff=%d' % self.coeff,
+                'reactantsCoeff=%g' % self.coeff,
                 'reactantsName=%s' % self.name,
                 'reactantsPhase=%s' % self.phase.PhaseName(),
                 'reactantsConcentration=%s' % self.phase.Value()]
@@ -542,13 +542,12 @@ class Reaction(object):
         template_data = {'reaction': self,
                          'query': query}
         try:
-            balance_with_water_link = self.GetBalanceWithWaterLink(query)
-            balance_electrons_link = self.GetBalanceElectronsLink(query)
-            replace_co2_link = self.GetReplaceCO2Link(query)
             template_data.update({
-                'balance_with_water_link': balance_with_water_link,
-                'balance_electrons_link': balance_electrons_link,
-                'replace_co2_link': replace_co2_link})
+                'balance_with_water_link': self.GetBalanceWithWaterLink(query),
+                'balance_electrons_link': self.GetBalanceElectronsLink(query),
+                'replace_co2_link': self.GetReplaceCO2Link(query),
+                'alberty_link': self.GetNewPriorityLink(99),
+                'cc_link': self.GetNewPriorityLink(1)})
         except ReactantFormulaMissingError:
             pass
         template_data.update(self.aq_params.GetTemplateData())
@@ -1112,8 +1111,6 @@ class Reaction(object):
     e_uncertainty = property(EUncertainty)
     no_dg_explanation = property(NoDeltaGExplanation)
     dg_uncertainty = property(DeltaGUncertainty)
-    cc_link = property(lambda self: self.GetNewPriorityLink(1))
-    alberty_link = property(lambda self: self.GetNewPriorityLink(99))
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)

@@ -20,59 +20,69 @@
             {% endfor %}
         </table>
     {% else %}
-        {% if reaction.is_empty %}
-            <div class="warning">Emtpy reaction!</div>
-        {% else %}
-            {% if reaction.is_balanced %}
-    
-                {% if reaction.contains_co2 %}
-                    <div class="warning">
-                        Did you mean
-                        <a href="{{ replace_co2_link }}">CO<sub>2</sub>(total)</a>?
-                        <a href="/faq#aqueousCO2">Learn more &raquo;</a>
-                    </div>
-                {% endif %}
-    
-                {% if not reaction.is_electron_balanced %}
-                    <div class="warning">
-                        This is a half-reaction. 
-                        <a href="/faq#halfReactions">Learn more &raquo;</a></br>
-                        <a href="{{ balance_electrons_link }}">Balance with NADH</a>?
-                    </div>
-                {% endif %}
-    
-                <form id="rxnForm" name="reactionForm" action="/reaction" method="get">
-                    <input type="hidden" name="query" value="{{ query }}" />
-    
-                    {% include "parsed_reaction.html" %}
-    
-                    {% if reaction.is_conserving %}
+    {% if reaction.is_empty %}
+        <div class="warning">Emtpy reaction!</div>
+    {% else %}
 
-                        {% if reaction.is_electron_balanced %}
-                            {% include "reaction_result_table.html" %}
-                        {% else %}
-                            {% include "half_reaction_result_table.html" %}
-                        {% endif %}
-
-                        {% include "concentration_sub_table.html" %}
-
-                        <div class="buttonSet">
-                            <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
-                            <input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />
-                            <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
-                            <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
-                        </div>
-                    {% endif %}
-                </form>
-            {% else %}
-                <div class="warning">Reaction is not balanced!
-                {% if reaction.balanced_with_water and balance_with_water_link %}
-                <a href="{{ balance_with_water_link }}">Balance with H<sub>2</sub>O</a>?
-                {% endif %}
-                </div>
-                {% include "parsed_reaction.html" %}
-            {% endif %}
+    {% if not reaction.is_balanced %}
+        <div class="warning">Reaction is not balanced!
+        {% if reaction.balanced_with_water and balance_with_water_link %}
+        <a href="{{ balance_with_water_link }}">Balance with H<sub>2</sub>O</a>?
         {% endif %}
+        </div>
+        {% include "parsed_reaction.html" %}
+    {% else %}
+    {% if reaction.dg0_prime == None %}
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds has no defined structure or cannot be decomposed </br><a href="/faq#notAvailable">Learn more &raquo;</a></div>
+        {% include "parsed_reaction.html" %}
+    {% else %}
+    {% if reaction.dg_uncertainty != None and reaction.dg_uncertainty > 200 %}
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' with any level of certainty </br><a href="/faq#uncertainties">Learn more &raquo;</a></div>
+        {% include "parsed_reaction.html" %}
+    {% else %}
+        {% if reaction.contains_co2 %}
+            <div class="warning">
+                Did you mean
+                <a href="{{ replace_co2_link }}">CO<sub>2</sub>(total)</a>?
+                <a href="/faq#aqueousCO2">Learn more &raquo;</a>
+            </div>
+        {% endif %}
+
+        {% if not reaction.is_electron_balanced %}
+            <div class="warning">
+                This is a half-reaction. 
+                <a href="/faq#halfReactions">Learn more &raquo;</a></br>
+                <a href="{{ balance_electrons_link }}">Balance with NADH</a>?
+            </div>
+        {% endif %}
+
+        {% include "parsed_reaction.html" %}
+
+        <form id="rxnForm" name="reactionForm" action="/reaction" method="get">
+            <input type="hidden" name="query" value="{{ query }}" />
+
+            {% if reaction.is_conserving %}
+
+                {% if reaction.is_electron_balanced %}
+                    {% include "reaction_result_table.html" %}
+                {% else %}
+                    {% include "half_reaction_result_table.html" %}
+                {% endif %}
+
+                {% include "concentration_sub_table.html" %}
+
+                <div class="buttonSet">
+                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
+                    <input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />
+                    <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
+                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
+                </div>
+            {% endif %}
+        </form>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+    {% endif %}
     {% endif %}
 
     </div>

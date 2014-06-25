@@ -17,6 +17,7 @@
     <img src="/media/images/red_close.svg" height="32" width="32"/></a>
     {% endif %}
     </p>
+
     <table class="results">
         <tr class="infoTableHeader">
             <th colspan="4">Reactant Concentrations</th>
@@ -70,5 +71,14 @@
             {% endif %}
         </tr>
         {% endfor %}
+        <tr><td colspan="8">
+            *
+            {% if reaction.aq_params.max_priority != 99 %}
+                <a href="{{ alberty_link }}">Use Alberty's formation energies whenever possible</a>
+            {% else %}
+                <a href="{{ cc_link }}">Use component contribution for all reactions</a>
+            {% endif %}
+            <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
+        </td></tr>
     </table>
 </div>

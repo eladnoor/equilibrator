@@ -100,6 +100,10 @@ class CompoundForm(BaseReactionForm):
    
     compoundId = forms.CharField(max_length=50)
 
+    submit = forms.ChoiceField(required=False,
+                               choices=[('Update', 'update'),
+                                        ('Reset', 'reset')])
+
     # Convenience accessors for clean data with defaults.
     cleaned_compoundId = property(lambda self: self.cleaned_data['compoundId'])
 
@@ -110,3 +114,4 @@ class CompoundForm(BaseReactionForm):
     cleaned_reactantsId = property(lambda self: [self.cleaned_compoundId])
     cleaned_reactantsCoeff = property(lambda self: [1])
     cleaned_reactantsName = property(lambda self: [None])
+    cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))

@@ -610,8 +610,6 @@ class Compound(models.Model):
     _species_group = property(GetSpeciesGroupToUse)
     first_name = property(FirstName)
     html_formula = property(GetHtmlFormattedFormula)
-    cc_link = property(lambda self: self.GetNewPriorityLink(1))
-    alberty_link = property(lambda self: self.GetNewPriorityLink(99))
     link = property(GetLink)
     kegg_link = property(GetKeggLink)
     small_image_url = property(GetSmallImageUrl)

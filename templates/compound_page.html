@@ -13,18 +13,27 @@
             <input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
             {{ reaction.conditions.name }}
 
-            {% include "compound_result_table.html" %}
-
-            {% include "concentration_sub_table.html" %}
-
-            <div class="buttonSet">
-                <input type="submit" value="Update" name="submit" />
-            </div>
-                
-            {% if compound.has_species_groups %}
-            <table class="results">
-                {% include "compound_species_table.html" %}
-            </table>
+            {% if reaction.dg_prime == None %}
+                <div class="warning">{{ compound.no_dg_explanation }}</div>
+            {% else %}
+            {% if reaction.dg_uncertainty != None and reaction.dg_uncertainty > 200 %}
+                <div class="warning">Cannot estimate &Delta;<sub><i>f</i></sub>G' with any level of certainty </br><a href="/faq#uncertainties">Learn more &raquo;</a></div>
+            {% else %}
+                {% include "compound_result_table.html" %}
+    
+                {% include "concentration_sub_table.html" %}
+    
+                <div class="buttonSet">
+                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
+                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
+                </div>
+                    
+                {% if compound.has_species_groups %}
+                <table class="results">
+                    {% include "compound_species_table.html" %}
+                </table>
+                {% endif %}
+            {% endif %}
             {% endif %}
 
         </form>
