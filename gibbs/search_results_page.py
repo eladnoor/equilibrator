@@ -38,9 +38,8 @@ def ResultsPage(request):
             return render_to_response('search_error_page.html')
 
         logging.debug('Generating a reaction from the matched KEGG IDs')
-        rxn = reaction.Reaction.FromIds(best_reaction)
-        rxn.aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
-        logging.info('Aqueous parameters: ' + str(rxn.aq_params))
+        aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES)         
+        rxn = reaction.Reaction.FromIds(best_reaction, aq_params)
         
         response = render_to_response('reaction_page.html', rxn.GetTemplateData(query))
         return response

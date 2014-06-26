@@ -214,8 +214,8 @@ class CustomConditions(_BaseConditions):
         return constants.CUSTOM_CONDITION_STRING
 
     def SetPhase(self, kegg_id, phase, ratio=1):
-        logging.info('For %s, setting phase to %s and ratio to %g' % 
-                     (kegg_id, phase, ratio))
+        logging.debug('For %s, setting phase to %s and ratio to %g' % 
+                      (kegg_id, phase, ratio))
         self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, ratio)
             
 ###############################################################################
@@ -302,7 +302,7 @@ class AqueousParams(object):
         response.set_cookie('max_priority', str(self.max_priority))
         
     def GetTemplateData(self):
-        logging.info('max_priorty = %d' % self.max_priority)
+        logging.debug('max_priorty = %d' % self.max_priority)
         return {'ph': self.pH, 'pmg': self.pMg,
                 'ionic_strength': self.ionic_strength,
                 'e_reduction_potential': self.e_reduction_potential,

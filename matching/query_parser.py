@@ -125,8 +125,8 @@ class QueryParser(object):
         try:
             results = self._rparser.parseString(query)
             substrates, products = results
-            logging.info('substrates = %s' % str(substrates))
-            logging.info('products = %s' % str(products))
+            logging.debug('substrates = %s' % str(substrates))
+            logging.debug('products = %s' % str(products))
             return ParsedReactionQuery(substrates, products)
         except pyparsing.ParseException,msg:
             logging.error('Failed to parse query %s', query)

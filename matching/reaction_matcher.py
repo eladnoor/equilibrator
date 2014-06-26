@@ -35,11 +35,10 @@ class ReactionMatches(object):
     """A reaction parsed from a query with all possible matches."""
     
     def __init__(self, reactants=None):
-        """Initialize the ParsedReaction object.
+        """Initialize the ReactionMatches object.
         
         Args:
             reactants: a list of ReactionCompoundMatches for the reactants.
-            products: a list of ReactionCompoundMatches for the products.
         """
         self.reactants = reactants or []
     
@@ -75,7 +74,7 @@ class ReactionMatcher(object):
     """Parses reaction queries from users."""
     
     def __init__(self, compound_matcher):
-        """Initialize the reaction parser.
+        """Initialize the ReactionMatcher.
         
         Args:
             compound_matcher: a matcher.Matcher object that matches
@@ -85,7 +84,7 @@ class ReactionMatcher(object):
     
     def _MakeReactionCompoundMatch(self, coeff, name):
         compound_name, phase_suffix = ReactionMatcher._StripPhases(name)
-        logging.info("Name = %s, phase = %s" % (compound_name, phase_suffix))
+        logging.debug("Name = %s, phase = %s" % (compound_name, phase_suffix))
         compound_matches = self._matcher.Match(compound_name)
         return ReactionCompoundMatch(compound_name, coeff, phase_suffix,
                                      compound_matches)
