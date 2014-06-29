@@ -9,9 +9,106 @@ from gibbs import conditions
 from gibbs import constants
 from gibbs import models
 
-relpath = os.path.dirname(os.path.realpath(__file__))
-cc_preprocess_fname = os.path.join(relpath, '../data/cc_preprocess.npz')
-cc_preprocess = numpy.load(cc_preprocess_fname)
+class Preprocessing(object):
+    relpath = os.path.dirname(os.path.realpath(__file__))
+    cc_preprocess_fname = os.path.join(relpath, '../data/cc_preprocess.npz')
+    cc_preprocess = numpy.load(cc_preprocess_fname)
+    
+    C1 = numpy.matrix(cc_preprocess['C1'])
+    C2 = numpy.matrix(cc_preprocess['C2'])
+    C3 = numpy.matrix(cc_preprocess['C3'])
+    G1 = numpy.matrix(cc_preprocess['G1'])
+    G2 = numpy.matrix(cc_preprocess['G2'])
+    G3 = numpy.matrix(cc_preprocess['G3'])
+    S  = numpy.matrix(cc_preprocess['S'])
+    cids = cc_preprocess['cids']
+    Nc = C1.shape[0]        
+    Ng = C3.shape[0]
+    assert C1.shape[0] == C1.shape[1]
+    assert C1.shape[1] == C2.shape[0]
+    assert C2.shape[1] == C3.shape[0]
+    assert C3.shape[0] == C3.shape[1]
+    assert C3.shape[0] == C3.shape[1]
+    
+    @staticmethod
+    def GetCompoundVectors(compound):
+        # x is the stoichiometric vector of the reaction, only for the
+        # compounds that appeared in the original training set for CC
+        x = numpy.matrix(numpy.zeros((Preprocessing.Nc, 1))) 
+
+        # g is the group incidence vector of all the other compounds
+        g = numpy.matrix(numpy.zeros((Preprocessing.Ng, 1)))
+        logging.debug(compound.compound.kegg_id)
+        i = compound.compound.index
+        gv = compound.compound.sparse_gv
+        if i is not None:
+            logging.debug('index = %d' % i)
+            x[i, 0] = compound.coeff
+        elif gv is not None:
+            logging.debug('len(gv) = %d' % len(gv))
+            for g_ind, g_count in gv:
+                g[g_ind, 0] += g_count
+        else:
+            raise Exception('could not find index nor group vector')
+        return x, g
+
+    @staticmethod
+    def GetReactionVectors(reactants):
+        # x is the stoichiometric vector of the reaction, only for the
+        # compounds that appeared in the original training set for CC
+        x_reaction = numpy.matrix(numpy.zeros((Preprocessing.Nc, 1))) 
+
+        # g is the group incidence vector of all the other compounds
+        g_reaction = numpy.matrix(numpy.zeros((Preprocessing.Ng, 1)))
+        for x, g in map(Preprocessing.GetCompoundVectors, reactants):
+            x_reaction += x
+            g_reaction += g
+        return x_reaction, g_reaction
+    
+    @staticmethod
+    def DeltaGUncertainty(x, g):
+        return float(numpy.sqrt(x.T * Preprocessing.C1 * x + 
+                                x.T * Preprocessing.C2 * g + 
+                                g.T * Preprocessing.C3 * g))
+
+    @staticmethod
+    def WriteCompoundAndCoeff(kegg_id, coeff):
+        if coeff == 1:
+            return kegg_id
+        else:
+            return "%g %s" % (coeff, kegg_id)
+
+    @staticmethod
+    def DictToReactionString(d):
+        """String representation."""
+        left = []
+        right = []
+        for kegg_id, coeff in sorted(d.iteritems()):
+            if coeff < 0:
+                left.append(Preprocessing.WriteCompoundAndCoeff(kegg_id, -coeff))
+            elif coeff > 0:
+                right.append(Preprocessing.WriteCompoundAndCoeff(kegg_id, coeff))
+        return "%s %s %s" % (' + '.join(left), '<=>', ' + '.join(right))
+        
+
+    @staticmethod
+    def Analyze(x, g):
+        weights_rc = x.T * Preprocessing.G1
+        weights_gc = x.T * Preprocessing.G2 + g.T * Preprocessing.G3
+        weights = weights_rc + weights_gc
+
+        res = []        
+        for j in xrange(Preprocessing.S.shape[1]):
+            d = {Preprocessing.cids[i]:Preprocessing.S[i,j]
+                 for i in xrange(Preprocessing.Nc)
+                 if Preprocessing.S[i,j] != 0}
+            r_string = Preprocessing.DictToReactionString(d)
+            res.append({'w': weights[0, j],
+                        'w_rc': weights_rc[0, j].round(2),
+                        'w_gc': weights_gc[0, j].round(2),
+                        'reaction_string': r_string})
+        res.sort(key=lambda d:abs(d['w']), reverse=True)
+        return res
 
 class ReactantFormulaMissingError(Exception):
     
@@ -38,7 +135,6 @@ class CompoundWithCoeff(object):
         self.coeff = coeff
         self.phase = phase
         self._name = name
-        self.transformed_energy = None
     
     def Clone(self):
         other = CompoundWithCoeff(self.coeff, self.compound,
@@ -64,10 +160,14 @@ class CompoundWithCoeff(object):
     @staticmethod
     def FromDict(d):
         kegg_id = d['kegg_id']
-        try:
-            compound = models.Compound.objects.get(kegg_id=kegg_id)
-        except Exception:
-            return None
+
+        if 'compound' in d:
+            compound = d['compound']
+        else:
+            try:
+                compound = models.Compound.objects.get(kegg_id=kegg_id)
+            except Exception:
+                return None
 
         coeff = d.get('coeff', 1)
         name = d.get('name', compound.FirstName())
@@ -233,6 +333,7 @@ class Reaction(object):
 
         # used only as cache, no need to copy while cloning        
         self._catalyzing_enzymes = None
+        self._uncertainty = None
         
     def SetAqueousParams(self, aq_params):
         self._dg0_prime = None
@@ -256,6 +357,7 @@ class Reaction(object):
         other = Reaction()
         other.reactants = [r.Clone() for r in self.reactants]
         other._dg0_prime = self._dg0_prime
+        other._uncertainty = self._uncertainty
         other._aq_params = self._aq_params.Clone()
         other._kegg_id = self._kegg_id
         return other
@@ -385,7 +487,7 @@ class Reaction(object):
             Returns:
                 A Reaction object or None if there's an error.
         """
-        max_priority = form.cleaned_max_priority
+#        max_priority = form.cleaned_max_priority
         n_react = len(form.cleaned_reactantsCoeff)
         coeffs = list(form.cleaned_reactantsCoeff)
         kegg_ids = list(form.cleaned_reactantsId)
@@ -416,7 +518,12 @@ class Reaction(object):
             
         Returns:
             A properly set-up Reaction object or None if there's an error.
-        """        
+        """
+        kegg_ids = [d['kegg_id'] for d in compound_list]
+        comps = models.Compound.objects.prefetch_related('species_groups', 'species_groups__species','common_names').filter(kegg_id__in=kegg_ids)
+        kegg_id_to_compound = {c.kegg_id:c for c in comps}
+        for d in compound_list:
+            d['compound'] = kegg_id_to_compound[d['kegg_id']]
         reactants = map(CompoundWithCoeff.FromDict, compound_list)
         return Reaction(reactants, aq_params=aq_params)
         
@@ -955,49 +1062,13 @@ class Reaction(object):
     def DeltaGUncertainty(self):
         if self._GetMaxCommonPriority() != 1:
             return None
-        C1 = cc_preprocess['C1']
-        C2 = cc_preprocess['C2']
-        C3 = cc_preprocess['C3']
-
-        Nc = C1.shape[0]        
-        Ng = C3.shape[0]      
-
-        assert C1.shape[0] == C1.shape[1]
-        assert C1.shape[1] == C2.shape[0]
-        assert C2.shape[1] == C3.shape[0]
-        assert C3.shape[0] == C3.shape[1]
+        if self._uncertainty is None:
+            x, g = Preprocessing.GetReactionVectors(self.reactants)
+            s_cc = Preprocessing.DeltaGUncertainty(x, g)
+            logging.debug('s_cc = %g' % s_cc)
+            self._uncertainty = 1.96*s_cc
         
-        # x is the stoichiometric vector of the reaction, only for the
-        # compounds that appeared in the original training set for CC
-        x = numpy.matrix(numpy.zeros((Nc, 1))) 
-
-        # g is the group incidence vector of all the other compounds
-        g = numpy.matrix(numpy.zeros((Ng, 1)))
-        logging.debug('g.shape = %s' % str(g.shape))
-        for compound in self.reactants:
-            logging.debug(compound.compound.kegg_id)
-            i = compound.compound.index
-            gv = compound.compound.sparse_gv
-            if i is not None:
-                logging.debug('index = %d' % i)
-                x[i, 0] = compound.coeff
-            elif gv is not None:
-                logging.debug('len(gv) = %d' % len(gv))
-                for g_ind, g_count in gv:
-                    g[g_ind, 0] += g_count
-            else:
-                logging.debug('could not find index nor group vector')
-                return None
-
-        s_cc = float(numpy.sqrt(x.T * C1 * x + x.T * C2 * g + g.T * C3 * g))
-        logging.debug('s_cc = %g' % s_cc)
-        return 1.96*s_cc
-
-    def AllCompoundsWithTransformedEnergies(self):
-        for c_w_coeff in self.reactants:
-            dgt = c_w_coeff.compound.DeltaG0Prime()
-            c_w_coeff.transformed_energy = dgt
-            yield c_w_coeff
+        return self._uncertainty
 
     def ExtraAtoms(self):
         try:
@@ -1082,7 +1153,10 @@ class Reaction(object):
             return '<a href="%s">%s</a>' % (url, source_name)
         else:
             return '<a href="/data_refs">%s</a>' % (source_name)
-        
+    
+    def GetComponentContributionAnalysis(self):
+        x, g = Preprocessing.GetReactionVectors(self.reactants)
+        return Preprocessing.Analyze(x, g)
     
     substrates = property(GetSubstrates)
     products = property(GetProducts)
@@ -1098,7 +1172,6 @@ class Reaction(object):
     missing_atoms = property(MissingAtoms)
     extra_electrons = property(ExtraElectrons)
     missing_electrons = property(MissingElectrons)
-    all_compounds = property(AllCompoundsWithTransformedEnergies)
     dg0_prime = property(DeltaG0Prime)
     dgm_prime = property(DeltaGmPrime)
     dg_prime = property(DeltaGPrime)
@@ -1117,3 +1190,4 @@ class Reaction(object):
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     is_phys_conc = property(_IsPhysiologicalConcentration)
     source_reference = property(GetSourceReference)
+    analyze_cc = property(GetComponentContributionAnalysis)

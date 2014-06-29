@@ -14,7 +14,7 @@ def main(draw_thumb=False, export_csv=False):
     transaction.commit()
         
     logging.info('Loading KEGG compound names')
-    db.LoadKeggCompoundNames()
+    cid_replace = db.LoadKeggCompoundNames()
     transaction.commit()
 
     logging.info('Loading KEGG compound thermodynamic data')
@@ -23,7 +23,7 @@ def main(draw_thumb=False, export_csv=False):
     transaction.commit()
 
     logging.info('Loading KEGG reaction data')
-    db.LoadKeggReactions()
+    db.LoadKeggReactions(cid_replace)
     transaction.commit()
 
     logging.info('Loading KEGG enzyme data')

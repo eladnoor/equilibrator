@@ -184,6 +184,7 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
             names = [name] + names
         cid2names[compound_id] = names
     
+    cid_replace = {}
     for row in csv.DictReader(open(kegg_renaming_filename, 'r'), delimiter='\t'):
         compound_id = row['CID']
         if compound_id not in cid2names:
@@ -193,24 +194,23 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
         command = row['command']
         name = row['name']
         if command.lower() == 'remove':
+            # remove 'name' from the list of names
             try:
                 cid2names[compound_id].remove(name)
             except ValueError:
-                raise ValueError('The name %s is not one of the options for %s, '
-                                 'so it cannot be removed' % (name, compound_id))
-
+                logging.warning('The name %s is not one of the options for %s, '
+                                'so it cannot be removed' % (name, compound_id))
         elif command.lower() == 'add':
+            # put 'name' in the end of the list (or move it there if it is
+            # already in the list)
             if name in cid2names[compound_id]:
                 cid2names[compound_id].remove(name)
             cid2names[compound_id] = cid2names[compound_id] + [name]
-        
         elif command.lower() == 'delete':
-            # TODO: deleting compounds is not a good solution, we need to
-            # map them to another compound instead which has the right 
-            # form and standard name
-
-            #del cid2names[compound_id]
-            pass
+            del cid2names[compound_id]
+        elif command.lower() == 'replace':
+            del cid2names[compound_id]
+            cid_replace[compound_id] = name
         else:
             raise ValueError('Unknown command: %s' % command)
 
@@ -224,6 +224,8 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
         map(compound.common_names.add, names)
 
         compound.save()
+    
+    return cid_replace
     
 def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
     parsed_json = json.load(gzip.open(energy_json_filenane, 'r'))
@@ -290,12 +292,21 @@ def DrawThumbnails():
         c.WriteStructureThumbnail()
         c.save()
 
-def LoadKeggReactions(reactions_json_filename=REACTION_FILE):
+def LoadKeggReactions(cid_replace, reactions_json_filename=REACTION_FILE):
     parsed_json = json.load(gzip.open(reactions_json_filename))
 
     for rd in parsed_json:
         try:
             rid = rd['RID']
+
+            for coeff_cid_pair in rd['reaction']:
+                if coeff_cid_pair[1] in cid_replace:
+                    logging.info('replacing %s with %s in reaction %s' % 
+                                 (coeff_cid_pair[1],
+                                  cid_replace[coeff_cid_pair[1]],
+                                  rid))
+                    coeff_cid_pair[1] = cid_replace[coeff_cid_pair[1]]
+
             rxn = models.StoredReaction.FromJson(rd)
             rxn.GenerateHash()
             rxn.save()

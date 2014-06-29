@@ -77,6 +77,25 @@
                     <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
                     <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
                 </div>
+
+            {% if advanced_mode %}
+                <table class="results">
+                    <tr class="infoTableHeader">
+                        <td><b>W<sub>rc</sub></td>
+                        <td><b>W<sub>gc</sub></td>
+                        <td>Reaction</td>
+                    </tr>
+                    {% for row in reaction.analyze_cc %}
+                        {% if row.w > 0.01 or row.w < -0.01%}
+                        <tr>
+                            <td>{{ row.w_rc|floatformat:2 }}</td>
+                            <td>{{ row.w_gc|floatformat:2 }}</td>
+                            <td>{{ row.reaction_string }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            {% endif %}
             {% endif %}
         </form>
     {% endif %}

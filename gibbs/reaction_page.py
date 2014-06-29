@@ -19,7 +19,7 @@ def ReactionPage(request):
     if not form.is_valid():
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid reaction form.')
-    
+ 
     aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
     rxn = reaction.Reaction.FromForm(form, aq_params)
 

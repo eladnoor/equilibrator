@@ -33,14 +33,21 @@ class SearchForm(forms.Form):
     ionic_strength = forms.FloatField(required=False)
     electronReductionPotential = forms.FloatField(required=False)
     max_priority = forms.IntegerField(required=False)
+    mode = forms.ChoiceField(required=False, 
+                             choices=[('BA', 'basic'), ('AD', 'advanced')])
     
     # Convenience accessors for clean data with defaults.
     cleaned_query = property(lambda self: self._GetWithDefault('query', ''))
     cleaned_ph = property(lambda self: self._GetWithDefault('ph', None))
     cleaned_pmg = property(lambda self: self._GetWithDefault('pmg', None))
-    cleaned_ionic_strength = property(lambda self: self._GetWithDefault('ionic_strength', None))
-    cleaned_e_reduction_potential = property(lambda self: self._GetWithDefault('electronReductionPotential', None))
-    cleaned_max_priority = property(lambda self: self._GetWithDefault('max_priority', 0))
+    cleaned_ionic_strength = property(
+        lambda self: self._GetWithDefault('ionic_strength', None))
+    cleaned_e_reduction_potential = property(
+        lambda self: self._GetWithDefault('electronReductionPotential', None))
+    cleaned_max_priority = property(
+        lambda self: self._GetWithDefault('max_priority', 0))
+    cleaned_mode  = property(
+        lambda self: self._GetWithDefault('mode', ''))
 
 class BaseReactionForm(SearchForm):
     
@@ -61,7 +68,7 @@ class BaseReactionForm(SearchForm):
                                                choices=constants.PHASE_CHOICES)
     reactantsConcentration = ListFormField(required=False)
     reactantsConcentrationPrefactor = ListFormField(required=False)
-
+    
     # Convenience accessors for clean data with defaults.
     cleaned_reactantsPhase = property(lambda self: self.cleaned_data['reactantsPhase'])
     cleaned_reactantsConcentration = property(GetReactantConcentrations)
@@ -80,11 +87,16 @@ class ReactionForm(BaseReactionForm):
                                         ('Reset', 'reset')])
     
     # Convenience accessors for clean data with defaults.
-    cleaned_reactionId = property(lambda self: self.cleaned_data['reactionId'])
-    cleaned_reactantsId = property(lambda self: self.cleaned_data['reactantsId'])
-    cleaned_reactantsCoeff = property(lambda self: [float(c) for c in self.cleaned_data['reactantsCoeff']])
-    cleaned_reactantsName = property(lambda self: self.cleaned_data['reactantsName'])
-    cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))
+    cleaned_reactionId = property(
+        lambda self: self.cleaned_data['reactionId'])
+    cleaned_reactantsId = property(
+        lambda self: self.cleaned_data['reactantsId'])
+    cleaned_reactantsCoeff = property(
+        lambda self: [float(c) for c in self.cleaned_data['reactantsCoeff']])
+    cleaned_reactantsName = property(
+        lambda self: self.cleaned_data['reactantsName'])
+    cleaned_submit = property(
+        lambda self: self._GetWithDefault('submit', 'Update'))
 
 class ReactionGraphForm(ReactionForm):
     vary_ph = forms.BooleanField(required=False)
@@ -92,9 +104,12 @@ class ReactionGraphForm(ReactionForm):
     vary_pmg = forms.BooleanField(required=False)
     
     # Convenience accessors for clean data with defaults.
-    cleaned_vary_ph  = property(lambda self: self._GetWithDefault('vary_ph', False))
-    cleaned_vary_pmg = property(lambda self: self._GetWithDefault('vary_pmg', False))
-    cleaned_vary_is  = property(lambda self: self._GetWithDefault('vary_is', False)) 
+    cleaned_vary_ph  = property(
+        lambda self: self._GetWithDefault('vary_ph', False))
+    cleaned_vary_pmg = property(
+        lambda self: self._GetWithDefault('vary_pmg', False))
+    cleaned_vary_is  = property(
+        lambda self: self._GetWithDefault('vary_is', False)) 
     
 class CompoundForm(BaseReactionForm):
    
