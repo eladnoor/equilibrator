@@ -1,13 +1,15 @@
 <html>
 <head>
-    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
     <title>New in version 2.0</title>
-    {% include "analytics.html" %}
+    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
+	<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+	<link href="/media/main.css" rel="stylesheet" type="text/css">
+	<link href="/media/style.css" rel="stylesheet" type="text/css">
+	{% include "analytics.html" %}
 </head>
     <body>
         <div class="container">
-            {% include "logo_small.html" %}
+            {% include "logo_large.html" %}
             <div class="title">What's new in eQuilibrator 2.0?</div>
             <ol>
                 <li>Upgraded to the more precise <b>Component Contribution</b> Method, which also means we now provide an <b>uncertainty</b> estimation (namely the 95% confidence interval)</li>
@@ -22,5 +24,5 @@
     
     </div>
 
-  </body>
+    </body>
 </html>

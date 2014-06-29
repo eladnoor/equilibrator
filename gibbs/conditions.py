@@ -214,8 +214,8 @@ class CustomConditions(_BaseConditions):
         return constants.CUSTOM_CONDITION_STRING
 
     def SetPhase(self, kegg_id, phase, ratio=1):
-        logging.info('For %s, setting phase to %s and ratio to %g' % 
-                     (kegg_id, phase, ratio))
+        logging.debug('For %s, setting phase to %s and ratio to %g' % 
+                      (kegg_id, phase, ratio))
         self._phases[kegg_id] = CustomConditions._GeneratePhase(phase, ratio)
             
 ###############################################################################

@@ -1,3 +1,4 @@
+import logging
 import matcher
 try:
     from nltk.metrics import edit_distance
@@ -41,7 +42,7 @@ class RegexApproxMatcher(matcher.Matcher):
             return []
         
         matches = models.CommonName.objects.filter(
-            name__iregex=expression).prefetch_related('compound_set', 'enzyme_set', 'enzyme_set__reactions')
+            name__iregex=expression).prefetch_related(*self._prefetch_objects)
         return matches[:5*self._max_results]
 
 
@@ -61,7 +62,7 @@ class EditDistanceMatcher(RegexApproxMatcher):
         qlen = len(query)
         if qlen < 5:
             matches = models.CommonName.objects.filter(
-                name__icontains=query).prefetch_related('compound_set', 'enzyme_set', 'enzyme_set__reactions')
+                name__icontains=query).prefetch_related(*self._prefetch_objects)
             return matches[:5*self._max_results]
         
         midpoint = qlen / 2
@@ -69,22 +70,25 @@ class EditDistanceMatcher(RegexApproxMatcher):
         tail_re = self._PrepareExpression(query[midpoint:])
         
         matches = models.CommonName.objects.filter(
-            Q(name__iregex=head_re) | Q(name__iregex=tail_re)).prefetch_related('compound_set', 'enzyme_set', 'enzyme_set__reactions')
+            Q(name__iregex=head_re) | Q(name__iregex=tail_re)).prefetch_related(*self._prefetch_objects)
         return matches[:5*self._max_results]
     
 
 class CascadingMatcher(matcher.Matcher):
     """A matcher that tries multiple matching strategies."""
     
-    def __init__(self, max_results=10, min_score=0.0):
-        matcher.Matcher.__init__(self, max_results, min_score)
-        self._exact_matcher = matcher.Matcher(max_results, min_score)
+    def __init__(self, max_results=10, min_score=0.0, match_enzymes=True):
+        matcher.Matcher.__init__(self, max_results, min_score, match_enzymes)
+        self._exact_matcher = matcher.Matcher(max_results, min_score, match_enzymes)
         self._re_matcher = RegexApproxMatcher(max_results, min_score)
         self._ed_matcher = EditDistanceMatcher(max_results, min_score)
     
     def Match(self, query):
         """Override base matching implementation."""  
         matches = self._exact_matcher.Match(query)
+
+        if len(matches) >= self._max_results:
+            return self._SortAndClip(matches)
         
         match_set = set(m.key for m in matches)
         re_matches = self._re_matcher.Match(query)
@@ -92,6 +96,8 @@ class CascadingMatcher(matcher.Matcher):
             if m.key not in match_set:
                 matches.append(m)
         
+        logging.debug('Found %d matches, while the maximum is %d' %
+                      (len(matches), self._max_results))
         if len(matches) >= self._max_results:
             return self._SortAndClip(matches)
         

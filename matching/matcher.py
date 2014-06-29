@@ -1,5 +1,4 @@
-import logging
-import itertools
+import itertools, logging
 from gibbs.models import CommonName, Compound, Enzyme
 
 
@@ -64,7 +63,7 @@ class Matcher(object):
     The base implementation does exact matching.
     """
     
-    def __init__(self, max_results=10, min_score=0.0):
+    def __init__(self, max_results=10, min_score=0.0, match_enzymes=True):
         """Initializes the Matcher.
         
         Args:
@@ -74,6 +73,11 @@ class Matcher(object):
         """
         self._max_results = max_results
         self._min_score = min_score
+        self._match_enzymes = match_enzymes
+        
+        self._prefetch_objects = ['compound_set']        
+        if self._match_enzymes:
+            self._prefetch_objects.extend(['enzyme_set', 'enzyme_set__reactions'])
     
     def _AcceptQuery(self, query):
         """Accept or rejec expression = self._PrepareExpression(query)
@@ -124,10 +128,11 @@ class Matcher(object):
             A list of CommonName objects matching the query.
         """
         try:
-            common_names = CommonName.objects.get(name__iexact=query).prefetch_related(
-                'compound_set', 'enzyme_set')
+            common_names = CommonName.objects.get(name__iexact=query
+                )
             return [common_names]
-        except Exception:
+        except Exception as e:
+            logging.warning('Query failed: ' + str(e))
             return []
     
     def _MakeMatchObjects(self, common_names):
@@ -141,14 +146,12 @@ class Matcher(object):
         """
         matches = []
         for name in common_names:
-            compounds = name.compound_set.all()
-            
-            for compound in compounds:
+            for compound in name.compound_set.all():
                 matches.append(Match(name, compound, 0.0))
             
-            enzymes = name.enzyme_set.all()
-            for enzyme in enzymes:
-                matches.append(Match(name, enzyme, 0.0))
+            if self._match_enzymes:
+                for enzyme in name.enzyme_set.all():
+                    matches.append(Match(name, enzyme, 0.0))
         
         return matches
         
@@ -218,11 +221,13 @@ class Matcher(object):
             raise IllegalQueryError('%s is not a valid query' % query)
         
         processed_query = self._PreprocessQuery(query)
+        logging.debug('Query = %s' % processed_query)
         name_matches = self._FindNameMatches(processed_query)
-        
+        logging.debug('Found %d name matches' % len(name_matches))
+
         matches = self._MakeMatchObjects(name_matches)
         self._ScoreMatches(processed_query, matches)
         matches = self._FilterMatches(matches)
-        
+        logging.debug('Found %d matches' % len(matches))
         return self._SortAndClip(matches)
         

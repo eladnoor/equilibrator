@@ -1,4 +1,3 @@
-from gibbs import models
 from matching import approximate_matcher
 from matching import query_parser
 from matching import reaction_matcher
@@ -16,7 +15,10 @@ class ServiceConfig(object):
         self._query_parser = query_parser.QueryParser()
         self._compound_matcher = approximate_matcher.CascadingMatcher(
             max_results=10, min_score=0.1)
-        self._reaction_matcher = reaction_matcher.ReactionMatcher(self._compound_matcher)
+
+        self._single_compound_matcher = approximate_matcher.CascadingMatcher(
+            max_results=1, min_score=0.1, match_enzymes=False)
+        self._reaction_matcher = reaction_matcher.ReactionMatcher(self._single_compound_matcher)
     
     query_parser = property(lambda self: self._query_parser)
     compound_matcher = property(lambda self: self._compound_matcher)
