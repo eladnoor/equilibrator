@@ -1,6 +1,6 @@
 <table class="results">
 	<tr class="infoTableHeader">
-		<th colspan="2">General Properties</td>		
+		<th colspan="100%">General Properties</td>		
 	</tr>
 	<tr>
 		<td width="150px"><b>Formula</b></td>
@@ -36,6 +36,9 @@
 		{% endif %}
 		</td>
 	{% endif %}
+    {% if compound.has_species_groups %}
+        {% include "compound_species_table.html" %}
+    {% endif %}
 </table>
 
 

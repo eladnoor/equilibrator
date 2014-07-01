@@ -90,7 +90,6 @@ class Preprocessing(object):
                 right.append(Preprocessing.WriteCompoundAndCoeff(kegg_id, coeff))
         return "%s %s %s" % (' + '.join(left), '<=>', ' + '.join(right))
         
-
     @staticmethod
     def Analyze(x, g):
         weights_rc = x.T * Preprocessing.G1
@@ -109,6 +108,13 @@ class Preprocessing(object):
                         'reaction_string': r_string})
         res.sort(key=lambda d:abs(d['w']), reverse=True)
         return res
+    
+    @staticmethod
+    def IsUsingGroupContributions(x, g):
+        weights_gc = x.T * Preprocessing.G2 + g.T * Preprocessing.G3
+        sum_w_gc = sum(numpy.abs(weights_gc).flat)
+        logging.debug('sum(w_gc) = %.2g' % sum_w_gc)
+        return sum_w_gc > 1e-5
 
 class ReactantFormulaMissingError(Exception):
     
@@ -326,7 +332,7 @@ class Reaction(object):
         self.reactants = reactants or []
         self.aq_params = aq_params or conditions.AqueousParams()
 
-        self._FilterProtons()
+        self._FilterProtonsAndElectrons()
         self._Dedup()
 
         self._kegg_id = None
@@ -334,6 +340,7 @@ class Reaction(object):
         # used only as cache, no need to copy while cloning        
         self._catalyzing_enzymes = None
         self._uncertainty = None
+        self.is_using_gc = False
         
     def SetAqueousParams(self, aq_params):
         self._dg0_prime = None
@@ -358,6 +365,7 @@ class Reaction(object):
         other.reactants = [r.Clone() for r in self.reactants]
         other._dg0_prime = self._dg0_prime
         other._uncertainty = self._uncertainty
+        other.is_using_gc = self.is_using_gc
         other._aq_params = self._aq_params.Clone()
         other._kegg_id = self._kegg_id
         return other
@@ -879,13 +887,14 @@ class Reaction(object):
                              self.reactants[(i_h2o + 1):] + \
                              [self.reactants[i_h2o]]
 
-    def _FilterProtons(self):
+    def _FilterProtonsAndElectrons(self):
         """
             Removes Protons from the list of compounds.
             Since we use Bob Alberty's framework for biochemical reactions, there
             is no meaning for having H+ in a reaction.
         """
-        self.reactants = filter(lambda c: c.compound.kegg_id != 'C00080', self.reactants)
+        self.reactants = filter(lambda c: c.compound.kegg_id not in 
+                                ['C00080', 'C05359'], self.reactants)
         
     def TryBalanceWithWater(self):
         """Try to balance the reaction with water.
@@ -1067,7 +1076,14 @@ class Reaction(object):
             s_cc = Preprocessing.DeltaGUncertainty(x, g)
             logging.debug('s_cc = %g' % s_cc)
             self._uncertainty = 1.96*s_cc
-        
+                
+            if Preprocessing.IsUsingGroupContributions(x, g):
+                logging.debug('reaction is using GC')
+                self.is_using_gc = True
+            else:
+                logging.debug('reaction is not using GC')
+                self.is_using_gc = False
+
         return self._uncertainty
 
     def ExtraAtoms(self):
@@ -1126,7 +1142,7 @@ class Reaction(object):
                 return False
         return True
         
-    def _IsPhysiologicalConcentration(self):
+    def IsPhysiologicalConcentration(self):
         for c in self.reactants:
             if c.phase and not c.phase.IsPhysiological():
                 return False
@@ -1157,7 +1173,7 @@ class Reaction(object):
     def GetComponentContributionAnalysis(self):
         x, g = Preprocessing.GetReactionVectors(self.reactants)
         return Preprocessing.Analyze(x, g)
-    
+        
     substrates = property(GetSubstrates)
     products = property(GetProducts)
     contains_co2 = property(ContainsCO2)
@@ -1188,6 +1204,6 @@ class Reaction(object):
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
-    is_phys_conc = property(_IsPhysiologicalConcentration)
+    is_phys_conc = property(IsPhysiologicalConcentration)
     source_reference = property(GetSourceReference)
     analyze_cc = property(GetComponentContributionAnalysis)

@@ -10,9 +10,9 @@ body {
 }
 
 .centerize {
-    margin: 0 auto;
+    margin: 5px 40px 5px 40px;
+    width: 800px;
     text-align: center;
-    width: 80%;
 }
 
 .subscript {
@@ -43,12 +43,6 @@ a {
     align: center;
 }
 
-.logoLarge img {
-    height: 350px;
-    border: none;
-    margin: 0px;
-}
-
 .title {
     font-size: 40px;
     font-weight: bold;
@@ -60,21 +54,27 @@ a {
     font-size: 16px;
 }
 
-#searchForm {
-    padding: 50px;
+.welcome {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.welcome #searchForm {
+    padding: 15px;
     margin-left: auto;
     margin-right: auto;
     display: block;
-    width: 70%;
 }
 
-#queryField, #submitButton {
+.welcome #submitButton {
     height: 40px;
     font-size: 20px;
+    width: 90px;
 }
 
-#queryField {
-    width: 80%;
+.welcome #queryField {
+    width: 600px;
+    font-size: 20px;
     height: 40px;
 }
 
@@ -88,6 +88,12 @@ a {
 .examples table {
     margin: 50px auto 30px auto;
     width: 650px;
+    border-spacing: 5px;
+}
+
+.examples table .titles {
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .examples th {
@@ -101,24 +107,43 @@ a {
 }
 
 #footer {
-    margin-top: 50px;
-    text-align: center;
+    margin: 50 auto 10 auto;
+}
+
+.graphLink {
+    float: left;
+}
+
+.graphLink img {
+    width: 20px;
+    height: 20px;
+    padding: 3 10 3 0;
+    vertical-align: center;
+    position: relative;
+}
+
+.sliderContainer {
+    width: 60%;
 }
 
 #phSlider {
-    width: 60%;
+    width: 100%;
 }
 
 #phField {
     text-align: left;
+    size: 3;
+    width: 50%;
 }
 
 #ionStrengthSlider {
-    width: 60%;
+    width: 100%;
 }
 
 #ionStrengthField {
     text-align: left;
+    size: 3;
+    width: 50%;
 }
 
 #electronReductionPotentialSlider {

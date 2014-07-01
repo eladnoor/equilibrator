@@ -12,15 +12,13 @@
             {% include "logo_large.html" %}
             <div class="title">What's new in eQuilibrator 2.0?</div>
             <ol>
-                <li>Upgraded to the more precise <b>Component Contribution</b> Method, which also means we now provide an <b>uncertainty</b> estimation (namely the 95% confidence interval)</li>
+                <li>The <b>uncertainty</b> of each estimation is now provided. For example,  when we write &Delta;<sub><i>r</i></sub>G' = -32.1 &plusmn; <b>1.4</b> [kJ/mol], the 1.4 represents a 95% confidence interval around the estimated Gibbs energy. This change was facilitated by upgrading our software to the more precise Component Contribution method.</li>
                 <li>A dedicated page for <b>reduction potentials</b> (see for example <a href="/search?query=oxaloacetate+%3D+L-malate">Oxaloacetate reduction</a>)</li>
                 <li>Gas, liquid and solid phase for the relevant compounds (e.g. you can use O<sub>2</sub>(g) and CO<sub>2</sub>(g) in <a href="/search?query=Glucose+%2B+6+O2%28g%29+%3D+6+CO2%28g%29+%2B+6+H2O">glucose oxidation</a>)</li>
-                <li>A fresh design and LOTS of bug fixes</li>
+                <li>A fresh design and LOTS of usability upgrades</li>
             </ol>
             
-    <div id="footer">
-    {% include "about_links.html" %}
-    </div>
+    {% include "footer.html" %}
     
     </div>
 

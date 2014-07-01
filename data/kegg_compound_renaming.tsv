@@ -28,9 +28,8 @@ C00085	Add	D-Fructose-6-phosphate	Fixing of an incorrect value
 C00085	Add	Fructose-6-phosphate	Adding a default name to the common D version
 C00085	Remove	D-Fructose 6-phosphate	Incorrect value
 C00092	Add	D-Glucose-6-phosphate	Fixing of an incorrect value
-C00092	Add	Glucose 6-phosphate	Fixing of an incorrect value
+C00092	Add	Glucose-6-phosphate	Fixing of an incorrect value
 C00092	Remove	D-Glucose 6-phosphate	Incorrect value
-C00092	Remove	Glucose-6-phosphate	Incorrect value
 C00093	Add	Glycerol 1-phosphate	Adding a default name to the common D version
 C00095	Add	D-Fructofuranose	Adding an accurate name to the common D version
 C00095	Add	Fructose	Adding a default name to the common D version
@@ -193,7 +192,7 @@ C00583	Remove	Propylene glycol	deduplication
 C00586	Add	arabino-2-Deoxyhexose	Adding a default name to the common D version
 C00597	Add	DL-Glycerate-3-phosphat	Fixing of an incorrect value
 C00597	Remove	3-Phosphoglycerate	deduplication
-C00597	Remove	DL-Glycerate 3-phosphat	Incorrect value
+C00597	Remove	DL-Glycerate 3-phosphate	Incorrect value
 C00603	Add	Ureidoglycolate	Adding a default name to the common S version
 C00612	Add	Acetylspermidine	Adding a default name to the common version
 C00620	Add	D-Ribose-1-phosphate	Fixing of an incorrect value
@@ -394,7 +393,6 @@ C01143	Add	5-Diphosphomevalonate	Adding a default name to the common R version
 C01143	Add	5-diphosphomevalonic acid	Adding a default name to the common R version
 C01151	Add	D-Ribose-1,5-bisphosphate	Fixing of an incorrect value
 C01151	Add	Ribose-1,5-bisphosphate	Fixing of an incorrect value
-C01151	Remove	alpha-D-Ribose 1,5-bisphosphate	deletion of alpha value
 C01151	Remove	D-Ribose 1,5-bisphosphate	Incorrect value
 C01151	Remove	Ribose 1,5-bisphosphate	Incorrect value
 C01159	Add	2,3-Bisphosphoglycerate	Adding a default name to the common D version
@@ -451,9 +449,7 @@ C01222	Add	GDP-4-dehydro-6-deoxy-talose	Addin a default name to the common D ver
 C01222	Add	GDP-4-dehydro-rhamnose	Addin a default name to the common D version
 C01222	Add	GDP-4-keto-6-deoxy-mannose	Addin a default name to the common D version
 C01222	Add	GDP-4-oxo-6-deoxy-mannose	Addin a default name to the common D version
-C01231	Add	D-Glucose-1,6-bisphosphate	Fixing of an incorrect value
 C01231	Add	Glucose-1,6-bisphosphate	Adding a default name to the common D version
-C01231	Remove	D-Glucose 1,6-bisphosphate	Incorrect value
 C01236	Add	6-Phospho-glucono-1,5-lactone	Adding a default name to the common D version
 C01236	Add	D-Glucono-1,5-lactone-6-phosphate	Fixing of an incorrect value
 C01236	Add	Glucono-1,5-lactone-6-phosphate	Adding a default name to the common D version
@@ -625,7 +621,7 @@ C02812	Add	Ascorbate-2-sulfate	Fixing of an incorrect value
 C02812	Remove	Ascorbate 2-sulfate	Incorrect value
 C02827	Add	D-Glucose-6-sulfate	Fixing of an incorrect value
 C02827	Remove	D-Glucose 6-sulfate	Incorrect value
-C02827	Remove	Glucose-6-sulfate	Adding a default name to the common D version
+C02827	Add	Glucose-6-sulfate	Adding a default name to the common D version
 C02837	Add	2-Amino-hexano-6-lactam	Adding a default name to the common L version
 C02838	Add	Octanoylcarnitine	Adding a default name to the common L version
 C02888	Add	L-Sorbose-1P	Fixing of an incorrect value
@@ -841,7 +837,7 @@ C04006	Add	Inositol-3-phosphate	Fixing of an incorrect value
 C04006	Add	L-myo-Inositol-1-phosphate	Fixing of an incorrect value
 C04006	Add	myo-Inositol-3-monophosphate	Fixing of an incorrect value
 C04006	Add	myo-Inositol-3-phosphate	Fixing of an incorrect value
-C04006	Remove	"1D-myo-Inositol 3-monophosphate"""	Incorrect value
+C04006	Remove	1D-myo-Inositol 3-monophosphate	Incorrect value
 C04006	Remove	1D-myo-Inositol 3-phosphate	Incorrect value
 C04006	Remove	1L-myo-Inositol 1-phosphate	Incorrect value
 C04006	Remove	D-myo-Inositol 3-monophosphate	Incorrect value
@@ -873,8 +869,10 @@ C04064	Add	myo-Inositol-4,5-bisphosphate	Adding a default name to the common D v
 C04064	Remove	D-myo-Inositol 4,5-bisphosphate	Incorrect value
 C04068	Add	Flavonol-3-O-D-xylosylglucoside	Fixing of an incorrect value
 C04068	Remove	Flavonol 3-O-D-xylosylglucoside	Incorrect value
-C04069	Add	Flavonol-3-O-D-xylosylgalactoside	Fixing of an incorrect value
-C04069	Remove	Flavonol 3-O-D-xylosylgalactoside	Incorrect value
+C04069	Add	Flavonol-3-O-D-xylosylglycoside	Fixing of an incorrect value
+C04069	Remove	Flavonol 3-O-D-xylosylglycoside	Incorrect value
+C04193	Add	Flavonol-3-O-D-xylosylgalactoside	Fixing of an incorrect value
+C04193	Remove	Flavonol 3-O-D-xylosylgalactoside	Incorrect value
 C04074	Add	Isoflavone-7-O-beta-D-glucoside	Fixing of an incorrect value
 C04074	Remove	Isoflavone 7-O-beta-D-glucoside	Incorrect value
 C04076	Add	2-Aminoadipate 6-semialdehyde	Addin a default name to the common L version
@@ -1046,9 +1044,9 @@ C05330	Add	DL-Homocysteine	adding after deletion
 C05330	Remove	Homocysteine	deduplication
 C05335	Add	Selenomethionine	Adding a default name to the common L version
 C05345	Replace	C00085	Replacement of an alpha/beta value with the common value
-C05378	Add	beta-D-Fructose 1,6-bisphosphate	Incorrect value
+C05378	Remove	beta-D-Fructose 1,6-bisphosphate	Incorrect value
 C05378	Add	Fructose-1,6-bisphosphate	Adding a default name to the common D version
-C05378	Remove	beta-D-Fructose-1,6-bisphosphate	Fixing of an incorrect value
+C05378	Add	beta-D-Fructose-1,6-bisphosphate	Fixing of an incorrect value
 C05382	Add	altro-Heptulose-7-phosphate	Fixing of an incorrect value
 C05382	Add	D-altro-Heptulose-7-phosphate	Fixing of an incorrect value
 C05382	Add	D-Sedoheptulose-7-phosphate	Fixing of an incorrect value
@@ -1105,7 +1103,7 @@ C05999	Add	DL-Lactaldehyde	adding after deletion
 C05999	Remove	Lactaldehyde	deduplication
 C06000	Add	3-Hydroxyisobutyryl-CoA	Addin a default name to the common S version
 C06017	Add	dTDP-glucuronate	Addin a default name to the common D version
-C06017	Remove	Guanosine 3'-phosphate	Incorrect value
+C06193	Remove	Guanosine 3'-phosphate	Incorrect value
 C06018	Add	dTDP-4-acetamido-4,6-dideoxy-glucose	Addin a default name to the common D version
 C06019	Add	D-arabino-3-Hexulose-6-phosphate	Fixing of an incorrect value
 C06019	Add	D-arabino-Hex-3-ulose-6-phosphate	Fixing of an incorrect value
@@ -1211,7 +1209,6 @@ C06743	Add	oxo-gluconate	Adding a default name to the common D version
 C06743	Add	oxogluconate	Adding a default name to the common D version
 C06814	Add	D-Xylose-5-phosphate	Fixing of an incorrect value
 C06814	Add	Xylose-5-phosphate	Adding a default name to the common D version
-C06814	Remove	D-Xylose 5-phosphate	Incorrect value
 C07056	Add	DL-Isoprenaline	Addin a default name to the common DL version
 C07056	Add	DL-Isoproterenol	Addin a default name to the common DL version
 C07122	Add	DL-Melphalan	Adding a default name to the common DL version
@@ -1220,10 +1217,6 @@ C07216	Add	Methylbenzyl alcohol	Adding a default name to the common version
 C07277	Add	dTDP-fucose	Addin a default name to the common D version
 C07301	Add	Mandelamide	Adding a default name to the common L version
 C07480	Add	Dimethylxanthine	Adding a default name to the common version
-C07836	Add	D-glycero-beta-D-manno-Heptose-7-phosphate	Fixing of an incorrect value
-C07836	Remove	D-glycero-beta-D-manno-Heptose 7-phosphate	Incorrect value
-C07838	Add	D-glycero-beta-D-manno-Heptose-1-phosphate	Fixing of an incorrect value
-C07838	Remove	D-glycero-beta-D-manno-Heptose 1-phosphate	Incorrect value
 C08057	Remove	Cycloserine	deduplication
 C08149	Add	Norgestrel	Adding a default name to the common D version
 C08153	Remove	Norgestrel	deduplication
@@ -1239,9 +1232,9 @@ C08294	Add	O-Oxalyl-homoserine	Adding a default name to the common L version
 C08346	Delete	Entry	deduplication
 C08348	Add	DL-Galacturonic acid	adding after deletion
 C08348	Remove	Galacturonic acid	deduplication
-C08350	Remove	2-O-beta-D-Glucopyranosyl-beta-D-glucopyranose	deletion of a beta value
+C08250	Remove	2-O-beta-D-Glucopyranosyl-beta-D-glucopyranose	deletion of a beta value
 C08351	Remove	Hamamelose	deletion from a beta version
-C08352	Remove	 alpha-D-Quinovopyranose	deletion of an alpha version
+C08352	Remove	alpha-D-Quinovopyranose	deletion of an alpha version
 C08353	Remove	Ribose	adding after deletion
 C08354	Delete	Entry	deduplication
 C08355	Delete	Entry	Deletion of beta version
@@ -1257,8 +1250,8 @@ C08859	Add	Strophanthidin-3-O-beta-D-cymaroside	Fixing of an incorrect value
 C08859	Remove	Strophanthidin 3-O-beta-D-cymaroside	Incorrect value
 C08952	Add	Gypsogenin-3-O-rhamnosylglucuronide	Fixing of an incorrect value
 C08952	Remove	Gypsogenin 3-O-rhamnosylglucuronide	Incorrect value
-C09099	Add	Naringenin-7-O-beta-D-glucosid	Fixing of an incorrect value
-C09099	Remove	Naringenin 7-O-beta-D-glucosid	Incorrect value
+C09099	Add	Naringenin-7-O-beta-D-glucoside	Fixing of an incorrect value
+C09099	Remove	Naringenin 7-O-beta-D-glucoside	Incorrect value
 C09126	Add	Genistein-7-O-beta-D-glucoside	Fixing of an incorrect value
 C09126	Remove	Genistein 7-O-beta-D-glucoside	Incorrect value
 C09617	Add	Catechin-7-O-beta-D-xyloside	Fixing of an incorrect value
@@ -1284,10 +1277,10 @@ C10216	Add	Daidzein-7-O-glucoside	Fixing of an incorrect value
 C10216	Remove	Daidzein 7-O-glucoside	Incorrect value
 C10316	Add	Chrysophanol-8-glucoside	Fixing of an incorrect value
 C10316	Add	Chrysophanol-8-O-beta-D-glucoside	Fixing of an incorrect value
-C10316	Add	Flavonol-7-O-beta-D-glucoside	Fixing of an incorrect value
+C15580	Add	Flavonol-7-O-beta-D-glucoside	Fixing of an incorrect value
 C10316	Remove	Chrysophanol 8-glucoside	Incorrect value
 C10316	Remove	Chrysophanol 8-O-beta-D-glucoside	Incorrect value
-C10316	Remove	Flavonol 7-O-beta-D-glucoside	Incorrect value
+C15580	Remove	Flavonol 7-O-beta-D-glucoside	Incorrect value
 C10345	Add	Emodin-8-glucoside	Fixing of an incorrect value
 C10345	Remove	Emodin 8-glucoside	Incorrect value
 C10381	Add	Obtusifolin-2-glucoside	Fixing of an incorrect value
@@ -1343,10 +1336,7 @@ C11420	Add	Hydroxyisopropenylmethylhexanoate	Adding a default name to the common
 C11434	Add	2-C-Methyl-erythritol 4-phosphate	Addin a default name to the common D version
 C11434	Add	2-C-Methylerythritol 4-phosphate	Addin a default name to the common D version
 C11437	Add	1-Deoxy-xylulose-5-phosphate	Adding a default name to the common D version
-C11472	Add	D-glycero-alpha-D-manno-Heptose-1,7-bisphosphate	
-C11472	Add	D-glycero-beta-D-manno-Heptose-1,7-bisphosphate	Adding a default name to the common D version
-C11472	Add	glycero manno-Heptose-1,7-bisphosphate	Adding a default name to the common version
-C11472	Remove	D-glycero-beta-D-manno-Heptose 1,7-bisphosphate	Adding a default name to the common D version
+C11472	Add	glycero-manno-Heptose-1,7-bisphosphate	Adding a default name to the common version
 C11496	Add	2-Hydroxypropyl-CoM	Adding a default name to the common R version
 C11496	Add	Hydroxypropyl-CoM	Adding a default name to the common R version
 C11516	Add	2-alpha-D-Mannosyl-3-phosphoglycerate	Adding a default name to the common version
@@ -1356,7 +1346,6 @@ C11516	Add	Mannosylphosphoglycerate	Adding a default name to the common version
 C11526	Add	1D-myo-Inositol 5-diphosphate-1,2,3,4,6-pentakisphosphate	Fixing of an incorrect value
 C11526	Add	1D-myo-Inositol-5-diphosphate pentakisphosphate	Fixing of an incorrect value
 C11526	Add	5-Diphosphoinositol-pentakisphosphate	Fixing of an incorrect value
-C11526	Remove	1D-myo-Inositol 5-diphosphate 1,2,3,4,6-pentakisphosphate	Incorrect value
 C11526	Remove	1D-myo-Inositol 5-diphosphate pentakisphosphate	Incorrect value
 C11526	Remove	5-Diphosphoinositol pentakisphosphate	Incorrect value
 C11537	Add	3-Sulfolactate	Adding a default name to the common R version
@@ -1532,8 +1521,8 @@ C15991	Add	myo-Inositol-pentakisphosphate	Fixing of an incorrect value
 C15991	Remove	myo-Inositol pentakisphosphate	Incorrect value
 C16070	Add	6-(alpha-D-Glucosaminyl)-1D-myo-inositol-1,2-cyclic-phosphate	Fixing of an incorrect value
 C16070	Remove	6-(alpha-D-Glucosaminyl)-1D-myo-inositol 1,2-cyclic phosphate	Incorrect value
-C16096	Add	(RS)-3-Sulfolactate	Addig a default name
-C16096	Remove	3-Sulfolactate	deduplication
+C16069	Add	(RS)-3-Sulfolactate	Addig a default name
+C16069	Remove	3-Sulfolactate	deduplication
 C16186	Add	L-Ascorbate-6-phosphate	Fixing of an incorrect value
 C16186	Remove	L-Ascorbate 6-phosphate	Incorrect value
 C16195	Add	Glycitein-7-O-glucoside	Fixing of an incorrect value
@@ -1545,8 +1534,8 @@ C16223	Remove	Medicarpin 3-O-glucoside	Incorrect value
 C16241	Add	Lipoate	Adding a default name to the common R version
 C16241	Add	Lipoic acid	Adding a default name to the common R version
 C16245	Add	Glucuronic acid	Addin a default name to the common D version
-C16265	Add	N-Acetyl-DL-glucosamine-4-sulfate	Adding a default name to the common DL version
-C16265	Remove	N-Acetylglucosamine 4-sulfate	deduplication
+C16265	Add	N-Acetyl-DL-galactosamine-4-sulfate	Adding a default name to the common DL version
+C16265	Remove	N-Acetylgalactosamine 4-sulfate	deduplication
 C16287	Add	Thevetose	Adding a default name to the common D version
 C16304	Add	Delphinidin-3-O-(6''-O-malonyl)-beta-D-glucoside-3'-O-beta-D-glucoside	Fixing of an incorrect value
 C16304	Add	Delphinidin-3-O-(6''-O-malonyl)-beta-glucoside-3'-O-beta-glucoside	Fixing of an incorrect value
@@ -1578,20 +1567,16 @@ C16407	Add	2',4,4',6'-Tetrahydroxychalcone-4'-O-beta-D-glucoside	Fixing of an in
 C16407	Add	2',4,4',6'-Tetrahydroxychalcone-4'-O-glucoside	Fixing of an incorrect value
 C16407	Add	Chalconaringenin-4'-glucoside	Fixing of an incorrect value
 C16407	Add	THC-4'-glucoside	Fixing of an incorrect value
-C16407	Remove	2',4,4',6'-Tetrahydroxychalcone 4'-O-beta-D-glucoside	Incorrect value
 C16407	Remove	2',4,4',6'-Tetrahydroxychalcone 4'-O-glucoside	Incorrect value
-C16407	Remove	Chalconaringenin 4'-glucoside	Incorrect value
 C16407	Remove	THC 4'-glucoside	Incorrect value
 C16408	Add	2',3,4,4',6'-Pentahydroxychalcone-4'-O-beta-D-glucoside	Fixing of an incorrect value
 C16408	Add	2',3,4,4',6'-Peptahydroxychalcone-4'-O-glucoside	Fixing of an incorrect value
 C16408	Add	PHC-4'-O-glucoside	Fixing of an incorrect value
-C16408	Remove	2',3,4,4',6'-Pentahydroxychalcone 4'-O-beta-D-glucoside	Incorrect value
 C16408	Remove	2',3,4,4',6'-Peptahydroxychalcone 4'-O-glucoside	Incorrect value
 C16409	Add	Aureusidin-6-O-glucoside	Fixing of an incorrect value
 C16409	Remove	Aureusidin 6-O-glucoside	Incorrect value
 C16410	Add	Bracteatin-6-O-beta-D-glucoside	Fixing of an incorrect value
 C16410	Add	Bracteatin-6-O-glucoside	Fixing of an incorrect value
-C16410	Remove	Bracteatin 6-O-beta-D-glucoside	Incorrect value
 C16410	Remove	Bracteatin 6-O-glucoside	Incorrect value
 C16422	Add	Hesperetin-7-O-glucoside	Fixing of an incorrect value
 C16422	Remove	Hesperetin 7-O-glucoside	Incorrect value

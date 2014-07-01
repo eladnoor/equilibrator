@@ -17,19 +17,25 @@
     margin-left: 0px;
     margin-right: auto;
     display: block;
-    width: 50%;
 }
 
-.header #queryField #submitButton {
-    height: 24px;
+.header #submitButton {
+    height: 30px;
+    width: 60px;
+    font-size: 14px;
+}
+
+.header #queryField {
+    height: 30px;
+    width: 600px;
     font-size: 14px;
 }
 
 .logoSmall img {
-    height: 80px;
+    width: 80px;
     border: none;
     float: left;
-    margin: 10px;
+    margin: 20px;
 }
 
 .errorMsg {
@@ -58,8 +64,9 @@
 
 #searchResults {
     margin-left: 20px;
-    width: 85%;
-    text-align: left;
+    margin: 5px 40px 5px 40px;
+    width: 800px;
+    text-align: center;
 }
 
 #searchResults .searchResult {
@@ -67,10 +74,11 @@
     margin: 10px;
     padding: 1px;
     border: solid 1px black;
+    width: 100%;
 }
 
 #searchResults a:hover {
-    background-color: #CCFFCC;
+    background-color: #CCEEFF;
 }
 
 #searchResults .searchResult span {
@@ -81,8 +89,8 @@
 
 #searchResults .resultsSection .title {
     text-align: left;
-    font-size: 22px;
-    margin: 5px 0 5px 0;
+    font-size: 20px;
+    margin: 15 0 5 0;
 }
 
 #searchResults .searchResult .name {
@@ -123,7 +131,20 @@
 }
 
 table.compoundInfo {
-    width: 900px;
+    width: 100%;
+}
+
+.compoundInfo .column1 {
+    width: 15%;
+    font-weight: bold;
+}
+
+.compoundInfo .column2 {
+    width: 65%;
+}
+
+.compoundInfo .column3 {
+    width: 20%;
 }
 
 table.additionalCompoundInfo {
@@ -135,7 +156,16 @@ table.additionalCompoundInfo {
 }
 
 table.enzymeInfo {
-    width: 900px;
+    width: 100%;
+}
+
+.enzymeInfo .column1 {
+    width: 15%;
+    font-weight: bold;
+}
+
+.enzymeInfo .column2 {
+    width: 85%;
 }
 
 table.results,
@@ -143,18 +173,10 @@ table.speciesInfo,
 table.reactionInfo,
 table.formationEnergyInfo {
     margin: 10px auto;
-    width: 900px;
+    width: 95%;
     border: solid 1px black;
     padding: 0px;
     border-spacing: 0px;
-}
-
-.graphLink {
-    float: right;
-}
-
-.graphLink img {
-    border: 0px;
 }
 
 .results td,
@@ -200,8 +222,8 @@ td.reference.border {
 
 #figureContainer {
     margin: 5px auto 35px auto;
-    width:600px;
-    height:300px;
+    width: 600px;
+    height: 300px;
 }
 
 #figureContainer #legendContainer {

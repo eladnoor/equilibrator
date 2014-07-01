@@ -4,11 +4,11 @@
 
     <div id="searchResults">
   {% if enzymes_first %}
-    {% include "enzyme_results.html" %}
-    {% include "compound_results.html" %}
+    {% include "enzyme_search_results.html" %}
+    {% include "compound_search_results.html" %}
     {% else %}
-      {% include "compound_results.html" %}
-      {% include "enzyme_results.html" %}
+      {% include "compound_search_results.html" %}
+      {% include "enzyme_search_results.html" %}
     {% endif %}
     
     {% if not compound_results and not enzyme_results %}
@@ -18,6 +18,5 @@
             </div>
         </div>
     {% endif %}
+    {% include "footer.html" %}
     </div>
-
-{% include "footer.html" %}

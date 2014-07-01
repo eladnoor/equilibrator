@@ -28,17 +28,11 @@
                     <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
                 </div>
                     
-                {% if compound.has_species_groups %}
-                <table class="results">
-                    {% include "compound_species_table.html" %}
-                </table>
-                {% endif %}
             {% endif %}
             {% endif %}
 
         </form>
 
         {% include "compound_info_table.html" %}
+        {% include "footer.html" %}
     </div>
-		
-{% include "footer.html" %}

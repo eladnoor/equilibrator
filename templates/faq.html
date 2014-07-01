@@ -3,8 +3,6 @@
     <title>eQuilibrator FAQ</title>
     <link href="/media/info_page.css" rel="stylesheet" type="text/css">
 	<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-	<link href="/media/main.css" rel="stylesheet" type="text/css">
-	<link href="/media/style.css" rel="stylesheet" type="text/css">
     {% include "analytics.html" %}
 </head>
     <body>
@@ -20,6 +18,7 @@
                     <li><a href="#gases">How do you deal with gases like O<sub>2</sub> and H<sub>2</sub>? How can I set for standard conditions in reactions involving a gas?</a></li>
                     <li><a href="#dgr">What are &Delta;<sub>r</sub>G&deg;, &Delta;<sub>r</sub>G'&deg; and &Delta;<sub>r</sub>G'?</a></li>
                     <li><a href="#dgf">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</a></li>
+                    <li><a href="#dgm">What does the 'm' in  &Delta;<sub>r</sub>G'<sup>m</sup>, &Delta;<sub>f</sub>G'<sup>m</sup>, and E'<sup>m</sup> mean?</li>
                     <li><a href="#notAvailable">Why is &Delta;G "not available?"</a></li>
                     <li><a href="#uncertainties">How do you calculate the uncertainty for each estimation</a></li>
                     <li><a href="#hConcentration">Why can't I change the concentration of Hydrogen ions?</a></li>
@@ -180,6 +179,36 @@
                 </div>
             </div>
 
+            <div class="faqEntry" id="dgm">
+                <div class="faqQuestion">What does the 'm' in  &Delta;<sub>r</sub>G'<sup>m</sup>, &Delta;<sub>f</sub>G'<sup>m</sup>, and E'<sup>m</sup> mean?</div>
+            
+                <div class="faqAnswer">
+                    <p>
+                    As explained in our explanation about <a href="#dgr">&Delta;<sub>r</sub>G'</a>, 
+                    the reaction Gibbs energy depends on the concentrations of the reactants 
+                    (and similarly for the formation energy &Delta;<sub>f</sub>G' and the reduction 
+                    potential E'). It is useful to have a standard for these 
+                    concentrations in order to compare between reactions without the need to specify 
+                    a concentration explicitly. The standard used almost exclusively for compounds in
+                    solution is 1M. However, we believe that in the context of metabolic reactions which
+                    occur inside living cells, it is more relevant to use 1mM as the standard since
+                    the concentrations of even the smallest metabolites typically are in the 1nM-10mM
+                    range. 1M is by far much higher than any physiologically feasible concentration.
+                    </p>
+
+                    <p>
+                    The notation for the reaction Gibbs energy in the standard 1M concentrations
+                    is &Delta;<sub>r</sub>G'&deg;, i.e.
+                    the degree sign (&deg;) represents 1M. For our physiological standard
+                    we use the superscript 'm' to mark the 1mM concentration that is used for all
+                    reactants: &Delta;<sub>r</sub>G'<sup>m</sup>, &Delta;<sub>f</sub>G'<sup>m</sup>, and E'<sup>m</sup>.
+                    
+                    </p>
+
+                </div>
+            </div>
+
+
             <div class="faqEntry" id="notAvailable">
                 <div class="faqQuestion">Why is &Delta;G "not available?"</div>
                 
@@ -291,29 +320,36 @@
             
             <div class="faqAnswer">
             <p>
-            There are no free electrons in solution. As such, full reactions entered in eQuilibrator must be
-            redox balanced. That is, the products must contain the same number of electrons as the reactants.
-            eQuilibrator checks the redox balance of reactions when you search for them and provides
-            automatic balancing using the electron donor/acceptor NAD<sup>+</sup>/NADH. If you wish to use another
-            donor/acceptor pair, you can do so manually. You can adjust the concentrations of the donor
-            and acceptor in order to adjust the reduction potential of your chosen redox carrier.
-            Alternatively, you can search for a half-reaction like 
-            <a href="/search?query=NAD%2B+<%3D>+NADH">NAD<sup>+</sup> &rlhar; NADH</a> and eQuilibrator will 
-            calculate its reduction potential. By adjusting the reduction potential of the free electrons (e<sup>-</sup>)
-            you can couple the half-reaction with redox carriers not found in our database,
-            including electrodes and soluble metal ions with known reduction potentials.
+            A <a href="http://en.wikipedia.org/wiki/Half-reaction">half-reaction</a> 
+            can be the oxidation or reduction component of a <a href="http://en.wikipedia.org/wiki/Redox">
+            redox reaction</a>, without the
+            other component. When you search for such a reaction, eQuilibrator recognizes that the number of
+            electrons is not balanced and automatically switches to 'half-reaction' mode. Without knowing the other
+            half, the change in Gibbs energy is not well defined. The parameter that is used to describe the
+            potential difference (in Volts) between the products and substrates of a half-reaction is called
+            <a href="http://en.wikipedia.org/wiki/Redox_reaction#Standard_electrode_potentials_.28reduction_potentials.29">
+            redox potential</a> and is marked by E'&deg;. The redox
+            potential is equal to the voltage at equilibrium under standard
+            conditions of an electrochemical cell in which the cathode reaction is the half-reaction considered,
+            and the anode is a standard hydrogen electrode where hydrogen is oxidized: 
+            1/2 H<sub>2</sub> &rlhar; H<sup>+</sup> + e<sup>-</sup>.
             </p>
-            
-            <p>If the above paragraphs were not clear to you, <a href="/redox_review">click here</a> for a review of the
-            basics of the energetics of redox reactions.</p>
+            <p>
+            Assuming you do want to get the Gibbs energy of a reaction, you have two options. You can either
+            balance the electrons in the half-reaction by completing the other half (we make it easy for you
+            by providing a link for balancing with NAD<sup>+</sup>/NADH). Or, you could use the bottom panel
+            in the results table to adjust the potential of the electrons in the reaction (i.e. change
+            the value of e<sup>-</sup> potential [mV]). This is useful in cases where the half-reaction is coupled
+            to an electron transfer for which the redox potential is known, but the compounds themselves are not,
+            or they are too complex to use in eQuilibrator (e.g. protein complexes or membranal electron transport
+            chains).
+            </p>
             </div>
           </div>
             
             {% include "references.html" %}
             
-    <div id="footer">
-    {% include "about_links.html" %}
-    </div>
+    {% include "footer.html" %}
     
     </div>
 

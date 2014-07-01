@@ -52,6 +52,7 @@ def ResultsPage(request):
         template_data['compound_results'] = [m for m in results if m.IsCompound()]
         template_data['enzyme_results'] = [m for m in results if m.IsEnzyme()]
         template_data['enzymes_first'] = results and results[0].IsEnzyme()
+        template_data['query'] = query
             
         response = render_to_response('search_results.html', template_data)
         return response

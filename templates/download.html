@@ -1,13 +1,13 @@
 <html>
 	<head>
-		<link href="/media/info_page.css" rel="stylesheet" type="text/css">
+    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
     <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
 		<title>Download eQuilibrator Data</title>
 		{% include "analytics.html" %}
 	</head>
 	<body>
 		<div class="container">
-		    {% include "logo_small.html" %}
+            {% include "logo_large.html" %}
       		<div class="title">Download eQuilibrator Data</div>
 
 		<div class="section">
@@ -80,8 +80,6 @@
           <tr>
         </table>
 
-      	</div>
-
         <div class="title">Pseudoisomer Energies</div>
         
         <p>
@@ -130,12 +128,9 @@
         a mass ("mass"), a common name ("name") and a number of electrons ("num_electrons"). When values are are unknown
         they are omitted.
         </p>
-        
-      	</div>
-			
-    <div id="footer">
-    {% include "about_links.html" %}
     </div>
+
+    {% include "footer.html" %}
     
     </div>
 

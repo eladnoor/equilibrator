@@ -4,21 +4,14 @@
 
     <div class="centerize">
     {% if reaction.is_reactant_formula_missing %}
-        <div class="warning">Reaction balancing cannot be checked!</div>
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because some of the compounds don't have an explicit chemical formula</div>
         {% include "parsed_reaction.html" %}
         The following compounds do not have an explicit chemical formula:
-        <table class="results">  
-            <tr class="infoTableHeader">
-                <td><strong>Name</strong></td>
-                <td><strong>Formula</strong></td>
-            </tr>
+        <ul>
             {% for compound in reaction.reactants_with_missing_formula %}
-                <tr>
-                    <td>{{ compound.name }}</td>
-                    <td>{{ compound.compound.formula }}</td>
-                </tr>
+                <li>{{ compound.name }}</li>
             {% endfor %}
-        </table>
+        </ul>
     {% else %}
     {% if reaction.is_empty %}
         <div class="warning">Emtpy reaction!</div>
@@ -33,7 +26,7 @@
         {% include "parsed_reaction.html" %}
     {% else %}
     {% if reaction.dg0_prime == None %}
-        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds has no defined structure or cannot be decomposed </br><a href="/faq#notAvailable">Learn more &raquo;</a></div>
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds cannot by decomposed by our algorithm</br><a href="/faq#notAvailable">Learn more &raquo;</a></div>
         {% include "parsed_reaction.html" %}
     {% else %}
     {% if reaction.dg_uncertainty != None and reaction.dg_uncertainty > 200 %}
@@ -50,9 +43,11 @@
 
         {% if not reaction.is_electron_balanced %}
             <div class="warning">
-                This is a half-reaction. 
+                This is a
+                    {% if reaction.extra_electrons %}reduction{% else %}oxidation{% endif %}
+                half-reaction 
                 <a href="/faq#halfReactions">Learn more &raquo;</a></br>
-                <a href="{{ balance_electrons_link }}">Balance with NADH</a>?
+                <a href="{{ balance_electrons_link }}">Balance with NAD<sup>+</sup>/NADH</a>?
             </div>
         {% endif %}
 
@@ -73,7 +68,7 @@
 
                 <div class="buttonSet">
                     <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
-                    <input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />
+                    {% if advanced_mode %}<input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />{% endif %}
                     <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
                     <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
                 </div>
@@ -104,6 +99,6 @@
     {% endif %}
     {% endif %}
 
+    {% include "footer.html" %}
     </div>
 
-{% include "footer.html" %}
