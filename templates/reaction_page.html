@@ -67,10 +67,13 @@
                 {% include "concentration_sub_table.html" %}
 
                 <div class="buttonSet">
-                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" />
+                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" 
+                           title="update estimations according to chosen pH, I"/>
                     {% if advanced_mode %}<input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />{% endif %}
-                    <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" />
-                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" />
+                    <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" 
+                           title="switch substrates and products" />
+                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" 
+                           title="reset all parameters (e.g. pH, I) to default values" />
                 </div>
 
             {% if advanced_mode %}

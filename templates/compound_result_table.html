@@ -4,12 +4,12 @@
     </tr>
     {% if not reaction.is_phys_conc %}
     <tr>
-        <td>
+        <td width="25%">
             <strong>
                 Estimated <a href="faq#dgr">&Delta;<sub><i>f</i></sub>G'</a>
             </strong>
         </td>
-        <td colspan="3">
+        <td colspan="5">
             <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
                 &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
@@ -20,12 +20,12 @@
     {% endif %}
 
     <tr>
-        <td width="190px">
+        <td width="25%">
             <strong>
                 Estimated <a href="faq#dgm">&Delta;<sub><i>f</i></sub>G'<sup>m</sup></a>
             </strong>
         </td>
-        <td colspan="3">
+        <td colspan="5">
             <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
                 &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
@@ -35,7 +35,7 @@
     </tr>
         
     <tr>
-        <td>
+        <td width="25%">
             <strong>
                 Estimated <a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'&deg;</a>
             </strong>
@@ -51,12 +51,12 @@
     
     {% if compound.dg_source %}
         <tr>
-            <td>
+            <td width="25%">
                 <strong>
                     Estimated using 
                 </strong>
             </td>
-            <td colspan="4">
+            <td colspan="5">
                 {{ reaction.source_reference|safe }}</a>
             </td>
         </tr>

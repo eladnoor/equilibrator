@@ -3,12 +3,12 @@
 		<th colspan="100%">General Properties</td>		
 	</tr>
 	<tr>
-		<td width="150px"><b>Formula</b></td>
-		<td>{{ compound.html_formula|safe }}</td>
+		<td width="25%"><b>Formula</b></td>
+		<td colspan="100%">{{ compound.html_formula|safe }}</td>
 	</tr>
 	<tr>
-		<td width="150px"><b>Common names</b></td>
-		<td>
+		<td width="25%"><b>Common names</b></td>
+		<td colspan="100%">
 			{% for name in compound.all_common_names %}
 			{{ name }}{% if not forloop.last %}; {% endif %}
 			{% endfor %}
@@ -16,21 +16,21 @@
 	</tr>
 	<tr>
 		<td><b>Molar Mass</b></td>
-		<td>{{ compound.mass|floatformat:2 }} [Da]</td>
+		<td colspan="100%">{{ compound.mass|floatformat:2 }} [Da]</td>
 	</tr>
 	<tr>
-		<td width="150px"><b>Structure</b></td>
-		<td><img src="{{ compound.small_image_url }}" /></td>
+		<td width="25%"><b>Structure</b></td>
+		<td colspan="100%"><img src="{{ compound.small_image_url }}" /></td>
 	</tr>
 	{% if compound.kegg_link %}
 	<tr>	
-		<td width="150px"><b>Links</b></td>
-		<td><a href="{{compound.kegg_link}}">KEGG &raquo;</a></td>
+		<td width="25%"><b>Links</b></td>
+		<td colspan="100%"><a href="{{compound.kegg_link}}">KEGG &raquo;</a></td>
 	</tr>
 	{% endif %}
 	{% if compound.note %}
-		<td width="150px"><b>Note</b></td>
-		<td>{{compound.note}}
+		<td width="25%"><b>Note</b></td>
+		<td colspan="100%">{{compound.note}}
 		{% if compound.details_link %}
 		<a href="{{compound.details_link}}">More info &raquo;</a>
 		{% endif %}
