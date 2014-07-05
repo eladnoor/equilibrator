@@ -84,10 +84,10 @@
                         <td>Reaction</td>
                     </tr>
                     {% for row in reaction.analyze_cc %}
-                        {% if row.w > 0.01 or row.w < -0.01%}
+                        {% if row.w > 0.0001 or row.w < -0.0001%}
                         <tr>
-                            <td>{{ row.w_rc|floatformat:2 }}</td>
-                            <td>{{ row.w_gc|floatformat:2 }}</td>
+                            <td>{{ row.w_rc|floatformat:-4 }}</td>
+                            <td>{{ row.w_gc|floatformat:-4 }}</td>
                             <td>{{ row.reaction_string }}</td>
                         </tr>
                         {% endif %}

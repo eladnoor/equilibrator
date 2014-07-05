@@ -147,7 +147,13 @@ a {
 }
 
 #electronReductionPotentialSlider {
-    width: 60%;
+    width: 100%;
+}
+
+#electronReductionPotentialField {
+    text-align: left;
+    size: 3;
+    width: 50%;
 }
 
 /** autocomplete styles */

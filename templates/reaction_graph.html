@@ -170,8 +170,24 @@
 	</head>
 	<body onload="setUp();">
 
+	<div class="header clearfix">
+		{% include "logo_small.html" %}
+		<div id="searchForm">
+			<form name="searchForm" action="/search" method="get">
+				<div>
+					{% if query %}
+						<input type="text" name="query" id="queryField" value="{{ query }}" />
+						{% else %}
+						<input type="text" name="query" id="queryField" />
+					{% endif %}
+		
+					<input type="submit" id="submitButton" value="Search" />
+				</div>
+			</form>
+		</div>
+	</div>
+
 	<div class="centerize">
-		<a href="/"><img src="/media/images/equilibrator_logo_small_beta.png" /></a>
 
 		{% include "parsed_reaction.html" %}
 

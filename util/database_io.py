@@ -1,7 +1,7 @@
 import util.django_utils
 import logging
 import json, gzip, os, csv
-from gibbs import models, constants
+from gibbs import models, constants, conditions, reaction
 
 DEFAULT_CITATION_DATA_FILENAME = 'data/citation_data.json'
 COMPOUND_NAME_FILE = 'data/kegg_compound_names.tsv'
@@ -398,20 +398,18 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
     
 def export_database():
     
+    export_compounds(priority=2, name='Alberty',
+                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                     pMg=constants.DEFAULT_PMG,
+                     pH_list=constants.PH_RANGE_VALUES)
+
+    export_reactions(priority=1, name='CC',
+                     ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
+                     pMg=constants.DEFAULT_PMG,
+                     pH_list=constants.PH_RANGE_VALUES)
+
     export_json()
     
-    for priority, name in [(1, 'UGC'), (2, 'alberty')]:
-
-        export_compounds(priority=priority, name=name,
-                         ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
-                         pMg=constants.DEFAULT_PMG,
-                         pH_list=constants.PH_RANGE_VALUES)
-        
-        export_reactions(priority=priority, name=name,
-                         ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
-                         pMg=constants.DEFAULT_PMG,
-                         pH_list=constants.PH_RANGE_VALUES)
-
 def export_json():
     logging.info("Writing compound data to JSON file: %s" % DOWNLOADS_JSON_FNAME)
     rowdicts = []
@@ -429,23 +427,52 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
     csv_reaction_dict = {}
     for pH in pH_list:
         reaction_fname = DOWNLOADS_REACTION_PREFIX + '_%s_ph%.1f.csv.gz' % (name, pH)
-        logging.info("Writing transformed reaction energies for %s at pH %g to: %s"
+        logging.info("Writing dG'0_r for %s at pH %g to: %s"
                      % (name, pH, reaction_fname))
         csv_reaction_dict[pH] = csv.writer(gzip.open(reaction_fname, 'w'))
         csv_reaction_dict[pH].writerow(["!MiriamID::urn:miriam:kegg.reaction",
-                                        "!dG0_prime (kJ/mol)", "!pH",
+                                        "!dG0_prime (kJ/mol)", 
+                                        "!sigma[dG0] (kJ/mol)",
+                                        "!pH",
                                         "!I (mM)", "!T (Kelvin)", "!Note"])
     
     for r in models.StoredReaction.objects.all():
+        rxn = r.ToReaction()
+        try:
+            dG0_std = rxn.DeltaGUncertainty()
+            if dG0_std is not None:
+                dG0_std = round(dG0_std, 1)
+        except Exception as e:
+            logging.debug(str(e))
+            dG0_std = None
+        
+        if dG0_std is None or dG0_std > 200:
+            for pH in pH_list:
+                row = (r.kegg_id, None, None, pH, ionic_strength,
+                       constants.DEFAULT_TEMP, 'uncertainty is too high')
+                csv_reaction_dict[pH].writerow(row)
+            continue
+        
         for pH in pH_list:
-            rows = r.ToCSVdG0Prime(priority, pH=pH, pMg=pMg,
-                                   ionic_strength=ionic_strength)
-            map(csv_reaction_dict[pH].writerow, rows)
+            rxn.aq_params = conditions.AqueousParams(pH=pH, pMg=pMg,
+                                                     ionic_strength=ionic_strength,
+                                                     max_priority=priority)
+                                                     
+            try:
+                dG0_prime = rxn.DeltaG0Prime()
+                dG0_prime = round(dG0_prime, 1)
+                comment = None
+            except Exception:
+                logging.warning(str(e))
+                dG0_prime = None
+                comment = rxn.NoDeltaGExplanation()
+            
+            row = (r.kegg_id, dG0_prime, dG0_std, pH, ionic_strength,
+                   constants.DEFAULT_TEMP, comment)
+            csv_reaction_dict[pH].writerow(row)
                 
 def export_compounds(priority, name, ionic_strength, pMg, pH_list):
     pseudoisomer_fname = DOWNLOADS_PSEUDOISOMER_PREFIX + '_%s.csv.gz' % name
-    logging.info("Writing chemical formation energies for %s to: %s" %
-                 (name, pseudoisomer_fname))
     csv_pseudoisomers = csv.writer(gzip.open(pseudoisomer_fname, 'w'))
     csv_pseudoisomers.writerow(["!MiriamID::urn:miriam:kegg.compound",
                                 "!Name", "!dG0 (kJ/mol)",
@@ -454,17 +481,21 @@ def export_compounds(priority, name, ionic_strength, pMg, pH_list):
     csv_compound_dict = {}
     for pH in pH_list:
         compound_fname = DOWNLOADS_COMPOUND_PREFIX + '_%s_ph%.1f.csv.gz' % (name, pH)
-        logging.info("Writing transformed formation energies for %s at pH %g to: %s" %
-                     (name, pH, compound_fname))
         csv_compound_dict[pH] = csv.writer(gzip.open(compound_fname, 'w'))
         csv_compound_dict[pH].writerow(["!MiriamID::urn:miriam:kegg.compound",
                                         "!Name", "!dG0_prime (kJ/mol)",
                                         "!pH", "!I (mM)", "!T (Kelvin)",
                                         "!Note"])
     
+    logging.info("Writing chemical and biochemical formation energies for %s to: %s" %
+                 (name, pseudoisomer_fname))
     for compound in models.Compound.objects.all():
-        map(csv_pseudoisomers.writerow, compound.ToCSVdG0(priority))
+        phase = compound.GetDefaultPhaseName()
+        rows = compound.ToCSVdG0(priority, phase=phase)        
+        csv_pseudoisomers.writerows(rows)
         for pH in pH_list:
-            rows = compound.ToCSVdG0Prime(priority, pH=pH, pMg=pMg,
-                                          ionic_strength=ionic_strength)
-            map(csv_compound_dict[pH].writerow, rows)
+            aq_params = conditions.AqueousParams(pH=pH, pMg=pMg,
+                                                 ionic_strength=ionic_strength)
+            rows = compound.ToCSVdG0Prime(priority, aq_params=aq_params, 
+                                          phase=phase)
+            csv_compound_dict[pH].writerows(rows)

@@ -1,110 +1,93 @@
 <html>
-	<head>
+    <head>
     <link href="/media/info_page.css" rel="stylesheet" type="text/css">
     <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
-		<title>Download eQuilibrator Data</title>
-		{% include "analytics.html" %}
-	</head>
-	<body>
-		<div class="container">
+        <title>Download eQuilibrator Data</title>
+        {% include "analytics.html" %}
+    </head>
+    <body>
+        <div class="container">
             {% include "logo_large.html" %}
-      		<div class="title">Download eQuilibrator Data</div>
+              <div class="title">Download eQuilibrator Data</div>
 
-		<div class="section">
+        <div class="section">
         <div class="title">Formats and Data Sources</div>
         
-        <p>eQuilibrator data is given in two formats. Tabular data is given as CSV and hierarchical data is given in JSON.
-          <ul>
-            <li>
-            JSON: the <a href="http://www.json.org">JavaScript Object Notation</a> format is a
-            lightly structured hierarchical format that is easily parsed in most modern programming languages.
-            </li>
-            <li>
-            CSV: Comma-Separated Value format is a flat format that is mostly unstructured, easy to parse
-            and easy to view in Excel and other spreadsheet programs.
-            </li>
-          </ul>
-        </p>
-
         <p>
-        Measured thermodynamic data is drawn from the work of Robert Alberty (<a href="/data_refs">references here</a>).
-        We use our own implementation of the component-contribution approximation method to provide formation energies
-        when measurements are not available. Because these data rely on different assumptions, mixing formation
-        energies from different sources can lead to errors. As such, we offer data on compounds and reactions
-        from the various sources in separate files.
+            eQuilibrator data is given in two formats.
+            Tabular data is given as CSV and hierarchical data is given in JSON.
+            <ul>
+                <li>
+                    JSON: the <a href="http://www.json.org">JavaScript Object Notation</a> 
+                    format is a lightly structured hierarchical format that is 
+                    easily parsed in most modern programming languages.
+                </li>
+                <li>
+                    CSV: Comma-Separated Value format is a flat format that is 
+                    mostly unstructured, easy to parse and easy to view in 
+                    Excel and other spreadsheet programs.
+                </li>
+            </ul>
         </p>
 
-		</div>
-			
-		<div class="section">
+        </div>
+
+        <div class="section">
         <div class="title">Compound Formation Energies</div>
-        
         <p>
-        The standard formation energies of biochemical compounds in the KEGG database are available for
-        download at various pH levels. Note that ionic strength is set to 0.1 for all the files linked below.
+        The standard formation energies of biochemical compounds found in the 
+        literature can be downloaded at various pH levels.
+        Note that ionic strength is set to 0.1 M for all the files linked below.
+        The thermodynamic data is drawn mostly from the work of the late 
+        <a href="http://newsoffice.mit.edu/2014/robert-alberty-professor-emeritus-of-chemistry-and-former-dean-of-science-dies-at-92">
+        Prof. Robert Alberty</a> (<a href="/data_refs">references here</a>).</br>
         </p>
     
-        <table class="downloadTable">
-        	<tr>
-        		<th>pH</th><th>Component Contribution Data</th><th>Alberty Data</th>
-        	</tr>
-        	{% for ph in ph_values %}
-        	<tr>
-        		<td>{{ph}}</td>
-                <td><a href="{{MEDIA_URL}}downloads/kegg_compounds_UGC_ph{{ph}}.csv.gz">Download</a></td>
-        		<td><a href="{{MEDIA_URL}}downloads/kegg_compounds_alberty_ph{{ph}}.csv.gz">Download</a></td>
-        	</tr>
-        	{% endfor %}
-          <tr>
-        </table>
+        <ul>
+            {% for ph in ph_values %}
+            <li>pH = {{ph}} : <a href="{{MEDIA_URL}}downloads/kegg_compounds_Alberty_ph{{ph}}.csv.gz">Download</a></li>
+            {% endfor %}
+        </ul>
+        
+        <p>
+            It is also possible to compute the standard transformed formation 
+            energy for any pH and ionic strength directly using the chemical
+            formation energy table of the various protonation states (pseudoisomers)
+            of all the compounds
+            (<a href="{{MEDIA_URL}}downloads/kegg_pseudoisomers_Alberty.csv.gz">download here</a>).
+            Each row in the CSV file corresponds to one pseudoisomer of one compound. The columns' order is:
+            KEGG compound ID, compound name, chemical formation energy (in kJ/mol), number of hydrogen atoms,
+            net charge, number of magnesium ions, note. 
+
+        </p>
 
         <div class="title">Reaction Energies</div>
         
         <p>
         The standard Gibbs energies of biochemical reactions in the KEGG database are available for
-        download at various pH levels as well. As above, ionic strength is set as 0.1 for all the
+        download at various pH levels as well. We use the Component Contribution method to
+        obtain all the given values in the downloadable CSV files.
+        As above, ionic strength is set to 0.1 M for all the
         files linked below. When a reaction energy cannot be computed, an explanation is given.
         </p>
         
-        <table class="downloadTable">
-        	<tr>
-        		<th>pH</th><th>Component Contribution Data</th><th>Alberty Data</th>
-        	</tr>
-        	{% for ph in ph_values %}
-        	<tr>
-        		<td>{{ph}}</td>
-                <td><a href="{{MEDIA_URL}}downloads/kegg_reactions_UGC_ph{{ph}}.csv.gz">Download</a></td>
-        		<td><a href="{{MEDIA_URL}}downloads/kegg_reactions_alberty_ph{{ph}}.csv.gz">Download</a></td>
-        	</tr>
-        	{% endfor %}
-          <tr>
-        </table>
+        <ul>
+            {% for ph in ph_values %}
+            <li>pH = {{ph}} : <a href="{{MEDIA_URL}}downloads/kegg_reactions_CC_ph{{ph}}.csv.gz">Download</a></li>
+            {% endfor %}
+        </ul>
 
-        <div class="title">Pseudoisomer Energies</div>
-        
         <p>
-        The standard Gibbs energies of formation of the various protonation states (pseudoisomers) of 
-        biochemical compounds in the KEGG database are available for download in two CSV files, one for
-        the Alberty Data (<a href="{{MEDIA_URL}}downloads/kegg_pseudoisomers_alberty.csv.gz">download here</a>) and
-        the other for the Component Contribution Data (<a href="{{MEDIA_URL}}downloads/kegg_pseudoisomers_UGC.csv.gz">download here</a>).
-        Each row in the CSV file corresponds to one pseudoisomer of one compound. The columns' order is:
-        KEGG compound ID, compound name, chemical formation energy (in kJ/mol), number of hydrogen atoms,
-        net charge, number of magnesium ions, note. 
+            It is important not to mix these reaction Gibbs energies with calculations
+            done using the compound formation energies in a single model.
+            These two datasets are not
+            consistent with each other, and mixing could violate the second law
+            of thermodynamics - meaning that a set of reactions that form a 
+            cycle might have a total &Delta;G' different than 0 (a biochemical perpetual
+            motion machine).
         </p>
-        
-        <p>
-        Each pseudoisomer map has a "source" and a "priority" and contains data on a number of psuedoisomers (a word on priorities later).
-        Each pseudoisomer in a map has a characteristic number of hydrogens ("nH") and charge ("z"). The standard Gibbs energy of
-        formation is given as "dG0_f" and a reference is given for the data ("ref"). If an acid dissociation constant
-        was used to compute the Gibbs energy of the pseudoisomer then reference represents the source of the pK<sub>a</sub> data 
-        (for example "ChemAxon").
-        </p>
-        
-        <p>
-        As mentioned above, it is important not to mix measured and approximated data in thermodynamic calculations (more than is necessary).
-        As such, each pseudoisomer map has an associated "priority". When calculating reactions energies, always use data from
-        the <b>same priority level</b>. The priority tags are designed to prevent erroneous mixing of measured and approximate data.    
-        </p>
+
+        <div class="title">Additional Compound Information</div>
 
         <p>
         The last file is in JSON format and contains many entries, each representing a compound in KEGG
@@ -113,14 +96,14 @@
          </p>
          
         <pre class="jsonPre">
-    {
-        "CID": "C00631", 
-        "InChI": "InChI=1S/C3H7O7P/c4-1-2(3(5)6)10-11(7,8)9/h2,4H,1H2,(H,5,6)(H2,7,8,9)/t2-/m1/s1", 
-        "formula": "C3H7O7P", 
-        "mass": 185.9929, 
-        "name": "2-Phospho-D-glycerate", 
-        "num_electrons": 96, 
-    }
+        {
+            "CID": "C00631", 
+            "InChI": "InChI=1S/C3H7O7P/c4-1-2(3(5)6)10-11(7,8)9/h2,4H,1H2,(H,5,6)(H2,7,8,9)/t2-/m1/s1", 
+            "formula": "C3H7O7P", 
+            "mass": 185.9929, 
+            "name": "2-Phospho-D-glycerate", 
+            "num_electrons": 96, 
+        }
         </pre>
         
         <p>

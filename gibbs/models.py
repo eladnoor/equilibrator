@@ -392,7 +392,7 @@ class Compound(models.Model):
         return names[0].name
     
     def DeltaG0Prime(self, aq_params,
-                     phase=constants.DEFAULT_PHASE):
+                     phase=None):
         """
             Get a deltaG estimate for the given compound.
         
@@ -404,6 +404,7 @@ class Compound(models.Model):
             Returns:
                 The estimated delta G in the given conditions or None.
         """
+        phase = phase or self.GetDefaultPhaseName()
         sg = self._species_group
         if not sg:
             return None
@@ -484,10 +485,11 @@ class Compound(models.Model):
         return None
     
     def SpeciesJson(self, species_group=None, aq_params=None,
-                    phase=constants.DEFAULT_PHASE):
+                    phase=None):
         """Returns JSON for the species."""
         sg = species_group or self._species_group
         aq_params = aq_params or conditions.AqueousParams()
+        phase = phase or self.GetDefaultPhaseName()
         dg0_prime = sg.DeltaG0Prime(aq_params, phase)
         logging.debug('dG0\' = %.1f ' % dg0_prime)
         d = {'source': str(sg.formation_energy_source),
@@ -520,29 +522,32 @@ class Compound(models.Model):
             d['note'] = self.note
         return d
     
-    def ToCSVdG0Prime(self, priority=1, aq_params=None,
-                      phase=constants.DEFAULT_PHASE):
+    def ToCSVdG0Prime(self, priority=1, aq_params=None, phase=None):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, name, dG0_prime, pH, ionic_strength, T, Note
         """
+        phase = phase or self.GetDefaultPhaseName()
         aq_params = aq_params or conditions.AqueousParams()
         rows = []
         for sg in self.species_groups.filter(priority=priority):
-            dG0_prime = round(sg.DeltaG0Prime(aq_params, phase=phase), 1)
+            dG0_prime = sg.DeltaG0Prime(aq_params, phase=phase)
+            if dG0_prime is not None:
+                dG0_prime = dG0_prime.round(1)
             rows.append([self.kegg_id, self.name, dG0_prime,
                          aq_params.pH, aq_params.ionic_strength,
                          constants.DEFAULT_TEMP, None])
         return rows
             
-    def ToCSVdG0(self, priority=1):
+    def ToCSVdG0(self, priority=1, phase=None):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, name, dG0, nH, charge, nMg, Note
         """
+        phase = phase or self.GetDefaultPhaseName()
         rows = []
         for sg in self.species_groups.filter(priority=priority):
-            for s in sg.all_species:
+            for s in sg.GetPhaseSpecies(phase):
                 nH = int(s.number_of_hydrogens)
                 charge = int(s.net_charge)
                 nMg = int(s.number_of_mgs)
@@ -584,6 +589,10 @@ class Compound(models.Model):
             return constants.DEFAULT_PHASE
         else:
             return possible_phases[0]
+
+    def GetDefaultPhase(self, conc=None):
+        phase_name = self.GetDefaultPhaseName()
+        return conditions._BaseConditions._GeneratePhase(phase_name, conc)
 
     def _GetDGSource(self):
         """Returns the source of the dG data."""
@@ -792,37 +801,22 @@ class StoredReaction(models.Model):
         """
             Returns a link to this reaction's page.
         """
-        from gibbs import reaction
-        reactants = [reaction.CompoundWithCoeff.FromId(coeff, kegg_id)
-                     for coeff, kegg_id in json.loads(self.reactants)]
         try:
-            rxn = reaction.Reaction(reactants)
+            rxn = self.ToReaction()
             return rxn.GetHyperlink(self.ToString())
         except AttributeError:
             raise Exception('Cannot find one of the compounds in the database')
 
-    def ToCSVdG0Prime(self, priority=1, aq_params=None):
+    def ToReaction(self, priority=1, aq_params=None):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, dG0_prime, pH, ionic_strength, T, Note
         """
-        aq_params = aq_params or conditions.AqueousParams()        
-        dG0_prime = 0
-        for kegg_id, coeff in json.loads(self.reactants):
-            try:
-                compound = models.Compound.objects.get(kegg_id=kegg_id)
-                dG0_f_prime = compound.DeltaG0Prime(aq_params)
-                if dG0_f_prime is not None:
-                    dG0_prime += coeff * dG0_f_prime
-            except Exception:
-                return [(self.kegg_id, None, 
-                         aq_params.pH, aq_params.ionic_strength,
-                         constants.DEFAULT_TEMP,
-                         "One of the compounds has no formation energy")]
-        
-        return [(self.kegg_id, round(dG0_prime, 1), 
-                 aq_params.pH, aq_params.ionic_strength,
-                 constants.DEFAULT_TEMP, None)]
+        from gibbs import reaction
+        reactants = [reaction.CompoundWithCoeff.FromId(coeff, kegg_id)
+                     for coeff, kegg_id in json.loads(self.reactants)]
+        rxn = reaction.Reaction(reactants)
+        return rxn
         
 #    link = property(Link)
 #    reaction_string = property(ToString)

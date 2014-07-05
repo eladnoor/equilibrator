@@ -31,6 +31,7 @@ def ReactionGraph(request):
                      'coeff_data': json.dumps(coeff_list),
                      'concentration_list': json.dumps(concentration_list),
                      'mode': mode,
-                     'reaction': rxn}
+                     'reaction': rxn,
+                     'query': rxn.GetQueryString()}
     template_data.update(rxn.aq_params.GetTemplateData())
     return render_to_response('reaction_graph.html', template_data)

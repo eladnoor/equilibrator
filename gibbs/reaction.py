@@ -49,7 +49,8 @@ class Preprocessing(object):
             for g_ind, g_count in gv:
                 g[g_ind, 0] += g_count
         else:
-            raise Exception('could not find index nor group vector')
+            raise Exception('could not find index nor group vector for %s' 
+                            % compound.compound.kegg_id)
         return x, g
 
     @staticmethod
@@ -103,8 +104,8 @@ class Preprocessing(object):
                  if Preprocessing.S[i,j] != 0}
             r_string = Preprocessing.DictToReactionString(d)
             res.append({'w': weights[0, j],
-                        'w_rc': weights_rc[0, j].round(2),
-                        'w_gc': weights_gc[0, j].round(2),
+                        'w_rc': weights_rc[0, j].round(4),
+                        'w_gc': weights_gc[0, j].round(4),
                         'reaction_string': r_string})
         res.sort(key=lambda d:abs(d['w']), reverse=True)
         return res
@@ -716,8 +717,9 @@ class Reaction(object):
                 
         return '%s = %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
-    def ContainsCO2(self):
-        return self._FindCompoundIndex('C00011') is not None
+    def ContainsCO2AndNotHCO3(self):
+        return (self._FindCompoundIndex('C00011') is not None) and \
+               (self._FindCompoundIndex('C00288') is None)
             
     def IsReactantFormulaMissing(self):
         for compound_w_coeff in self.reactants:
@@ -846,6 +848,8 @@ class Reaction(object):
             The stoichiometric coefficient and concentration are copied from
             the old compound to the new one.
         """
+        if from_id == to_id:
+            return
         
         # set the coefficient of the original compound to 0
         i = self._FindCompoundIndex(from_id)
@@ -860,7 +864,7 @@ class Reaction(object):
         if j is None:
             self.reactants[i] = CompoundWithCoeff.FromId(how_many, to_id)
         else:
-            self.reactants[j] += how_many
+            self.reactants[j].coeff += how_many
             self._Dedup()
 
         # clear the cache since the reaction has changed
@@ -1176,7 +1180,7 @@ class Reaction(object):
         
     substrates = property(GetSubstrates)
     products = property(GetProducts)
-    contains_co2 = property(ContainsCO2)
+    contains_co2 = property(ContainsCO2AndNotHCO3)
     is_conserving = property(CheckConservationLaws)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
     reactants_with_missing_formula = property(GetReactantFormulaMissing)
