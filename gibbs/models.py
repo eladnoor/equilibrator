@@ -781,6 +781,11 @@ class StoredReaction(models.Model):
         md5 = hashlib.md5()
         md5.update(StoredReaction.HashableReactionString(sparse))
         return md5.hexdigest()
+
+    @staticmethod
+    def GetAtpHydrolysisHash():
+        atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
+        return StoredReaction.HashableReactionString(atp_sparse)
     
     def GetHashableReactionString(self):
         return StoredReaction.HashableReactionString(self.GetSparseRepresentation())
@@ -820,19 +825,6 @@ class StoredReaction(models.Model):
         
 #    link = property(Link)
 #    reaction_string = property(ToString)
-
-class ConservationLaw(models.Model):
-    """ conservation laws which every reaction query must be checked against. """
-    # a JSON representation of the reaction (i.e. the reactants and coefficients)
-    reactants = models.TextField(null=True)
-    
-    msg = models.TextField(null=True)
-    
-    def GetSparseRepresentation(self):
-        sparse = {}
-        for coeff, kegg_id in json.loads(self.reactants):
-            sparse[kegg_id] = coeff
-        return sparse
     
 class Enzyme(models.Model):
     """A single enzyme."""

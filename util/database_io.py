@@ -159,15 +159,6 @@ def AddPmapToCompound(pmap, compound, priority=1):
     sg.save()
     compound.species_groups.add(sg)
 
-def LoadKeggGCNullspace(gc_nullspace_filename=GC_NULLSPACE_FILENAME):
-    parsed_json = json.load(gzip.open(gc_nullspace_filename))
-    
-    for rd in parsed_json:
-        claw = models.ConservationLaw()
-        claw.msg = rd['msg']
-        claw.reactants = json.dumps(rd['reaction'])
-        claw.save()
-
 def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
                           kegg_renaming_filename=COMPOUND_RENAME_FILE):
 

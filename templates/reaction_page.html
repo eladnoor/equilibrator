@@ -41,6 +41,13 @@
             </div>
         {% endif %}
 
+        {% if reaction.is_atp_hydrolysis %}
+            <div class="warning">
+                The &Delta;G' of ATP hydrolysis is highly affected by Mg<sup>2+</sup> ions.
+                <a href="/faq#atpHydrolysis">Learn more &raquo;</a>
+            </div>
+        {% endif %}
+    
         {% if not reaction.is_electron_balanced %}
             <div class="warning">
                 This is a
@@ -55,8 +62,6 @@
 
         <form id="rxnForm" name="reactionForm" action="/reaction" method="get">
             <input type="hidden" name="query" value="{{ query }}" />
-
-            {% if reaction.is_conserving %}
 
                 {% if reaction.is_electron_balanced %}
                     {% include "reaction_result_table.html" %}
@@ -93,7 +98,6 @@
                         {% endif %}
                     {% endfor %}
                 </table>
-            {% endif %}
             {% endif %}
         </form>
     {% endif %}

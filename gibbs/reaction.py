@@ -424,6 +424,19 @@ class Reaction(object):
     def GetHash(self):
         return models.StoredReaction.HashReaction(self.GetSparseRepresentation())
     
+    def IsAtpHydrolysis(self):
+        logging.debug('Checking if this reaction is ATP hydrolysis')
+        atp_hash = models.StoredReaction.GetAtpHydrolysisHash()
+        logging.debug('ATP hash = %s' % atp_hash)
+        my_hash = self.GetHashableReactionString()
+        logging.debug('this reaction\'s hash = %s' % my_hash)
+        if my_hash == atp_hash:
+            logging.debug('This is ATP hydrolysis!')
+            return True
+        else:
+            logging.debug('This is not ATP hydrolysis!')
+            return False
+    
     def _GetAllStoredReactions(self):
         """
             Find all stored reactions matching this compound (using the hash)
@@ -718,6 +731,7 @@ class Reaction(object):
         return '%s = %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
     def ContainsCO2AndNotHCO3(self):
+        logging.debug('checking if this reaction contains CO2 but not HCO3')
         return (self._FindCompoundIndex('C00011') is not None) and \
                (self._FindCompoundIndex('C00288') is None)
             
@@ -1128,24 +1142,7 @@ class Reaction(object):
         if diff < 0:
             return -diff
         return None
-    
-    def _CheckConservationLaw(self, sparse_reaction, claw):
-        inner_prod = 0.0
-        for kegg_id, coeff in claw.GetSparseRepresentation().iteritems():
-            if kegg_id in sparse_reaction:
-                inner_prod += coeff * sparse_reaction[kegg_id]
-        return abs(inner_prod) < 1e-10
-    
-    def CheckConservationLaws(self):
-        sparse_reaction = dict([(c.compound.kegg_id, c.coeff) 
-                                for c in self.reactants])
 
-        all_claws = models.ConservationLaw.objects.select_related().all()
-        for claw in all_claws:
-            if not self._CheckConservationLaw(sparse_reaction, claw):
-                return False
-        return True
-        
     def IsPhysiologicalConcentration(self):
         for c in self.reactants:
             if c.phase and not c.phase.IsPhysiological():
@@ -1181,7 +1178,6 @@ class Reaction(object):
     substrates = property(GetSubstrates)
     products = property(GetProducts)
     contains_co2 = property(ContainsCO2AndNotHCO3)
-    is_conserving = property(CheckConservationLaws)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
     reactants_with_missing_formula = property(GetReactantFormulaMissing)
     is_empty = property(IsEmpty)    
@@ -1192,6 +1188,7 @@ class Reaction(object):
     missing_atoms = property(MissingAtoms)
     extra_electrons = property(ExtraElectrons)
     missing_electrons = property(MissingElectrons)
+    is_atp_hydrolysis = property(IsAtpHydrolysis)
     dg0_prime = property(DeltaG0Prime)
     dgm_prime = property(DeltaGmPrime)
     dg_prime = property(DeltaGPrime)

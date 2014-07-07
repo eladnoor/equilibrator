@@ -26,6 +26,7 @@
                     <li><a href="#changeTemp">Why can't I change the temperature?</a></li>
                     <li><a href="#aqueousCO2">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</a></li>
                     <li><a href="#halfReactions">What do you mean "electrons are not balanced?" What about half-reactions?</a></li>
+                    <li><a href="#atpHydrolysis">Why is the value for ATP hydrolysis different than in books by Alberty, the previous version of eQuilibrator and some textbooks?</a></li>
                 </ul>
             </div>
 
@@ -93,26 +94,17 @@
                 How can I set for standard conditions in reactions involving a gas?</div>
                 
                 <div class="faqAnswer">
-                <p>For gases the standard condition is defined as 1 atmosphere partial pressure.
-                In eQuilibrator because we deal with aqueous reactions we only use soluble
-                concentrations (i.e. 1M). Thus one should be careful in using reactions involving gases.
-                If one knows the soluble concentration of the gas of interest it should be
-                specified by choosing "custom" concentrations. For example, the solubility of
-                O<sub>2</sub> in water with the normal atmospheric content of about 20% is approximately 200&mu;M
-                (value varies with temperature).</p><p>
-                If you are interested in getting the standard conditions that relate to the 1
-                atmosphere partial pressure condition you have to specify the corresponding
-                soluble concentration that can be derived through <a href="http://en.wikipedia.org/wiki/Henry's_law">Henry's law</a>.
-                The following table contains a few useful examples:</br>
-                <center><table border="1">
-                <tr><td><h3>gas</h3></td><td><h3>mM/atm<sup>&dagger;</sup></h3></td></tr>
-                <tr><td>O<sub>2</sub></td><td>1.3</td></tr>
-                <tr><td>H<sub>2</sub></td><td>0.78</td></tr>
-                <tr><td>N<sub>2</sub></td><td>0.61</td></tr>
-                <tr><td>CO<sub>2</sub></td><td>34</td></tr>
-                <tr><td>CO</td><td>0.95</td></tr>
-                </table></center>
-                <sup>&dagger;</sup>all values are at 25 &deg;C.
+                <p>For gases the standard condition is defined as 1 atmosphere (bar) partial pressure.
+                However, if one knows the soluble concentration of the gas of interest it should be
+                specified by choosing "custom" concentrations. Alternatively, if you know the partial pressure
+                of a reactant in the gas phase of the reaction chamber, and assume there is an equilibrium
+                with the solution phase, then you can select a "custom" concentration for the gas (in units of mbar).
+                You can also indicate that you want to use the standard gas phase for the &Delta;G'&deg; by adding
+                (g) to the end of the compound name. For example, try to search for:</br>
+                <a href="http://127.0.0.1:8000/search?query=CO2%28g%29+%2B+PEP+%2B+H2O+%3D+Oxaloacetate+%2B+Pi">
+                CO2(g) + PEP + H2O = Oxaloacetate + Pi</a>.
+                This will work only for compounds for which the formation energy in gas phase is in our database, namely
+                O2, N2, H2, CO2, and CO.
                 </p>
                 </div>
             </div>
@@ -344,6 +336,28 @@
             or they are too complex to use in eQuilibrator (e.g. protein complexes or membranal electron transport
             chains).
             </p>
+            </div>
+
+            <div class="faqEntry" id="atpHydrolysis">
+                <div class="faqQuestion">
+                    Why is the value for ATP hydrolysis different than in books by Alberty, 
+                    the previous version of eQuilibrator and some other textbooks?
+                </div>
+                <div class="faqAnswer">
+                <p>
+                    The &Delta;G'&deg; of the ATP hydrolysis reaction is affected by many factors, notably 
+                    also by the concentration of free Mg<sup>2+</sup> ions. The value cited in [1] 
+                    and used in the
+                    previous version of eQuilibrator (-36.4 kJ/mol) assumes no magnesium 
+                    ([Mg<sup>2+</sup>] = 0). In the
+                    new version of eQuilibrator<sup>2.0</sup> we use the component contribution method [6] 
+                    that uses measurements collected in the NIST thermodynamic database for enzyme-catalyzed reactions
+                    [8] that were performed under varying levels of Mg<sup>2+</sup>. This is also the more
+                    relevant situation in vivo. As noted in many studies, when taking into account [Mg<sup>2+</sup>], the
+                    value changes and is observed to be in the range -26 to -32 kJ/mol depending on the
+                    reference. A clear discussion can be found at [9].  
+                </p>
+                </div>
             </div>
           </div>
             
