@@ -786,6 +786,11 @@ class StoredReaction(models.Model):
     def GetAtpHydrolysisHash():
         atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
         return StoredReaction.HashableReactionString(atp_sparse)
+
+    @staticmethod
+    def GetCO2HydrationHash():
+        co2_sparse = {'C00011': -1, 'C00001': -1, 'C00288': 1}
+        return StoredReaction.HashableReactionString(co2_sparse)
     
     def GetHashableReactionString(self):
         return StoredReaction.HashableReactionString(self.GetSparseRepresentation())

@@ -33,18 +33,9 @@
         <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' with any level of certainty </br><a href="/faq#uncertainties">Learn more &raquo;</a></div>
         {% include "parsed_reaction.html" %}
     {% else %}
-        {% if reaction.contains_co2 %}
+        {% if reaction.special_reaction_warning %}
             <div class="warning">
-                Did you mean
-                <a href="{{ replace_co2_link }}">CO<sub>2</sub>(total)</a>?
-                <a href="/faq#aqueousCO2">Learn more &raquo;</a>
-            </div>
-        {% endif %}
-
-        {% if reaction.is_atp_hydrolysis %}
-            <div class="warning">
-                The &Delta;G' of ATP hydrolysis is highly affected by Mg<sup>2+</sup> ions.
-                <a href="/faq#atpHydrolysis">Learn more &raquo;</a>
+                {{ reaction.special_reaction_warning|safe}}
             </div>
         {% endif %}
     

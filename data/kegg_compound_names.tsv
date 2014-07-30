@@ -274,7 +274,7 @@ C00283	Hydrogen sulfide	H2S|Hydrogen sulfide|Hydrogen-sulfide|Sulfide|hydrogen s
 C00284	EDTA	EDTA|Edetic acid|Ethylenediaminetetraacetic acid
 C00286	dGTP	2'-Deoxyguanosine 5'-triphosphate|Deoxyguanosine 5'-triphosphate|Deoxyguanosine triphosphate|dGTP
 C00287	Ester	Ester
-C00288	HCO3-	Acid carbonate|Bicarbonate|HCO3-|Hydrogencarbonate
+C00288	CO2(total)	CO2(total)
 C00290	Fibrin	Fibrin
 C00291	Nickel	Nickel
 C00292	Aniline	Aniline|Arylamine|Benzenamine|Phenylamine
@@ -1183,7 +1183,7 @@ C01347	dXDP	dXDP
 C01348	dXTP	dXTP
 C01349	AA861	AA861|Docebenone
 C01352	FADH2	FADH2|reduced flavin-adenine dinucleotide
-C01353	Carbonic acid	Carbonic acid|Dihydrogen carbonate|H2CO3
+C01353	HCO3-	HCO3-|H2CO3|Acid carbonate|Bicarbonate|Hydrogencarbonate|Carbonic acid|Carbonate
 C01355	Fructan	Fructan|beta-D-Fructan
 C01356	Lipid	Lipid
 C01358	NH4OH	Ammonium hydroxide|NH4OH

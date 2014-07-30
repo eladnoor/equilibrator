@@ -337,11 +337,11 @@ class Reaction(object):
         self._Dedup()
 
         self._kegg_id = None
+        self._uncertainty = None
+        self.is_using_gc = False
 
         # used only as cache, no need to copy while cloning        
         self._catalyzing_enzymes = None
-        self._uncertainty = None
-        self.is_using_gc = False
         
     def SetAqueousParams(self, aq_params):
         self._dg0_prime = None
@@ -424,17 +424,38 @@ class Reaction(object):
     def GetHash(self):
         return models.StoredReaction.HashReaction(self.GetSparseRepresentation())
     
-    def IsAtpHydrolysis(self):
-        logging.debug('Checking if this reaction is ATP hydrolysis')
-        atp_hash = models.StoredReaction.GetAtpHydrolysisHash()
-        logging.debug('ATP hash = %s' % atp_hash)
+    def GetSpecialReactionWarning(self):
         my_hash = self.GetHashableReactionString()
-        logging.debug('this reaction\'s hash = %s' % my_hash)
+        
+        atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
+        co2_sparse = {'C00011': -1, 'C00001': -1, 'C01353': 1}
+        atp_hash = models.StoredReaction.HashableReactionString(atp_sparse)
+        co2_hash = models.StoredReaction.HashableReactionString(co2_sparse)
+        
         if my_hash == atp_hash:
-            logging.debug('This is ATP hydrolysis!')
-            return True
+            return """The &Delta;G' of ATP hydrolysis is highly affected
+                      by Mg<sup>2+</sup> ions. 
+                      <a href="/faq#atpHydrolysis">Learn more &raquo;</a>"""
+        elif my_hash == co2_hash:
+            return """You are looking for the &Delta;G' of CO<sub>2</sub> hydration.</br>
+                      <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
+        elif (self._FindCompoundIndex('C00011') is not None and 
+              self._FindCompoundIndex('C00288') is None):
+            return """Did you mean 
+                      <a href="%s">CO<sub>2</sub>(total)</a>?
+                      <a href="/faq#aqueousCO2">Learn more &raquo;</a>""" % \
+                      self.GetReplaceCO2Link()
+        elif (self._FindCompoundIndex('C00011') is not None and 
+              self._FindCompoundIndex('C00288') is not None):
+            return """One should not use CO<sub>2</sub>(aq) together with
+                      CO<sub>2</sub>(total) in the same reaction.
+                      <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
+        elif (self._FindCompoundIndex('C01353') is not None and 
+              self._FindCompoundIndex('C00288') is not None):
+            return """One should not use HCO<sub>3</sub><sup>-</sup>(aq) together with
+                      CO<sub>2</sub>(total) in the same reaction.
+                      <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
         else:
-            logging.debug('This is not ATP hydrolysis!')
             return False
     
     def _GetAllStoredReactions(self):
@@ -674,7 +695,6 @@ class Reaction(object):
             template_data.update({
                 'balance_with_water_link': self.GetBalanceWithWaterLink(query),
                 'balance_electrons_link': self.GetBalanceElectronsLink(query),
-                'replace_co2_link': self.GetReplaceCO2Link(query),
                 'alberty_link': self.GetNewPriorityLink(99),
                 'cc_link': self.GetNewPriorityLink(1)})
         except ReactantFormulaMissingError:
@@ -730,11 +750,6 @@ class Reaction(object):
                 
         return '%s = %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
-    def ContainsCO2AndNotHCO3(self):
-        logging.debug('checking if this reaction contains CO2 but not HCO3')
-        return (self._FindCompoundIndex('C00011') is not None) and \
-               (self._FindCompoundIndex('C00288') is None)
-            
     def IsReactantFormulaMissing(self):
         for compound_w_coeff in self.reactants:
             if compound_w_coeff.compound.GetAtomBag() is None:
@@ -1177,7 +1192,6 @@ class Reaction(object):
         
     substrates = property(GetSubstrates)
     products = property(GetProducts)
-    contains_co2 = property(ContainsCO2AndNotHCO3)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
     reactants_with_missing_formula = property(GetReactantFormulaMissing)
     is_empty = property(IsEmpty)    
@@ -1188,7 +1202,7 @@ class Reaction(object):
     missing_atoms = property(MissingAtoms)
     extra_electrons = property(ExtraElectrons)
     missing_electrons = property(MissingElectrons)
-    is_atp_hydrolysis = property(IsAtpHydrolysis)
+    special_reaction_warning = property(GetSpecialReactionWarning)
     dg0_prime = property(DeltaG0Prime)
     dgm_prime = property(DeltaGmPrime)
     dg_prime = property(DeltaGPrime)

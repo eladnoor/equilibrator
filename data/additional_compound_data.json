@@ -114,9 +114,7 @@
     {
         "CID": "C00288",
         "names": [
-            "CO2(total)",
-            "Carbonate",
-            "Carbonic acid"
+            "CO2(total)"
         ],
         "preferred name": "CO2(total)",
         "note": "CO2(total) is a collection of the hydrated and dehydrated forms of CO2 - aqueous CO2, carbonate, carbonic acid and bicarbonate. These forms are often considered to be in equilibrium in biochemical systems.",
@@ -164,6 +162,21 @@
             "RuBP" 
         ]
     },    
+    {
+        "CID": "C01353",
+        "names": [
+            "HCO3-",
+            "H2CO3",
+            "Acid carbonate",
+            "Bicarbonate",
+            "Hydrogencarbonate",
+            "Carbonic acid",
+            "Carbonate"
+        ],
+        "preferred name": "HCO3-",
+        "note": "HCO3-(aq) is different from CO2(total), which includes the unhydrated form of CO2(aq).",
+    	"details_link": "/faq#aqueousCO2"
+    },
     {
         "CID": "C04442",
         "names": [
