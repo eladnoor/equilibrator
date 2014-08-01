@@ -20,7 +20,7 @@
                     <li><a href="#dgf">What are &Delta;<sub>f</sub>G&deg; and &Delta;<sub>f</sub>G'&deg;?</a></li>
                     <li><a href="#dgm">What does the 'm' in  &Delta;<sub>r</sub>G'<sup>m</sup>, &Delta;<sub>f</sub>G'<sup>m</sup>, and E'<sup>m</sup> mean?</li>
                     <li><a href="#notAvailable">Why is &Delta;G "not available?"</a></li>
-                    <li><a href="#uncertainties">How do you calculate the uncertainty for each estimation</a></li>
+                    <li><a href="#uncertainties">How do you calculate the uncertainty for each estimation?</a></li>
                     <li><a href="#hConcentration">Why can't I change the concentration of Hydrogen ions?</a></li>
                     <li><a href="#waterConcentration">Why can't I change the concentration of water?</a></li>
                     <li><a href="#changeTemp">Why can't I change the temperature?</a></li>
@@ -283,29 +283,44 @@
             <div class="faqQuestion">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</div>
             
             <div class="faqAnswer">
-            <p>CO<sub>2</sub>(aq) is dissolved CO<sub>2</sub>. Dissolved CO<sub>2</sub> undergoes a spontaneous hydration reaction:</p>
-            
             <p>
-            CO<sub>2</sub> + H<sub>2</sub>O &rlhar; H<sub>2</sub>CO<sub>3</sub>
+            CO<sub>2</sub> in solution gives rise to several chemical species.
+            It can be quite confusing to think about the equilibrium between
+            these species - doing so requires care. CO<sub>2</sub>(aq) is dissolved
+            CO<sub>2</sub>. CO<sub>2</sub>(aq) undergoes a spontaneous hydration
+            reaction to form carbonic acid: </br>
+            <center>
+                CO<sub>2</sub> + H<sub>2</sub>O &rlhar; H<sub>2</sub>CO<sub>3</sub></br>
+            </center>
+            or a similar reaction of: </br>
+            <center>
+                CO<sub>2</sub> + OH<sup>-</sup> &rlhar; HCO<sub>3</sub><sup>-</sup></br>
+            </center>
             </p>
             
             <p>
-            The rate of the uncatalyzed hydration reaction is t<sub>&frac12</sub> = 1 minute. In some
-            species this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds it up
-            by a factor of 10<sup>6</sup> [6]. In aqueous environments, CO<sub>2</sub> is generally considered to be
-            in equilibrium with its hydrated forms - carbonic acid, bicarbonate and carbonate. CO2(total)
-            represents the collection of species including dissolved CO<sub>2</sub> (CO<sub>2</sub> + H<sub>2</sub>O)
-            and its 3 hydrated forms (H<sub>2</sub>CO<sub>3</sub>, HCO<sub>3</sub><sup>-</sup>
-            and CO<sub>3</sub><sup>2-</sup>). Note that CO<sub>2</sub>(total) contains a water molecule in addition to
-            CO<sub>2</sub>.
+            Several hydrated species form in water through addition or release of protons: carbonic acid (H<sub>2</sub>CO<sub>3</sub>), bicarbonate (HCO<sub>3</sub><sup>-</sup>) and carbonate (CO<sub>3</sub><sup>2-</sup>). In thermodynamics of biochemical reactions, different ionic states (known as pseudo-isomers) are lumped together. If you search for any of these hydrated species, eQuilibrator will use their lumped form - HCO<sub>3</sub><sup>-</sup>(aq). Sometimes it is easier to measure or analyze the sum of CO<sub>2</sub>(aq) and its three hydrated forms (H<sub>2</sub>CO<sub>3</sub>, HCO<sub>3</sub><sup>-</sup> and CO<sub>3</sub><sup>2-</sup>). This sum of species is termed CO<sub>2</sub>(total). Note that in the chemical formula of CO<sub>2</sub>(total) there are actually 3 oxygen atoms because it also includes the hydrating water molecule.
             </p>
-            
+
+            <center><img src="/media/images/co2_hydration.png"></center>
+
             <p>
-            It is generally simpler to measure the concentration of CO<sub>2</sub>(total) than it is to measure
-            the individual species. As such, it is common to apply the equilibrium assumption and use
-            CO<sub>2</sub>(total) in place of CO<sub>2</sub>(aq) in biochemical reactions. If you can measure the concentration
-            of CO<sub>2</sub>(aq), then it is reasonable to use it as a reactant.
+            When only the total concentration is known, it is assumed that there is equilibrium among the four species and one uses CO<sub>2</sub>(total) in place of CO<sub>2</sub>(aq). If, however, you know or can measure the concentration of CO<sub>2</sub>(aq) alone, then it is reasonable to use CO<sub>2</sub>(aq) as a reactant. The concentration of CO<sub>2</sub>(aq) is usually straightforward to calculate based on Henry’s law dictating, for example, that under standard atmospheric conditions of about 400ppm CO<sub>2</sub>(g) the concentration of CO<sub>2</sub>(aq) is about 10 uM. The concentrations of bicarbonate and CO<sub>2</sub>(total), however, depend strongly on pH. More information is supplied in the figure below and in this <a href="https://docs.google.com/spreadsheets/d/1WLIptgXKhVx17UBhSCrR96PbU9iBVJuKPEvyOx41VYM/edit?usp=sharing">link</a>. 
             </p>
+
+            <p>
+            The uncatalyzed hydration reaction (CO<sub>2</sub>(aq) + H<sub>2</sub>O &rlhar; H<sub>2</sub>CO<sub>3</sub>) takes minutes to equilibrate. In many organisms, however, this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds up the reaction by several orders of magnitude [10]. In cells, therefore, CO<sub>2</sub>(aq) is generally considered to be in equilibrium with its hydrated forms (carbonic acid, bicarbonate and carbonate) save in some special cases such as in cyanobacterial carbon concentrating mechanisms where carbonic anhydrase is absent from some parts of the cell. 
+            </p>
+
+            <p>
+            We note that anaplerotic reactions use bicarbonate as their substrate whereas decarboxylation reactions release CO<sub>2</sub> but in finding the &Delta;G' they can be written using either CO<sub>2</sub>(aq), HCO<sub>3</sub><sup>-</sup>(aq) or CO<sub>2</sub>(total) as long as the concentrations used are accurate. This is true because of the equilibrium among these species.
+            </p>
+
+            <p>
+            We know that this whole issue is quite confusing. You are welcome to suggest how to explain this better. 
+            </p>
+
+            
             </div>
           </div>
           

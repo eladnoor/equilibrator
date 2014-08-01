@@ -437,7 +437,7 @@ class Reaction(object):
                       by Mg<sup>2+</sup> ions. 
                       <a href="/faq#atpHydrolysis">Learn more &raquo;</a>"""
         elif my_hash == co2_hash:
-            return """You are looking for the &Delta;G' of CO<sub>2</sub> hydration.</br>
+            return """You are looking at the &Delta;G' of CO<sub>2</sub> hydration.</br>
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
         elif (self._FindCompoundIndex('C00011') is not None and 
               self._FindCompoundIndex('C00288') is None):
