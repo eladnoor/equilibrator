@@ -135,7 +135,7 @@
                 },
 
                 isTickFormatter: function(num, axis) {
-                    return (num).toFixed(2) + " mM";
+                    return (num).toFixed(2) + " M";
                 },
                 
                 phTickFormatter: function(num, axis) {
@@ -209,11 +209,11 @@
                     {% endif %}
                     [kJ/mol] as a function of 
                     {% if mode == "varyIs" %}
-                        Ionic Strength [mM]</br></br>
+                        Ionic Strength [M]</br></br>
                         at pH = <span data-var='ph' class='TKAdjustableNumber' data-min='0.0' data-max='14.0' data-step='0.25' data-format='%.2f'></span>
                     {% else %}
                         pH</br></br>
-                        at ionic strength = <span data-var='is' class='TKAdjustableNumber' data-min='0.0' data-max='0.35' data-step='0.01' data-format='%.2f'>  mM</span>
+                        at ionic strength = <span data-var='is' class='TKAdjustableNumber' data-min='0.0' data-max='0.35' data-step='0.01' data-format='%.2f'>  M</span>
                     {% endif %}
                     </br></br>
                     Estimated using {{ reaction.source_reference|safe }}

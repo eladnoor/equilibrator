@@ -333,8 +333,11 @@ class Reaction(object):
         self.reactants = reactants or []
         self.aq_params = aq_params or conditions.AqueousParams()
 
-        self._FilterProtonsAndElectrons()
-        self._Dedup()
+        self._is_formation_reaction = len(self.reactants) < 2
+
+        if not self._is_formation_reaction:
+            self._FilterProtonsAndElectrons()
+            self._Dedup()
 
         self._kegg_id = None
         self._uncertainty = None
@@ -690,15 +693,17 @@ class Reaction(object):
 
     def GetTemplateData(self, query=None):
         template_data = {'reaction': self,
-                         'query': query}
-        try:
-            template_data.update({
-                'balance_with_water_link': self.GetBalanceWithWaterLink(query),
-                'balance_electrons_link': self.GetBalanceElectronsLink(query),
-                'alberty_link': self.GetNewPriorityLink(99),
-                'cc_link': self.GetNewPriorityLink(1)})
-        except ReactantFormulaMissingError:
-            pass
+                         'query': query,
+                         'alberty_link': self.GetNewPriorityLink(99),
+                         'cc_link': self.GetNewPriorityLink(1)}
+        if not self._is_formation_reaction:
+            try:
+                template_data.update({
+                    'balance_with_water_link': self.GetBalanceWithWaterLink(query),
+                    'balance_electrons_link': self.GetBalanceElectronsLink(query)})
+            except ReactantFormulaMissingError:
+                pass
+
         template_data.update(self.aq_params.GetTemplateData())
         return template_data
     
