@@ -30,6 +30,7 @@ C00085	Remove	D-Fructose 6-phosphate	Incorrect value
 C00092	Add	D-Glucose-6-phosphate	Fixing of an incorrect value
 C00092	Add	Glucose-6-phosphate	Fixing of an incorrect value
 C00092	Remove	D-Glucose 6-phosphate	Incorrect value
+C00092	Remove	D-glucose 6-phosphate-2-	Incorrect value
 C00093	Add	Glycerol 1-phosphate	Adding a default name to the common D version
 C00095	Add	D-Fructofuranose	Adding an accurate name to the common D version
 C00095	Add	Fructose	Adding a default name to the common D version
@@ -90,6 +91,7 @@ C00216	Add	Arabinose	Adding a default name to the common D version
 C00221	Replace	C00031	Replacement of an alpha/beta value with the common value
 C00224	Add	Adenosine-5'-phosphosulfate	Fixing of an incorrect value
 C00224	Remove	Adenosine 5'-phosphosulfate	Incorrect value
+C00227  Remove  acetyl phosphate-2- Incorrect value
 C00231	Add	D-Xylulose-5-phosphate	Fixing of an incorrect value
 C00231	Add	Xylulose-5-phosphate	Adding a default name to the common D version
 C00231	Remove	D-Xylulose 5-phosphate	Incorrect value
@@ -1662,3 +1664,4 @@ C19761	Remove	1-O-(2-Acetamido-2-deoxy-alpha-D-glucopyranosyl)-1D-myo-inositol 3
 C19770	Add	N-Acetyl-beta-muramate-6-phosphate	Fixing of an incorrect value
 C19770	Remove	N-Acetyl-beta-muramate 6-phosphate	Incorrect value
 C19782	Add	Piperazine-2-carboxamide	Adding a default name to the common L version
+
