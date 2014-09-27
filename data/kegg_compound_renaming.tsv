@@ -91,7 +91,7 @@ C00216	Add	Arabinose	Adding a default name to the common D version
 C00221	Replace	C00031	Replacement of an alpha/beta value with the common value
 C00224	Add	Adenosine-5'-phosphosulfate	Fixing of an incorrect value
 C00224	Remove	Adenosine 5'-phosphosulfate	Incorrect value
-C00227  Remove  acetyl phosphate-2- Incorrect value
+C00227	Remove	acetyl phosphate-2-	Incorrect value
 C00231	Add	D-Xylulose-5-phosphate	Fixing of an incorrect value
 C00231	Add	Xylulose-5-phosphate	Adding a default name to the common D version
 C00231	Remove	D-Xylulose 5-phosphate	Incorrect value
