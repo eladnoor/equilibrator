@@ -4,6 +4,7 @@ import logging
 import numpy
 import urllib
 import os
+from scipy.sparse import csr_matrix
 
 from gibbs import conditions
 from gibbs import constants
@@ -47,7 +48,7 @@ class Preprocessing(object):
         elif gv is not None:
             logging.debug('len(gv) = %d' % len(gv))
             for g_ind, g_count in gv:
-                g[g_ind, 0] += g_count
+                g[g_ind, 0] += compound.coeff * g_count
         else:
             raise Exception('could not find index nor group vector for %s' 
                             % compound.compound.kegg_id)
@@ -64,6 +65,9 @@ class Preprocessing(object):
         for x, g in map(Preprocessing.GetCompoundVectors, reactants):
             x_reaction += x
             g_reaction += g
+
+        logging.debug('x = %s' % csr_matrix(x_reaction))
+        logging.debug('g = %s' % csr_matrix(g_reaction))
         return x_reaction, g_reaction
     
     @staticmethod
@@ -1085,12 +1089,12 @@ class Reaction(object):
         rtln10 = constants.R * constants.DEFAULT_TEMP * numpy.log(10)
         x = -dg0_prime / rtln10
 
-        exp = numpy.floor(x)
-        prefactor = 10**(x - exp)
-        if abs(exp) <= 2:
-            return '%.2g' % (10**x)
+        expo = numpy.floor(x)
+        prefactor = 10**(x - expo)
+        if abs(expo) <= 2:
+            return '%.3g' % (10**x)
         else:
-            return '%.1f &times; 10<sup>%d</sup>' % (prefactor, exp)
+            return '%.1f &times; 10<sup>%d</sup>' % (prefactor, expo)
         
     def NoDeltaGExplanation(self):
         """
