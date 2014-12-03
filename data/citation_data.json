@@ -20,7 +20,8 @@
         "author": ["Wagman D", "Evans W", "Parker V", "Schumm R", "Halow I", "Bailey S", "Churney K", "Nuttall R"],
         "title": "The NBS Tables of Chemical Thermodynamic Properties",
         "journal": "J. Phys. Chem. Ref. Data 11, (Supplement No. 2)",
-        "year": 1982
+        "year": 1982,
+        "url": "http://www.nist.gov/data/PDFfiles/jpcrdS2Vol11.pdf"
     },
     {
         "name": "Saeki (1985)",

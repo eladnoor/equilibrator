@@ -4,10 +4,6 @@ import itertools
 import unittest
 from util import django_utils
 
-# NOTE(flamholz): This is crappy. We're using the real database for
-# a unit test. I wish I knew of a better way.
-django_utils.SetupDjango()
-
 from gibbs import formula_parser
 
 
