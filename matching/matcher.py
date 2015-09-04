@@ -1,5 +1,6 @@
 import itertools, logging
 from gibbs.models import CommonName, Compound, Enzyme
+from haystack.query import SearchQuerySet
 
 
 class Error(Exception):
@@ -128,9 +129,8 @@ class Matcher(object):
             A list of CommonName objects matching the query.
         """
         try:
-            common_names = CommonName.objects.get(name__iexact=query
-                )
-            return [common_names]
+            res = SearchQuerySet().filter(text__exact=query).best_match()
+            return [res.object]
         except Exception as e:
             logging.warning('Query failed: ' + str(e))
             return []

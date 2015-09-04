@@ -78,7 +78,7 @@ class ReactionMatcher(object):
         
         Args:
             compound_matcher: a matcher.Matcher object that matches
-                              individual compounds.
+                individual compounds.
         """
         self._matcher = compound_matcher
     

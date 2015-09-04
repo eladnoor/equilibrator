@@ -3,11 +3,14 @@
 import unittest
 from util import django_utils
 
-# NOTE(flamholz): This is crappy. We're using the real database for
-# a unit test. I wish I knew of a better way.
-django_utils.SetupDjango()
-
 import approximate_matcher
+
+"""
+This test is probably useless now because 
+1. It doesn't appear to connect to a DB. 
+2. We are primarily using the haystack based search for matching.
+Should figure out how to mock haystack connections for testing.
+"""
 
 class TestMatcher(unittest.TestCase):
     """Tests for matcher.Matcher."""
