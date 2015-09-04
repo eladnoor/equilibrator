@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
+import datetime
 import hashlib
+import haystack
 import logging
 import numpy
 import re
@@ -43,6 +45,13 @@ class CommonName(models.Model):
     def __unicode__(self):
         return self.name
     
+    def TypeStr(self):
+        if self.compound_set.count():
+            return 'Compound'
+        elif self.enzyme_set.count():
+            return 'Enzyme'
+        return ''
+        
     
 class ValueSource(models.Model):
     """
