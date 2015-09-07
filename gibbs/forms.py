@@ -19,14 +19,22 @@ class EnzymeForm(forms.Form):
     
     # Convenience accessors for clean data with defaults.
     cleaned_ec = property(lambda self: self.cleaned_data['ec'])
-       
-class SearchForm(forms.Form):
+
+
+class BaseSearchForm(forms.Form):
     def _GetWithDefault(self, key, default):
         if (key not in self.cleaned_data or
             self.cleaned_data[key] is None):
             return default
         return self.cleaned_data[key]
+
+
+class SuggestForm(BaseSearchForm):
+    query = forms.CharField(max_length=2048, required=False)
+    cleaned_query = property(lambda self: self._GetWithDefault('query', ''))
     
+    
+class SearchForm(BaseSearchForm):
     query = forms.CharField(max_length=2048, required=False)
     ph = forms.FloatField(required=False)
     pmg = forms.FloatField(required=False)
@@ -48,6 +56,7 @@ class SearchForm(forms.Form):
         lambda self: self._GetWithDefault('max_priority', 0))
     cleaned_mode  = property(
         lambda self: self._GetWithDefault('mode', ''))
+
 
 class BaseReactionForm(SearchForm):
     
@@ -72,6 +81,7 @@ class BaseReactionForm(SearchForm):
     # Convenience accessors for clean data with defaults.
     cleaned_reactantsPhase = property(lambda self: self.cleaned_data['reactantsPhase'])
     cleaned_reactantsConcentration = property(GetReactantConcentrations)
+    
     
 class ReactionForm(BaseReactionForm):
     
@@ -98,6 +108,7 @@ class ReactionForm(BaseReactionForm):
     cleaned_submit = property(
         lambda self: self._GetWithDefault('submit', 'Update'))
 
+
 class ReactionGraphForm(ReactionForm):
     vary_ph = forms.BooleanField(required=False)
     vary_is = forms.BooleanField(required=False)
@@ -110,6 +121,7 @@ class ReactionGraphForm(ReactionForm):
         lambda self: self._GetWithDefault('vary_pmg', False))
     cleaned_vary_is  = property(
         lambda self: self._GetWithDefault('vary_is', False)) 
+    
     
 class CompoundForm(BaseReactionForm):
    

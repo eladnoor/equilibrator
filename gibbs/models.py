@@ -13,9 +13,9 @@ from django.db import models
 from gibbs import constants
 from gibbs import formula_parser
 from gibbs import conditions
-#from django.core.files.base import ContentFile
 import json
 from util.thumbnail import InChI2Thumbnail
+
 
 class CommonName(models.Model):
     """
