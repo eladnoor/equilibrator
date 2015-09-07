@@ -62,42 +62,6 @@ class RegexApproxMatcher(matcher.Matcher):
         matches = models.CommonName.objects.filter(
             name__iregex=expression).prefetch_related(*self._prefetch_objects)
         return matches[:5*self._max_results]
-        
-
-class RegexApproxMatcher(matcher.Matcher):
-    """A matcher that runs regular expressions directly on the database."""
-            
-    def _PrepareExpression(self, query):
-        """Converts the query into a regular expression.
-                
-        Args:
-            query: the string search query.
-        
-        Returns:
-            A regular expression string.
-        """
-        if not query:
-            return None
-    
-        # Escape regex special characters in the input (search for them
-        # literally). Also, we allow '-', ',', '+' and digits in addition to spaces.
-        # NOTE(flamholz): We are using MySQL regex syntax here. Might not be 
-        # compatible with other databases. See reference:
-        #   http://dev.mysql.com/doc/refman/5.1/en/regexp.html
-        query = re.escape(query.strip().lower())
-        query = re.sub('(\\\?[\s-])+', '[-+,[:digit:][:blank:]]+', query)
-        # We allow leading and trailing junk.
-        return '.*%s.*' % query
-
-    def _FindNameMatches(self, query):
-        """Override database search."""
-        expression = self._PrepareExpression(query)
-        if not expression:
-            return []
-        
-        matches = models.CommonName.objects.filter(
-            name__iregex=expression).prefetch_related(*self._prefetch_objects)
-        return matches[:5*self._max_results]
 
 
 class EditDistanceMatcher(RegexApproxMatcher):

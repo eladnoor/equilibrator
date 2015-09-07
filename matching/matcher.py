@@ -167,7 +167,7 @@ class Matcher(object):
         """
         query_len = float(len(query))
         candidate_len = float(len(str(match.key)))
-        return query_len / candidate_len
+        return (query_len / candidate_len)
     
     def _ScoreMatches(self, query, matches):
         """Set the match scores for all matches.
