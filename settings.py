@@ -6,8 +6,12 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, os.path.normcase(PROJECT_ROOT))
 sys.path.insert(0, os.path.join(PROJECT_ROOT, ".."))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+
+ALLOWED_HOSTS = [
+    '*',  # Allow domain and subdomains
+]
 
 ADMINS = (
     ('Avi Flamholz', 'flamholz@gmail.com'),
@@ -105,12 +109,22 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack', 
+    
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django_extensions',
     'gibbs',
     'debug_toolbar',
 )
+
+import os
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'xapian_backend.XapianEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
+    },
+}
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
