@@ -15,7 +15,7 @@ http://equilibrator.weizmann.ac.il/
 
 # Installing Python Dependencies
 ```
-sudo pip install django==1.6.5 django-extensions django-haystack whoosh
+sudo pip install django==1.6.5 django-extensions django-haystack xapian-haystack
 sudo pip install numpy scipy nltk pyparsing MySQL-python
 sudo pip install django-debug-toolbar
 ```
