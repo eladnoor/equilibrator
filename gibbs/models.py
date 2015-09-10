@@ -297,14 +297,11 @@ class SpeciesGroup(models.Model):
             source = ValueSource.objects.get(name=source_name)
             url = source.url
         except ValueSource.DoesNotExist:
-            url = None
-
-        if url:
-            return '<a href="%s">%s</a>' % (url, source_name)
-        else:
-            return '<a href="/data_refs">%s</a>' % (source_name)
+            url = "/data_refs"
+        return url
 
     source_reference = property(GetSourceReferenceLink)
+            
             
 class Compound(models.Model):
     """

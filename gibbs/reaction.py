@@ -324,6 +324,7 @@ class CompoundWithCoeff(object):
     has_multiple_phases = property(HasMultiplePhases)
     kegg_id = property(GetKeggID)
 
+
 class Reaction(object):
     """A reaction."""
     
@@ -1174,12 +1175,6 @@ class Reaction(object):
         return True
     
     def GetSourceReference(self):
-        """
-            Assuming that all reactants in the chosen priority group have
-            the same source reference, we provide the ref from the first
-            reactant to represent all of them.
-        """
-        #return self.reactants[0].compound._GetDGSource()
         source_names = set(map(lambda x : str(x.compound._GetDGSource()), self.reactants))
         return ', '.join([self.GetSourceReferenceLink(s) for s in source_names])
     
@@ -1188,13 +1183,20 @@ class Reaction(object):
             source = models.ValueSource.objects.get(name=source_name)
             url = source.url
         except Exception:
-            url = None
+            url = "/data_refs"
+        return url
         
-        if url:
-            return '<a href="%s">%s</a>' % (url, source_name)
-        else:
-            return '<a href="/data_refs">%s</a>' % (source_name)
-    
+    def GetSourceReferences(self):
+        """Returns a list of two-tuples (name, url).
+        
+        Assuming that all reactants in the chosen priority group have
+        the same source reference, we provide the ref from the first
+        reactant to represent all of them.
+        """
+        source_names = set(map(lambda x : str(x.compound._GetDGSource()), self.reactants))
+        urls = [self.GetSourceReferenceLink(n) for n in source_names]
+        return zip(source_names, urls)
+        
     def GetComponentContributionAnalysis(self):
         x, g = Preprocessing.GetReactionVectors(self.reactants)
         return Preprocessing.Analyze(x, g)
@@ -1230,4 +1232,5 @@ class Reaction(object):
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     is_phys_conc = property(IsPhysiologicalConcentration)
     source_reference = property(GetSourceReference)
+    source_references = property(GetSourceReferences)
     analyze_cc = property(GetComponentContributionAnalysis)
