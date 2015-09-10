@@ -23,4 +23,4 @@ def CompoundImage(request):
         image_data = open(NO_STRUCTURE_THUMBNAIL, 'r').read()
     else:
         image_data = base64.decodestring(compound.thumbnail)
-    return HttpResponse(image_data, mimetype='image/png')
+    return HttpResponse(image_data, content_type='image/png')
