@@ -22,7 +22,7 @@ class CommonName(models.Model):
         A common name of a compound.
     """
     name = models.CharField(max_length=500)
-    enabled = models.BooleanField(True)
+    enabled = models.BooleanField(default=True)
     
     @staticmethod
     def GetOrCreate(name):

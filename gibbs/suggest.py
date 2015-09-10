@@ -26,4 +26,4 @@ def SuggestJson(request):
               'suggestions': suggestions}
     json_data = json.dumps(output)
     
-    return HttpResponse(json_data, mimetype='application/json')
+    return HttpResponse(json_data, content_type='application/json')
