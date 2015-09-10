@@ -216,7 +216,11 @@
                         at ionic strength = <span data-var='is' class='TKAdjustableNumber' data-min='0.0' data-max='0.35' data-step='0.01' data-format='%.2f'>  M</span>
                     {% endif %}
                     </br></br>
-                    Estimated using {{ reaction.source_reference|safe }}
+                    Estimated using
+                    {% for source_name, url in reaction.source_references %}
+                        <a href="{{ url }}" target="_blank">{{ source_name }}</a>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
                 </p>
             {% if conditions and conditions != "standard" %}
                 <table class="results">

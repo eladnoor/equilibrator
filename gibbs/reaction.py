@@ -1173,11 +1173,7 @@ class Reaction(object):
             if c.phase and not c.phase.IsPhysiological():
                 return False
         return True
-    
-    def GetSourceReference(self):
-        source_names = set(map(lambda x : str(x.compound._GetDGSource()), self.reactants))
-        return ', '.join([self.GetSourceReferenceLink(s) for s in source_names])
-    
+        
     def GetSourceReferenceLink(self, source_name):
         try:
             source = models.ValueSource.objects.get(name=source_name)
@@ -1231,6 +1227,5 @@ class Reaction(object):
     is_graph_link = property(GetIonicStrengthGraphLink)
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     is_phys_conc = property(IsPhysiologicalConcentration)
-    source_reference = property(GetSourceReference)
     source_references = property(GetSourceReferences)
     analyze_cc = property(GetComponentContributionAnalysis)
