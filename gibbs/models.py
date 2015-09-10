@@ -186,7 +186,7 @@ class Specie(models.Model):
         return "nH = %d, nMg = %d, z = %d, dG0_f = %.2f, phase = %s" %\
             (self.number_of_hydrogens, self.number_of_mgs, self.net_charge,
              self.formation_energy, self.phase)
-    
+
 class SpeciesGroup(models.Model):
     """
         A set of different species (AKA pseudoisomers/protonation states) that
@@ -290,6 +290,21 @@ class SpeciesGroup(models.Model):
         
         logging.debug('total: dG0\' = %.1f' % dg0_prime)
         return dg0_prime
+
+    def GetSourceReferenceLink(self):
+        source_name = self.formation_energy_source
+        try:
+            source = ValueSource.objects.get(name=source_name)
+            url = source.url
+        except ValueSource.DoesNotExist:
+            url = None
+
+        if url:
+            return '<a href="%s">%s</a>' % (url, source_name)
+        else:
+            return '<a href="/data_refs">%s</a>' % (source_name)
+
+    source_reference = property(GetSourceReferenceLink)
             
 class Compound(models.Model):
     """
