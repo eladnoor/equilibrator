@@ -1180,6 +1180,7 @@ class Reaction(object):
             url = source.url
         except Exception:
             url = "/data_refs"
+        url = url or "/data_refs"
         return url
         
     def GetSourceReferences(self):

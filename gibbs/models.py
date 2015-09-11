@@ -298,6 +298,7 @@ class SpeciesGroup(models.Model):
             url = source.url
         except ValueSource.DoesNotExist:
             url = "/data_refs"
+        url = url or "/data_refs"
         return url
 
     source_reference = property(GetSourceReferenceLink)
@@ -849,8 +850,6 @@ class StoredReaction(models.Model):
         rxn = reaction.Reaction(reactants)
         return rxn
         
-#    link = property(Link)
-#    reaction_string = property(ToString)
     
 class Enzyme(models.Model):
     """A single enzyme."""
