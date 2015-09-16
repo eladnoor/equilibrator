@@ -19,13 +19,14 @@ def ResultsPage(request):
     matcher = service_config.Get().compound_matcher
     
     query = form.cleaned_query
+    logging.debug('Query: "%s"', query)
     if not query.strip():
         response = render_to_response('main.html', {})
         return response
     
     # Check if we should parse and process the input as a reaction.
     if query_parser.IsReactionQuery(query):
-        logging.debug('Parsing the query as a reaction')
+        logging.info('Parsing the query as a reaction')
         try:
             parsed_reaction = query_parser.ParseReactionQuery(query)
         except Exception:
@@ -35,7 +36,7 @@ def ResultsPage(request):
         best_reaction = reaction_matches.GetBestMatch()
         
         if not best_reaction:
-            return render_to_response('search_error_page.html')
+            return render_to_response('search_error_page.html', {'query': query})
 
         logging.debug('Generating a reaction from the matched KEGG IDs')
         aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES)         
@@ -46,7 +47,7 @@ def ResultsPage(request):
 
     else:
         # Otherwise we try to parse it as a single compound.
-        logging.debug('Parsing the query as a single compound')
+        logging.debug('Parsing the query as a single compound/enzyme')
         results = matcher.Match(query)
         template_data = {}        
         template_data['compound_results'] = [m for m in results if m.IsCompound()]
