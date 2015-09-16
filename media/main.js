@@ -30,9 +30,10 @@ $(document).ready(function(){
 
     // Set up autocomplete
     var options = {
-      delimiter: /(^|\+|=|<=>|=>)+\s+\d*\s*/,
+      delimiter: /(^|\+|<=>|=>|=|->|<->)+\s*\d*\s*/,
       serviceUrl: '/suggest',
-      groupBy: 'cat'
+      groupBy: 'cat',
+      preventBadQueries: false
     };
     var queryField = $('#queryField');
     if (queryField) {
