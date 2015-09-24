@@ -118,12 +118,18 @@ INSTALLED_APPS = (
     'debug_toolbar',
 )
 
-import os
+# Haystack related settings - for search/autocomplete.
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'xapian_backend.XapianEngine',
+        'ENGINE': 'gibbs.haystack_backends.CustomXapianEngine',
         'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
     },
+}
+
+# Custom Xapian settings
+XAPIAN_SETTINGS = {
+    'min_ngram_length': 2,
+    'max_ngram_length': 8,
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
