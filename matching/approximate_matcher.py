@@ -9,6 +9,7 @@ import re
 from django.db.models import Q
 from gibbs import models
 from haystack.query import SearchQuerySet
+from haystack.inputs import Clean
 
 
 """
@@ -16,16 +17,22 @@ TODO: Delete the Regex and EditDistanceApproxMatchers if the
 haystack-based search works out on the server.
 """
 
-
 class HaystackApproxMatcher(matcher.Matcher):
     """A matcher that uses the Haystack search plugin."""
     
+    def _GetScore(self, query, match):
+        """Custom edit-distance based scoring."""
+        str_query = str(query)
+        str_candidate = str(match.key)
+        dist = float(edit_distance(str_query, str_candidate))
+        max_len = float(max(len(str_query), len(str_candidate)))
+        return (max_len - dist) / max_len
+    
     def _FindNameMatches(self, query):
         """Override database search."""
-        res = SearchQuerySet().autocomplete(name_auto=query)[:2*self._max_results]
-        matches = [r.object for r in res]
+        auto_res = SearchQuerySet().autocomplete(name_auto=query)[:self._max_results]
+        matches = [r.object for r in auto_res]
         return matches
-        
     
 
 class RegexApproxMatcher(matcher.Matcher):
@@ -98,8 +105,21 @@ class CascadingMatcher(matcher.Matcher):
     def __init__(self, max_results=10, min_score=0.0, match_enzymes=True):
         matcher.Matcher.__init__(self, max_results, min_score, match_enzymes)
         self._exact_matcher = matcher.Matcher(max_results, min_score, match_enzymes)
-        self._approx_matcher = HaystackApproxMatcher(max_results, min_score)
-    
+        self._approx_matcher = HaystackApproxMatcher(5*max_results, min_score)
+
+    def _FilterDups(self, matches):
+        """Removes matches pointing to the same primary key."""
+        match_ids = set()
+        ret = []
+        for m in matches:
+            mid = '%s:%s', (m.key.TypeStr(), m.value.pk)
+            if mid in match_ids:
+                # Ignore dups later in the list.
+                continue
+            match_ids.add(mid)
+            ret.append(m)
+        return ret
+
     def Match(self, query):
         """Override base matching implementation."""  
         matches = self._exact_matcher.Match(query)
@@ -110,6 +130,7 @@ class CascadingMatcher(matcher.Matcher):
             if m.key not in match_set:
                 matches.append(m)
         
-        logging.debug('Found %d matches, while the maximum is %d' %
+        logging.info('Found %d matches, while the maximum is %d' %
                       (len(matches), self._max_results))
+        matches = self._FilterDups(matches)
         return self._SortAndClip(matches)
