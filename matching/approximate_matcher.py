@@ -105,7 +105,7 @@ class CascadingMatcher(matcher.Matcher):
     def __init__(self, max_results=10, min_score=0.0, match_enzymes=True):
         matcher.Matcher.__init__(self, max_results, min_score, match_enzymes)
         self._exact_matcher = matcher.Matcher(max_results, min_score, match_enzymes)
-        self._approx_matcher = HaystackApproxMatcher(5*max_results, min_score)
+        self._approx_matcher = HaystackApproxMatcher(2*max_results, min_score)
 
     def _FilterDups(self, matches):
         """Removes matches pointing to the same primary key."""
