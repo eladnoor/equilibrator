@@ -101,12 +101,6 @@ class ReactionMatcher(object):
 
         return compound_name, phase_name
     
-    def _MakeReactionSide(self, parsed_side):
-        side = []
-        for coeff, name in parsed_side:
-            side.append(self._MakeReactionCompoundMatch(coeff, name))
-        return side
-    
     def MatchReaction(self, parsed_query):
         """Parse the query as a reaction.
         
