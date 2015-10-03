@@ -4,6 +4,10 @@ body {
     padding: 0;
 }
 
+.footnote {
+    font-size: 10pt;
+}
+
 .strong {
     font-weight: bold;
 }
