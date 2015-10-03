@@ -269,8 +269,9 @@ class CompoundWithCoeff(object):
         return True
 
     def DeltaG0Prime(self, aq_params):
-        dg0_prime = self.compound.DeltaG0Prime(aq_params,
-                                               self.phase.PhaseName())
+        dg0_prime = self.compound.DeltaG0Prime(aq_params, self.phase.PhaseName())
+        if dg0_prime is None:
+            return None
         return self.coeff * dg0_prime
         
     def GetPhaseName(self):
@@ -332,8 +333,7 @@ class Reaction(object):
         """Construction.
         
         Args:
-            substrates: a list of CompoundWithCoeff objects.
-            products: a list of CompoundWithCoeff objects.
+            reactants: a list of CompoundWithCoeff objects.
         """
         self.reactants = reactants or []
         self.aq_params = aq_params or conditions.AqueousParams()
@@ -485,6 +485,13 @@ class Reaction(object):
                       (my_string, len(matching_stored_reactions)))
         
         return matching_stored_reactions
+        
+    @property
+    def stored_reaction_id(self):
+        stored_rxns = self._GetAllStoredReactions()
+        if not stored_rxns:
+            return None
+        return stored_rxns[0].kegg_id
     
     def _GetCatalyzingEnzymes(self):
         """
@@ -560,12 +567,14 @@ class Reaction(object):
         return Reaction.FromIds(compound_list, aq_params=aq_params)
     
     @staticmethod
-    def FromIds(compound_list, aq_params=None):
+    def FromIds(compound_list, aq_params=None, fetch_db_names=False):
         """Build a reaction object from lists of IDs.
         
         Args:
-            compound_list: an iterable of (coeff, kegg_id, name) of reactants.
-            concentration_profile: a ConcentrationProfile object.
+            compound_list: an iterable of dictionaries of reactants.
+                keys: kegg_id, coeff, phase, name
+            aq_params: an aqueous params object. 
+            fetch_db_names: if compound names should be fetched from the database.
             
         Returns:
             A properly set-up Reaction object or None if there's an error.
@@ -575,6 +584,9 @@ class Reaction(object):
         kegg_id_to_compound = {c.kegg_id:c for c in comps}
         for d in compound_list:
             d['compound'] = kegg_id_to_compound[d['kegg_id']]
+        if fetch_db_names:
+            for d in compound_list:
+                d['name'] = d['compound'].FirstName()
         reactants = map(CompoundWithCoeff.FromDict, compound_list)
         return Reaction(reactants, aq_params=aq_params)
         
@@ -1223,6 +1235,7 @@ class Reaction(object):
     e_uncertainty = property(EUncertainty)
     no_dg_explanation = property(NoDeltaGExplanation)
     dg_uncertainty = property(DeltaGUncertainty)
+    link_url = property(GetHyperlink)
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)
