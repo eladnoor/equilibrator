@@ -1,12 +1,13 @@
-{% with "Pathway" as title %}
+{% with "Pathway Analysis" as title %}
     {% include "header.html" %}
 {% endwith %}
 
-<div id='pathwayDefinition' class='centerize'>
+
+<div id='searchResults'>
     <table class='results'>
-        <tr class='infoTableHeader'>
-            <th colspan="100%">Pathway Analysis Results</th>
-        </tr>
+            <tr class='infoTableHeader'>
+                <th colspan="100%">Pathway Analysis Results</th>
+            </tr>
         <tr>
             <td width="20%"><strong>Net Reaction</strong></td>
             <td><a href='{{pathway.net_reaction.link_url}}'>{{pathway.net_reaction}}</a></td>
@@ -24,7 +25,7 @@
             <td>{{mdf_result.max_total_dG|floatformat}} kJ/mol</td>
         </tr>
         <tr>
-            <td width="20%"><strong>MDF</strong></td>
+            <td width="20%"><strong><a href="/faq#mdf">MDF</a></strong></td>
             <td>{{mdf_result.mdf|floatformat}} kJ/mol</td>
         </tr>
     </table>

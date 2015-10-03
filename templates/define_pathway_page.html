@@ -1,12 +1,47 @@
 {% with "Pathway" as title %}
     {% include "header.html" %}
 {% endwith %}
-    
-<form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    Pathway file: <input type='file' name='pathway_file' />
-    <input type='submit' />
-</form>
+   
+<div class='centerize'>
+	<form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data">
+	    {% csrf_token %}
+	    <table class='results'>
+	    	<tr class='infoTableHeader'>
+            	<th colspan="100%">Upload Pathway for Analysis</th>
+        	</tr>
+	    	<tr>
+	    		<td>Pathway definition CSV</td>
+	    		<td><input type="file" name="pathway_file" /></td>
+	    	</tr>
+	    	<tr>
+	    		<td>Minimum concentration<sup>&dagger;</sup>:</td>
+	    		<td><input type="text" name='min_c' value='1e-6' /> Molar</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Maximum concentration<sup>&dagger;</sup>:</td>
+	    		<td><input type="text" name='max_c' value='100e-3'/> Molar</td>
+	    	</tr>
+	    	<tr>
+	    		<td>Concentration bounds (optional<sup>&Dagger;</sup>)</td>
+	    		<td><input type="file" name="bounds_file" /></td>
+	    	</tr>
+	    	
+	    	<tr class='infoTableHeader' align='center'>
+	    		<td colspan="100%"><input type='submit' /></td>
+	    	</tr>
+	    </table>
+	</form>
+
+	<div class='footnote'>
+		<sup>&dagger;</sup>Minimum and maximum concentration allowed for metabolites. These values are overridden by compound specific values supplied by
+		uploading a concentration bounds file. Also, specific default bounds are supplied for ubiquitous cofactors like CoA and ATP based on
+		measurements from <emph>E. coli</emph>.
+	</div>
+	<div class='footnote'>
+		<sup>&Dagger;</sup>If no bounds are given, default bounds will be used. By default, concentrations are allowed to vary between 1 &mu;M and 100 mM except 
+		for cofactors like ATP and CoA which are given specific concentration ranges based on measurements from <emph>E. coli</emph>.
+	</div>
+</div>
 
 
 {% include "footer.html" %}

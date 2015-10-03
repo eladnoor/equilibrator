@@ -3,7 +3,7 @@
 {% endwith %}
 
     <div id="searchResults">
-  {% if enzymes_first %}
+    {% if enzymes_first %}
     {% include "enzyme_search_results.html" %}
     {% include "compound_search_results.html" %}
     {% else %}
@@ -18,5 +18,7 @@
             </div>
         </div>
     {% endif %}
-    {% include "footer.html" %}
     </div>
+
+    {% include "footer.html" %}
+    
