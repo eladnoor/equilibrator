@@ -51,6 +51,9 @@ class ParsedPathway(object):
                 net_rxn_data.append(self._reactant_dict(coeff, kid))
         self.net_reaction = Reaction.FromIds(net_rxn_data, fetch_db_names=True)
         self._model = self.pathway_model
+
+    def set_bounds(self, bounds):
+        self.bounds = bounds
             
     @staticmethod
     def _reactant_dict(coeff, kid, negate=False):
