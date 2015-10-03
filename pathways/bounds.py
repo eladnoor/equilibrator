@@ -1,5 +1,5 @@
 #!/usr/bin/python
-
+import logging
 import csv
 import numpy as np
 
@@ -219,7 +219,8 @@ class Bounds(BaseBounds):
     @classmethod
     def from_csv_filename(cls, fname, default_lb=None, default_ub=None):
         with open(fname) as f:
-            return cls.from_csv_file(f)
+            return cls.from_csv_file(
+                f, default_lb=default_lb, default_ub=default_ub)
 
     def Copy(self):
         """Returns a deep copy of self."""
@@ -239,9 +240,8 @@ class Bounds(BaseBounds):
         Args:
             key: a string key.
         """
-        if self.lower_bounds and key in self.lower_bounds:
-            return self.lower_bounds[key]
-        return self.default_lb
+        val = self.lower_bounds.get(key) or self.default_lb
+        return val
     
     def GetUpperBound(self, key):
         """Get the upper bound for this key.
@@ -249,7 +249,6 @@ class Bounds(BaseBounds):
         Args:
             key: a string key.
         """
-        if self.upper_bounds and key in self.upper_bounds:
-            return self.upper_bounds[key]
-        return self.default_ub
+        val = self.upper_bounds.get(key) or self.default_ub
+        return val
     
