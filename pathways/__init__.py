@@ -7,11 +7,14 @@ import re
 from gibbs import constants
 from gibbs.reaction import Reaction, CompoundWithCoeff
 from matching import query_parser
+from os import path
 from pathways.bounds import Bounds
 from pathways.thermo_models import KeggPathwayModel
 
-
-DEFAULT_BOUNDS = Bounds.from_csv_filename('pathways/data/cofactors.csv')
+RELPATH = path.dirname(path.realpath(__file__))
+COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
+DEFAULT_BOUNDS = Bounds.from_csv_filename(
+    COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
 DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 
 

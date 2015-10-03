@@ -5,10 +5,12 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from gibbs.forms import PathwayForm
+from os import path
 from pathways import ParsedPathway
 from pathways.bounds import Bounds
 
-COFACTORS_FNAME = 'pathways/data/cofactors.csv'
+RELPATH = path.dirname(path.realpath(__file__))
+COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
 
 
 def make_bounds(request, form):
