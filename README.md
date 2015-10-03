@@ -11,12 +11,13 @@ http://equilibrator.weizmann.ac.il/
 - PyParsing 1.5.7 (also 2.0.1 tested)
 - NLTK 2.0.4
 - NumPy and SciPy
+- Pulp (GLPK)
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
 
 # Installing Python Dependencies
 ```
 sudo pip install django==1.7.10 django-extensions django-haystack xapian-haystack
-sudo pip install numpy scipy nltk pyparsing MySQL-python
+sudo pip install numpy scipy nltk pulp pyparsing MySQL-python
 sudo pip install django-debug-toolbar
 ```
 
