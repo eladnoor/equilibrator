@@ -1,0 +1,12 @@
+{% with "Pathway" as title %}
+    {% include "header.html" %}
+{% endwith %}
+    
+<form name="pathway_form" action="/prp" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    Pathway file: <input type='file' name='pathway_file' />
+    <input type='submit' />
+</form>
+
+
+{% include "footer.html" %}
