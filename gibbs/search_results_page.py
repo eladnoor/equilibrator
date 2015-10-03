@@ -7,6 +7,7 @@ from gibbs import reaction
 from gibbs.forms import SearchForm
 from gibbs import service_config
 
+
 def ResultsPage(request):
     """Renders the search results page for a given query."""
     form = SearchForm(request.GET)
