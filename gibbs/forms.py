@@ -145,4 +145,7 @@ class CompoundForm(BaseReactionForm):
     
 
 class PathwayForm(forms.Form):
-    pathway_file = forms.FileField()
+    pathway_file = forms.FileField(required=True)
+    bounds_file = forms.FileField(required=False)
+    min_c = forms.FloatField(required=False)
+    max_c = forms.FloatField(required=False)
