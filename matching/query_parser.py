@@ -17,9 +17,8 @@ def _parsedCompound(c_list):
     return 1, c_list[0]
 
 
-def _MakeReactionParser():
-    """Builds a pyparsing-based recursive descent parser for chemical reactions."""
-    
+def _MakeReactionSideParser():
+    """Builds a parser for a side of a reaction."""
     # Coefficients are usually integral, but they can be floats or fractions too.
     int_coeff = pyparsing.Word(pyparsing.nums)
     float_coeff = pyparsing.Word(pyparsing.nums + '.' + pyparsing.nums)
@@ -36,28 +35,34 @@ def _MakeReactionParser():
     compound_name_component = pyparsing.Word(pyparsing.alphanums + "()",
                                              pyparsing.alphanums + "-+,()'")
     compound_name = pyparsing.Forward()
-    compound_name <<= (compound_name_component + pyparsing.ZeroOrMore(compound_name_component))
+    compound_name << (compound_name_component + pyparsing.ZeroOrMore(compound_name_component))
     compound_name.setParseAction(lambda s: ' '.join(s))
     
     compound_with_coeff = pyparsing.Forward()
-    compound_with_coeff <<= ((optional_coeff + compound_name) | compound_name)
+    compound_with_coeff << ((optional_coeff + compound_name) | compound_name)
     compound_with_coeff.setParseAction(_parsedCompound)
     compound_with_coeff.setResultsName("compound")
     
     compound_with_separator = pyparsing.Forward()
-    compound_with_separator <<= (compound_with_coeff + compound_separator)
+    compound_with_separator << (compound_with_coeff + compound_separator)
     
     reaction_side = pyparsing.Forward()
-    reaction_side <<= (pyparsing.ZeroOrMore(compound_with_separator) +
+    reaction_side << (pyparsing.ZeroOrMore(compound_with_separator) +
                       compound_with_coeff)
     reaction_side.setParseAction(lambda l: [l])
     reaction_side.setResultsName("reaction_side")
+    return reaction_side
+    
+
+def _MakeReactionParser():
+    """Builds a pyparsing-based recursive descent parser for chemical reactions."""
+    reaction_side = _MakeReactionSideParser()
     
     side_separators = [pyparsing.Literal(s) for s in constants.POSSIBLE_REACTION_ARROWS]
     side_separator = pyparsing.Or(side_separators).suppress()
     
     reaction = pyparsing.Forward()
-    reaction <<= (reaction_side + side_separator + reaction_side)
+    reaction << (reaction_side + side_separator + reaction_side)
     return reaction
 
 
