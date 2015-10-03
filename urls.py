@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     (r'^data_refs', 'equilibrator.gibbs.data_refs_page.RefsPage'),
     (r'^search', 'equilibrator.gibbs.search_results_page.ResultsPage'),
     (r'^suggest', 'equilibrator.gibbs.suggest.SuggestJson'),
+    (r'^pathway$', 'equilibrator.gibbs.define_pathway_page.DefinePathwayPage'),
+    (r'^pathway/results', 'equilibrator.gibbs.pathway_result_page.PathwayResultPage'),
     (r'^robots\.txt', 'equilibrator.gibbs.info_pages.Robots'),
     # Example:
     # (r'^equilibrator/', include('equilibrator.foo.urls')),
