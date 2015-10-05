@@ -216,6 +216,25 @@ class CompoundMDFData(object):
     def bounds_equal(self):
         return self.lb == self.ub
 
+    @staticmethod
+    def html_conc(conc):
+        if conc <= 9.999e-4:
+            return '%.1f &mu;M' % (1e6*conc)
+        return '%.1f mM' % (1e3*conc)
+
+    @property
+    def html_concentration(self):
+        return self.html_conc(self.concentration)
+
+    @property
+    def html_lb(self):
+        return self.html_conc(self.lb)
+
+    @property
+    def html_ub(self):
+        return self.html_conc(self.ub)
+    
+
 
 class PathwayMDFData(object):
 
@@ -249,3 +268,11 @@ class PathwayMDFData(object):
     @property
     def max_total_dG(self):
         return self.mdf_result.max_total_dG
+
+    @property
+    def max_total_driving_force(self):
+        return -self.min_total_dG
+
+    @property
+    def min_total_driving_force(self):
+        return -self.max_total_dG

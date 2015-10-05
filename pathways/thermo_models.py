@@ -45,11 +45,6 @@ class MDFResult(object):
         # May be set after initialization. Optional.
         self.max_total_dG = max_total_dG
         self.min_total_dG = min_total_dG
-
-    @property
-    def reaction_dGs_and_prices(self):
-        return zip(self.dG_r_prime_adj.flatten().tolist()[0],
-                   self.reaction_prices.flatten().tolist()[0])
     
 
 class PathwayModel(object):
