@@ -2,7 +2,10 @@ import csv
 import logging
 import numpy as np
 import pulp
+import pylab
 import re
+import seaborn
+import StringIO
 
 from gibbs import constants
 from gibbs.conditions import AqueousParams
@@ -240,8 +243,7 @@ class CompoundMDFData(object):
 
     @property
     def html_ub(self):
-        return self.html_conc(self.ub)
-    
+        return self.html_conc(self.ub)   
 
 
 class PathwayMDFData(object):
@@ -262,7 +264,6 @@ class PathwayMDFData(object):
                    for cid in parsed_pathway.compound_kegg_ids]
         concs = self.mdf_result.concentrations
         prices = self.mdf_result.compound_prices.flatten().tolist()[0]
-        
         self.compound_data = [CompoundMDFData(*t) for t in zip(compounds, cbounds, concs, prices)]
 
     @property
@@ -284,3 +285,24 @@ class PathwayMDFData(object):
     @property
     def min_total_driving_force(self):
         return -self.max_total_dG
+
+    @property
+    def mdf_plot_svg(self):
+        dgs = [0] + [r.dGr for r in self.reaction_data]
+        dg0s = [0] + [r.dG0_prime for r in self.reaction_data]
+        cumulative_dgs = np.cumsum(dgs)
+        cumulative_dg0s = np.cumsum(dg0s)
+
+        xs = np.arange(0, len(cumulative_dgs))
+
+        figure = pylab.figure()
+        pylab.plot(xs, cumulative_dg0s, label='Standard concentrations')
+        pylab.plot(xs, cumulative_dgs, label='MDF optimized concentrations')
+        pylab.xticks(xs)
+        pylab.xlabel('Reaction Step')
+        pylab.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)")
+        pylab.legend(loc=3)
+
+        svg_data = StringIO.StringIO()
+        figure.savefig(svg_data, format='svg')
+        return svg_data.getvalue()

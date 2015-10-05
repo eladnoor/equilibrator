@@ -73,6 +73,10 @@
         </tr>
     {% endfor %}
     </table>
+
+    <div>
+        {{mdf_result.mdf_plot_svg|safe}}
+    </div>
 </div>
 
 {% include "footer.html" %}
