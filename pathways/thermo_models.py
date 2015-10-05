@@ -13,7 +13,7 @@ DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 
 class MDFResult(object):
 
-    def __init__(self, model, mdf,
+    def __init__(self, model, mdf, 
                  concentrations, dG0_r_cov_eigen,
                  reaction_prices, compound_prices,
                  min_total_dG=None, max_total_dG=None):
@@ -47,7 +47,7 @@ class MDFResult(object):
         self.min_total_dG = min_total_dG
     
 
-class PathwayModel(object):
+class PathwayThermoModel(object):
     """Container for doing pathway-level thermodynamic analysis."""
    
     DEFAULT_FORMATION_LB = -1e6
@@ -57,19 +57,22 @@ class PathwayModel(object):
     DEFAULT_C_RANGE = (1e-6, 0.1)
     DEFAULT_PHYSIOLOGICAL_CONC = 1e-3
    
-    def __init__(self, S, dG0_r_prime, dG0_r_std=None, fluxes=None):
+    def __init__(self, S, fluxes, dG0_r_prime, cids, rids,
+                 dG0_r_std=None, concentration_bounds=None):
         """Create a pathway object.
        
         Args:
             S: Stoichiometric matrix of the pathway.
                 Reactions are on the rows, compounds on the columns.
+            fluxes: the list of relative fluxes through each of the reactions.
+                By default, all fluxes are 1.
             dG0_r_prime: the change in Gibbs energy for the reactions
                 in standard conditions, corrected for pH, ionic strength, etc.
                 Should be a column vector in numpy.matrix format.
             dG0_r_std: (optional) the square root of the covariance matrix
                 corresponding to the uncertainty in the dG0_r values.
-            fluxes: the list of relative fluxes through each of the reactions.
-                By default, all fluxes are 1.
+            concentration_bounds: a bounds.Bounds object expressing bounds on
+                the metabolite concentrations.
         """
         self.pulp_solver = pulp.GLPK_CMD(msg=0, options=['--xcheck'])
         
@@ -95,9 +98,17 @@ class PathwayModel(object):
         
         self.I_dir = np.matrix(np.diag(map(np.sign, self.fluxes.flat)))
         self.Nr_active = int(sum(self.fluxes.T != 0))
-        self.c_bounds = None
+
+        self.cids = cids
+        self.rids = rids
+        self.concentration_bounds = concentration_bounds
+
+        if self.concentration_bounds is None:
+            lb, ub = self.DEFAULT_C_RANGE
+            self.concentration_bounds = bounds.Bounds(default_lb=lb, default_ub=ub)
+
+        # Currently unused bounds on reaction dGs.
         self.r_bounds = None
-        self.c_range = self.DEFAULT_C_RANGE
 
     def CalculateReactionEnergiesUsingConcentrations(self, concentrations):
         log_conc = np.log(concentrations)
@@ -127,25 +138,8 @@ class PathwayModel(object):
         Returns:
             A two-tuple (lower bounds, upper bounds).
         """
-        c_lower, c_upper = self.c_range or self.DEFAULT_C_RANGE
-        ln_conc_lb = np.matrix(np.ones((self.Nc, 1)) * np.log(c_lower))
-        ln_conc_ub = np.matrix(np.ones((self.Nc, 1)) * np.log(c_upper))
-       
-        if self.c_bounds:
-            for i, bound in enumerate(self.c_bounds):
-                lb, ub = bound
-                log_lb = np.log(lb or c_lower)
-                log_ub = np.log(ub or c_upper)
-                if log_lb > log_ub:
-                    raise Exception("Lower bound is greater than upper bound: "
-                                    "%d > %d" % (log_lb, log_ub))
-                elif abs(log_lb - log_ub) < 1e-2:
-                    log_lb = log_ub - 1e-2
-                   
-                ln_conc_lb[i, 0] = log_lb
-                ln_conc_ub[i, 0] = log_ub
-
-        return ln_conc_lb, ln_conc_ub
+        bounds = self.concentration_bounds.GetLnBounds(self.cids)
+        return bounds
 
     def _MakeDrivingForceConstraints(self, ln_conc_lb, ln_conc_ub):
         """Generates the A matrix and b & c vectors that can be used in a 
@@ -396,61 +390,3 @@ class PathwayModel(object):
     def mdf_result(self):
         ret = self.FindMDF()
         return ret
-
-
-class KeggPathwayModel(PathwayModel):
-    """TODO: why is this separate from PathwayModel? Also, constructor
-    arguments are in a strange order.
-    """
-
-    def __init__(self, S, dG0_r_prime, cids, rids,
-                 dG0_r_std=None,
-                 fluxes=None,
-                 rid2bounds=None,
-                 cid2bounds=None,
-                 c_range=None):
-        """
-            S           - the stoichiometric matrix
-            rid         - a list of names of the reactions in S
-            fluxes      - a vector the relative fluxes in each reaction
-            cids        - a list of names of the compounds in S
-            formation_energies - the standard Gibbs energy of formation of the 
-                                 compounds
-            rid2bounds - a dictionary mapping rid to an upper bound on its dG'
-                         if the value is None then the upper bound
-                         is the B variable (corresponding to the MDF)
-            reaction_energies - the standard Gibbs energies of the reactions
-            cid2bounds - a dictionary mapping cid to a pair of lower/upper
-                         bound on its concentration. if the value is (None, None)
-                         the default bounds are used (i.e. c_range)
-            c_range    - the default lower/upper bounds on the compound conc.
-        """
-        PathwayModel.__init__(self, S, dG0_r_prime=dG0_r_prime, dG0_r_std=dG0_r_std, fluxes=fluxes)
-        assert len(cids) == self.Nc
-        assert len(rids) == self.Nr
-       
-        self.rids = rids
-        self.cids = cids
-        if cid2bounds:
-            self.c_bounds = [cid2bounds.get(cid, (None, None)) for cid in self.cids]
-        else:
-            self.c_bounds = None
-        self.cid2bounds = cid2bounds or {}
-        
-        if rid2bounds:
-            self.r_bounds = [rid2bounds.get(rid, None) for rid in self.rids]
-        else:
-            self.r_bounds = None
-        
-        self.rid2bounds = rid2bounds or {}
-        self.c_range = c_range or self.DEFAULT_C_RANGE
-
-    def GetConcentrationBounds(self, cid):
-        lb, ub = self.c_range
-        if cid in self.cid2bounds:
-            lb, ub = self.cid2bounds[cid]
-        if lb is None:
-            lb = self.c_range[0]
-        if ub is None:
-            ub = self.c_range[1]
-        return lb, ub
