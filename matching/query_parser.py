@@ -6,6 +6,7 @@ import re
 import numpy
 from gibbs import constants
 
+
 class ParseError(Exception):
     pass
 
