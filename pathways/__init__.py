@@ -9,7 +9,7 @@ from gibbs.reaction import Reaction, CompoundWithCoeff
 from matching import query_parser
 from os import path
 from pathways.bounds import Bounds
-from pathways.thermo_models import KeggPathwayModel
+from pathways.thermo_models import PathwayThermoModel
 
 RELPATH = path.dirname(path.realpath(__file__))
 COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
@@ -24,7 +24,9 @@ class ParsedPathway(object):
     Designed for checking input prior to converting to a stoichiometric model.
     """
 
-    def __init__(self, reactions, fluxes, bounds=None):
+    def __init__(self, reactions, fluxes, bounds=None,
+                 pH=constants.DEFAULT_PH,
+                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
         """Initialize.
         
         Args:
@@ -33,6 +35,8 @@ class ParsedPathway(object):
         """
         assert len(reactions) == len(fluxes)
         
+        self.pH = pH
+        self.ionic_strength = ionic_strength
         self.reactions = reactions
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
         
@@ -71,7 +75,10 @@ class ParsedPathway(object):
         return d
     
     @classmethod
-    def from_file(cls, f):
+    def from_file(cls, f,
+                  bounds=None,
+                  pH=constants.DEFAULT_PH,
+                  ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
         """Returns a pathway parsed from an input file.
         
         Caller responsible for closing f.
@@ -106,18 +113,24 @@ class ParsedPathway(object):
             rxn = Reaction.FromIds(compound_list, fetch_db_names=True)
             reactions.append(rxn)
             
-        return ParsedPathway(reactions, fluxes)
+        return ParsedPathway(reactions, fluxes, bounds=bounds, pH=pH,
+                             ionic_strength=ionic_strength)
         
     @classmethod
-    def from_filename(cls, fname):
+    def from_filename(cls, fname,
+                      bounds=None,
+                      pH=constants.DEFAULT_PH,
+                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
         """Returns a pathway parsed from an input file.
         
         Args:
             filename: filename of CSV data describing the pathway
-                reactions and relative fluxes using KEGG IDs to identify compounds.
+                reactions and relative fluxes using KEGG IDs to identify
+                compounds.
         """
         with open(fname, 'rU') as f:
-            return cls.from_file(f)
+            return cls.from_file(f, bounds=bounds,
+                                 pH=pH, ionic_strength=ionic_strength)
 
     def _get_compounds(self):
         """Returns a dictionary of compounds by KEGG ID."""
@@ -169,12 +182,10 @@ class ParsedPathway(object):
     @property
     def pathway_model(self):
         dGs = np.matrix(self.dG0_r_prime).T
-        bounds_dict = self.bounds.GetOldStyleBounds(self.compound_kegg_ids)
-        model = KeggPathwayModel(self.S.T, dGs,
-                                 self.compound_kegg_ids,
-                                 self.reaction_kegg_ids,
-                                 fluxes=self.fluxes,
-                                 cid2bounds=bounds_dict)
+        model = PathwayThermoModel(self.S.T, self.fluxes, dGs,
+                                   self.compound_kegg_ids,
+                                   self.reaction_kegg_ids,
+                                   concentration_bounds=self.bounds)
         return model
 
     def calc_mdf(self):
@@ -250,7 +261,7 @@ class PathwayMDFData(object):
         self.reaction_data = [ReactionMDFData(*t) for t in zip(rxns, fluxes, dGs, prices)]
 
         compounds = parsed_pathway.compounds
-        cbounds = [self.model.GetConcentrationBounds(cid)
+        cbounds = [self.model.concentration_bounds.GetBoundTuple(cid)
                    for cid in parsed_pathway.compound_kegg_ids]
         concs = self.mdf_result.concentrations
         prices = self.mdf_result.compound_prices.flatten().tolist()[0]
