@@ -33,6 +33,10 @@ class BaseBounds(object):
         """
         raise NotImplementedError
 
+    def GetBoundTuple(self, key):
+        """Returns the bounds as a 2 tuple (lower, upper)."""
+        return self.GetLowerBound(key), self.GetUpperBound(key)
+
     def GetBounds(self, keys):
         """Get the bounds for a set of keys in order.
         
@@ -43,35 +47,12 @@ class BaseBounds(object):
             A two-tuple (lower_bounds, upper_bounds) where both
             items are Numpy arrays of dimensions 1xlen(keys)
         """
-        lower_bounds = np.array([self.GetLowerBound(key) for key in keys])
-        upper_bounds = np.array([self.GetUpperBound(key) for key in keys])
-        lower_bounds = np.matrix(lower_bounds.reshape(1, len(lower_bounds)))
-        upper_bounds = np.matrix(upper_bounds.reshape(1, len(upper_bounds))) 
-        return lower_bounds, upper_bounds
-    
-    def GetBoundsWithDefault(self, keys, default):
-        """Returns the default value for each key unless it is invalid.
-        
-        Returns:
-            A row vector (Numpy array) with shape 1xlen(keys).
-        """
-        res = []
-        for key in keys:
-            ub = self.GetUpperBound(key)
-            lb = self.GetLowerBound(key)
-            
-            if default < lb:
-                res.append(lb)
-                continue
-            
-            if default > ub:
-                res.append(ub)
-                continue
-            
-            res.append(default)
-        
-        a = np.array(res)
-        return a.reshape(1, len(res))
+        lbs = np.matrix(np.ones((len(keys), 1)))
+        ubs = np.matrix(np.ones((len(keys), 1)))
+        for i, key in enumerate(keys):
+            lbs[i, 0] = self.GetLowerBound(key)
+            ubs[i, 0] = self.GetUpperBound(key)
+        return lbs, ubs
         
     def GetLnBounds(self, keys):
         """Get the bounds for a set of keys in order.
@@ -98,83 +79,9 @@ class BaseBounds(object):
         self.lower_bounds[key] = lb
         self.upper_bounds[key] = ub
     
-    def AddOldStyleBounds(self, bounds_dict):
-        """Add bounds from the old-style bounds dictionary.
-        
-        Args:
-            bounds_dict: a dictionary mapping keys to (lb, ub) tuples.
-        """
-        for key, bounds in bounds_dict.iteritems():
-            lb, ub = bounds
-            self.lower_bounds[key] = lb
-            self.upper_bounds[key] = ub
-    
-    def GetOldStyleBounds(self, keys):
-        lower_bounds, upper_bounds = self.GetBounds(keys)
-        cid2bounds = {}
-        for i, cid in enumerate(keys):
-            cid2bounds[cid] = (lower_bounds[0, i], upper_bounds[0, i])
-        return cid2bounds
-
-
-class ExplicitBounds(BaseBounds):
-    """Contains upper and lower bounds for various keys."""
-
-    def __init__(self, lower_bounds=None, upper_bounds=None):
-        """Initialize the ExplicitBounds object.
-        
-        Must provide upper and lower bounds for all compounds.
-        
-        Args:
-            lower_bounds: a dictionary mapping strings to float lower bounds.
-            upper_bounds: a dictionary mapping strings to float upper bounds.
-        """        
-        self.lower_bounds = lower_bounds or {}
-        self.upper_bounds = upper_bounds or {}
-        
-        # Must have the same keys for both
-        lb_keys = set(self.lower_bounds.keys())
-        ub_keys = set(self.upper_bounds.keys())
-        assert lb_keys == ub_keys
-
-        self.c_range = (np.min(self.lower_bounds), np.max(self.upper_bounds))
-
-    def Copy(self):
-        """Returns a deep copy of self."""
-        new_lb = deepcopy(self.lower_bounds)
-        new_ub = deepcopy(self.upper_bounds)
-        return ExplicitBounds(new_lb, new_ub)
-
-    def GetRange(self):
-        """Returns a 2-tuple of the concentration range."""
-        return self.c_range
-
-    def GetLowerBound(self, key):
-        """Get the lower bound for this key.
-        
-        Args:
-            key: a string key.
-        """
-        if key not in self.lower_bounds:
-            raise KeyError('Unknown key %s' % key)
-        
-        return self.lower_bounds[key]
-    
-    def GetUpperBound(self, key):
-        """Get the upper bound for this key.
-        
-        Args:
-            key: a string key.
-        """
-        if key not in self.upper_bounds:
-            raise KeyError('Unknown key %s' % key)
-        
-        return self.upper_bounds[key]
-    
-    
 
 class Bounds(BaseBounds):
-    """Contains upper and lower bounds for various keys."""
+    """Contains upper and lower bounds for various keys. Allows for defaults."""
     
     def __init__(self,
                  lower_bounds=None,
