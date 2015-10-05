@@ -149,5 +149,5 @@ class PathwayForm(forms.Form):
     bounds_file = forms.FileField(required=False)
     min_c = forms.FloatField(required=False)
     max_c = forms.FloatField(required=False)
-    ph = forms.FloatField(required=False)
+    pH = forms.FloatField(required=False)
     ionic_strength = forms.FloatField(required=False)

@@ -26,10 +26,7 @@
 		            pH
 		        </td>
 		        <td>
-		            <input type="text" name="ph" id="phField" value="7.0" />
-		        </td>
-		        <td colspan="100%" class="sliderContainer">
-		            <div id="phSlider"/>
+		            <input type="text" name="pH" id="phField" value="{{constants.DEFAULT_PH}}" />
 		        </td>
 		    </tr>
 		    <tr>
@@ -38,17 +35,13 @@
 		        </td>
 		        <td>
 
-		            <input type="text" name="ionic_strength" id="ionStrengthField" value="0.2" /> Molar
-		        </td>
-		        <td colspan="100%" class="sliderContainer">
-		            <div id="ionStrengthSlider"/>
+		            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{constants.DEFAULT_IONIC_STRENGTH}}" /> Molar
 		        </td>
 		    </tr>
 	    	<tr>
 	    		<td>Concentration bounds (optional<sup>&Dagger;</sup>)</td>
 	    		<td><input type="file" name="bounds_file" /></td>
 	    	</tr>
-	    	
 	    	<tr class='infoTableHeader' align='center'>
 	    		<td colspan="100%"><input type='submit' /></td>
 	    	</tr>

@@ -4,6 +4,7 @@ import io
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from gibbs.conditions import AqueousParams
 from gibbs.forms import PathwayForm
 from os import path
 from pathways import ParsedPathway
@@ -36,24 +37,26 @@ def make_bounds(request, form):
         return bounds
 
 
-def PathwayResultPage(request): 
+def PathwayResultPage(request):
     """Renders a page for a particular reaction."""
     form = PathwayForm(request.POST, request.FILES)
     if not form.is_valid():
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
-    f_data = unicode(request.FILES['pathway_file'].read())
-    sio = io.StringIO(f_data, newline=None)  # universal newline mode
-    path = ParsedPathway.from_file(sio)
-
     # If specific bounds are supplied, use them.
     bounds = make_bounds(request, form)
-    path.set_bounds(bounds)
+    # Pass in aqueous params from user.
+    aq_params = AqueousParams(
+        pH=form.cleaned_data['pH'],
+        ionic_strength=form.cleaned_data['ionic_strength'])
+
+    f_data = unicode(request.FILES['pathway_file'].read())
+    sio = io.StringIO(f_data, newline=None)  # universal newline mode
+    path = ParsedPathway.from_file(sio, bounds=bounds, aq_params=aq_params)
 
     # calculate the MDF with the specified bounds. Render template.
     mdf_result = path.calc_mdf()
     template_data = {'pathway': path,
                      'mdf_result': mdf_result}
     return render_to_response('pathway_result_page.html', template_data)
-    

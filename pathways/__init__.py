@@ -5,6 +5,7 @@ import pulp
 import re
 
 from gibbs import constants
+from gibbs.conditions import AqueousParams
 from gibbs.reaction import Reaction, CompoundWithCoeff
 from matching import query_parser
 from os import path
@@ -24,9 +25,8 @@ class ParsedPathway(object):
     Designed for checking input prior to converting to a stoichiometric model.
     """
 
-    def __init__(self, reactions, fluxes, bounds=None,
-                 pH=constants.DEFAULT_PH,
-                 ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+    def __init__(self, reactions, fluxes,
+                 bounds=None, aq_params=None):
         """Initialize.
         
         Args:
@@ -35,12 +35,15 @@ class ParsedPathway(object):
         """
         assert len(reactions) == len(fluxes)
         
-        self.pH = pH
-        self.ionic_strength = ionic_strength
+        self.aq_params = aq_params or AqueousParams()
         self.reactions = reactions
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
         
         self.fluxes = np.array(fluxes)
+
+        # All reactions occur in the same solution/compartment (for now)
+        for rxn in self.reactions:
+            rxn.aq_params = aq_params
         self.dG0_r_prime = [r.DeltaG0Prime() for r in reactions]
 
         self.bounds = bounds or DEFAULT_BOUNDS
@@ -58,9 +61,6 @@ class ParsedPathway(object):
                 net_rxn_data.append(self._reactant_dict(coeff, kid))
         self.net_reaction = Reaction.FromIds(net_rxn_data, fetch_db_names=True)
         self._model = self.pathway_model
-
-    def set_bounds(self, bounds):
-        self.bounds = bounds
             
     @staticmethod
     def _reactant_dict(coeff, kid, negate=False):
@@ -76,9 +76,7 @@ class ParsedPathway(object):
     
     @classmethod
     def from_file(cls, f,
-                  bounds=None,
-                  pH=constants.DEFAULT_PH,
-                  ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+                  bounds=None, aq_params=None):
         """Returns a pathway parsed from an input file.
         
         Caller responsible for closing f.
@@ -113,8 +111,8 @@ class ParsedPathway(object):
             rxn = Reaction.FromIds(compound_list, fetch_db_names=True)
             reactions.append(rxn)
             
-        return ParsedPathway(reactions, fluxes, bounds=bounds, pH=pH,
-                             ionic_strength=ionic_strength)
+        return ParsedPathway(reactions, fluxes, bounds=bounds,
+                             aq_params=aq_params)
         
     @classmethod
     def from_filename(cls, fname,
@@ -129,8 +127,7 @@ class ParsedPathway(object):
                 compounds.
         """
         with open(fname, 'rU') as f:
-            return cls.from_file(f, bounds=bounds,
-                                 pH=pH, ionic_strength=ionic_strength)
+            return cls.from_file(f, bounds=bounds, aq_params=aq_params)
 
     def _get_compounds(self):
         """Returns a dictionary of compounds by KEGG ID."""
