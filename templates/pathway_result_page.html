@@ -17,12 +17,8 @@
             <td>{{pathway.net_reaction.dg0_prime|floatformat}} kJ/mol</td>
         </tr>
         <tr>
-            <td width="20%"><strong>Min Total &Delta;<sub><i>r</i></sub>G'</strong></td>
-            <td>{{mdf_result.min_total_dG|floatformat}} kJ/mol</td>
-        </tr>
-        <tr>
-            <td width="20%"><strong>Max Total &Delta;<sub><i>r</i></sub>G'</strong></td>
-            <td>{{mdf_result.max_total_dG|floatformat}} kJ/mol</td>
+            <td width="20%"><strong><a href="/faq#totalDrivingForce">Driving Force</a></td>
+            <td>{{mdf_result.min_total_driving_force|floatformat}} &le; -&Delta;<sub><i>r</i></sub>G'</strong> &le; {{mdf_result.max_total_driving_force|floatformat}} kJ/mol</td>
         </tr>
         <tr>
             <td width="20%"><strong><a href="/faq#mdf">MDF</a></strong></td>
@@ -58,17 +54,17 @@
         </tr>
         <tr>
             <th>Compound</th>
-            <th>Concentration (M)</th>
-            <th>Min (M)</th>
-            <th>Max (M)</th>
+            <th>Concentration</th>
+            <th>Min</th>
+            <th>Max</th>
             <th>Shadow Price</th>
         </tr>
     {% for cdata in mdf_result.compound_data %}
         <tr>
             <td><a href='{{cdata.link_url}}'>{{cdata.compound}}</a></td>
-            <td>{{cdata.concentration|stringformat:".2e" }}</td>
-            <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.lb|stringformat:".2e" }}</td>
-            <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.ub|stringformat:".2e" }}</td>
+            <td>{{cdata.html_concentration|safe}}</td>
+            <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_lb|safe}}</td>
+            <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_ub|safe}}</td>    
             <td {% if cdata.shadow_price != 0 %}class='italic'{% endif %}>{{cdata.shadow_price|floatformat}}</td>
         </tr>
     {% endfor %}
