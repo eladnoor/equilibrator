@@ -36,7 +36,7 @@ def make_bounds(request, form):
         return bounds
 
 
-def PathwayResultPage(request):    
+def PathwayResultPage(request): 
     """Renders a page for a particular reaction."""
     form = PathwayForm(request.POST, request.FILES)
     if not form.is_valid():
