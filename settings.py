@@ -2,9 +2,15 @@
 
 import os
 import sys
+
+import matplotlib
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, os.path.normcase(PROJECT_ROOT))
 sys.path.insert(0, os.path.join(PROJECT_ROOT, ".."))
+
+# Force matplotlib to not use any Xwindows backend.
+matplotlib.use('Agg')
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -113,6 +119,7 @@ INSTALLED_APPS = (
     
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'django.contrib.humanize',
     'django_extensions',
     'gibbs',
     'debug_toolbar',
@@ -150,10 +157,10 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': 'gibbs.log',
+            'filename': os.path.join(os.path.dirname(__file__), 'gibbs.log'),
             'formatter': 'verbose'
         },
-        'console':{
+        'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
@@ -170,5 +177,3 @@ LOGGING = {
 # DJANGO-PROFILER 2.0
 PROFILING_LOGGER_NAME = 'profiler.log'
 PROFILING_SQL_QUERIES = False
-
-
