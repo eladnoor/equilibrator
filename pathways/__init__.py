@@ -298,8 +298,8 @@ class PathwayMDFData(object):
         figure = pylab.figure()
         pylab.plot(xs, cumulative_dg0s, label='Standard concentrations')
         pylab.plot(xs, cumulative_dgs, label='MDF optimized concentrations')
-        pylab.xticks(xs, family='helevetica')
-        pylab.yticks(family='helevetica')
+        pylab.xticks(xs, family='sans-serif')
+        pylab.yticks(family='sans-serif')
         
         pylab.xlabel('Reaction Step')
         pylab.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)")
