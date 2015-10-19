@@ -263,9 +263,7 @@ class PathwayThermoModel(object):
         lp += (total_g == total_g0 + pulp.lpSum(row)), "Total G"
 
         lp.setObjective(total_g)
-        
-        #lp.writeLP("res/total_g.lp")
-        
+                
         return lp, total_g
            
     def _MakeMDFProblem(self):
@@ -320,9 +318,7 @@ class PathwayThermoModel(object):
 
         objective = pulp.lpSum([b[i] * x[i] for i in xrange(A.shape[0])])
         lp.setObjective(objective)
-        
-        #lp.writeLP("res/mdf_dual.lp")
-        
+                
         return lp, objective, w, g, z, u
     
     def FindMDF(self, calculate_totals=True):
