@@ -46,17 +46,21 @@ def PathwayResultPage(request):
 
     # If specific bounds are supplied, use them.
     bounds = make_bounds(request, form)
+    logging.debug('Made bounds')
     # Pass in aqueous params from user.
     aq_params = AqueousParams(
         pH=form.cleaned_data['pH'],
         ionic_strength=form.cleaned_data['ionic_strength'])
+    logging.debug('Made AqParams.')
 
     f_data = unicode(request.FILES['pathway_file'].read())
     sio = io.StringIO(f_data, newline=None)  # universal newline mode
     path = ParsedPathway.from_file(sio, bounds=bounds, aq_params=aq_params)
+    logging.info('Parsed pathway.')
 
     # calculate the MDF with the specified bounds. Render template.
     mdf_result = path.calc_mdf()
     template_data = {'pathway': path,
                      'mdf_result': mdf_result}
+    logging.info('Calculated MDF %s', mdf_result.mdf)
     return render_to_response('pathway_result_page.html', template_data)
