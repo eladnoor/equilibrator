@@ -33,7 +33,8 @@ $(document).ready(function(){
       delimiter: /(^|\+|<=>|=>|=|->|<->)+\s*\d*\s*/,
       serviceUrl: '/suggest',
       groupBy: 'cat',
-      preventBadQueries: false
+      preventBadQueries: false,
+      triggerSelectOnValidInput: false
     };
     var queryField = $('#queryField');
     if (queryField) {
