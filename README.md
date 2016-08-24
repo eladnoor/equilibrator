@@ -20,6 +20,7 @@ only for Ubuntu users.
 - Matplotlib & Seaborn (Plotting)
 - Pulp & GLPK (optimization)
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
+- Xapian (indexing for search)
 
 # Installing binary dependencies on Ubuntu
 ```
