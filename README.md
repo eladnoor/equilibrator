@@ -56,7 +56,8 @@ Will run the development server on port 80 and allow external IPs to access the 
 useful for debugging differences between your local and remote environments.
 
 # Setting up Apache + Django eQuilibrator
-TODO:Finish this.
+
+eQuilibrator is intended to be run under Apache and mod_wsgi. Here is a brief description of how to set this up. First install Apache and ModWSGI. 
 
 ```
 sudo apt-get install apache2 libapache2-mod-wsgi git
@@ -70,3 +71,5 @@ cd equilibrator
 * Edit sqlload.sh to use the correct username and database name. 
 * Run ./sqlload.sh to load the database up. 
 * Run `python manage.py rebuild_index` to build the xapian index for search.
+* Edit the Apache configuration, after apache/default.conf.
+* Restart Apache, which should give you access to eQuilibrator on port 80. 
