@@ -1,9 +1,11 @@
 #!/usr/bin/python
 
-import unittest
 from util import django_utils
+from util import django_test_utils
 
+import unittest
 import approximate_matcher
+
 
 """
 This test is probably useless now because 
@@ -11,6 +13,7 @@ This test is probably useless now because
 2. We are primarily using the haystack based search for matching.
 Should figure out how to mock haystack connections for testing.
 """
+
 
 class TestMatcher(unittest.TestCase):
     """Tests for matcher.Matcher."""
@@ -51,7 +54,6 @@ class TestMatcher(unittest.TestCase):
                     max_results=max_results, min_score=min_score)
                 self._CheckAllNamesOnMatcher(
                     self.test_names, m, max_results, min_score)
-        
 
     def testPrepareExpression(self):
         m = approximate_matcher.RegexApproxMatcher({})
