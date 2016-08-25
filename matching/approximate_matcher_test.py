@@ -8,8 +8,8 @@ import approximate_matcher
 
 
 """
-This test is probably useless now because 
-1. It doesn't appear to connect to a DB. 
+This test is probably useless now because
+1. It doesn't appear to connect to a DB.
 2. We are primarily using the haystack based search for matching.
 Should figure out how to mock haystack connections for testing.
 """
@@ -46,32 +46,7 @@ class TestMatcher(unittest.TestCase):
             
             for result in results:
                 self.assertTrue(result.score >= min_score)
-        
-    def testEditDistanceMatcher(self):    
-        for max_results in (1, 5, 10):
-            for min_score in (0.0, 0.3, 0.7):
-                m = approximate_matcher.EditDistanceMatcher(
-                    max_results=max_results, min_score=min_score)
-                self._CheckAllNamesOnMatcher(
-                    self.test_names, m, max_results, min_score)
-
-    def testPrepareExpression(self):
-        m = approximate_matcher.RegexApproxMatcher({})
-        examples = (('  teSt    tEsT ', '.*test[-+,[:digit:][:blank:]]+test.*'),
-                    ('gluco', '.*gluco.*'),
-                    ('D Fructo', '.*d[-+,[:digit:][:blank:]]+fructo.*'),
-                    ('aspartyl-phosphate', '.*aspartyl[-+,[:digit:][:blank:]]+phosphate.*'))
-        for query, expression in examples:
-            self.assertEqual(expression, m._PrepareExpression(query))
-
-    def testRegexApproxMatcher(self):
-        for max_results in (1, 5, 10):
-            for min_score in (0.0, 0.3, 0.7):
-                m = approximate_matcher.RegexApproxMatcher(
-                    max_results=max_results, min_score=min_score)
-                self._CheckAllNamesOnMatcher(
-                    self.test_names, m, max_results, min_score)
-    
+           
     def testCascadingMatcher(self):
         for max_results in (1, 5, 10):
             for min_score in (0.0, 0.3, 0.7):

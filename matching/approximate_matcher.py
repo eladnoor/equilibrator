@@ -12,14 +12,16 @@ from haystack.query import SearchQuerySet
 from haystack.inputs import Clean
 
 
-"""
-TODO: Delete the Regex and EditDistanceApproxMatchers if the 
-haystack-based search works out on the server.
-"""
-
-
 class HaystackApproxMatcher(matcher.Matcher):
-    """A matcher that uses the Haystack search plugin."""
+    """A matcher that uses the Haystack search plugin.
+
+    Current behavior:
+        First uses the haystack autocomplete. If there are results, returns.
+        If no results, then there are no exact matches for your search,
+        in which case we break the query into 4-grams and search for those.
+        We then let the parent class logic dedup those and they are ranked
+        according to their edit-distance to the query, as per _GetScore below.
+    """
     
     def _GetScore(self, query, match):
         """Custom edit-distance based scoring."""
@@ -48,70 +50,6 @@ class HaystackApproxMatcher(matcher.Matcher):
             res.extend(auto_res)
         matches = [r.object for r in res]
         return matches
-    
-
-class RegexApproxMatcher(matcher.Matcher):
-    """A matcher that runs regular expressions directly on the database."""
-            
-    def _PrepareExpression(self, query):
-        """Converts the query into a regular expression.
-                
-        Args:
-            query: the string search query.
-        
-        Returns:
-            A regular expression string.
-        """
-        if not query:
-            return None
-    
-        # Escape regex special characters in the input (search for them
-        # literally). Also, we allow '-', ',', '+' and digits in addition to spaces.
-        # NOTE(flamholz): We are using MySQL regex syntax here. Might not be 
-        # compatible with other databases. See reference:
-        #   http://dev.mysql.com/doc/refman/5.1/en/regexp.html
-        query = re.escape(query.strip().lower())
-        query = re.sub('(\\\?[\s-])+', '[-+,[:digit:][:blank:]]+', query)
-        # We allow leading and trailing junk.
-        return '.*%s.*' % query
-
-    def _FindNameMatches(self, query):
-        """Override database search."""
-        expression = self._PrepareExpression(query)
-        if not expression:
-            return []
-        
-        matches = models.CommonName.objects.filter(
-            name__iregex=expression).prefetch_related(*self._prefetch_objects)
-        return matches[:5*self._max_results]
-
-
-class EditDistanceMatcher(RegexApproxMatcher):
-    """Does near-exact matching and then uses edit distance to score."""
-    
-    def _GetScore(self, query, match):
-        """Custom edit-distance based scoring."""
-        str_query = str(query)
-        str_candidate = str(match.key)
-        dist = float(edit_distance(str_query, str_candidate))
-        max_len = float(max(len(str_query), len(str_candidate)))
-        return (max_len - dist) / max_len
-    
-    def _FindNameMatches(self, query):
-        """Override database search."""
-        qlen = len(query)
-        if qlen < 5:
-            matches = models.CommonName.objects.filter(
-                name__icontains=query).prefetch_related(*self._prefetch_objects)
-            return matches[:5*self._max_results]
-        
-        midpoint = qlen / 2
-        head_re = self._PrepareExpression(query[:midpoint])
-        tail_re = self._PrepareExpression(query[midpoint:])
-        
-        matches = models.CommonName.objects.filter(
-            Q(name__iregex=head_re) | Q(name__iregex=tail_re)).prefetch_related(*self._prefetch_objects)
-        return matches[:5*self._max_results]
     
 
 class CascadingMatcher(matcher.Matcher):
