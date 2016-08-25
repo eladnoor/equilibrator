@@ -35,7 +35,7 @@ class HaystackApproxMatcher(matcher.Matcher):
         """Override database search."""
         # Try plain old autocomplete. If it works, great.
         res = SearchQuerySet().autocomplete(name_auto=query)[:self._max_results]
-        logging.info('Found %d results using autocomplete', len(res))
+        logging.debug('Found %d results for "%s" using autocomplete', len(res), query)
         if res:
             return [r.object for r in res]
 
@@ -49,6 +49,7 @@ class HaystackApproxMatcher(matcher.Matcher):
             auto_res = SearchQuerySet().autocomplete(name_auto=ngram)[:self._max_results]
             res.extend(auto_res)
         matches = [r.object for r in res]
+        logging.debug('Found %d results using ngrams', len(res))
         return matches
     
 
@@ -61,7 +62,7 @@ class CascadingMatcher(matcher.Matcher):
         self._return_fast = return_fast
         self._exact_matcher = matcher.Matcher(
             max_results, min_score, match_enzymes)
-        self._approx_matcher = HaystackApproxMatcher(2*max_results, min_score)
+        self._approx_matcher = HaystackApproxMatcher(15, min_score)
 
     def _FilterDups(self, matches):
         """Removes matches pointing to the same primary key."""
@@ -86,6 +87,8 @@ class CascadingMatcher(matcher.Matcher):
 
         match_set = set(m.key for m in matches)
         approx_matches = self._approx_matcher.Match(query)
+        logging.debug("Approximate matches for %s", query)
+        logging.debug([m.key for m in approx_matches])
 
         for m in approx_matches:
             if m.key not in match_set:
