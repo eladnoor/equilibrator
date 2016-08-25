@@ -17,7 +17,7 @@ def ResultsPage(request):
     logging.debug('Generating a search result page')
     query_parser = service_config.Get().query_parser
     reaction_matcher = service_config.Get().reaction_matcher
-    matcher = service_config.Get().compound_matcher
+    matcher = service_config.Get().search_matcher
     
     query = form.cleaned_query
     logging.debug('Query: "%s"', query)

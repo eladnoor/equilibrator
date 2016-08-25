@@ -18,7 +18,7 @@ def SuggestJson(request):
     query = str(form.cleaned_query)
     suggestions = []
     if query:
-        matcher = service_config.Get().compound_matcher
+        matcher = service_config.Get().search_matcher
         matches = matcher.Match(query)
         suggestions = [{'value': str(m.key), 'data': {'cat': m.key.TypeStr()}}
                        for m in matches]
