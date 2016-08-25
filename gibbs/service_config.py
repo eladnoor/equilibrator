@@ -17,7 +17,8 @@ class ServiceConfig(object):
             max_results=10, min_score=0.1)
 
         self._single_compound_matcher = approximate_matcher.CascadingMatcher(
-            max_results=1, min_score=0.1, match_enzymes=False)
+            max_results=1, min_score=0.1,
+            match_enzymes=False, return_fast=True)
         self._reaction_matcher = reaction_matcher.ReactionMatcher(self._single_compound_matcher)
     
     query_parser = property(lambda self: self._query_parser)
