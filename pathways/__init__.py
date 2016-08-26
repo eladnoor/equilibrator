@@ -2,7 +2,6 @@ import csv
 import logging
 import numpy as np
 import pulp
-import pylab
 import re
 import seaborn
 import StringIO
@@ -11,6 +10,7 @@ from gibbs import constants
 from gibbs.conditions import AqueousParams
 from gibbs.reaction import Reaction, CompoundWithCoeff
 from matching import query_parser
+from matplotlib import pyplot as plt
 from os import path
 from pathways.bounds import Bounds
 from pathways.thermo_models import PathwayThermoModel
@@ -262,7 +262,7 @@ class PathwayMDFData(object):
         compounds = parsed_pathway.compounds
         cbounds = [self.model.concentration_bounds.GetBoundTuple(cid)
                    for cid in parsed_pathway.compound_kegg_ids]
-        concs = self.mdf_result.concentrations
+        concs = self.mdf_result.concentrations.flatten().tolist()[0]
         prices = self.mdf_result.compound_prices.flatten().tolist()[0]
         self.compound_data = [CompoundMDFData(*t) for t in zip(compounds, cbounds, concs, prices)]
 
@@ -287,6 +287,35 @@ class PathwayMDFData(object):
         return -self.max_total_dG
 
     @property
+    def conc_plot_svg(self):
+        ys = np.arange(0, len(self.compound_data))
+        concs = [c.concentration for c in self.compound_data]
+        cnames = [str(c.compound) for c in self.compound_data]
+        default_lb = self.model.concentration_bounds.default_lb
+        default_ub = self.model.concentration_bounds.default_ub
+
+        conc_figure = plt.figure(figsize=(8, 6))
+        seaborn.set_style('darkgrid')
+        plt.axes([0.2, 0.1, 0.9, 0.9])
+        plt.axvspan(1e-8, default_lb, color='y', alpha=0.5)
+        plt.axvspan(default_ub, 1e3, color='y', alpha=0.5)
+        plt.scatter(concs, ys, figure=conc_figure)
+
+        plt.xticks(family='sans-serif', figure=conc_figure)
+        plt.yticks(ys, cnames, family='sans-serif',
+            fontsize=6, figure=conc_figure)
+        plt.xlabel('Concentration (M)', family='sans-serif',
+            figure=conc_figure)
+        plt.xscale('log')
+
+        plt.xlim(1e-7, 1.5e2)
+        plt.ylim(-1.5, len(self.compound_data) + 0.5)
+
+        svg_data = StringIO.StringIO()
+        conc_figure.savefig(svg_data, format='svg')
+        return svg_data.getvalue()
+
+    @property
     def mdf_plot_svg(self):
         dgs = [0] + [r.dGr for r in self.reaction_data]
         dg0s = [0] + [r.dG0_prime for r in self.reaction_data]
@@ -295,15 +324,17 @@ class PathwayMDFData(object):
 
         xs = np.arange(0, len(cumulative_dgs))
 
-        figure = pylab.figure()
-        pylab.plot(xs, cumulative_dg0s, label='Standard concentrations')
-        pylab.plot(xs, cumulative_dgs, label='MDF optimized concentrations')
-        pylab.xticks(xs)
-
-        pylab.xlabel('Reaction Step')
-        pylab.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)")
-        pylab.legend(loc=3)
+        mdf_fig = plt.figure(figsize=(8, 8))
+        seaborn.set_style('darkgrid')
+        plt.plot(xs, cumulative_dg0s, label='Standard concentrations')
+        plt.plot(xs, cumulative_dgs, label='MDF optimized concentrations')
+        plt.xticks(xs, family='sans-serif')
+        plt.yticks(family='sans-serif')
+        
+        plt.xlabel('After Reaction Step', family='sans-serif')
+        plt.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)", family='sans-serif')
+        plt.legend(loc=3)
 
         svg_data = StringIO.StringIO()
-        figure.savefig(svg_data, format='svg')
+        mdf_fig.savefig(svg_data, format='svg')
         return svg_data.getvalue()
