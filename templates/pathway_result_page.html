@@ -74,8 +74,11 @@
     {% endfor %}
     </table>
 
-    <div>
+    <div id='plotMDF' align='center'>
         {{mdf_result.mdf_plot_svg|safe}}
+    </div>
+    <div id='plotMDFConcs' align='center'>
+        {{mdf_result.conc_plot_svg|safe}}
     </div>
 </div>
 
