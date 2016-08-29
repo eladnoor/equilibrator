@@ -32,7 +32,7 @@ def DownloadPage(request):
     
     ph_values = map(lambda x: '%.1f' % x, constants.PH_RANGE_VALUES)
     return render_to_response('download.html', {'ph_values': ph_values},
-                              context_instance = RequestContext(request))
+                              context_instance=RequestContext(request))
     
 
 def Robots(request):
