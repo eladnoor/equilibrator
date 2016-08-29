@@ -132,7 +132,7 @@ class Matcher(object):
             res = SearchQuerySet().filter(text__exact=query).best_match()
             return [res.object]
         except Exception as e:
-            logging.warning('Query failed: ' + str(e))
+            logging.warning('Query "%s" failed: %s', query, str(e))
             return []
     
     def _MakeMatchObjects(self, common_names):
