@@ -6,20 +6,35 @@ import re
 import seaborn
 import StringIO
 
+from django.utils.text import slugify
 from gibbs import constants
+from gibbs import service_config
 from gibbs.conditions import AqueousParams
 from gibbs.reaction import Reaction, CompoundWithCoeff
-from matching import query_parser
 from matplotlib import pyplot as plt
 from os import path
 from pathways.bounds import Bounds
 from pathways.thermo_models import PathwayThermoModel
+from util.SBtab import SBtab
+
 
 RELPATH = path.dirname(path.realpath(__file__))
 COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
 DEFAULT_BOUNDS = Bounds.from_csv_filename(
     COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
 DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
+
+
+class PathwayParseError(Exception):
+    pass
+
+
+class InvalidReactionFormula(PathwayParseError):
+    pass
+
+
+class UnbalancedReaction(PathwayParseError):
+    pass
 
 
 class ParsedPathway(object):
@@ -29,7 +44,7 @@ class ParsedPathway(object):
     """
 
     def __init__(self, reactions, fluxes,
-                 bounds=None, aq_params=None):
+                 bounds=None, aq_params=None, model_name=None):
         """Initialize.
         
         Args:
@@ -38,6 +53,7 @@ class ParsedPathway(object):
         """
         assert len(reactions) == len(fluxes)
         
+        self.model_name = model_name
         self.aq_params = aq_params or AqueousParams()
         self.reactions = reactions
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
@@ -46,7 +62,7 @@ class ParsedPathway(object):
 
         # All reactions occur in the same solution/compartment (for now)
         for rxn in self.reactions:
-            rxn.aq_params = aq_params
+            rxn.aq_params = self.aq_params
         self.dG0_r_prime = [r.DeltaG0Prime() for r in reactions]
 
         self.bounds = bounds or DEFAULT_BOUNDS
@@ -57,6 +73,7 @@ class ParsedPathway(object):
                           for cid in self.compound_kegg_ids]
 
         nr, nc = self.S.shape
+        
         net_rxn_stoich = (self.fluxes.reshape((nr, 1)) * self.S).sum(axis=0)
         net_rxn_data = []
         for coeff, kid in zip(net_rxn_stoich, self.compound_kegg_ids):
@@ -76,61 +93,54 @@ class ParsedPathway(object):
             # Water is not aqueous. Hate that this is hardcoded.
             d['phase'] = constants.LIQUID_PHASE_NAME
         return d
-    
+
     @classmethod
-    def from_file(cls, f,
-                  bounds=None, aq_params=None):
+    def from_csv_file(cls, f,
+                      bounds=None, aq_params=None):
         """Returns a pathway parsed from an input file.
         
         Caller responsible for closing f.
         
         Args:
-            f: file-like object containing CSV data describing the pathway
-                reactions and relative fluxes using KEGG IDs to identify compounds.
+            f: file-like object containing CSV data describing the pathway.
         """
-        side_parser = query_parser._MakeReactionSideParser()
+        rxn_matcher = service_config.Get().reaction_matcher
+        query_parser = service_config.Get().query_parser
     
         reactions = []
         fluxes = []
     
         for row in csv.DictReader(f):
-            substrates = row.get('SUBSTRATES')
-            products = row.get('PRODUCTS')
-            assert substrates, 'Reaction must have substrates.'
-            assert products, 'Reaction must have products.'
-            flux = row.get('FLUX', 0.0)
-            
-            fluxes.append(float(flux))
-            parsed_substrates = side_parser.parseString(substrates)[0]
-            parsed_products = side_parser.parseString(products)[0]
-            
-            # KEGG ID as name, negate coefficients for substrates.
-            parsed_substrates = [cls._reactant_dict(coeff, kid, negate=True)
-                                 for coeff, kid in parsed_substrates]
-            parsed_products = [cls._reactant_dict(coeff, kid, negate=False)
-                               for coeff, kid in parsed_products]
-            
-            compound_list = parsed_substrates + parsed_products
-            rxn = Reaction.FromIds(compound_list, fetch_db_names=True)
+            rxn_formula = row.get('ReactionFormula')
+            if not rxn_formula:
+                raise InvalidReactionFormula('Found empty ReactionFormula')
+
+            flux = float(row.get('Flux', 0.0))
+            logging.debug('formula = %f x (%s)', flux, rxn_formula)
+
+            # TODO raise errors in this case.
+            if not query_parser.IsReactionQuery(rxn_formula):
+                raise InvalidReactionFormula("Failed to parse '%s'", rxn_formula)
+
+            parsed = query_parser.ParseReactionQuery(rxn_formula)
+
+            matches = rxn_matcher.MatchReaction(parsed)
+            best_match = matches.GetBestMatch()
+            rxn = Reaction.FromIds(best_match, fetch_db_names=True)
+
+            # TODO raise errors in this case.
+            if not rxn.IsBalanced():
+                raise UnbalancedReaction(
+                    "ReactionFormula '%s' is not balanced", rxn_formula)
+            if not rxn.IsElectronBalanced():
+                raise UnbalancedReaction(
+                    "ReactionFormula '%s' is not redox balanced", rxn_formula)
+
             reactions.append(rxn)
-            
+            fluxes.append(flux)
+
         return ParsedPathway(reactions, fluxes, bounds=bounds,
                              aq_params=aq_params)
-        
-    @classmethod
-    def from_filename(cls, fname,
-                      bounds=None,
-                      pH=constants.DEFAULT_PH,
-                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
-        """Returns a pathway parsed from an input file.
-        
-        Args:
-            filename: filename of CSV data describing the pathway
-                reactions and relative fluxes using KEGG IDs to identify
-                compounds.
-        """
-        with open(fname, 'rU') as f:
-            return cls.from_file(f, bounds=bounds, aq_params=aq_params)
 
     def _get_compounds(self):
         """Returns a dictionary of compounds by KEGG ID."""
@@ -196,6 +206,68 @@ class ParsedPathway(object):
     def print_reactions(self):
         for f, r in zip(self.fluxes, self.reactions):
             print '%sx %s' % (f, r)
+
+    def to_sbtab(self):
+        """Returns a full SBtab description of the model.
+
+        Description includes reaction fluxes and per-compound bounds.
+        """
+        generic_header_fmt = "!!SBtab TableName='%s' TableType='%s' Document='%s' SBtabVersion='1.0'"
+        reaction_header = generic_header_fmt % ('Reaction', 'Reaction', 'Pathway Model')
+        reaction_cols = ['!ID', '!ReactionFormula', '!Identifiers:kegg.reaction']
+
+        sio = StringIO.StringIO()
+        sio.writelines([reaction_header + '\n'])
+        writer = csv.DictWriter(sio, reaction_cols, dialect='excel-tab')
+
+        rxn_ids = []
+        for i, rxn in enumerate(self.reactions):
+            kegg_id = rxn.stored_reaction_id
+            rxn_id = kegg_id
+            if rxn.catalyzing_enzymes:
+                enz = unicode(rxn.catalyzing_enzymes[0])
+                enz_slug = slugify(enz)[:8]
+                rxn_id = '%s_%s' % (enz_slug, kegg_id)
+            elif not kegg_id:
+                rxn_id = 'RXN%03d' % i
+
+            rxn_ids.append(rxn_id)
+            d = {'!ID': rxn_id,
+                 '!ReactionFormula': str(rxn),
+                 '!Identifiers:kegg.reaction': kegg_id}
+            writer.writerow(d)
+
+        # Relative fluxes
+        flux_header = generic_header_fmt % ('RelativeFlux', 'Quantity', 'Pathway Model')
+        flux_cols = ['!QuantityType', '!Reaction', '!Reaction:Identifiers:kegg.reaction', '!Value']
+        sio.writelines(['%\n', flux_header + '\n'])
+        writer = csv.DictWriter(sio, flux_cols, dialect='excel-tab')
+
+        for i, rxn_id in enumerate(rxn_ids):
+            d = {'!QuantityType': 'flux',
+                 '!Reaction': rxn_id,
+                 '!Reaction:Identifiers:kegg.reaction': self.reactions[i].stored_reaction_id,
+                 '!Value': self.fluxes[i]}
+            writer.writerow(d)
+
+        conc_header = generic_header_fmt % ('ConcentrationConstraint', 'Quantity', 'Pathway Model')
+        conc_header += " Unit='M'"
+        conc_cols = ['!QuantityType', '!Compound',
+                     '!Compound:Identifiers:kegg.compound',
+                     '!Concentration:Min', '!Concentration:Max']
+        sio.writelines(['%\n', conc_header + '\n'])
+
+        writer = csv.DictWriter(sio, conc_cols, dialect='excel-tab')
+        for cid, compound in self.compounds_by_kegg_id.iteritems():
+            d = {'!QuantityType': 'concentration',
+                 '!Compound': str(compound.name),
+                 '!Compound:Identifiers:kegg.compound': cid,
+                 '!Concentration:Min': self.bounds.GetLowerBound(cid),
+                 '!Concentration:Max': self.bounds.GetUpperBound(cid)}
+            writer.writerow(d)
+
+        return sio.getvalue()
+
 
 
 class ReactionMDFData(object):

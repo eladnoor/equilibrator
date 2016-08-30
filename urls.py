@@ -23,6 +23,7 @@ urlpatterns = patterns('',
     (r'^search', 'equilibrator.gibbs.search_results_page.ResultsPage'),
     (r'^suggest', 'equilibrator.gibbs.suggest.SuggestJson'),
     (r'^pathway$', 'equilibrator.gibbs.define_pathway_page.DefinePathwayPage'),
+    (r'^pathway/build_model', 'equilibrator.gibbs.pathway_result_page.BuildPathwayModel'),
     (r'^pathway/results', 'equilibrator.gibbs.pathway_result_page.PathwayResultPage'),
     (r'^robots\.txt', 'equilibrator.gibbs.info_pages.Robots'),
     # Example:
