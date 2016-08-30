@@ -791,6 +791,27 @@ class Reaction(object):
                 rdict[s].append('%g %s' % (c, c_w_coeff.GetName()))
                 
         return '%s <=> %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
+
+    def GetSlugQueryString(self):
+        """Get an easily parsed query string for this reaction.
+
+        This string contains no spaces or dashes in the compound names.
+        Much easier to parse with REGEX. Used for generating SBtab.
+
+        TODO unify with above?
+        """
+        rdict = {-1: [], 1: []}
+        for c_w_coeff in self.reactants:
+            c = np.abs(c_w_coeff.coeff)
+            s = np.sign(c_w_coeff.coeff)
+            if s == 0:
+                continue
+            if c == 1:
+                rdict[s].append(c_w_coeff.compound.name_slug)
+            else:
+                rdict[s].append('%g %s' % (c, c_w_coeff.compound.name_slug))
+                
+        return '%s <=> %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
     def IsReactantFormulaMissing(self):
         for compound_w_coeff in self.reactants:

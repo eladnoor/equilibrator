@@ -11,6 +11,7 @@ import base64
 
 from django.http import Http404
 from django.db import models
+from django.utils.text import slugify
 from gibbs import constants
 from gibbs import formula_parser
 from gibbs import conditions
@@ -412,6 +413,11 @@ class Compound(models.Model):
         
         names = list(self.common_names.all())
         return names[0].name
+
+    def NameSlug(self):
+        """Return a name with no whitespace or dashes."""
+        slug = slugify(unicode(self.name))
+        return slug.replace('-', '_')
     
     def DeltaG0Prime(self, aq_params,
                      phase=None):
@@ -640,6 +646,7 @@ class Compound(models.Model):
     
     _species_group = property(GetSpeciesGroupToUse)
     first_name = property(FirstName)
+    name_slug = property(NameSlug)
     html_formula = property(GetHtmlFormattedFormula)
     link = property(GetLink)
     kegg_link = property(GetKeggLink)
