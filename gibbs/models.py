@@ -3,6 +3,7 @@
 import datetime
 import hashlib
 import haystack
+import json
 import logging
 import numpy
 import re
@@ -13,7 +14,6 @@ from django.db import models
 from gibbs import constants
 from gibbs import formula_parser
 from gibbs import conditions
-import json
 from util.thumbnail import InChI2Thumbnail
 
 
@@ -227,7 +227,7 @@ class SpeciesGroup(models.Model):
             Get a list of all species corresponding to a certain phase
         """
         return [s for s in self.GetSpecies()
-                if s.get_phase_display() == phase]   
+                if s.get_phase_display() == phase]
     
     def GetSpeciesWithoutMg(self):
         """Gets the list of species without Mg bound."""
