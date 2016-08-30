@@ -24,6 +24,10 @@
         {% else %}
             {% if reaction.balanced_with_coa %}
             <a href="{{ balance_with_coa_link }}">Balance with CoA</a>?
+            {% else %}
+                {% if reaction.balanced_with_pi %}
+                <a href="{{ balance_with_pi_link }}">Balance with Pi</a>?
+                {% endif %}
             {% endif %}
         {% endif %}
         </div>

@@ -679,17 +679,23 @@ class Reaction(object):
     def GetHyperlink(self, query=None):
         params = self._GetUrlParams(query)
         return '/reaction?%s' % '&'.join(params)
-    
+
+    def GetBalanceWithWaterLink(self, query=None):
+        """Returns a link to balance this reaction with water."""
+        other = self.Clone()
+        other.TryBalanceWithWater()
+        return other.GetHyperlink(query)
+
     def GetBalanceWithCoALink(self, query=None):
         """Returns a link to balance this reaction with water."""
         other = self.Clone()
         other.TryBalanceWithCoA()
         return other.GetHyperlink(query)
 
-    def GetBalanceWithWaterLink(self, query=None):
+    def GetBalanceWithPiLink(self, query=None):
         """Returns a link to balance this reaction with water."""
         other = self.Clone()
-        other.TryBalanceWithWater()
+        other.TryBalanceWithPi()
         return other.GetHyperlink(query)
 
     def GetBalanceElectronsLink(self, query=None):
@@ -718,13 +724,20 @@ class Reaction(object):
         template_data = {'reaction': self,
                          'query': query,
                          'alberty_link': self.GetNewPriorityLink(99),
-                         'cc_link': self.GetNewPriorityLink(1)}
+                         'cc_link': self.GetNewPriorityLink(1),
+                         'balance_with_water_link': None,
+                         'balance_electrons_link': None,
+                         'balance_with_coa_link': None,
+                         'balance_with_pi_link': None}
         if not self._is_formation_reaction:
             try:
-                template_data.update({
-                    'balance_with_water_link': self.GetBalanceWithWaterLink(query),
-                    'balance_electrons_link': self.GetBalanceElectronsLink(query),
-                    'balance_with_coa_link': self.GetBalanceWithCoALink(query)})
+                if not self.IsBalanced():
+                    template_data.update({
+                        'balance_with_water_link': self.GetBalanceWithWaterLink(query),
+                        'balance_with_coa_link': self.GetBalanceWithCoALink(query),
+                        'balance_with_pi_link': self.GetBalanceWithPiLink(query)})
+                if not self.IsElectronBalanced():
+                    template_data['balance_electrons_link'] = self.GetBalanceElectronsLink(query)
             except ReactantFormulaMissingError:
                 pass
 
@@ -777,7 +790,7 @@ class Reaction(object):
             else:
                 rdict[s].append('%g %s' % (c, c_w_coeff.GetName()))
                 
-        return '%s = %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
+        return '%s <=> %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
     def IsReactantFormulaMissing(self):
         for compound_w_coeff in self.reactants:
@@ -852,6 +865,36 @@ class Reaction(object):
             delta_electrons = self._GetElectronDiff()
             assert delta_electrons != 0
             return np.abs(dg_u / (constants.F*delta_electrons))
+
+    def _ExtraPis(self):
+        # TODO probably could write a generic version of this.
+        atom_diff = self._GetAtomDiff()
+
+        if not atom_diff:
+            return None
+        
+        # Pi = P O4       
+        # Ignore hydrogen as usual.
+        atom_diff.pop('H', 0)
+
+        os = atom_diff.pop('O', 0)
+        ps = atom_diff.pop('P', 0)
+
+        n_pis = np.array([ps / 1.0, os / 4.0])
+
+        # Don't need any other elements
+        pi_completes = self._IsBalanced(atom_diff)
+        # Stoichiometry right for pi
+        pi_completes &= np.all(n_pis == n_pis.astype(np.int))
+        pi_completes &= np.all(n_pis ==
+            np.ones(n_pis.size) * n_pis[0])
+
+        extra_pis = int(n_pis[0])
+        if not pi_completes or not extra_pis:
+            return None
+
+        # Number of missing Pis
+        return extra_pis
     
     def _ExtraCoAs(self):
         atom_diff = self._GetAtomDiff()
@@ -870,7 +913,6 @@ class Reaction(object):
         ss = atom_diff.pop('S', 0)
 
         n_coas = np.array([cs / 21.0, os / 16.0, ns / 7.0, ps / 3.0, ss / 1.0])
-        logging.info(n_coas)
 
         # Don't need any other elements
         coa_completes = self._IsBalanced(atom_diff)
@@ -1016,10 +1058,28 @@ class Reaction(object):
         """
         extra_coas = self._ExtraCoAs()
         if extra_coas is None:
-            # cannot balance the reaction with H2O only
+            # cannot balance the reaction with CoA only
             return False
         if extra_coas != 0:
             self._AddCompound('C00010', extra_coas)
+            self._Dedup()
+        return True
+
+    def TryBalanceWithPi(self):
+        """Try to balance the reaction with water.
+        
+        TODO write a generic version of this?
+
+        Returns:
+            True if the reaction is balanced already or with
+            additional waters on either side.
+        """
+        extra_pis = self._ExtraPis()
+        if extra_pis is None:
+            # cannot balance the reaction with Pi only
+            return False
+        if extra_pis != 0:
+            self._AddCompound('C00009', extra_pis)
             self._Dedup()
         return True
     
@@ -1033,13 +1093,22 @@ class Reaction(object):
         return extra_waters is not None
 
     def CanBalanceWithCoA(self):
-        """Returns True if balanced with or without water."""
+        """Returns True if balanced with or without CoA."""
         try:
             extra_coas = self._ExtraCoAs()
         except ReactantFormulaMissingError:
             return True
         
         return extra_coas is not None
+
+    def CanBalanceWithPi(self):
+        """Returns True if balanced with or without Pi."""
+        try:
+            extra_pis = self._ExtraPis()
+        except ReactantFormulaMissingError:
+            return True
+        
+        return extra_pis is not None
     
     def BalanceElectrons(self,
                          acceptor_id='C00003',           # NAD+
@@ -1284,6 +1353,7 @@ class Reaction(object):
     is_electron_balanced = property(IsElectronBalanced)
     balanced_with_water = property(CanBalanceWithWater)
     balanced_with_coa = property(CanBalanceWithCoA)
+    balanced_with_pi = property(CanBalanceWithPi)
     extra_atoms = property(ExtraAtoms)
     missing_atoms = property(MissingAtoms)
     extra_electrons = property(ExtraElectrons)
