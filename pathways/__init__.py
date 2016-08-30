@@ -219,6 +219,7 @@ class ParsedPathway(object):
         sio = StringIO.StringIO()
         sio.writelines([reaction_header + '\n'])
         writer = csv.DictWriter(sio, reaction_cols, dialect='excel-tab')
+        writer.writeheader()
 
         rxn_ids = []
         for i, rxn in enumerate(self.reactions):
@@ -233,7 +234,7 @@ class ParsedPathway(object):
 
             rxn_ids.append(rxn_id)
             d = {'!ID': rxn_id,
-                 '!ReactionFormula': str(rxn),
+                 '!ReactionFormula': rxn.GetSlugQueryString(),
                  '!Identifiers:kegg.reaction': kegg_id}
             writer.writerow(d)
 
@@ -242,6 +243,7 @@ class ParsedPathway(object):
         flux_cols = ['!QuantityType', '!Reaction', '!Reaction:Identifiers:kegg.reaction', '!Value']
         sio.writelines(['%\n', flux_header + '\n'])
         writer = csv.DictWriter(sio, flux_cols, dialect='excel-tab')
+        writer.writeheader()
 
         for i, rxn_id in enumerate(rxn_ids):
             d = {'!QuantityType': 'flux',
@@ -258,9 +260,10 @@ class ParsedPathway(object):
         sio.writelines(['%\n', conc_header + '\n'])
 
         writer = csv.DictWriter(sio, conc_cols, dialect='excel-tab')
+        writer.writeheader()
         for cid, compound in self.compounds_by_kegg_id.iteritems():
             d = {'!QuantityType': 'concentration',
-                 '!Compound': str(compound.name),
+                 '!Compound': str(compound.name_slug),
                  '!Compound:Identifiers:kegg.compound': cid,
                  '!Concentration:Min': self.bounds.GetLowerBound(cid),
                  '!Concentration:Max': self.bounds.GetUpperBound(cid)}
