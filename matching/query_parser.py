@@ -4,6 +4,7 @@ import logging
 import pyparsing
 import re
 import numpy
+
 from gibbs import constants
 
 
@@ -34,7 +35,7 @@ def _MakeReactionSideParser():
     compound_separator = pyparsing.Literal('+').suppress()
     
     compound_name_component = pyparsing.Word(pyparsing.alphanums + "()",
-                                             pyparsing.alphanums + "-+,()'")
+                                             pyparsing.alphanums + "-+,()'_")
     compound_name = pyparsing.Forward()
     compound_name << (compound_name_component + pyparsing.ZeroOrMore(compound_name_component))
     compound_name.setParseAction(lambda s: ' '.join(s))
@@ -100,6 +101,7 @@ class ParsedReactionQuery(object):
         joined_ps = ['%s %s' % (numpy.abs(c),p) for c,p in self.products]
         return '%s => %s' % (' + '.join(joined_rs), ' + '.join(joined_ps))
 
+
 class QueryParser(object):
     """Parses search queries."""
     
@@ -134,7 +136,7 @@ class QueryParser(object):
             logging.debug('substrates = %s' % str(substrates))
             logging.debug('products = %s' % str(products))
             return ParsedReactionQuery(substrates, products)
-        except pyparsing.ParseException,msg:
+        except pyparsing.ParseException, msg:
             logging.error('Failed to parse query %s', query)
             raise ParseError(msg)
         
