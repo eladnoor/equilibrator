@@ -122,12 +122,28 @@ class Bounds(BaseBounds):
             lbs[cid] = lb
             ubs[cid] = ub
         return Bounds(lbs, ubs, default_lb, default_ub)
-
+            
     @classmethod
     def from_csv_filename(cls, fname, default_lb=None, default_ub=None):
         with open(fname) as f:
             return cls.from_csv_file(
                 f, default_lb=default_lb, default_ub=default_ub)
+
+    @classmethod
+    def from_sbtab(cls, sbtab, default_lb=None, default_ub=None):
+        lbs = {}
+        ubs = {}
+
+        bounds_df = sbtab.toDataFrame()
+        for idx in bounds_df.index:
+            row = bounds_df.loc[idx]
+            cid = row['Compound:Identifiers:kegg.compound']
+            ub = float(row['Concentration:Min'])
+            lb = float(row['Concentration:Max'])
+            ubs[cid] = ub
+            lbs[cid] = lb
+
+        return Bounds(lbs, ubs, default_lb, default_ub)
 
     def Copy(self):
         """Returns a deep copy of self."""
