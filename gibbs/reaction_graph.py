@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response
 from django.http import Http404
 from gibbs import conditions
 
+
 def ReactionGraph(request):
     """Renders the graph page."""
     form = ReactionGraphForm(request.GET)
