@@ -1,4 +1,7 @@
+#!/usr/bin/python
+
 import pathways
+import unittest
 
 from django.test import TestCase
 from util.SBtab import SBtabTools
