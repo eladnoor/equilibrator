@@ -92,9 +92,13 @@ def PathwayResultPage(request):
         logging.error(ppe)
         return HttpResponseBadRequest(ppe.message)
 
-    # calculate the MDF with the specified bounds. Render template.
-    mdf_result = path.calc_mdf()
-    template_data = {'pathway': path,
-                     'mdf_result': mdf_result}
-    logging.info('Calculated MDF %s', mdf_result.mdf)
-    return render_to_response('pathway_result_page.html', template_data)
+    try:
+        # calculate the MDF with the specified bounds. Render template.
+        mdf_result = path.calc_mdf()
+        template_data = {'pathway': path,
+                         'mdf_result': mdf_result}
+        logging.info('Calculated MDF %s', mdf_result.mdf)
+        return render_to_response('pathway_result_page.html', template_data)
+    except Exception as e:
+        logging.error(e)
+        return HttpResponseBadRequest(e.message)
