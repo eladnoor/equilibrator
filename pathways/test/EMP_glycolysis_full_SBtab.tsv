@@ -1,18 +1,20 @@
 !!SBtab TableName='Reaction' TableType='Reaction' Document='Pathway Model' SBtabVersion='1.0'
-glucokin_R00299	D-Glucose + ATP <=> Glucose 6-phosphate + ADP	R00299
-phosphoh_R00771	Glucose 6-phosphate <=> D-Fructose 6-phosphoric acid	R00771
-RXN002	ATP + D-Fructose 6-phosphoric acid <=> ADP + D-Glucose 1,6-bisphosphate	
-RXN003	D-Glucose 1,6-bisphosphate <=> Glycerone phosphate + D-Glyceraldehyde 3-phosphate	
-triose-p_R01015	Glycerone phosphate <=> D-Glyceraldehyde 3-phosphate	R01015
-glyceral_R01061	Orthophosphate + NAD+ + D-Glyceraldehyde 3-phosphate <=> NADH + 3-Phospho-D-glyceroyl phosphate	R01061
-phosphog_R01512	ADP + 3-Phospho-D-glyceroyl phosphate <=> ATP + 3-Phospho-D-glycerate	R01512
-phosphog_R01518	3-Phospho-D-glycerate <=> 2-Phospho-D-glycerate	R01518
-phosphop_R00658	2-Phospho-D-glycerate <=> Phosphoenolpyruvate + H2O	R00658
-pyruvate_R00200	ADP + Phosphoenolpyruvate <=> Pyruvate + ATP	R00200
-pyruvate_R00224	Pyruvate <=> Acetaldehyde + CO2	R00224
-retinal-_R00754	Acetaldehyde + NADH <=> Ethanol + NAD+	R00754
+!ID	!ReactionFormula	!Identifiers:kegg.reaction
+glucokin_R00299	d_glucose + atp <=> glucose_6_phosphate + adp	R00299
+phosphoh_R00771	glucose_6_phosphate <=> d_fructose_6_phosphoric_acid	R00771
+RXN002	atp + d_fructose_6_phosphoric_acid <=> adp + d_glucose_16_bisphosphate	
+RXN003	d_glucose_16_bisphosphate <=> glycerone_phosphate + d_glyceraldehyde_3_phosphate	
+triose-p_R01015	glycerone_phosphate <=> d_glyceraldehyde_3_phosphate	R01015
+glyceral_R01061	orthophosphate + nad + d_glyceraldehyde_3_phosphate <=> nadh + 3_phospho_d_glyceroyl_phosphate	R01061
+phosphog_R01512	adp + 3_phospho_d_glyceroyl_phosphate <=> atp + 3_phospho_d_glycerate	R01512
+phosphog_R01518	3_phospho_d_glycerate <=> 2_phospho_d_glycerate	R01518
+phosphop_R00658	2_phospho_d_glycerate <=> phosphoenolpyruvate + h2o	R00658
+pyruvate_R00200	adp + phosphoenolpyruvate <=> pyruvate + atp	R00200
+pyruvate_R00224	pyruvate <=> acetaldehyde + co2	R00224
+retinal-_R00754	acetaldehyde + nadh <=> ethanol + nad	R00754
 %
 !!SBtab TableName='RelativeFlux' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0'
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value
 flux	glucokin_R00299	R00299	1.0
 flux	phosphoh_R00771	R00771	1.0
 flux	RXN002		1.0
@@ -27,23 +29,24 @@ flux	pyruvate_R00224	R00224	2.0
 flux	retinal-_R00754	R00754	2.0
 %
 !!SBtab TableName='ConcentrationConstraint' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' Unit='M'
-concentration	CO2	C00011	1e-05	1e-05
-concentration	D-Fructose 6-phosphoric acid	C00085	1e-06	0.1
-concentration	NADH	C00004	8.32e-05	8.32e-05
-concentration	Glycerone phosphate	C00111	1e-06	0.1
-concentration	2-Phospho-D-glycerate	C00631	1e-06	0.1
-concentration	Orthophosphate	C00009	0.001	0.001
-concentration	ADP	C00008	0.000555	0.000555
-concentration	D-Glucose	C00031	1e-06	0.1
-concentration	NAD+	C00003	0.00255	0.00255
-concentration	ATP	C00002	0.00963	0.00963
-concentration	Phosphoenolpyruvate	C00074	1e-06	0.1
-concentration	D-Glyceraldehyde 3-phosphate	C00118	1e-06	0.1
-concentration	Acetaldehyde	C00084	1e-06	0.1
-concentration	Ethanol	C00469	1e-06	0.1
-concentration	H2O	C00001	1.0	1.0
-concentration	Pyruvate	C00022	1e-06	0.1
-concentration	Glucose 6-phosphate	C00092	1e-06	0.1
-concentration	3-Phospho-D-glycerate	C00197	1e-06	0.1
-concentration	3-Phospho-D-glyceroyl phosphate	C00236	1e-06	0.1
-concentration	D-Glucose 1,6-bisphosphate	C00660	1e-06	0.1
+!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max
+concentration	co2	C00011	1e-05	1e-05
+concentration	d_fructose_6_phosphoric_acid	C00085	1e-06	0.1
+concentration	nadh	C00004	8.32e-05	8.32e-05
+concentration	glycerone_phosphate	C00111	1e-06	0.1
+concentration	2_phospho_d_glycerate	C00631	1e-06	0.1
+concentration	orthophosphate	C00009	0.001	0.001
+concentration	adp	C00008	0.000555	0.000555
+concentration	d_glucose	C00031	1e-06	0.1
+concentration	nad	C00003	0.00255	0.00255
+concentration	atp	C00002	0.00963	0.00963
+concentration	phosphoenolpyruvate	C00074	1e-06	0.1
+concentration	d_glyceraldehyde_3_phosphate	C00118	1e-06	0.1
+concentration	acetaldehyde	C00084	1e-06	0.1
+concentration	ethanol	C00469	1e-06	0.1
+concentration	h2o	C00001	1.0	1.0
+concentration	pyruvate	C00022	1e-06	0.1
+concentration	glucose_6_phosphate	C00092	1e-06	0.1
+concentration	3_phospho_d_glycerate	C00197	1e-06	0.1
+concentration	3_phospho_d_glyceroyl_phosphate	C00236	1e-06	0.1
+concentration	d_glucose_16_bisphosphate	C00660	1e-06	0.1
