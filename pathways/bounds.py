@@ -138,8 +138,8 @@ class Bounds(BaseBounds):
         for idx in bounds_df.index:
             row = bounds_df.loc[idx]
             cid = row['Compound:Identifiers:kegg.compound']
-            ub = float(row['Concentration:Min'])
-            lb = float(row['Concentration:Max'])
+            ub = float(row['Concentration:Max'])
+            lb = float(row['Concentration:Min'])
             ubs[cid] = ub
             lbs[cid] = lb
 

@@ -14,9 +14,13 @@ class TestBounds(TestCase):
     def testFromSBtab(self):
         ds = SBtabTools.openMultipleSBtab('pathways/test/EMP_glycolysis_full_SBtab.tsv')
         bs = Bounds.from_sbtab(ds[2])
-        logging.info(bs.lower_bounds)
-        logging.info(bs.upper_bounds)
 
-    
+        for key in bs.lower_bounds:
+        	lb = bs.GetLowerBound(key)
+        	ub = bs.GetUpperBound(key)
+        	msg = 'bounds for %s lb = %.2g, ub = %.2g' % (key, lb, ub)
+        	self.assertLessEqual(lb, ub, msg=msg)
+
+
 if __name__ == '__main__':
     unittest.main()
