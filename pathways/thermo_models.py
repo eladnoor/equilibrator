@@ -13,7 +13,7 @@ DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 
 class MDFResult(object):
 
-    def __init__(self, model, mdf, 
+    def __init__(self, model, mdf,
                  concentrations, dG0_r_cov_eigen,
                  reaction_prices, compound_prices,
                  min_total_dG=None, max_total_dG=None):
@@ -334,9 +334,12 @@ class PathwayThermoModel(object):
         """
         lp_primal, primal_obj, y, l, B = self._MakeMDFProblem()
         lp_primal.solve(self.pulp_solver)
+
         if lp_primal.status != pulp.LpStatusOptimal:
             logging.warning('LP status %s', lp_primal.status)
-            raise pulp.solvers.PulpSolverError("cannot solve MDF primal")
+            raise pulp.solvers.PulpSolverError(
+                "Cannot solve MDF primal optimization problem")
+
         y = np.matrix(map(pulp.value, y)).T
         l = np.matrix(map(pulp.value, l)).T
         mdf = pulp.value(B)

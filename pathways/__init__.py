@@ -411,17 +411,30 @@ class PathwayMDFData(object):
     @property
     def conc_plot_svg(self):
         ys = np.arange(0, len(self.compound_data))
-        concs = [c.concentration for c in self.compound_data]
+        concs = np.array([c.concentration for c in self.compound_data])
         cnames = [str(c.compound) for c in self.compound_data]
         default_lb = self.model.concentration_bounds.default_lb
         default_ub = self.model.concentration_bounds.default_ub
+
+        cids = [str(c.compound.kegg_id) for c in self.compound_data]
+        lbs = [self.model.concentration_bounds.GetLowerBound(cid)
+               for cid in cids]
+        ubs = [self.model.concentration_bounds.GetUpperBound(cid)
+               for cid in cids]
+        lbs, ubs = np.array(lbs), np.array(ubs)
+        bounds_equal = np.where(lbs == ubs)
+        ys_equal = ys[bounds_equal]
+        concs_equal = concs[bounds_equal]
 
         conc_figure = plt.figure(figsize=(8, 6))
         seaborn.set_style('darkgrid')
         plt.axes([0.2, 0.1, 0.9, 0.9])
         plt.axvspan(1e-8, default_lb, color='y', alpha=0.5)
         plt.axvspan(default_ub, 1e3, color='y', alpha=0.5)
-        plt.scatter(concs, ys, figure=conc_figure)
+        plt.scatter(concs, ys, figure=conc_figure,
+                    label='Variable Concentrations')
+        plt.scatter(concs_equal, ys_equal, figure=conc_figure, color='y',
+                    label='Fixed Concentrations')
 
         plt.xticks(family='sans-serif', figure=conc_figure)
         plt.yticks(ys, cnames, family='sans-serif',
