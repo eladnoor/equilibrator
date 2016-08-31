@@ -64,7 +64,7 @@ def BuildPathwayModel(request):
 
     response = HttpResponse(content_type='text/tab-separated-values')
     response['Content-Disposition'] = 'attachment; filename="model_definition.tsv"'
-    response.write(path.to_sbtab())
+    response.write(path.to_full_sbtab())
 
     return response
 
@@ -76,22 +76,21 @@ def PathwayResultPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
-    # If specific bounds are supplied, use them.
-    bounds = make_bounds(request, form)
-    logging.debug('Made bounds')
     # Pass in aqueous params from user.
     aq_params = AqueousParams(
         pH=form.cleaned_data['pH'],
         ionic_strength=form.cleaned_data['ionic_strength'])
-    logging.debug('Made AqParams.')
 
-    # TODO handle custom concentration bounds
-    f_data = unicode(request.FILES['pathway_file'].read())
-    sio = io.StringIO(f_data, newline=None)  # universal newline mode
-    path = ParsedPathway.from_csv_file(sio)
-
-    logging.info('Parsed pathway.')
-    logging.info(path.to_sbtab())
+    try:
+        f_data = unicode(request.FILES['pathway_file'].read())
+        sio = io.StringIO(f_data, newline=None)  # universal newline mode
+        reactions, fluxes, bounds = SBtabTools.openMultipleSBtabFromFile(sio)
+        path = ParsedPathway.from_full_sbtab(
+            reactions, fluxes, bounds, aq_params=aq_params)
+        logging.info('Parsed pathway.')
+    except PathwayParseError as ppe:
+        logging.error(ppe)
+        return HttpResponseBadRequest(ppe.message)
 
     # calculate the MDF with the specified bounds. Render template.
     mdf_result = path.calc_mdf()
