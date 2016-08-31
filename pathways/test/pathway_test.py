@@ -10,13 +10,13 @@ from util.SBtab import SBtabTools
 class PathwayTest(TestCase):
 
     def test_from_csv_file(self):
-    	with open('pathways/test/EMP_glycolysis_to_EtOH_simple.tsv') as f:
+    	with open('pathways/test/EMP_glycolysis_simple.csv') as f:
     		path = pathways.ParsedPathway.from_csv_file(f)
         	path.print_reactions()
 
-    def _notest_from_simple_sbtab(self):
-    	ds = SBtabTools.openMultipleSBtab('pathways/test/EMP_glycolysis_to_EtOH_simple.tsv')
-    	path = pathways.ParsedPathway.from_simple_sbtab(ds[0])
+    def test_from_full_sbtab(self):
+    	rxns, fluxes, bounds = SBtabTools.openMultipleSBtab('pathways/test/EMP_glycolysis_full_SBtab.tsv')
+    	path = pathways.ParsedPathway.from_full_sbtab(rxns, fluxes, bounds)
         path.print_reactions()
 
 
