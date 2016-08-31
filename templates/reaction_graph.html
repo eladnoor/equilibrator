@@ -102,28 +102,36 @@
                 
                 varyPh: function () {
                     var points = [];
+                    var dGs = [];
                     
                     for (curPh = 4; curPh <= 10; curPh += 0.1) {
                         var DeltaGPrime = this.getDeltaGPrime(curPh, this.is).toFixed(4);
+                        dGs.push(DeltaGPrime);
                         points.push([curPh, DeltaGPrime]);
                     }
                     
                     var series = {
-                        data: points
+                        data: points,
+                        minDg: Math.min.apply(null, dGs),
+                        maxDg: Math.max.apply(null, dGs),
                     };
                     return series;
                 },
 
                 varyIonicStrength: function () {
                     var points = [];
-                    
+                    var dGs = [];
+
                     for (curIs = 0; curIs <= 0.35; curIs += 0.001) {
                         var DeltaGPrime = this.getDeltaGPrime(this.ph, curIs).toFixed(4);
+                        dGs.push(DeltaGPrime);
                         points.push([curIs, DeltaGPrime]);
                     }
-                    
+
                     var series = {
-                        data: points
+                        data: points,
+                        minDg: Math.min.apply(null, dGs),
+                        maxDg: Math.max.apply(null, dGs),
                     };
                     return series;
                 },
@@ -141,22 +149,26 @@
                 },
                 
                 update: function () {
-                    var all_series = [];
+                    var series = null;
+
                     var options = {
                         yaxis: { tickFormatter: this.dgTickFormatter },
                         legend: { container: "#legendContainer" }
                     };
                     
                     if (this.mode == 'varyIs') {
-                        var isSeries = this.varyIonicStrength();
-                        all_series.push(isSeries);
+                        series = this.varyIonicStrength();
                         options.xaxis = { tickFormatter: this.isTickFormatter };
                     } else {
-                        var phSeries = this.varyPh();
-                		all_series.push(phSeries);
+                        series = this.varyPh();
                 		options.xaxis = { tickFormatter: this.phTickFormatter };
                 	}
+
+                    options['yaxis']['min'] = series.minDg - 1.0;
+                    options['yaxis']['max'] = series.maxDg + 1.0;
                 	
+                    var all_series = [];
+                    all_series.push(series);
                     $.plot($("#dgFigure"), all_series, options);
                 }
 
