@@ -207,7 +207,54 @@ class ParsedPathway(object):
         for f, r in zip(self.fluxes, self.reactions):
             print '%sx %s' % (f, r)
 
-    def to_sbtab(self):
+    @classmethod
+    def from_full_sbtab(self, reaction_sbtab, flux_sbtab, bounds_sbtab,
+                        aq_params=None):
+        """Returns an initialized ParsedPathway."""
+        bounds = Bounds.from_sbtab(bounds_sbtab)
+
+        reaction_df = reaction_sbtab.toDataFrame()
+        flux_df = flux_sbtab.toDataFrame()
+        bounds_df = bounds_sbtab.toDataFrame()
+
+        name_to_cid = dict(
+            zip(bounds_df['Compound'],
+                bounds_df['Compound:Identifiers:kegg.compound']))
+
+        query_parser = service_config.Get().query_parser
+        reactions = []
+        for idx in reaction_df.index:
+            row = reaction_df.loc[idx]
+            rxn_formula = row['ReactionFormula']
+            parsed_rxn = query_parser.ParseReactionQuery(rxn_formula)
+
+            rxn_ds = []
+            for coeff, name in parsed_rxn.substrates:
+                cid = name_to_cid[name]
+                rxn_ds.append(self._reactant_dict(coeff, cid, negate=True))
+            for coeff, name in parsed_rxn.products:
+                cid = name_to_cid[name]
+                rxn_ds.append(self._reactant_dict(coeff, cid, negate=False))
+            rxn = Reaction.FromIds(rxn_ds, fetch_db_names=True)
+
+            if not rxn.IsBalanced():
+                raise UnbalancedReaction(
+                    "ReactionFormula '%s' is not balanced", rxn_formula)
+            if not rxn.IsElectronBalanced():
+                raise UnbalancedReaction(
+                    "ReactionFormula '%s' is not redox balanced", rxn_formula)
+
+            reactions.append(rxn)
+
+        reaction_ids = reaction_df['ID']
+        reaction_fluxes = dict(zip(flux_df['Reaction'], flux_df['Value']))
+        fluxes_ordered = [float(reaction_fluxes[rid]) for rid in reaction_ids]
+
+        pp = ParsedPathway(reactions, fluxes_ordered,
+                           bounds=bounds, aq_params=aq_params)
+        return pp
+
+    def to_full_sbtab(self):
         """Returns a full SBtab description of the model.
 
         Description includes reaction fluxes and per-compound bounds.
@@ -227,7 +274,8 @@ class ParsedPathway(object):
             rxn_id = kegg_id
             if rxn.catalyzing_enzymes:
                 enz = unicode(rxn.catalyzing_enzymes[0])
-                enz_slug = slugify(enz)[:8]
+                enz_slug = slugify(enz)[:10]
+                enz_slug = enz_slug.replace('-', '_')
                 rxn_id = '%s_%s' % (enz_slug, kegg_id)
             elif not kegg_id:
                 rxn_id = 'RXN%03d' % i
@@ -270,7 +318,6 @@ class ParsedPathway(object):
             writer.writerow(d)
 
         return sio.getvalue()
-
 
 
 class ReactionMDFData(object):

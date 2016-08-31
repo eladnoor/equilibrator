@@ -335,6 +335,7 @@ class PathwayThermoModel(object):
         lp_primal, primal_obj, y, l, B = self._MakeMDFProblem()
         lp_primal.solve(self.pulp_solver)
         if lp_primal.status != pulp.LpStatusOptimal:
+            logging.warning('LP status %s', lp_primal.status)
             raise pulp.solvers.PulpSolverError("cannot solve MDF primal")
         y = np.matrix(map(pulp.value, y)).T
         l = np.matrix(map(pulp.value, l)).T
