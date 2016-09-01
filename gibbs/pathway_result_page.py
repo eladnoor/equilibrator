@@ -55,16 +55,21 @@ def BuildPathwayModel(request):
 
     # TODO handle custom concentration bounds
     try:
-        f_data = unicode(request.FILES['pathway_file'].read())
+        f = request.FILES['pathway_file']
+        fname_base, ext = path.splitext(f.name)
+        output_fname = fname_base + '.tsv'
+        logging.info(output_fname)
+
+        f_data = unicode(f.read())
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
-        path = ParsedPathway.from_csv_file(sio)
+        pp = ParsedPathway.from_csv_file(sio)
     except PathwayParseError as ppe:
         logging.error(ppe)
         return HttpResponseBadRequest(ppe.message)
 
     response = HttpResponse(content_type='text/tab-separated-values')
-    response['Content-Disposition'] = 'attachment; filename="model_definition.tsv"'
-    response.write(path.to_full_sbtab())
+    response['Content-Disposition'] = 'attachment; filename="%s"' % output_fname
+    response.write(pp.to_full_sbtab())
 
     return response
 
@@ -85,7 +90,7 @@ def PathwayResultPage(request):
         f_data = unicode(request.FILES['pathway_file'].read())
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
         reactions, fluxes, bounds = SBtabTools.openMultipleSBtabFromFile(sio)
-        path = ParsedPathway.from_full_sbtab(
+        pp = ParsedPathway.from_full_sbtab(
             reactions, fluxes, bounds, aq_params=aq_params)
         logging.info('Parsed pathway.')
     except PathwayParseError as ppe:
@@ -94,7 +99,7 @@ def PathwayResultPage(request):
 
     try:
         # calculate the MDF with the specified bounds. Render template.
-        mdf_result = path.calc_mdf()
+        mdf_result = pp.calc_mdf()
         template_data = {'pathway': path,
                          'mdf_result': mdf_result}
         logging.info('Calculated MDF %s', mdf_result.mdf)
