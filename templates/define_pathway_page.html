@@ -1,89 +1,99 @@
-{% with "Pathway" as title %}
-    {% include "header.html" %}
-{% endwith %}
+<html>
+	<head>
+		<title>eQuilibrator for Metabolic Pathways</title>
+		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+		<link href="/media/main.css" rel="stylesheet" type="text/css">
+		<link href="/media/style.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+	    {% include "analytics.html" %}
+	</head>
+	<body>
+	
+	<div class="welcome centerize">
+	
+		{% include "logo_large.html" %}
    
-<div class='centerize'>
-	<form name="pathway_form" action="/pathway/build_model" method="POST" enctype="multipart/form-data">
-	    {% csrf_token %}
-	    <table class='results'>
-	    	<tr class='infoTableHeader'>
-            	<th colspan="100%">Step 1: Build <a href='http://www.sbtab.net'>SBtab</a> Pathway Model</th>
-        	</tr>
-        	<tr>
-    			<td colspan="100%">Skip this step if you already have an SBtab model file.</td>
-    		</tr>
-	    	<tr>
-	    		<td>Pathway definition CSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.csv">example</a>)</td>
-	    		<td><input type="file" name="pathway_file" /></td>
-	    	</tr>
-	    	<tr>
-	    		<td>Minimum concentration<sup>&dagger;</sup>:</td>
-	    		<td><input type="text" name='min_c' value='1e-6' /> Molar</td>
-	    	</tr>
-	    	<tr>
-	    		<td>Maximum concentration<sup>&dagger;</sup>:</td>
-	    		<td><input type="text" name='max_c' value='100e-3'/> Molar</td>
-	    	</tr>
-	    	<tr>
-	    		<td class='footnote' colspan=2>
-					<sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
-					based on measurements from <emph>E. coli</emph> (<b>ref here</b>). They can be modified 
-					before performing MDF analysis below. 
-				</td>
-			</tr>
-	    	<tr class='infoTableHeader' align='center'>
-	    		<td colspan="100%"><input type='submit' /></td>
-	    	</tr>
+		<form name="pathway_form" action="/pathway/build_model" method="POST" enctype="multipart/form-data">
+		    {% csrf_token %}
+		    <table class='results'>
+		    	<tr class='infoTableHeader'>
+	            	<th colspan="100%">Step 1: Build <a href='http://www.sbtab.net'>SBtab</a> Pathway Model</th>
+	        	</tr>
+	        	<tr>
+	    			<td colspan="100%">Skip this step if you already have an SBtab model file.</td>
+	    		</tr>
+		    	<tr>
+		    		<td>Pathway definition CSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.csv">example</a>)</td>
+		    		<td><input type="file" name="pathway_file" /></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Minimum concentration<sup>&dagger;</sup>:</td>
+		    		<td><input type="text" name='min_c' value='1e-6' /> Molar</td>
+		    	</tr>
+		    	<tr>
+		    		<td>Maximum concentration<sup>&dagger;</sup>:</td>
+		    		<td><input type="text" name='max_c' value='100e-3'/> Molar</td>
+		    	</tr>
+		    	<tr>
+		    		<td class='footnote' colspan=2>
+						<sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
+						based on measurements from <emph>E. coli</emph> (<b>ref here</b>). They can be modified 
+						before performing MDF analysis below. 
+					</td>
+				</tr>
+		    	<tr class='infoTableHeader' align='center'>
+		    		<td colspan="100%"><input type='submit' /></td>
+		    	</tr>
 
-	    </table>
-	</form>
-	<table class='results'>
-    	<tr class='infoTableHeader'>
-        	<th colspan="100%">Step 2: Verify & Edit Pathway Model</th>
-    	</tr>
-    	<tr>
-    		<td>1. Check relative fluxes for all reactions in the SBtab file.</td>
-    	</tr>
-    	<tr>
-    		<td>2. Check KEGG IDs for all reactants in the model.</td>
-    	</tr>
-    	<tr>
-    		<td>3. Check and/or edit bounds on metabolite concentrations.</td>
-    	</tr>
-    </table>
-	<form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data">
-	    {% csrf_token %}
-	    <table class='results'>
+		    </table>
+		</form>
+		<table class='results'>
 	    	<tr class='infoTableHeader'>
-            	<th colspan="100%">Step 3: Perform Pathway <a href='/faq#mdf'>MDF</a> Analysis</th>
-        	</tr>
-	    	<tr>
-	    		<td>Pathway model TSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.tsv">example</a>)</td>
-	    		<td><input type="file" name="pathway_file" /></td>
+	        	<th colspan="100%">Step 2: Verify & Edit Pathway Model</th>
 	    	</tr>
 	    	<tr>
-		    	<td>
-		            pH
-		        </td>
-		        <td>
-		            <input type="text" name="pH" id="phField" value="{{constants.DEFAULT_PH}}" />
-		        </td>
-		    </tr>
-		    <tr>
-		    	<td>
-		            Ionic Strength
-		        </td>
-		        <td>
-
-		            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{constants.DEFAULT_IONIC_STRENGTH}}" /> Molar
-		        </td>
-		    </tr>
-	    	<tr class='infoTableHeader' align='center'>
-	    		<td colspan="100%"><input type='submit' /></td>
+	    		<td>1. Check relative fluxes for all reactions in the SBtab file.</td>
+	    	</tr>
+	    	<tr>
+	    		<td>2. Check KEGG IDs for all reactants in the model.</td>
+	    	</tr>
+	    	<tr>
+	    		<td>3. Check and/or edit bounds on metabolite concentrations.</td>
 	    	</tr>
 	    </table>
-	</form>
-</div>
+		<form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data" target="_blank">
+		    {% csrf_token %}
+		    <table class='results'>
+		    	<tr class='infoTableHeader'>
+	            	<th colspan="100%">Step 3: Perform Pathway <a href='/faq#mdf'>MDF</a> Analysis</th>
+	        	</tr>
+		    	<tr>
+		    		<td>Pathway model TSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.tsv">example</a>)</td>
+		    		<td><input type="file" name="pathway_file" /></td>
+		    	</tr>
+		    	<tr>
+			    	<td>
+			            pH
+			        </td>
+			        <td>
+			            <input type="text" name="pH" id="phField" value="{{constants.DEFAULT_PH}}" />
+			        </td>
+			    </tr>
+			    <tr>
+			    	<td>
+			            Ionic Strength
+			        </td>
+			        <td>
 
+			            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{constants.DEFAULT_IONIC_STRENGTH}}" /> Molar
+			        </td>
+			    </tr>
+		    	<tr class='infoTableHeader' align='center'>
+		    		<td colspan="100%"><input type='submit' /></td>
+		    	</tr>
+		    </table>
+		</form>
+	</div>
 
-{% include "footer.html" %}
+	{% include "footer.html" %}
