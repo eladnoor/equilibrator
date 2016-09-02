@@ -131,10 +131,10 @@ class ParsedPathway(object):
             # TODO raise errors in this case.
             if not rxn.IsBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not balanced", rxn_formula)
+                    "ReactionFormula '%s' is not balanced" % rxn_formula)
             if not rxn.IsElectronBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not redox balanced", rxn_formula)
+                    "ReactionFormula '%s' is not redox balanced" % rxn_formula)
 
             reactions.append(rxn)
             fluxes.append(flux)
@@ -239,10 +239,10 @@ class ParsedPathway(object):
 
             if not rxn.IsBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not balanced", rxn_formula)
+                    "ReactionFormula '%s' is not balanced" % rxn_formula)
             if not rxn.IsElectronBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not redox balanced", rxn_formula)
+                    "ReactionFormula '%s' is not redox balanced" % rxn_formula)
 
             reactions.append(rxn)
 

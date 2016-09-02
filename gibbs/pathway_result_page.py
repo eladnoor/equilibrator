@@ -65,7 +65,7 @@ def BuildPathwayModel(request):
         pp = ParsedPathway.from_csv_file(sio)
     except PathwayParseError as ppe:
         logging.error(ppe)
-        return HttpResponseBadRequest(ppe.message)
+        return HttpResponseBadRequest(ppe)
 
     response = HttpResponse(content_type='text/tab-separated-values')
     response['Content-Disposition'] = 'attachment; filename="%s"' % output_fname
