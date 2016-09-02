@@ -1133,12 +1133,16 @@ class Reaction(object):
     
     def BalanceElectrons(self,
                          acceptor_id='C00003',           # NAD+
-                         reduced_acceptor_id='C00004'):  # NADH
-        """Try to balance the reaction electons."""        
+                         reduced_acceptor_id='C00004',
+                         n_e=2):  # NADH
+        """Try to balance the reaction electons.
+
+        By default acceptor and reduced accepter differ by 2e-.
+        """    
         net_electrons = self._GetElectronDiff()
         if net_electrons != 0:
-            self._AddCompound(reduced_acceptor_id, -net_electrons/2)
-            self._AddCompound(acceptor_id, net_electrons/2)
+            self._AddCompound(reduced_acceptor_id, -net_electrons/float(n_e))
+            self._AddCompound(acceptor_id, net_electrons/float(n_e))
             self._Dedup()
         
     def _GetConcentrationCorrection(self):
