@@ -447,18 +447,23 @@ class Reaction(object):
         elif my_hash == co2_hash:
             return """You are looking at the &Delta;G' of CO<sub>2</sub> hydration.</br>
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
-        elif (self._FindCompoundIndex('C00011') is not None and 
+        elif (self._FindCompoundIndex('C14818') is not None and
+              self._FindCompoundIndex('C14819') is not None):
+            return """Energetics of iron redox reactions depend heavily on the
+               chemical forms of iron involved.
+               <a href="/faq#feRedox">Learn more &raquo;</a>"""
+        elif (self._FindCompoundIndex('C00011') is not None and
               self._FindCompoundIndex('C00288') is None):
             return """Did you mean 
                       <a href="%s">CO<sub>2</sub>(total)</a>?
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>""" % \
                       self.GetReplaceCO2Link()
-        elif (self._FindCompoundIndex('C00011') is not None and 
+        elif (self._FindCompoundIndex('C00011') is not None and
               self._FindCompoundIndex('C00288') is not None):
             return """One should not use CO<sub>2</sub>(aq) together with
                       CO<sub>2</sub>(total) in the same reaction.
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
-        elif (self._FindCompoundIndex('C01353') is not None and 
+        elif (self._FindCompoundIndex('C01353') is not None and
               self._FindCompoundIndex('C00288') is not None):
             return """One should not use HCO<sub>3</sub><sup>-</sup>(aq) together with
                       CO<sub>2</sub>(total) in the same reaction.

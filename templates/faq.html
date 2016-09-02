@@ -25,7 +25,8 @@
                     <li><a href="#waterConcentration">Why can't I change the concentration of water?</a></li>
                     <li><a href="#changeTemp">Why can't I change the temperature?</a></li>
                     <li><a href="#aqueousCO2">What are CO<sub>2</sub>(aq) and CO<sub>2</sub>(total)?</a></li>
-                    <li><a href="#halfReactions">What do you mean "electrons are not balanced?" What about half-reactions?</a></li>
+                    <li><a href="#halfReactions">What do you mean "electrons are not balanced?" What are half-reactions?</a></li>
+                    <li><a href="#feRedox">What's so complicated about redox reactions involving iron?</a></li>
                     <li><a href="#atpHydrolysis">Why is the value for ATP hydrolysis different than in books by Alberty, the previous version of eQuilibrator and some textbooks?</a></li>
                     <li><a href="#totalDrivingForce">What is the total driving force of a pathway?</a></li>
                     <li><a href="#mdf">What is the MDF of a pathway?</a></li>
@@ -322,8 +323,6 @@
             <p>
             We know that this whole issue is quite confusing. You are welcome to suggest how to explain this better. 
             </p>
-
-            
             </div>
           </div>
           
@@ -357,75 +356,101 @@
             chains).
             </p>
             </div>
+        </div>
 
-            <div class="faqEntry" id="atpHydrolysis">
-                <div class="faqQuestion">
-                    Why is the value for ATP hydrolysis different than in books by Alberty, 
-                    the previous version of eQuilibrator and some other textbooks?
-                </div>
-                <div class="faqAnswer">
-                <p>
-                    The &Delta;G'&deg; of the ATP hydrolysis reaction is affected by many factors, notably 
-                    also by the concentration of free Mg<sup>2+</sup> ions. The value cited in [1] 
-                    and used in the
-                    previous version of eQuilibrator (-36.4 kJ/mol) assumes no magnesium 
-                    ([Mg<sup>2+</sup>] = 0). In the
-                    new version of eQuilibrator<sup>2.0</sup> we use the component contribution method [6] 
-                    that uses measurements collected in the NIST thermodynamic database for enzyme-catalyzed reactions
-                    [8] that were performed under varying levels of Mg<sup>2+</sup>. This is also the more
-                    relevant situation in vivo. As noted in many studies, when taking into account [Mg<sup>2+</sup>], the
-                    value changes and is observed to be in the range -26 to -32 kJ/mol depending on the
-                    reference. A clear discussion can be found at [9].  
-                </p>
-                </div>
-            </div>
-            <div class="faqEntry" id="totalDrivingForce">
-                <div class="faqQuestion">
-                    What is the total driving force of a pathway?
-                </div>
-                <div class="faqAnswer">
-                <p>
-                    We define the driving force of a reaction or pathway as -&Delta;G' - i.e. a favorable
-                    reaction has a positive driving force. The total driving force for a pathway is the driving
-                    force associated with the pathway net reaction given particular metabolite and cofactor 
-                    concentrations. The minimum total driving force, which we calculate in analyzing a pathway,
-                    is the smallest driving force associated with that pathway given the limits assumed for 
-                    metabolite an cofactor concentrations. Similarly, the maximum total driving force is 
-                    the largest driving force associated with pathway given those same limits.
-                </p>
-                </div>
-            </div>
+        <div class="faqEntry" id="feRedox">
+            <div class="faqQuestion">What's so complicated about redox reactions involving iron?</div>
+            
+            <div class="faqAnswer">
+            <p>The reduction or oxidation of the pair Fe(III)/Fe(II) is ubiquitous in biology, for example in the 
+            iron-sulfur clusters of ferredoxins. However, the chemical environment of the iron atom can have a
+            large effect on the reduction potential of the Fe(III)/Fe(II) pair with the measured reduction potentials
+            of natural ferredoxins varying by more than 350 mV (Stephens et al., Chemical Reviews 1996). That is, 
+            variation in the measured reduction potential of ferredoxins equals to reduction potential of NAD/NADH!
+            </p>
 
-            <div class="faqEntry" id="mdf">
-                <div class="faqQuestion">
-                    What is the meaning of the MDF value for a pathway?
-                </div>
-                <div class="faqAnswer">
-                <p>
-                    The MDF of a pathway is a metric of how thermodynamically favorable a pathway can be
-                    in physiological conditions. The value of the MDF is smallest -&Delta;G' obtained
-                    by any pathway reaction when metabolite concentrations are chosen to make all pathway
-                    reactions as favorable as possible (-&Delta;G' as positive as possible).
-                </p>
-                <p>
-                    You can read more about the MDF in
-                    <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483">PLoS Computational Biology</a>.
-                </p>
-                </div>
+            <p>
+            Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect
+            the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite
+            has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the
+            same empirical formula, has a redox potential of about -100 mV at pH 7 (ref). As a result we strongly
+            suggest that you enter the second half-reaction that interests you (e.g. 
+            <a href="/search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO2">reduction of pyruvate to acetyl-CoA</a>) 
+            and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron
+            donor-acceptor pair that interests you.
+            </p>
             </div>
+        </div>
 
-            <div class="faqEntry" id="contact">
-                <div class="faqQuestion">
-                    How can I contact the people behind eQuilibrator?
-                </div>
-                <div class="faqAnswer">
-                <p>
-                    If you have questions about eQuilibrator, please consult the <a href="https://groups.google.com/forum/#!forum/equilibrator-users" alt="Contact Us">Google Group</a> to see if your question has been answered before. Please also post your questions to the group so that all eQuilibrator users can benefit from your experience. If you have questions about the data and methods on which eQuilibrator is based, please consult <a href="/cite">these references</a>. If you'd like to contact us directly, reach out to the <a href="http://www.weizmann.ac.il/plants/Milo/">Milo Lab</a>, which maintains eQuilibrator.
-                </p>
-                </div>
+        <div class="faqEntry" id="atpHydrolysis">
+            <div class="faqQuestion">
+                Why is the value for ATP hydrolysis different than in books by Alberty, 
+                the previous version of eQuilibrator and some other textbooks?
             </div>
+            <div class="faqAnswer">
+            <p>
+                The &Delta;G'&deg; of the ATP hydrolysis reaction is affected by many factors, notably 
+                also by the concentration of free Mg<sup>2+</sup> ions. The value cited in [1] 
+                and used in the
+                previous version of eQuilibrator (-36.4 kJ/mol) assumes no magnesium 
+                ([Mg<sup>2+</sup>] = 0). In the
+                new version of eQuilibrator<sup>2.0</sup> we use the component contribution method [6] 
+                that uses measurements collected in the NIST thermodynamic database for enzyme-catalyzed reactions
+                [8] that were performed under varying levels of Mg<sup>2+</sup>. This is also the more
+                relevant situation in vivo. As noted in many studies, when taking into account [Mg<sup>2+</sup>], the
+                value changes and is observed to be in the range -26 to -32 kJ/mol depending on the
+                reference. A clear discussion can be found at [9].  
+            </p>
+            </div>
+        </div>
 
-          </div>
+        <div class="faqEntry" id="totalDrivingForce">
+            <div class="faqQuestion">
+                What is the total driving force of a pathway?
+            </div>
+            <div class="faqAnswer">
+            <p>
+                We define the driving force of a reaction or pathway as -&Delta;G' - i.e. a favorable
+                reaction has a positive driving force. The total driving force for a pathway is the driving
+                force associated with the pathway net reaction given particular metabolite and cofactor 
+                concentrations. The minimum total driving force, which we calculate in analyzing a pathway,
+                is the smallest driving force associated with that pathway given the limits assumed for 
+                metabolite an cofactor concentrations. Similarly, the maximum total driving force is 
+                the largest driving force associated with pathway given those same limits.
+            </p>
+            </div>
+        </div>
+
+        <div class="faqEntry" id="mdf">
+            <div class="faqQuestion">
+                What is the meaning of the MDF value for a pathway?
+            </div>
+            <div class="faqAnswer">
+            <p>
+                The MDF of a pathway is a metric of how thermodynamically favorable a pathway can be
+                in physiological conditions. The value of the MDF is smallest -&Delta;G' obtained
+                by any pathway reaction when metabolite concentrations are chosen to make all pathway
+                reactions as favorable as possible (-&Delta;G' as positive as possible).
+            </p>
+            <p>
+                You can read more about the MDF in
+                <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483">PLoS Computational Biology</a>.
+            </p>
+            </div>
+        </div>
+
+        <div class="faqEntry" id="contact">
+            <div class="faqQuestion">
+                How can I contact the people behind eQuilibrator?
+            </div>
+            <div class="faqAnswer">
+            <p>
+                If you have questions about eQuilibrator, please consult the <a href="https://groups.google.com/forum/#!forum/equilibrator-users" alt="Contact Us">Google Group</a> to see if your question has been answered before. Please also post your questions to the group so that all eQuilibrator users can benefit from your experience. If you have questions about the data and methods on which eQuilibrator is based, please consult <a href="/cite">these references</a>. If you'd like to contact us directly, reach out to the <a href="http://www.weizmann.ac.il/plants/Milo/">Milo Lab</a>, which maintains eQuilibrator.
+            </p>
+            </div>
+        </div>
+
+    </div>
             
             {% include "references.html" %}
             
