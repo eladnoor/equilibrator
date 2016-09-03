@@ -2,17 +2,19 @@ from django import forms
 from gibbs import constants
 import logging
 
+
 class ListFormField(forms.MultipleChoiceField):
     """
         A form field for a list of values that are unchecked.
         
         The Django MultipleChoiceField does *almost* what we want, except
-        it validates that each choice is in a supplied list of choices, 
+        it validates that each choice is in a supplied list of choices,
         even when that list is empty. We simply override the validation.
     """
     
     def valid_value(self, value):
         return True
+
  
 class EnzymeForm(forms.Form):
     ec = forms.CharField(max_length=50)
@@ -144,10 +146,17 @@ class CompoundForm(BaseReactionForm):
     cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))
     
 
-class PathwayForm(forms.Form):
+class BuildPathwayModelForm(forms.Form):
     pathway_file = forms.FileField(required=True)
-    bounds_file = forms.FileField(required=False)
     min_c = forms.FloatField(required=False)
     max_c = forms.FloatField(required=False)
     pH = forms.FloatField(required=False)
     ionic_strength = forms.FloatField(required=False)
+    conc_units = forms.CharField(required=True)
+
+
+class AnalyzePathwayModelForm(forms.Form):
+    pathway_file = forms.FileField(required=True)
+    pH = forms.FloatField(required=False)
+    ionic_strength = forms.FloatField(required=False)
+    

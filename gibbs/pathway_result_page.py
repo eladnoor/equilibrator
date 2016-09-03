@@ -6,52 +6,49 @@ from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from gibbs.conditions import AqueousParams
-from gibbs.forms import PathwayForm
+from gibbs.forms import BuildPathwayModelForm, AnalyzePathwayModelForm
 from os import path
 from pathways import ParsedPathway, PathwayParseError
 from pathways.bounds import Bounds
+from pathways.concs import ConcentrationConverter, NoSuchUnits
 from util.SBtab import SBtabTools
 
 RELPATH = path.dirname(path.realpath(__file__))
 COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
 
 
-def make_bounds(request, form):
+def make_aq_params(form):
+    return AqueousParams(
+            pH=form.cleaned_data['pH'],
+            ionic_strength=form.cleaned_data['ionic_strength'])
+
+
+def make_bounds(form):
     max_c = form.cleaned_data.get('max_c')
     min_c = form.cleaned_data.get('min_c')
-    default_ub = max_c or 100e-3
-    default_lb = min_c or 1e-6
-    conc_f = request.FILES.get('bounds_file')
-    logging.info('default_lb = %.2g, default_ub = %.2g.',
-                 default_lb, default_ub)
+    bounds_units = form.cleaned_data.get('conc_units')
 
-    if conc_f:
-        logging.info('Reading concentrations from uploaded file.')
-        concs_data = unicode(conc_f.read())
-        sio = io.StringIO(concs_data, newline=None)  # universal newline mode
-        bounds = Bounds.from_csv_file(
-            sio, default_lb=default_lb, default_ub=default_ub)
-        return bounds
-    if max_c or min_c:
-        logging.info('Reading default concentration bounds.')
-        bounds = Bounds.from_csv_filename(
-            COFACTORS_FNAME, default_lb=default_lb, default_ub=default_ub)
-        return bounds
+    max_c = ConcentrationConverter.to_molar_string(max_c, bounds_units)
+    min_c = ConcentrationConverter.to_molar_string(min_c, bounds_units)
+
+    bounds = Bounds.from_csv_filename(
+        COFACTORS_FNAME, default_lb=min_c, default_ub=max_c)
+    return bounds
 
 
 def BuildPathwayModel(request):
     """Renders a page for a particular reaction."""
-    form = PathwayForm(request.POST, request.FILES)
+    form = BuildPathwayModelForm(request.POST, request.FILES)
     if not form.is_valid():
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
-    # If specific bounds are supplied, use them.
-    bounds = make_bounds(request, form)
-    # Pass in aqueous params from user.
-    aq_params = AqueousParams(
-        pH=form.cleaned_data['pH'],
-        ionic_strength=form.cleaned_data['ionic_strength'])
+    try:
+        bounds = make_bounds(form)
+        aq_params = make_aq_params(form)
+    except Exception as e:
+        logging.error(e)
+        return HttpResponseBadRequest(e)
 
     # TODO handle custom concentration bounds
     try:
@@ -76,15 +73,13 @@ def BuildPathwayModel(request):
 
 def PathwayResultPage(request):
     """Renders a page for a particular reaction."""
-    form = PathwayForm(request.POST, request.FILES)
+    form = AnalyzePathwayModelForm(request.POST, request.FILES)
     if not form.is_valid():
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
     # Pass in aqueous params from user.
-    aq_params = AqueousParams(
-        pH=form.cleaned_data['pH'],
-        ionic_strength=form.cleaned_data['ionic_strength'])
+    aq_params = make_aq_params(form)
 
     try:
         f_data = unicode(request.FILES['pathway_file'].read())

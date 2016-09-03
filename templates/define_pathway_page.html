@@ -15,6 +15,7 @@
 		{% include "logo_large.html" %}
    
 		<form name="pathway_form" action="/pathway/build_model" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name='conc_units' value='mM' />
 		    {% csrf_token %}
 		    <table class='results'>
 		    	<tr class='infoTableHeader'>
@@ -29,11 +30,11 @@
 		    	</tr>
 		    	<tr>
 		    		<td>Minimum concentration<sup>&dagger;</sup>:</td>
-		    		<td><input type="text" name='min_c' value='1e-6' /> Molar</td>
+		    		<td><input type="text" name='min_c' value='0.0001' /> mM</td>
 		    	</tr>
 		    	<tr>
 		    		<td>Maximum concentration<sup>&dagger;</sup>:</td>
-		    		<td><input type="text" name='max_c' value='100e-3'/> Molar</td>
+		    		<td><input type="text" name='max_c' value='100'/> mM</td>
 		    	</tr>
 		    	<tr>
 		    		<td class='footnote' colspan=2>

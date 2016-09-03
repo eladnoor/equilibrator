@@ -1,9 +1,11 @@
 #!/usr/bin/python
+
 import logging
 import csv
 import numpy as np
 
 from copy import deepcopy
+from pathways.concs import ConcentrationConverter
 
 
 class BaseBounds(object):
@@ -134,12 +136,21 @@ class Bounds(BaseBounds):
         lbs = {}
         ubs = {}
 
+        # Assume molar units of not defined.
+        try:
+            units_string = sbtab.getCustomTableInformation('Unit')
+        except:
+            logging.error('Units not defined in SBtab file, using Molar')
+            units_string = 'Molar'
+
         bounds_df = sbtab.toDataFrame()
         for idx in bounds_df.index:
             row = bounds_df.loc[idx]
             cid = row['Compound:Identifiers:kegg.compound']
             ub = float(row['Concentration:Max'])
             lb = float(row['Concentration:Min'])
+            ub = ConcentrationConverter.to_molar_string(ub, units_string)
+            lb = ConcentrationConverter.to_molar_string(lb, units_string)
             ubs[cid] = ub
             lbs[cid] = lb
 
