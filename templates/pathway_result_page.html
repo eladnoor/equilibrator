@@ -48,7 +48,7 @@
                 <tr>
                     <th> </th>
                     <th>Reaction</th>
-                    <th>&Delta;<sub><i>r</i></sub>G'&deg;</th>
+                    <th><a href="/faq#dgm">&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a></th>
                     <th>&Delta;<sub><i>r</i></sub>G'</th>
                     <th>Shadow Price</th>
                 </tr>
@@ -56,7 +56,7 @@
                 <tr>
                     <td>{{rxn.flux|floatformat}}x</td>
                     <td><a href='{{rxn.reaction.link_url}}'>{{rxn.reaction}}</a></td>
-                    <td>{{rxn.dG0_prime|floatformat}}</td>
+                    <td>{{rxn.dGm_prime|floatformat}}</td>
                     <td>{{rxn.dGr|floatformat}}</td>
                     <td {% if rxn.shadow_price != 0 %}class='italic'{% endif %}>{{rxn.shadow_price|floatformat}}</td>
                 </tr>

@@ -30,7 +30,7 @@
 		    	</tr>
 		    	<tr>
 		    		<td>Minimum concentration<sup>&dagger;</sup>:</td>
-		    		<td><input type="text" name='min_c' value='0.0001' /> mM</td>
+		    		<td><input type="text" name='min_c' value='0.001' /> mM</td>
 		    	</tr>
 		    	<tr>
 		    		<td>Maximum concentration<sup>&dagger;</sup>:</td>
@@ -38,9 +38,16 @@
 		    	</tr>
 		    	<tr>
 		    		<td class='footnote' colspan=2>
+						<sup>&dagger;</sup>The default concentration range of 1 &mu;M - 100 mM reflects the fact that metabolite concentrations are constrained from above by osmotic pressure and toxicity considerations and from below
+						by enzyme affinities.
+					</td>
+				</tr>
+				<tr>
+		    		<td class='footnote' colspan=2>
 						<sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
-						based on measurements from <emph>E. coli</emph> (<b>ref here</b>). You can edit these defaults
-						by modifying the SBtab file (e.g. in Excel) before performing MDF analysis below. 
+						based on measurements from <i>E. coli</i> (Bennett et al., Nat. Chem Bio 2009).
+						You can edit these defaults by modifying the SBtab file (e.g. in Excel) before performing
+						MDF analysis below. 
 					</td>
 				</tr>
 		    	<tr class='infoTableHeader' align='center'>
