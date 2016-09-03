@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from pathways.concs import ConcentrationConverter
+from pathways.concs import ConcentrationConverter, NoSuchUnits
 from django.test import TestCase
 from util.SBtab import SBtabTools
 
@@ -20,6 +20,18 @@ class TestConcentrationConverter(TestCase):
         for val, unitstring, expected_out in test_data:
             out = ConcentrationConverter.to_molar_string(val, unitstring)
             self.assertEqual(expected_out, out)
+
+    def test_unit_string_failure(self):
+        test_data = [(1.0, 'MOLER'),
+                     (1.0, 'milimolar'),
+                     (1.0, 'kM'),
+                     (150, 'kilimoler'),
+                     (13.25, 'macromolar')]
+        for val, unitstring in test_data:
+            self.assertRaises(
+                NoSuchUnits,
+                ConcentrationConverter.to_molar_string,
+                val, unitstring)
 
     def test_units(self):
         test_data = [(1.0, ConcentrationConverter.UNITS_M, 1.0),

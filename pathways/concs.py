@@ -3,6 +3,10 @@
 """File for concentration maths."""
 
 
+class NoSuchUnits(Exception):
+    pass
+
+
 class ConcentrationConverter(object):
 
     # Units we might parse concentrations in.
@@ -29,5 +33,8 @@ class ConcentrationConverter(object):
 
     @classmethod
     def to_molar_string(cls, conc, from_units_string):
+        # TODO: handle case of unrecognized units.
         from_units = cls.get_units(from_units_string)
+        if from_units is None:
+            raise NoSuchUnits('"%s" could not be parsed' % from_units_string)
         return cls.to_molar_units(conc, from_units)
