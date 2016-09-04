@@ -8,6 +8,10 @@ from copy import deepcopy
 from pathways.concs import ConcentrationConverter
 
 
+class InvalidBounds(Exception):
+    pass
+
+
 class BaseBounds(object):
     """A base class for declaring bounds on things."""
 
@@ -151,8 +155,17 @@ class Bounds(BaseBounds):
             lb = float(row['Concentration:Min'])
             ub = ConcentrationConverter.to_molar_string(ub, units_string)
             lb = ConcentrationConverter.to_molar_string(lb, units_string)
+
             ubs[cid] = ub
             lbs[cid] = lb
+
+        # Check bounds are sensical
+        for cid in ubs:
+            if lbs[cid] > ubs[cid]:
+                msg = (
+                    'Invalid bounds for %s: lower bound %f > upper bound %f' %
+                    (cid, lbs[cid], ubs[cid]))
+                raise InvalidBounds(msg)
 
         return Bounds(lbs, ubs, default_lb, default_ub)
 
