@@ -127,8 +127,11 @@ class Bounds(BaseBounds):
 
             lbs[cid] = lb
             ubs[cid] = ub
-        return Bounds(lbs, ubs, default_lb, default_ub)
-            
+
+        bounds = Bounds(lbs, ubs, default_lb, default_ub)
+        bounds._check_bounds()
+        return bounds
+
     @classmethod
     def from_csv_filename(cls, fname, default_lb=None, default_ub=None):
         with open(fname) as f:
@@ -159,15 +162,19 @@ class Bounds(BaseBounds):
             ubs[cid] = ub
             lbs[cid] = lb
 
-        # Check bounds are sensical
-        for cid in ubs:
-            if lbs[cid] > ubs[cid]:
+        bounds = Bounds(lbs, ubs, default_lb, default_ub)
+        bounds._check_bounds()
+        return bounds
+
+    def _check_bounds(self):
+        for cid in self.upper_bounds:
+            lb = self.lower_bounds[cid]
+            ub = self.upper_bounds[cid]
+            if lb > ub:
                 msg = (
                     'Invalid bounds for %s: lower bound %f > upper bound %f' %
-                    (cid, lbs[cid], ubs[cid]))
+                    (cid, lb, ub))
                 raise InvalidBounds(msg)
-
-        return Bounds(lbs, ubs, default_lb, default_ub)
 
     def Copy(self):
         """Returns a deep copy of self."""
