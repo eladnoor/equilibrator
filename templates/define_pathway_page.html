@@ -37,6 +37,22 @@
 		    		<td><input type="text" name='max_c' value='100'/> mM</td>
 		    	</tr>
 		    	<tr>
+			    	<td>
+			            pH
+			        </td>
+			        <td>
+			            <input type="text" name="pH" id="phField" value="{{constants.DEFAULT_PH}}" />
+			        </td>
+			    </tr>
+			    <tr>
+			    	<td>
+			            Ionic Strength
+			        </td>
+			        <td>
+			            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{constants.DEFAULT_IONIC_STRENGTH}}" /> Molar
+			        </td>
+			    </tr>
+		    	<tr>
 		    		<td class='footnote' colspan=2>
 						<sup>&dagger;</sup>The default concentration range of 1 &mu;M - 100 mM reflects the fact that metabolite concentrations are constrained from above by osmotic pressure and toxicity considerations and from below
 						by enzyme affinities.
@@ -79,23 +95,6 @@
 		    	<tr>
 		    		<td>Pathway model TSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.tsv">example</a>)</td>
 		    		<td><input type="file" name="pathway_file" /></td>
-		    	</tr>
-		    	<tr>
-			    	<td>
-			            pH
-			        </td>
-			        <td>
-			            <input type="text" name="pH" id="phField" value="{{constants.DEFAULT_PH}}" />
-			        </td>
-			    </tr>
-			    <tr>
-			    	<td>
-			            Ionic Strength
-			        </td>
-			        <td>
-
-			            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{constants.DEFAULT_IONIC_STRENGTH}}" /> Molar
-			        </td>
 			    </tr>
 		    	<tr class='infoTableHeader' align='center'>
 		    		<td colspan="100%"><input type='submit' /></td>

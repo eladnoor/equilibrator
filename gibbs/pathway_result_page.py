@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import logging
 import io
 
@@ -54,7 +56,8 @@ def BuildPathwayModel(request):
     try:
         f = request.FILES['pathway_file']
         fname_base, ext = path.splitext(f.name)
-        output_fname = fname_base + '.tsv'
+        output_fname = '%s_pH%.2f_I%.2f.tsv' % (
+            fname_base, aq_params.pH, aq_params.ionic_strength)
         logging.info(output_fname)
 
         f_data = unicode(f.read())
@@ -71,6 +74,17 @@ def BuildPathwayModel(request):
     return response
 
 
+def read_sbtabs(f):
+    """Return reactions, fluxes, keqs, bounds."""
+    sbtabs = SBtabTools.openMultipleSBtabFromFile(f)
+    tdict = dict([(t.getTableInformation()[1].upper(), t) for t in sbtabs])
+    expected_tnames = ['REACTION', 'RELATIVEFLUX', 'REACTIONCONSTANT',
+                       'CONCENTRATIONCONSTRAINT']
+    assert set(expected_tnames).issubset(tdict.keys())
+
+    return [tdict[n] for n in expected_tnames]
+
+
 def PathwayResultPage(request):
     """Renders a page for a particular reaction."""
     form = AnalyzePathwayModelForm(request.POST, request.FILES)
@@ -78,15 +92,12 @@ def PathwayResultPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
-    # Pass in aqueous params from user.
-    aq_params = make_aq_params(form)
-
     try:
         f_data = unicode(request.FILES['pathway_file'].read())
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
-        reactions, fluxes, bounds = SBtabTools.openMultipleSBtabFromFile(sio)
+        reactions, fluxes, keqs, bounds = read_sbtabs(sio)
         pp = ParsedPathway.from_full_sbtab(
-            reactions, fluxes, bounds, aq_params=aq_params)
+            reactions, fluxes, bounds, keqs)
         logging.info('Parsed pathway.')
     except PathwayParseError as ppe:
         logging.error(ppe)
@@ -95,10 +106,10 @@ def PathwayResultPage(request):
     try:
         # calculate the MDF with the specified bounds. Render template.
         mdf_result = pp.calc_mdf()
-        template_data = {'pathway': path,
+        template_data = {'pathway': pp,
                          'mdf_result': mdf_result}
         logging.info('Calculated MDF %s', mdf_result.mdf)
-        return render_to_response('pathway_result_page.html', template_data)
     except Exception as e:
         logging.error(e)
         return HttpResponseBadRequest(e.message)
+    return render_to_response('pathway_result_page.html', template_data)

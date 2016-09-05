@@ -43,8 +43,8 @@ class ParsedPathway(object):
     Designed for checking input prior to converting to a stoichiometric model.
     """
 
-    def __init__(self, reactions, fluxes,
-                 bounds=None, aq_params=None, model_name=None):
+    def __init__(self, reactions, fluxes, dG0_r_primes,
+                 bounds=None):
         """Initialize.
         
         Args:
@@ -52,18 +52,13 @@ class ParsedPathway(object):
             fluxes: np.array of relative fluxes in same order as reactions.
         """
         assert len(reactions) == len(fluxes)
+        assert len(reactions) == len(dG0_r_primes)
         
-        self.model_name = model_name
-        self.aq_params = aq_params or AqueousParams()
         self.reactions = reactions
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
         
         self.fluxes = np.array(fluxes)
-
-        # All reactions occur in the same solution/compartment (for now)
-        for rxn in self.reactions:
-            rxn.aq_params = self.aq_params
-        self.dG0_r_prime = [r.DeltaG0Prime() for r in reactions]
+        self.dG0_r_prime = np.array(dG0_r_primes)
 
         self.bounds = bounds or DEFAULT_BOUNDS
 
@@ -106,7 +101,8 @@ class ParsedPathway(object):
         """
         rxn_matcher = service_config.Get().reaction_matcher
         query_parser = service_config.Get().query_parser
-    
+        aq_params = aq_params or AqueousParams()
+
         reactions = []
         fluxes = []
     
@@ -139,8 +135,9 @@ class ParsedPathway(object):
             reactions.append(rxn)
             fluxes.append(flux)
 
-        return ParsedPathway(reactions, fluxes, bounds=bounds,
-                             aq_params=aq_params)
+        dgs = [r.DeltaG0Prime(aq_params) for r in reactions]
+        return ParsedPathway(
+            reactions, fluxes, dgs, bounds=bounds)
 
     def _get_compounds(self):
         """Returns a dictionary of compounds by KEGG ID."""
@@ -202,20 +199,21 @@ class ParsedPathway(object):
         model = self.pathway_model
         mdf = model.mdf_result
         return PathwayMDFData(self, mdf)
-        
+
     def print_reactions(self):
         for f, r in zip(self.fluxes, self.reactions):
             print '%sx %s' % (f, r)
 
     @classmethod
-    def from_full_sbtab(self, reaction_sbtab, flux_sbtab, bounds_sbtab,
-                        aq_params=None):
+    def from_full_sbtab(self, reaction_sbtab, flux_sbtab,
+                        bounds_sbtab, keqs_sbtab):
         """Returns an initialized ParsedPathway."""
         bounds = Bounds.from_sbtab(bounds_sbtab)
 
         reaction_df = reaction_sbtab.toDataFrame()
         flux_df = flux_sbtab.toDataFrame()
         bounds_df = bounds_sbtab.toDataFrame()
+        keqs_df = keqs_sbtab.toDataFrame()
 
         name_to_cid = dict(
             zip(bounds_df['Compound'],
@@ -247,11 +245,18 @@ class ParsedPathway(object):
             reactions.append(rxn)
 
         reaction_ids = reaction_df['ID']
-        reaction_fluxes = dict(zip(flux_df['Reaction'], flux_df['Value']))
+        fluxes = flux_df[flux_df['QuantityType'] == 'flux']
+        reaction_fluxes = dict(zip(fluxes['Reaction'], fluxes['Value']))
         fluxes_ordered = [float(reaction_fluxes[rid]) for rid in reaction_ids]
 
-        pp = ParsedPathway(reactions, fluxes_ordered,
-                           bounds=bounds, aq_params=aq_params)
+        # grab rows containing keqs.
+        keqs = keqs_df[keqs_df['QuantityType'] == 'equilibrium constant']
+        reaction_keqs = dict(zip(keqs['Reaction'], keqs['Value']))
+        dgs = [-DEFAULT_RT * np.log(float(reaction_keqs[rid]))
+               for rid in reaction_ids]
+
+        pp = ParsedPathway(reactions, fluxes_ordered, dgs,
+                           bounds=bounds)
         return pp
 
     def to_full_sbtab(self):
@@ -300,6 +305,25 @@ class ParsedPathway(object):
                  '!Value': self.fluxes[i]}
             writer.writerow(d)
 
+        # Write KEQs.
+        keq_header = generic_header_fmt % ('ReactionConstant', 'Quantity', 'Pathway Model')
+        keq_cols = ['!QuantityType', '!Reaction', '!Value',
+                    '!Unit', '!Reaction:Identifiers:kegg.reaction', '!ID']
+        sio.writelines(['%\n', keq_header + '\n'])
+
+        writer = csv.DictWriter(sio, keq_cols, dialect='excel-tab')
+        writer.writeheader()
+        for i, (rxn_id, rxn, dg) in enumerate(zip(rxn_ids, self.reactions, self.dG0_r_prime)):
+            keq_id = 'kEQ_R%d' % i
+            keq = np.exp(-dg / DEFAULT_RT)
+            d = {'!QuantityType': 'equilibrium constant',
+                 '!Reaction': rxn_id,
+                 '!Value': keq,
+                 '!Unit': 'dimensionless',
+                 '!Reaction:Identifiers:kegg.reaction': rxn.stored_reaction_id,
+                 '!ID': keq_id}
+            writer.writerow(d)
+
         conc_header = generic_header_fmt % ('ConcentrationConstraint', 'Quantity', 'Pathway Model')
         conc_header += " Unit='M'"
         conc_cols = ['!QuantityType', '!Compound',
@@ -331,6 +355,10 @@ class ReactionMDFData(object):
     @property
     def dG0_prime(self):
         return self.reaction.dg0_prime
+
+    @property
+    def dGm_prime(self):
+        return self.reaction.dgm_prime
 
 
 class CompoundMDFData(object):
@@ -453,19 +481,22 @@ class PathwayMDFData(object):
     @property
     def mdf_plot_svg(self):
         dgs = [0] + [r.dGr for r in self.reaction_data]
-        dg0s = [0] + [r.dG0_prime for r in self.reaction_data]
+        dgms = [0] + [r.dGm_prime for r in self.reaction_data]
         cumulative_dgs = np.cumsum(dgs)
-        cumulative_dg0s = np.cumsum(dg0s)
+        cumulative_dgms = np.cumsum(dgms)
 
         xs = np.arange(0, len(cumulative_dgs))
 
         mdf_fig = plt.figure(figsize=(8, 8))
         seaborn.set_style('darkgrid')
-        plt.plot(xs, cumulative_dg0s, label='Standard concentrations')
-        plt.plot(xs, cumulative_dgs, label='MDF optimized concentrations')
+        plt.plot(xs, cumulative_dgms,
+                 label='Characteristic physiological 1 mM concentrations')
+        plt.plot(xs, cumulative_dgs,
+                 label='MDF-optimized concentrations')
         plt.xticks(xs, family='sans-serif')
         plt.yticks(family='sans-serif')
         
+        # TODO: Consider using reaction IDs from the file as xticks?
         plt.xlabel('After Reaction Step', family='sans-serif')
         plt.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)", family='sans-serif')
         plt.legend(loc=3)

@@ -106,7 +106,7 @@ class Bounds(BaseBounds):
         self.upper_bounds = upper_bounds or {}
         self.default_lb = default_lb
         self.default_ub = default_ub
-        
+
         self.c_range = (self.default_lb, self.default_ub)
 
     @classmethod
