@@ -454,6 +454,12 @@ class PathwayMDFData(object):
         ys_equal = ys[bounds_equal]
         concs_equal = concs[bounds_equal]
 
+        # Special color for metabolites with nonzero shadow prices.
+        shadow_prices = np.array([c.shadow_price for c in self.compound_data])
+        nz_shadow = np.where(shadow_prices != 0)
+        ys_nz_shadow = ys[nz_shadow]
+        concs_nz_shadow = concs[nz_shadow]
+
         conc_figure = plt.figure(figsize=(8, 6))
         seaborn.set_style('darkgrid')
         plt.axes([0.2, 0.1, 0.9, 0.9])
@@ -463,6 +469,8 @@ class PathwayMDFData(object):
                     label='Variable Concentrations')
         plt.scatter(concs_equal, ys_equal, figure=conc_figure, color='y',
                     label='Fixed Concentrations')
+        plt.scatter(concs_nz_shadow, ys_nz_shadow, figure=conc_figure,
+                    color='r', label='Variable Concentrations')
 
         plt.xticks(family='sans-serif', figure=conc_figure)
         plt.yticks(ys, cnames, family='sans-serif',
