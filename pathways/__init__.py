@@ -49,18 +49,24 @@ class ParsedPathway(object):
     """
 
     def __init__(self, reactions, fluxes, dG0_r_primes,
-                 bounds=None):
+                 bounds=None, aq_params=None):
         """Initialize.
         
         Args:
             reactions: a list of gibbs.reaction.Reaction objects.
             fluxes: np.array of relative fluxes in same order as reactions.
+            dG0_r_primes: reaction energies.
+            bounds: bounds on metabolite concentrations.
+                Uses default bounds if None provided.
+            aq_params: specify the pH, ionic strength, etc. at which the
+                dG values are calculated. May be omitted. 
         """
         assert len(reactions) == len(fluxes)
         assert len(reactions) == len(dG0_r_primes)
         
         self.reactions = reactions
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
+        self.aq_params = aq_params
         
         self.fluxes = np.array(fluxes)
         self.dG0_r_prime = np.array(dG0_r_primes)
@@ -146,7 +152,8 @@ class ParsedPathway(object):
 
         dgs = [r.DeltaG0Prime(aq_params) for r in reactions]
         return ParsedPathway(
-            reactions, fluxes, dgs, bounds=bounds)
+            reactions, fluxes, dgs,
+            bounds=bounds, aq_params=aq_params)
 
     def _get_compounds(self):
         """Returns a dictionary of compounds by KEGG ID."""
@@ -264,8 +271,16 @@ class ParsedPathway(object):
         dgs = [-DEFAULT_RT * np.log(float(reaction_keqs[rid]))
                for rid in reaction_ids]
 
+        pH = keqs_sbtab.getCustomTableInformation('pH')
+        ionic_strength = keqs_sbtab.getCustomTableInformation('IonicStrength')
+        aq_params = AqueousParams()  # Default values
+        if pH:
+            aq_params.pH = float(pH)
+        if ionic_strength:
+            aq_params.ionic_strength = float(ionic_strength)
+
         pp = ParsedPathway(reactions, fluxes_ordered, dgs,
-                           bounds=bounds)
+                           bounds=bounds, aq_params=aq_params)
         return pp
 
     def to_full_sbtab(self):
@@ -318,6 +333,11 @@ class ParsedPathway(object):
         keq_header = generic_header_fmt % ('ReactionConstant', 'Quantity', 'Pathway Model')
         keq_cols = ['!QuantityType', '!Reaction', '!Value',
                     '!Unit', '!Reaction:Identifiers:kegg.reaction', '!ID']
+        if self.aq_params:
+            # Write pH and ionic strength in header
+            aq_params_header = "pH='%.2f', IonicStrength='%.2f'" % (
+                self.aq_params.pH, self.aq_params.ionic_strength)
+            keq_header = '%s %s' % (keq_header, aq_params_header)
         sio.writelines(['%\n', keq_header + '\n'])
 
         writer = csv.DictWriter(sio, keq_cols, dialect='excel-tab')
