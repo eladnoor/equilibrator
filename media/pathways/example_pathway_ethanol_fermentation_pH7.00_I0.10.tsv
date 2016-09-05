@@ -28,6 +28,21 @@ flux	pyruvate_k_R00200	R00200	2.0
 flux	pyruvate_d_R00224	R00224	2.0
 flux	retinal_re_R00754	R00754	2.0
 %
+!!SBtab TableName='ReactionConstant' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0'
+!QuantityType	!Reaction	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!ID
+equilibrium constant	glucokinas_R00299	1061.247724701117	dimensionless	R00299	kEQ_R0
+equilibrium constant	phosphohex_R00771	0.36088924541587591	dimensionless	R00771	kEQ_R1
+equilibrium constant	6_phosphof_R04779	190.14472323307021	dimensionless	R04779	kEQ_R2
+equilibrium constant	fructose_b_R01070	0.00074515916269928299	dimensionless	R01070	kEQ_R3
+equilibrium constant	triose_pho_R01015	0.10966257096243406	dimensionless	R01015	kEQ_R4
+equilibrium constant	glyceralde_R01061	0.043290979452048114	dimensionless	R01061	kEQ_R5
+equilibrium constant	phosphogly_R01512	1716.1616369582259	dimensionless	R01512	kEQ_R6
+equilibrium constant	phosphogly_R01518	0.18215935526460458	dimensionless	R01518	kEQ_R7
+equilibrium constant	phosphopyr_R00658	5.1957200220185431	dimensionless	R00658	kEQ_R8
+equilibrium constant	pyruvate_k_R00200	71137.925400853157	dimensionless	R00200	kEQ_R9
+equilibrium constant	pyruvate_d_R00224	1620.6623703987977	dimensionless	R00224	kEQ_R10
+equilibrium constant	retinal_re_R00754	6320.7940510652616	dimensionless	R00754	kEQ_R11
+%
 !!SBtab TableName='ConcentrationConstraint' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' Unit='M'
 !QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max
 concentration	co2	C00011	1e-05	1e-05
