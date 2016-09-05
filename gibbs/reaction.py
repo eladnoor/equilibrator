@@ -1184,9 +1184,12 @@ class Reaction(object):
         _t = constants.DEFAULT_TEMP
         return _r * _t * sum_logs
         
-    def DeltaG0Prime(self):
+    def DeltaG0Prime(self, aq_params=None):
         """Compute the DeltaG0' for a reaction.
         
+        Args:
+            aq_params: override whatever params are currently defined.
+
         Returns:
             The DeltaG0' for this reaction, or None if data was missing.
         """
@@ -1194,7 +1197,8 @@ class Reaction(object):
             return self._dg0_prime
 
         logging.debug('Aqueous Params = ' + str(self.aq_params))
-        c_dg0_prime_list = [c.DeltaG0Prime(self.aq_params) for c in self.reactants]
+        aqp = aq_params or self.aq_params
+        c_dg0_prime_list = [c.DeltaG0Prime(aqp) for c in self.reactants]
 
         # find all the IDs of compounds that have no known formation energy
         # if there are any such compounds, print and error message and 
