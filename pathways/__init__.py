@@ -12,6 +12,7 @@ from gibbs import service_config
 from gibbs.conditions import AqueousParams
 from gibbs.reaction import Reaction, CompoundWithCoeff
 from matplotlib import pyplot as plt
+from numpy import linalg
 from os import path
 from pathways.bounds import Bounds
 from pathways.thermo_models import PathwayThermoModel
@@ -34,6 +35,10 @@ class InvalidReactionFormula(PathwayParseError):
 
 
 class UnbalancedReaction(PathwayParseError):
+    pass
+
+
+class ViolatesFirstLaw(PathwayParseError):
     pass
 
 
@@ -68,7 +73,11 @@ class ParsedPathway(object):
                           for cid in self.compound_kegg_ids]
 
         nr, nc = self.S.shape
-        
+
+        # TODO: verify that the vector of standard energies is in the
+        # image of the stoichiometric matrix, i.e. that conservation of
+        # energy is not violated.
+
         net_rxn_stoich = (self.fluxes.reshape((nr, 1)) * self.S).sum(axis=0)
         net_rxn_data = []
         for coeff, kid in zip(net_rxn_stoich, self.compound_kegg_ids):
