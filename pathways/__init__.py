@@ -12,7 +12,7 @@ from gibbs import service_config
 from gibbs.conditions import AqueousParams
 from gibbs.reaction import Reaction, CompoundWithCoeff
 from matplotlib import pyplot as plt
-from numpy import linalg
+from scipy import linalg
 from os import path
 from pathways.bounds import Bounds
 from pathways.thermo_models import PathwayThermoModel
@@ -79,6 +79,19 @@ class ParsedPathway(object):
                           for cid in self.compound_kegg_ids]
 
         nr, nc = self.S.shape
+
+        # dGr should be orthogonal to nullspace of S
+        # If not, dGr is not contained in image(S) and then there
+        # is no consistent set of dGfs that generates dGr and the
+        # first law of thermo is violated by the model.
+        Smat = np.matrix(self.S)
+        Spinv = linalg.pinv(Smat)
+        null_proj = np.matrix(np.eye(Smat.shape[0])) - Smat*Spinv
+        projected = null_proj * np.matrix(self.dG0_r_prime).T
+        if not np.all(projected < 1e-8):
+            raise ViolatesFirstLaw(
+                'Supplied reaction dG values are inconsistent '
+                'with the stoichiometric matrix.')
 
         # TODO: verify that the vector of standard energies is in the
         # image of the stoichiometric matrix, i.e. that conservation of
