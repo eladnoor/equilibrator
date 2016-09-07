@@ -13,7 +13,7 @@ class TestBounds(TestCase):
     
     def testFromSBtab(self):
         ds = SBtabTools.openMultipleSBtab('pathways/test/EMP_glycolysis_full_SBtab.tsv')
-        bs = Bounds.from_sbtab(ds[2])
+        bs = Bounds.from_sbtab(ds[-1])
 
         for key in bs.lower_bounds:
         	lb = bs.GetLowerBound(key)
