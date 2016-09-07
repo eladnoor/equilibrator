@@ -14,6 +14,8 @@ class TestConcentrationConverter(TestCase):
     def test_unit_string(self):
         test_data = [(1.0, 'M', 1.0),
                      (1.0, 'mM', 1e-3),
+                     (10, 'mM', 0.01),
+                     (100, 'mM', 0.1),
                      (1.0, 'uM', 1e-6),
                      (150, 'millimolar', 0.15),
                      (13.25, 'micromolar', 13.25e-6)]

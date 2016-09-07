@@ -167,6 +167,12 @@ class Bounds(BaseBounds):
         return bounds
 
     def _check_bounds(self):
+        if self.default_lb > self.default_ub:
+            msg = (
+                'Default lower bound %.2g > default upper bound %.2g' %
+                (self.default_lb, self.default_ub))
+            raise InvalidBounds(msg)
+
         for cid in self.upper_bounds:
             lb = self.lower_bounds[cid]
             ub = self.upper_bounds[cid]

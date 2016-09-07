@@ -30,8 +30,8 @@ def make_bounds(form):
     min_c = form.cleaned_data.get('min_c')
     bounds_units = form.cleaned_data.get('conc_units')
 
-    max_c = ConcentrationConverter.to_molar_string(max_c, bounds_units)
     min_c = ConcentrationConverter.to_molar_string(min_c, bounds_units)
+    max_c = ConcentrationConverter.to_molar_string(max_c, bounds_units)
 
     bounds = Bounds.from_csv_filename(
         COFACTORS_FNAME, default_lb=min_c, default_ub=max_c)
@@ -52,7 +52,6 @@ def BuildPathwayModel(request):
         logging.error(e)
         return HttpResponseBadRequest(e)
 
-    # TODO handle custom concentration bounds
     try:
         f = request.FILES['pathway_file']
         fname_base, ext = path.splitext(f.name)
@@ -62,7 +61,8 @@ def BuildPathwayModel(request):
 
         f_data = unicode(f.read())
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
-        pp = ParsedPathway.from_csv_file(sio)
+        pp = ParsedPathway.from_csv_file(
+            sio, bounds=bounds, aq_params=aq_params)
     except PathwayParseError as ppe:
         logging.error(ppe)
         return HttpResponseBadRequest(ppe)
