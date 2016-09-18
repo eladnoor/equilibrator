@@ -585,7 +585,9 @@ class Reaction(object):
             A properly set-up Reaction object or None if there's an error.
         """
         kegg_ids = [d['kegg_id'] for d in compound_list]
-        comps = models.Compound.objects.prefetch_related('species_groups', 'species_groups__species','common_names').filter(kegg_id__in=kegg_ids)
+        comps = models.Compound.objects.prefetch_related(
+            'species_groups', 'species_groups__species',
+            'common_names').filter(kegg_id__in=kegg_ids)
         kegg_id_to_compound = {c.kegg_id:c for c in comps}
         for d in compound_list:
             d['compound'] = kegg_id_to_compound[d['kegg_id']]
