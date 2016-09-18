@@ -45,7 +45,7 @@
     
         <ul>
             {% for ph in ph_values %}
-            <li>pH = {{ph}} : <a href="{{MEDIA_URL}}downloads/kegg_compounds_Alberty_ph{{ph}}.csv.gz">Download</a></li>
+            <li>pH = {{ph}} : <a href="/media/downloads/kegg_compounds_Alberty_ph{{ph}}.csv.gz">Download</a></li>
             {% endfor %}
         </ul>
         
@@ -54,7 +54,7 @@
             energy for any pH and ionic strength directly using the chemical
             formation energy table of the various protonation states (pseudoisomers)
             of all the compounds
-            (<a href="{{MEDIA_URL}}downloads/kegg_pseudoisomers_Alberty.csv.gz">download here</a>).
+            (<a href="/media/downloads/kegg_pseudoisomers_Alberty.csv.gz">download here</a>).
             Each row in the CSV file corresponds to one pseudoisomer of one compound. The columns' order is:
             KEGG compound ID, compound name, chemical formation energy (in kJ/mol), number of hydrogen atoms,
             net charge, number of magnesium ions, note. 
@@ -73,7 +73,7 @@
         
         <ul>
             {% for ph in ph_values %}
-            <li>pH = {{ph}} : <a href="{{MEDIA_URL}}downloads/kegg_reactions_CC_ph{{ph}}.csv.gz">Download</a></li>
+            <li>pH = {{ph}} : <a href="/media/downloads/kegg_reactions_CC_ph{{ph}}.csv.gz">Download</a></li>
             {% endfor %}
         </ul>
 
@@ -91,7 +91,7 @@
 
         <p>
         The last file is in JSON format and contains many entries, each representing a compound in KEGG
-        (<a href="{{MEDIA_URL}}downloads/kegg_compounds.json.gz">download JSON here</a>).
+        (<a href="/media/downloads/kegg_compounds.json.gz">download JSON here</a>).
         A single compound is represented as follows:
          </p>
          

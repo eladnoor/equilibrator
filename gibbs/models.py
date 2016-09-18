@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
+import datetime
 import hashlib
+import haystack
+import json
 import logging
 import numpy
 import re
@@ -8,19 +11,19 @@ import base64
 
 from django.http import Http404
 from django.db import models
+from django.utils.text import slugify
 from gibbs import constants
 from gibbs import formula_parser
 from gibbs import conditions
-#from django.core.files.base import ContentFile
-import json
 from util.thumbnail import InChI2Thumbnail
+
 
 class CommonName(models.Model):
     """
         A common name of a compound.
     """
     name = models.CharField(max_length=500)
-    enabled = models.BooleanField(True)
+    enabled = models.BooleanField(default=True)
     
     @staticmethod
     def GetOrCreate(name):
@@ -43,6 +46,13 @@ class CommonName(models.Model):
     def __unicode__(self):
         return self.name
     
+    def TypeStr(self):
+        if self.compound_set.count():
+            return 'Compound'
+        elif self.enzyme_set.count():
+            return 'Enzyme'
+        return ''
+        
     
 class ValueSource(models.Model):
     """
@@ -218,7 +228,7 @@ class SpeciesGroup(models.Model):
             Get a list of all species corresponding to a certain phase
         """
         return [s for s in self.GetSpecies()
-                if s.get_phase_display() == phase]   
+                if s.get_phase_display() == phase]
     
     def GetSpeciesWithoutMg(self):
         """Gets the list of species without Mg bound."""
@@ -288,14 +298,12 @@ class SpeciesGroup(models.Model):
             source = ValueSource.objects.get(name=source_name)
             url = source.url
         except ValueSource.DoesNotExist:
-            url = None
-
-        if url:
-            return '<a href="%s">%s</a>' % (url, source_name)
-        else:
-            return '<a href="/data_refs">%s</a>' % (source_name)
+            url = "/data_refs"
+        url = url or "/data_refs"
+        return url
 
     source_reference = property(GetSourceReferenceLink)
+            
             
 class Compound(models.Model):
     """
@@ -405,6 +413,11 @@ class Compound(models.Model):
         
         names = list(self.common_names.all())
         return names[0].name
+
+    def NameSlug(self):
+        """Return a name with no whitespace or dashes."""
+        slug = slugify(unicode(self.name))
+        return slug.replace('-', '_')
     
     def DeltaG0Prime(self, aq_params,
                      phase=None):
@@ -633,6 +646,7 @@ class Compound(models.Model):
     
     _species_group = property(GetSpeciesGroupToUse)
     first_name = property(FirstName)
+    name_slug = property(NameSlug)
     html_formula = property(GetHtmlFormattedFormula)
     link = property(GetLink)
     kegg_link = property(GetKeggLink)
@@ -843,8 +857,6 @@ class StoredReaction(models.Model):
         rxn = reaction.Reaction(reactants)
         return rxn
         
-#    link = property(Link)
-#    reaction_string = property(ToString)
     
 class Enzyme(models.Model):
     """A single enzyme."""

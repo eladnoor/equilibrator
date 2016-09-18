@@ -7,6 +7,7 @@ from django.shortcuts import render_to_response
 from django.http import Http404
 from gibbs import conditions
 
+
 def ReactionGraph(request):
     """Renders the graph page."""
     form = ReactionGraphForm(request.GET)
@@ -18,12 +19,9 @@ def ReactionGraph(request):
     if form.cleaned_vary_is:
         mode = 'varyIs'
 
-    logging.info('reading reaction graph form')
-
-    aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES) 
+    aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES)
     rxn = reaction.Reaction.FromForm(form, aq_params)
 
-    logging.info([c.phase for c in rxn.reactants])
     compound_list = [c.GetCompoundList() for c in rxn.reactants]
     coeff_list = [c.coeff for c in rxn.reactants]
     concentration_list = [c.phase.Value() for c in rxn.reactants]

@@ -1,0 +1,98 @@
+<html>
+    <head>
+        <title>eQuilibrator for Metabolic Pathways</title>
+        <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+        <link href="/media/main.css" rel="stylesheet" type="text/css">
+        <link href="/media/style.css" rel="stylesheet" type="text/css">
+        <link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
+        <link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+        {% include "analytics.html" %}
+    </head>
+    <body>
+    
+    <div class="welcome centerize">
+    
+        {% include "logo_large.html" %}
+
+        <div id='searchResults'>
+            <table class='results'>
+                    <tr class='infoTableHeader'>
+                        <th colspan="100%">Pathway Analysis Results</th>
+                    </tr>
+                <tr>
+                    <td width="20%"><strong>Net Reaction</strong></td>
+                    <td><a href='{{pathway.net_reaction.link_url}}'>{{pathway.net_reaction}}</a></td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong>Conditions</strong></td>
+                    <td>pH {{ pathway.aq_params.pH|floatformat }}, 
+                    ionic strength = {{ pathway.aq_params.ionic_strength|floatformat }} M</a></td>
+                </tr>
+                <tr>
+                    <td width="20%"><a href="/faq#dgm" target='_blank'><strong>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></strong></a></td>
+                    <td>{{pathway.net_reaction.dgm_prime|floatformat}} kJ/mol</td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong><a href="/faq#totalDrivingForce" target='_blank'>Driving Force</a></strong></td>
+                    <td>{{mdf_result.min_total_driving_force|floatformat}} &le; -&Delta;<sub><i>r</i></sub>G'</strong> &le; {{mdf_result.max_total_driving_force|floatformat}} kJ/mol</td>
+                </tr>
+                <tr>
+                    <td width="20%"><strong><a href="/faq#mdf" target='_blank'>MDF</a></strong></td>
+                    <td>{{mdf_result.mdf|floatformat}} kJ/mol</td>
+                </tr>
+            </table>
+
+            <table class='results'>
+                <tr class='infoTableHeader'>
+                    <th colspan="100%">Reaction Data</th>
+                </tr>
+                <tr>
+                    <th> </th>
+                    <th>Reaction</th>
+                    <th><a href="/faq#dgm" target='_blank'>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a></th>
+                    <th>&Delta;<sub><i>r</i></sub>G'</th>
+                    <th>Shadow Price</th>
+                </tr>
+            {% for rxn in mdf_result.reaction_data %}
+                <tr>
+                    <td>{{rxn.flux|floatformat}}x</td>
+                    <td><a href='{{rxn.reaction.link_url}}'>{{rxn.reaction}}</a></td>
+                    <td>{{rxn.dGm_prime|floatformat}}</td>
+                    <td>{{rxn.dGr|floatformat}}</td>
+                    <td {% if rxn.shadow_price != 0 %}class='italic'{% endif %}>{{rxn.shadow_price|floatformat}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            <table class='results'>
+                <tr class='infoTableHeader'>
+                    <th colspan="100%">Compound Data</th>
+                </tr>
+                <tr>
+                    <th>Compound</th>
+                    <th>Concentration</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Shadow Price</th>
+                </tr>
+            {% for cdata in mdf_result.compound_data %}
+                <tr>
+                    <td><a href='{{cdata.link_url}}'>{{cdata.compound}}</a></td>
+                    <td>{{cdata.html_concentration|safe}}</td>
+                    <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_lb|safe}}</td>
+                    <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_ub|safe}}</td>    
+                    <td {% if cdata.shadow_price != 0 %}class='italic'{% endif %}>{{cdata.shadow_price|floatformat}}</td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            <div id='plotMDF' align='center'>
+                {{mdf_result.mdf_plot_svg|safe}}
+            </div>
+            <div id='plotMDFConcs' align='center'>
+                {{mdf_result.conc_plot_svg|safe}}
+            </div>
+        </div>
+    </div>
+
+    {% include "footer.html" %}

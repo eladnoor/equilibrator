@@ -13,7 +13,7 @@ var updateERedField = function(event, ui) {
     $("#electronReductionPotentialField").val(ui.value);
 };
 var toggleCustomConcentrations = function() {
-    var conditions = $("form input=radion[name=conditions]:checked");
+    var conditions = $("form input[name=conditions]:checked");
     var showConcentrations = conditions.val() == "custom";
     $(".customConcentrations").toggle(showConcentrations);
 }
@@ -27,10 +27,14 @@ function toggle_visibility(id) {
 }
 
 $(document).ready(function(){
+
     // Set up autocomplete
     var options = {
+      delimiter: /(^|\+|<=>|=>|=|->|<->)+\s*\d*\s*/,
       serviceUrl: '/suggest',
-      delimiter: /(^|\+|=|<=>|=>)+\s+\d*\s*/
+      groupBy: 'cat',
+      preventBadQueries: false,
+      triggerSelectOnValidInput: false
     };
     var queryField = $('#queryField');
     if (queryField) {
@@ -89,9 +93,6 @@ $(document).ready(function(){
     if (rxnForm) {
         rxnForm.change(toggleCustomConcentrations);        
     }
-
-    // Enable lightbox where desired.
-    $('a.lightBox').lightBox();
 
     // Enable buttons where desired.
     $('.buttonSet').buttonset();

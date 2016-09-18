@@ -3,10 +3,12 @@
 		<title>eQuilibrator: The Biochemical Thermodynamics Calculator</title>
 		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
 		<link href="/media/main.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
-		<script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
-		<script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
+		<link href="/media/style.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="/media/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="/media/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="/media/jquery.autocomplete.min.js"></script>
 		<script type="text/javascript" src="/media/main.js"></script>
 	    {% include "analytics.html" %}
 	</head>
@@ -15,8 +17,7 @@
 	<div class="welcome centerize">
 	
 		{% include "logo_large.html" %}
-		<b>Welcome to the new eQuilibrator!</b> Version 1.0 is available
-          <a href="http://equilibrator1.milolab.webfactional.com/">here</a>
+
 		<div id="searchForm">
 			<form name="searchForm" action="/search" method="get">
 				<div>
@@ -25,11 +26,10 @@
 				</div>
 			</form>
 		</div>
+		<div class="warning">eQuilibrator now does pathways! <a href="/pathway">Check it out.</a></div>
 		
-		{% include "examples.html" %}
-		
-		{% include "footer.html" %}
+		{% include "examples.html" %}		
 	</div>
-	
-	</body>
-</html>
+
+	{% include "footer.html" %}
+

@@ -3,6 +3,7 @@ import logging, re
 from gibbs import models
 from gibbs import constants
 
+
 class ReactionCompoundMatch(object):
     """A match of a compound in a reaction.
     
@@ -78,7 +79,7 @@ class ReactionMatcher(object):
         
         Args:
             compound_matcher: a matcher.Matcher object that matches
-                              individual compounds.
+                individual compounds.
         """
         self._matcher = compound_matcher
     
@@ -101,12 +102,6 @@ class ReactionMatcher(object):
 
         return compound_name, phase_name
     
-    def _MakeReactionSide(self, parsed_side):
-        side = []
-        for coeff, name in parsed_side:
-            side.append(self._MakeReactionCompoundMatch(coeff, name))
-        return side
-    
     def MatchReaction(self, parsed_query):
         """Parse the query as a reaction.
         
@@ -115,7 +110,7 @@ class ReactionMatcher(object):
         
         Returns:
             An initialized ReactionMatches object.
-        """        
+        """  
         reactants = []
         for coeff, name in parsed_query.substrates:
             reactants.append(self._MakeReactionCompoundMatch(-coeff, name))

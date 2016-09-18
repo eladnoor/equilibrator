@@ -1,0 +1,147 @@
+<html>
+	<head>
+		<title>eQuilibrator for Metabolic Pathways</title>
+		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+		<link href="/media/main.css" rel="stylesheet" type="text/css">
+		<link href="/media/style.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
+		<link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+	    {% include "analytics.html" %}
+	</head>
+	<body>
+	
+	<div class="welcome centerize">
+	
+		{% include "logo_large.html" %}
+   
+		<form name="pathway_form" action="/pathway/build_model" method="POST" enctype="multipart/form-data">
+			<input type="hidden" name='conc_units' value='mM' />
+		    {% csrf_token %}
+		    <table class='results'>
+		    	<tr class='infoTableHeader'>
+	            	<th colspan="100%">Step 1: Build <a href='http://www.sbtab.net'>SBtab</a> Pathway Model</th>
+	        	</tr>
+	        	<tr>
+	    			<td colspan="100%">Click <a href="#description">here</a> for an overview of the process. Skip this step if you already have an SBtab model file.</td>
+	    		</tr>
+		    	<tr>
+		    		<td>Pathway definition CSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.csv">example</a>)</td>
+		    		<td><input type="file" name="pathway_file" /></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Minimum concentration<sup>&dagger;</sup>:</td>
+		    		<td><input type="text" name='min_c' value='0.001' /> mM</td>
+		    	</tr>
+		    	<tr>
+		    		<td>Maximum concentration<sup>&dagger;</sup>:</td>
+		    		<td><input type="text" name='max_c' value='10'/> mM</td>
+		    	</tr>
+		    	<tr>
+			    	<td>
+			            pH
+			        </td>
+			        <td>
+			            <input type="text" name="pH" id="phField" value="{{constants.DEFAULT_PH}}" />
+			        </td>
+			    </tr>
+			    <tr>
+			    	<td>
+			            Ionic Strength
+			        </td>
+			        <td>
+			            <input type="text" name="ionic_strength" id="ionStrengthField" value="{{constants.DEFAULT_IONIC_STRENGTH}}" /> Molar
+			        </td>
+			    </tr>
+		    	<tr>
+		    		<td class='footnote' colspan=2>
+						<sup>&dagger;</sup>The default concentration range of 1 &mu;M - 10 mM reflects the fact that metabolite concentrations are constrained from above by osmotic pressure and toxicity considerations and from below
+						by enzyme affinities.
+					</td>
+				</tr>
+				<tr>
+		    		<td class='footnote' colspan=2>
+						<sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
+						based on measurements from <i>E. coli</i> and other model organisms (see Noor et al., PloS Comp. Bio 2014). 
+						You can edit these defaults by modifying the SBtab file (e.g. in Excel) before performing
+						MDF analysis below. 
+					</td>
+				</tr>
+		    	<tr class='infoTableHeader' align='center'>
+		    		<td colspan="100%"><input type='submit' /></td>
+		    	</tr>
+
+		    </table>
+		</form>
+		<table class='results'>
+	    	<tr class='infoTableHeader'>
+	        	<th colspan="100%">Step 2: Verify & Edit Pathway Model</th>
+	    	</tr>
+	    	<tr>
+	    		<td>1. Check relative fluxes for all reactions in the SBtab file.</td>
+	    	</tr>
+	    	<tr>
+	    		<td>2. Check KEGG IDs for all reactants in the model.</td>
+	    	</tr>
+	    	<tr>
+	    		<td>3. Check and/or edit bounds on metabolite concentrations.</td>
+	    	</tr>
+	    </table>
+		<form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data" target="_blank">
+		    {% csrf_token %}
+		    <table class='results'>
+		    	<tr class='infoTableHeader'>
+	            	<th colspan="100%">Step 3: Perform Pathway <a href='/faq#mdf'>MDF</a> Analysis</th>
+	        	</tr>
+		    	<tr>
+		    		<td>Pathway model TSV (<a href="/media/pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10.tsv">example</a>)</td>
+		    		<td><input type="file" name="pathway_file" /></td>
+			    </tr>
+		    	<tr class='infoTableHeader' align='center'>
+		    		<td colspan="100%"><input type='submit' /></td>
+		    	</tr>
+		    </table>
+		</form>
+
+		<br />
+		<br />
+		<br />
+		
+		<table class='results'>
+			<tr class='infoTableHeader' id='description'>
+				<th colspan="100%">Using eQuilibrator to Calculate the MDF</th>
+			</tr>
+			<tr>
+		    	<td colspan=2>
+		    	<p>eQuilibrator can be used to calculate the Max-min Driving Force (MDF) for your pathway of interest. This process has two steps.
+				<ol>
+					<li>Generating an SBtab model of your pathway.</li>
+					<li>Calculating the MDF from your SBtab model file.</li>
+				</ol>
+				The SBtab model of your pathway contains a full stoichiometric definition of all the pathway reactions, equilibrium constants for all reactions and concentration bounds for all metabolites and cofactors in a tab-delimited file format that can be edited in Excel or similar spreadsheeting applications. eQuilibrator can generate an SBtab description of your pathway from a simplified file (like <a href="/media/pathways/example_pathway_ethanol_fermentation.csv">this one</a>) which defines only the reactions (in free text, as you would in the eQuilibrator search box) and their relative fluxes. eQuilibrator will parse all these reactions, calculate their Δ<sub>r</sub>G'&deg; at the pH and ionic strength of your choice and define bounds on all metabolite and cofactor concentrations. All of these data are output in the SBtab file, which should be compatible with <a href="http://www.metabolic-economics.de/enzyme-cost-minimization/">other applications</a> using SBtab. Before calculating the MDF, it is always a good idea to check the SBtab file. eQuilibrator does not always parse free-text reactions perfectly, so it is important to double check that compounds and reactions output are correct. 
+		    	</p>
+		    	<p>
+		    	It is important to fix the concentrations of cofactors like ATP, CoA and NADH because these concentrations are homeostatically maintained by host organisms. If you do not fix these concentrations to reasonable, physiologically-relevant values, the MDF optimization will choose the concentration that makes your pathway the most thermodynamically favorable. In glycolysis, for example, this would set the ATP concentration as low as allowed (e.g. 1 micromolar), making ATP synthesis and glycolysis as a whole appear much more favorable than it really is or could be. In this case the problem is obvious: maintaining a very low ATP concentration is good for producing ATP from ADP, but catastrophic for the cell because ATP-dependent reactions will operate slowly and with very little driving force.</p>
+
+		    	<p>By default, eQuilibrator uses cofactor concentrations chosen in <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1003483">Noor et al., PloS Comp. Bio 2014</a>. If you wish to use different values, you can edit the SBtab file directly in Excel. You can also edit the reaction Δ<sub>r</sub>G'&deg; values, which are recorded in the SBtab file as equilibrium constants (K<sub>eq</sub>). This may be useful if your pathway contains a reaction whose Δ<sub>r</sub>G'&deg; eQuilibrator cannot calculate (for example <a href="/faq#feRedox">iron redox reactions</a> are problematic for eQuilibrator). When calculating the MDF, eQuilibrator verifies that the Δ<sub>r</sub>G'&deg; are consistent with the first law of thermodynamics, i.e. that they could arise from compound formation energies Δ<sub>f</sub>G'&deg; that are internally consistant with the stoichiometry of your pathway.</p>
+
+			</tr>
+			<tr class='infoTableHeader' id='overview'>
+				<th colspan="100%">Overview of MDF Pathway Analysis</th>
+			</tr>
+			<tr>
+		    	<td colspan=2>
+		    	<p>The Max-min Driving Force (MDF) framework was developed in <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1003483">Noor et al., PloS Comp. Bio 2014</a> and is designed to help metabolic engineers select between alternative pathways for achieving the same or similar metabolic goals. Typically, metabolic engineers must 
+				express several heterologous enzymes in a non-native host in order to establish a pathway and often choose the pathway in the absence of good data on the kinetics of pathway enzymes. In this context, traditional metabolic control analysis (MCA) is difficult to apply for two reasons: 
+				<ol>
+					<li>reliable kinetic data is required to calculate control coefficients and</li>
+					<li>engineers usually do not have fine-grained control over enzyme expression and activity, even in well-studied model organisms.</li>
+				</ol>
+				Rather than focusing on the relationship between enzyme levels and pathway flux, the MDF considers a pathway's stoichiometry and thermodynamics and asks whether it is likely to support high flux in cellular conditions. The MDF of a pathway is a metric of how thermodynamically favorable a pathway can be in physiological conditions, considering allowable metabolite and cofactor concentrations, as well as pH and ionic strength. The value of the MDF is the smallest -Δ<sub>r</sub>G' obtained by any pathway reaction when metabolite concentrations are chosen to make all pathway reactions as favorable as possible (-Δ<sub>r</sub>G' as positive as possible). If the MDF is sufficiently high, the pathway contains no thermodynamic bottlenecks that would hamper its operation <i>in vivo</i>. </p>
+
+				<p>This approach has several practical over advantages over MCA for the purposes of metabolic engineering. First, enzyme kinetic properties are laborious to measure and differ between organisms and isozymes, but no kinetic data is required to calculate the MDF. Second, as the MDF accounts for pH, ionic strength and allowed concentration ranges, it is simple to model the effect of these parameters on the MDF. Finally, as it can be difficult to control the exact expression level of enzymes within cells, the MDF helps identify pathways that are less sensitive to the levels of their constituent enzymes.</p>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	{% include "footer.html" %}

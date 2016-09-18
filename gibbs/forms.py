@@ -2,31 +2,41 @@ from django import forms
 from gibbs import constants
 import logging
 
+
 class ListFormField(forms.MultipleChoiceField):
     """
         A form field for a list of values that are unchecked.
         
         The Django MultipleChoiceField does *almost* what we want, except
-        it validates that each choice is in a supplied list of choices, 
+        it validates that each choice is in a supplied list of choices,
         even when that list is empty. We simply override the validation.
     """
     
     def valid_value(self, value):
         return True
+
  
 class EnzymeForm(forms.Form):
     ec = forms.CharField(max_length=50)
     
     # Convenience accessors for clean data with defaults.
     cleaned_ec = property(lambda self: self.cleaned_data['ec'])
-       
-class SearchForm(forms.Form):
+
+
+class BaseSearchForm(forms.Form):
     def _GetWithDefault(self, key, default):
         if (key not in self.cleaned_data or
             self.cleaned_data[key] is None):
             return default
         return self.cleaned_data[key]
+
+
+class SuggestForm(BaseSearchForm):
+    query = forms.CharField(max_length=2048, required=False)
+    cleaned_query = property(lambda self: self._GetWithDefault('query', ''))
     
+    
+class SearchForm(BaseSearchForm):
     query = forms.CharField(max_length=2048, required=False)
     ph = forms.FloatField(required=False)
     pmg = forms.FloatField(required=False)
@@ -48,6 +58,7 @@ class SearchForm(forms.Form):
         lambda self: self._GetWithDefault('max_priority', 0))
     cleaned_mode  = property(
         lambda self: self._GetWithDefault('mode', ''))
+
 
 class BaseReactionForm(SearchForm):
     
@@ -72,6 +83,7 @@ class BaseReactionForm(SearchForm):
     # Convenience accessors for clean data with defaults.
     cleaned_reactantsPhase = property(lambda self: self.cleaned_data['reactantsPhase'])
     cleaned_reactantsConcentration = property(GetReactantConcentrations)
+    
     
 class ReactionForm(BaseReactionForm):
     
@@ -98,6 +110,7 @@ class ReactionForm(BaseReactionForm):
     cleaned_submit = property(
         lambda self: self._GetWithDefault('submit', 'Update'))
 
+
 class ReactionGraphForm(ReactionForm):
     vary_ph = forms.BooleanField(required=False)
     vary_is = forms.BooleanField(required=False)
@@ -110,6 +123,7 @@ class ReactionGraphForm(ReactionForm):
         lambda self: self._GetWithDefault('vary_pmg', False))
     cleaned_vary_is  = property(
         lambda self: self._GetWithDefault('vary_is', False)) 
+    
     
 class CompoundForm(BaseReactionForm):
    
@@ -130,3 +144,19 @@ class CompoundForm(BaseReactionForm):
     cleaned_reactantsCoeff = property(lambda self: [1])
     cleaned_reactantsName = property(lambda self: [None])
     cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))
+    
+
+class BuildPathwayModelForm(forms.Form):
+    pathway_file = forms.FileField(required=True)
+    min_c = forms.FloatField(required=False)
+    max_c = forms.FloatField(required=False)
+    pH = forms.FloatField(required=False)
+    ionic_strength = forms.FloatField(required=False)
+    conc_units = forms.CharField(required=True)
+
+
+class AnalyzePathwayModelForm(forms.Form):
+    pathway_file = forms.FileField(required=True)
+    pH = forms.FloatField(required=False)
+    ionic_strength = forms.FloatField(required=False)
+    

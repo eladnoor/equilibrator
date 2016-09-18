@@ -27,7 +27,7 @@
             
             {% if forloop.first %}
             <td class="reference {% if not forloop.parentloop.last %}border{% endif %}" rowspan="{{ sg.all_species|length }}">
-                <a href="/data_refs" title="Reference list">{{ sg.source_reference|safe }}</a>
+                <a href="{{ sg.source_reference|safe }}" title="Reference list" target="_blank">{{ sg.formation_energy_source|safe }}</a>
             </td>
             {% endif %}
         </tr>

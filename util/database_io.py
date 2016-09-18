@@ -21,6 +21,7 @@ DOWNLOADS_JSON_FNAME = 'media/downloads/kegg_compounds.json.gz'
 COMPOUNDS_CACHE = {}
 CITATIONS_CACHE = {}
 
+
 def CheckData():
     json.load(open(DEFAULT_CITATION_DATA_FILENAME))
     json.load(gzip.open(GC_NULLSPACE_FILENAME, 'r'))
@@ -29,7 +30,8 @@ def CheckData():
     json.load(gzip.open(ENZYME_FILE, 'r'))
     json.load(open(DEFAULT_ADDITIONAL_DATA_FILENAME, 'r'))
     assert(os.path.exists(COMPOUND_NAME_FILE))
-    
+
+
 def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
     models.ValueSource.objects.all().delete()
     
@@ -45,6 +47,7 @@ def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
             logging.error('Error parsing reference %s', cd)
             logging.error(e)
             continue
+
 
 def GetReactions(rids_list):
     """Find all the given reactions in the database.
@@ -62,7 +65,8 @@ def GetReactions(rids_list):
             logging.warning('Failed to retrieve reaction %s', rid)
             continue
     return rxns
-        
+
+
 def GetCompounds(cids_list):
     """
         Find all the given compounds in the database.
@@ -82,7 +86,8 @@ def GetCompounds(cids_list):
             logging.warning('Failed to retrieve compound %s', kegg_id)
             continue
     return compounds
-        
+
+
 def GetSource(source_string):
     if not source_string:
         return None
@@ -101,6 +106,7 @@ def GetSource(source_string):
         logging.fatal('Bailing!')
         
     return None
+
 
 def AddPmapToCompound(pmap, compound, priority=1):
     source_string = pmap.get('source')
@@ -158,6 +164,7 @@ def AddPmapToCompound(pmap, compound, priority=1):
     
     sg.save()
     compound.species_groups.add(sg)
+
 
 def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
                           kegg_renaming_filename=COMPOUND_RENAME_FILE):
@@ -259,6 +266,7 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
             logging.info('Last compound ID was %s' % compound_id)
             continue
 
+
 def LoadAlbertyEnergies(alberty_json_filenane=ALBERTY_FILENAME, priority=2):
     parsed_json = json.load(gzip.open(alberty_json_filenane, 'r'))
 
@@ -340,6 +348,7 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             logging.warning(e)
             continue
 
+
 def GenerateCompoundThumbnails():
     
     for compound in models.Compound.objects.all():
@@ -386,7 +395,8 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
             logging.error('Error parsing cid %s', cid)
             logging.error(e)
             continue
-    
+
+
 def export_database():
     
     export_compounds(priority=2, name='Alberty',
@@ -400,7 +410,8 @@ def export_database():
                      pH_list=constants.PH_RANGE_VALUES)
 
     export_json()
-    
+
+
 def export_json():
     logging.info("Writing compound data to JSON file: %s" % DOWNLOADS_JSON_FNAME)
     rowdicts = []
@@ -413,6 +424,7 @@ def export_json():
              'num_electrons': c.num_electrons}
         rowdicts.append(d)
     json.dump(rowdicts, gzip.open(DOWNLOADS_JSON_FNAME, 'w'), sort_keys=True, indent=4)
+
 
 def export_reactions(priority, name, ionic_strength, pMg, pH_list):
     csv_reaction_dict = {}
@@ -461,7 +473,8 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
             row = (r.kegg_id, dG0_prime, dG0_std, pH, ionic_strength,
                    constants.DEFAULT_TEMP, comment)
             csv_reaction_dict[pH].writerow(row)
-                
+
+
 def export_compounds(priority, name, ionic_strength, pMg, pH_list):
     pseudoisomer_fname = DOWNLOADS_PSEUDOISOMER_PREFIX + '_%s.csv.gz' % name
     csv_pseudoisomers = csv.writer(gzip.open(pseudoisomer_fname, 'w'))

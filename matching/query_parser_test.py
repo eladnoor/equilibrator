@@ -56,5 +56,6 @@ class TestReactionParser(unittest.TestCase):
             parsed = self._parser.ParseReactionQuery(reaction_str)
             self.assertEquals(expected_results, parsed)
                 
+
 if __name__ == '__main__':
     unittest.main()

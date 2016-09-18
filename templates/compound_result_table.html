@@ -58,7 +58,10 @@
                 </strong>
             </td>
             <td colspan="5">
-                {{ reaction.source_reference|safe }}</a>
+                {% for source_name, url in reaction.source_references %}
+                    <a href="{{ url }}" target="_blank">{{ source_name }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
             </td>
         </tr>
     {% endif %}
