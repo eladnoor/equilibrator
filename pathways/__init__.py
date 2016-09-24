@@ -15,6 +15,7 @@ from matplotlib import pyplot as plt
 from scipy import linalg
 from os import path
 from pathways.bounds import Bounds
+from pathways.concs import ConcentrationConverter
 from pathways.thermo_models import PathwayThermoModel
 from util.SBtab import SBtab
 
@@ -286,11 +287,16 @@ class ParsedPathway(object):
 
         pH = keqs_sbtab.getCustomTableInformation('pH')
         ionic_strength = keqs_sbtab.getCustomTableInformation('IonicStrength')
+        ionic_strength_units = keqs_sbtab.getCustomTableInformation(
+            'IonicStrengthUnit')
         aq_params = AqueousParams()  # Default values
         if pH:
             aq_params.pH = float(pH)
         if ionic_strength:
-            aq_params.ionic_strength = float(ionic_strength)
+            c = float(ionic_strength)
+            c = ConcentrationConverter.to_molar_units(
+                ionic_strength_units, c)
+            aq_params.ionic_strength = c
 
         pp = ParsedPathway(reactions, fluxes_ordered, dgs,
                            bounds=bounds, aq_params=aq_params)
