@@ -28,11 +28,34 @@ class ConcentrationConverter(object):
 
     @classmethod
     def to_molar_units(cls, conc, from_units):
+        """Performs the math of unit conversion.
+
+        Args:
+            conc: the concentration in "from_units" units.
+            from_units: the source units, defined as the
+                order-of-magnitude difference from molar
+                units (see class definition above).
+        
+        Returns:
+            The concentration in Molar.
+        """
         factor = 10**from_units
         return conc * factor
 
     @classmethod
     def to_molar_string(cls, conc, from_units_string):
+        """Performs the math of unit conversion.
+
+        Fails with an unspecified error if from_unit_string
+        is not specifying a recognized unit.
+        
+        Args:
+            conc: the concentration in "from_units" units.
+            from_units: the source units as a string.
+        
+        Returns:
+            The concentration in Molar.
+        """
         # TODO: handle case of unrecognized units.
         from_units = cls.get_units(from_units_string)
         if from_units is None:
