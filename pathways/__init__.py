@@ -294,8 +294,8 @@ class ParsedPathway(object):
             aq_params.pH = float(pH)
         if ionic_strength:
             c = float(ionic_strength)
-            c = ConcentrationConverter.to_molar_units(
-                ionic_strength_units, c)
+            c = ConcentrationConverter.to_molar_string(
+                c, ionic_strength_units)
             aq_params.ionic_strength = c
 
         pp = ParsedPathway(reactions, fluxes_ordered, dgs,
