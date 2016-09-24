@@ -343,12 +343,16 @@ class ParsedPathway(object):
             writer.writerow(d)
 
         # Write KEQs.
-        keq_header = generic_header_fmt % ('ReactionConstant', 'Quantity', 'Pathway Model')
+        keq_header = generic_header_fmt % (
+            'ReactionConstant', 'Quantity', 'Pathway Model')
         keq_cols = ['!QuantityType', '!Reaction', '!Value',
                     '!Unit', '!Reaction:Identifiers:kegg.reaction', '!ID']
         if self.aq_params:
             # Write pH and ionic strength in header
-            aq_params_header = "pH='%.2f', IonicStrength='%.2f'" % (
+            aq_params_header = (
+                "pH='%.2f' 'IonicStrength='%.2f' IonicStrengthUnit='M'")
+
+            aq_params_header = aq_params_header % (
                 self.aq_params.pH, self.aq_params.ionic_strength)
             keq_header = '%s %s' % (keq_header, aq_params_header)
         sio.writelines(['%\n', keq_header + '\n'])
