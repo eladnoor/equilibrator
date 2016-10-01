@@ -21,6 +21,14 @@
         <div class="warning">Reaction is not balanced!
         {% if reaction.balanced_with_water and balance_with_water_link %}
         <a href="{{ balance_with_water_link }}">Balance with H<sub>2</sub>O</a>?
+        {% else %}
+            {% if reaction.balanced_with_coa %}
+            <a href="{{ balance_with_coa_link }}">Balance with CoA</a>?
+            {% else %}
+                {% if reaction.balanced_with_pi %}
+                <a href="{{ balance_with_pi_link }}">Balance with Pi</a>?
+                {% endif %}
+            {% endif %}
         {% endif %}
         </div>
         {% include "parsed_reaction.html" %}

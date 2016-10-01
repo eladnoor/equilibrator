@@ -39,12 +39,12 @@ class FormulaParser(object):
         optional_coeff = pyparsing.Optional(coeff)
         
         element_and_count = pyparsing.Forward()
-        element_and_count <<= (element + optional_coeff)
+        element_and_count << (element + optional_coeff)
         element_and_count.setParseAction(self.HandleElementAndCount)
         
         
         n_block = pyparsing.Forward()
-        n_block <<= ('(' + pyparsing.OneOrMore(element_and_count) + ')n')
+        n_block << ('(' + pyparsing.OneOrMore(element_and_count) + ')n')
         n_block.setParseAction(self.HandleNBlock)
         
         element_or_block = pyparsing.Or([element_and_count, n_block])

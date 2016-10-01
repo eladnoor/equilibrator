@@ -3,6 +3,7 @@ import logging
 from gibbs import constants
 import numpy
 
+
 class _BasePhase(object):
     def PhaseName(self):
         return NotImplementedError

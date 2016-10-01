@@ -64,7 +64,10 @@
             </strong>
         </td>
         <td colspan="100%">
-            {{ reaction.source_reference|safe }}
+            {% for source_name, url in reaction.source_references %}
+                <a href="{{ url }}" target="_blank">{{ source_name }}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
         </td>
     </tr>    
     {% if reaction.catalyzing_enzymes %}

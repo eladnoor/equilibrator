@@ -10,6 +10,7 @@ from gibbs.reaction import Reaction
 
 from gibbs import models
 
+
 class SpeciesFormationEnergyTest(unittest.TestCase):
     """Tests for SpeciesFormationEnergy"""
         
@@ -208,6 +209,7 @@ class ReactionTest(unittest.TestCase):
             """)
         rxn = Reaction.FromJson(parsed_json)
         print str(rxn)
+
 
 def Suite():
     suites = (unittest.makeSuite(SpeciesFormationEnergyTest, 'test'),

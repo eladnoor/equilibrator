@@ -40,3 +40,6 @@ nosetests.xml
 
 # backup files
 *~
+
+# OS X files
+.DS_Store

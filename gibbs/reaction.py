@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import numpy
+import numpy as np
 import urllib
 import os
 from scipy.sparse import csr_matrix
@@ -13,15 +13,15 @@ from gibbs import models
 class Preprocessing(object):
     relpath = os.path.dirname(os.path.realpath(__file__))
     cc_preprocess_fname = os.path.join(relpath, '../data/cc_preprocess.npz')
-    cc_preprocess = numpy.load(cc_preprocess_fname)
+    cc_preprocess = np.load(cc_preprocess_fname)
     
-    C1 = numpy.matrix(cc_preprocess['C1'])
-    C2 = numpy.matrix(cc_preprocess['C2'])
-    C3 = numpy.matrix(cc_preprocess['C3'])
-    G1 = numpy.matrix(cc_preprocess['G1'])
-    G2 = numpy.matrix(cc_preprocess['G2'])
-    G3 = numpy.matrix(cc_preprocess['G3'])
-    S  = numpy.matrix(cc_preprocess['S'])
+    C1 = np.matrix(cc_preprocess['C1'])
+    C2 = np.matrix(cc_preprocess['C2'])
+    C3 = np.matrix(cc_preprocess['C3'])
+    G1 = np.matrix(cc_preprocess['G1'])
+    G2 = np.matrix(cc_preprocess['G2'])
+    G3 = np.matrix(cc_preprocess['G3'])
+    S  = np.matrix(cc_preprocess['S'])
     cids = cc_preprocess['cids']
     Nc = C1.shape[0]        
     Ng = C3.shape[0]
@@ -35,10 +35,10 @@ class Preprocessing(object):
     def GetCompoundVectors(compound):
         # x is the stoichiometric vector of the reaction, only for the
         # compounds that appeared in the original training set for CC
-        x = numpy.matrix(numpy.zeros((Preprocessing.Nc, 1))) 
+        x = np.matrix(np.zeros((Preprocessing.Nc, 1))) 
 
         # g is the group incidence vector of all the other compounds
-        g = numpy.matrix(numpy.zeros((Preprocessing.Ng, 1)))
+        g = np.matrix(np.zeros((Preprocessing.Ng, 1)))
         logging.debug(compound.compound.kegg_id)
         i = compound.compound.index
         gv = compound.compound.sparse_gv
@@ -58,10 +58,10 @@ class Preprocessing(object):
     def GetReactionVectors(reactants):
         # x is the stoichiometric vector of the reaction, only for the
         # compounds that appeared in the original training set for CC
-        x_reaction = numpy.matrix(numpy.zeros((Preprocessing.Nc, 1))) 
+        x_reaction = np.matrix(np.zeros((Preprocessing.Nc, 1))) 
 
         # g is the group incidence vector of all the other compounds
-        g_reaction = numpy.matrix(numpy.zeros((Preprocessing.Ng, 1)))
+        g_reaction = np.matrix(np.zeros((Preprocessing.Ng, 1)))
         for x, g in map(Preprocessing.GetCompoundVectors, reactants):
             x_reaction += x
             g_reaction += g
@@ -72,7 +72,7 @@ class Preprocessing(object):
     
     @staticmethod
     def DeltaGUncertainty(x, g):
-        return float(numpy.sqrt(x.T * Preprocessing.C1 * x + 
+        return float(np.sqrt(x.T * Preprocessing.C1 * x + 
                                 x.T * Preprocessing.C2 * g + 
                                 g.T * Preprocessing.C3 * g))
 
@@ -117,7 +117,7 @@ class Preprocessing(object):
     @staticmethod
     def IsUsingGroupContributions(x, g):
         weights_gc = x.T * Preprocessing.G2 + g.T * Preprocessing.G3
-        sum_w_gc = sum(numpy.abs(weights_gc).flat)
+        sum_w_gc = sum(np.abs(weights_gc).flat)
         logging.debug('sum(w_gc) = %.2g' % sum_w_gc)
         return sum_w_gc > 1e-5
 
@@ -153,7 +153,7 @@ class CompoundWithCoeff(object):
         return other
     
     def AbsoluteCoefficient(self):
-        return numpy.abs(self.coeff)
+        return np.abs(self.coeff)
     
     @staticmethod
     def FromReactant(reactant):
@@ -269,8 +269,9 @@ class CompoundWithCoeff(object):
         return True
 
     def DeltaG0Prime(self, aq_params):
-        dg0_prime = self.compound.DeltaG0Prime(aq_params,
-                                               self.phase.PhaseName())
+        dg0_prime = self.compound.DeltaG0Prime(aq_params, self.phase.PhaseName())
+        if dg0_prime is None:
+            return None
         return self.coeff * dg0_prime
         
     def GetPhaseName(self):
@@ -324,6 +325,7 @@ class CompoundWithCoeff(object):
     has_multiple_phases = property(HasMultiplePhases)
     kegg_id = property(GetKeggID)
 
+
 class Reaction(object):
     """A reaction."""
     
@@ -331,8 +333,7 @@ class Reaction(object):
         """Construction.
         
         Args:
-            substrates: a list of CompoundWithCoeff objects.
-            products: a list of CompoundWithCoeff objects.
+            reactants: a list of CompoundWithCoeff objects.
         """
         self.reactants = reactants or []
         self.aq_params = aq_params or conditions.AqueousParams()
@@ -446,18 +447,23 @@ class Reaction(object):
         elif my_hash == co2_hash:
             return """You are looking at the &Delta;G' of CO<sub>2</sub> hydration.</br>
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
-        elif (self._FindCompoundIndex('C00011') is not None and 
+        elif (self._FindCompoundIndex('C14818') is not None and
+              self._FindCompoundIndex('C14819') is not None):
+            return """Energetics of iron redox reactions depend heavily on the
+               chemical forms of iron involved.
+               <a href="/faq#feRedox">Learn more &raquo;</a>"""
+        elif (self._FindCompoundIndex('C00011') is not None and
               self._FindCompoundIndex('C00288') is None):
             return """Did you mean 
                       <a href="%s">CO<sub>2</sub>(total)</a>?
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>""" % \
                       self.GetReplaceCO2Link()
-        elif (self._FindCompoundIndex('C00011') is not None and 
+        elif (self._FindCompoundIndex('C00011') is not None and
               self._FindCompoundIndex('C00288') is not None):
             return """One should not use CO<sub>2</sub>(aq) together with
                       CO<sub>2</sub>(total) in the same reaction.
                       <a href="/faq#aqueousCO2">Learn more &raquo;</a>"""
-        elif (self._FindCompoundIndex('C01353') is not None and 
+        elif (self._FindCompoundIndex('C01353') is not None and
               self._FindCompoundIndex('C00288') is not None):
             return """One should not use HCO<sub>3</sub><sup>-</sup>(aq) together with
                       CO<sub>2</sub>(total) in the same reaction.
@@ -484,6 +490,13 @@ class Reaction(object):
                       (my_string, len(matching_stored_reactions)))
         
         return matching_stored_reactions
+        
+    @property
+    def stored_reaction_id(self):
+        stored_rxns = self._GetAllStoredReactions()
+        if not stored_rxns:
+            return None
+        return stored_rxns[0].kegg_id
     
     def _GetCatalyzingEnzymes(self):
         """
@@ -559,21 +572,28 @@ class Reaction(object):
         return Reaction.FromIds(compound_list, aq_params=aq_params)
     
     @staticmethod
-    def FromIds(compound_list, aq_params=None):
+    def FromIds(compound_list, aq_params=None, fetch_db_names=False):
         """Build a reaction object from lists of IDs.
         
         Args:
-            compound_list: an iterable of (coeff, kegg_id, name) of reactants.
-            concentration_profile: a ConcentrationProfile object.
+            compound_list: an iterable of dictionaries of reactants.
+                keys: kegg_id, coeff, phase, name
+            aq_params: an aqueous params object. 
+            fetch_db_names: if compound names should be fetched from the database.
             
         Returns:
             A properly set-up Reaction object or None if there's an error.
         """
         kegg_ids = [d['kegg_id'] for d in compound_list]
-        comps = models.Compound.objects.prefetch_related('species_groups', 'species_groups__species','common_names').filter(kegg_id__in=kegg_ids)
+        comps = models.Compound.objects.prefetch_related(
+            'species_groups', 'species_groups__species',
+            'common_names').filter(kegg_id__in=kegg_ids)
         kegg_id_to_compound = {c.kegg_id:c for c in comps}
         for d in compound_list:
             d['compound'] = kegg_id_to_compound[d['kegg_id']]
+        if fetch_db_names:
+            for d in compound_list:
+                d['name'] = d['compound'].FirstName()
         reactants = map(CompoundWithCoeff.FromDict, compound_list)
         return Reaction(reactants, aq_params=aq_params)
         
@@ -666,11 +686,23 @@ class Reaction(object):
     def GetHyperlink(self, query=None):
         params = self._GetUrlParams(query)
         return '/reaction?%s' % '&'.join(params)
-    
+
     def GetBalanceWithWaterLink(self, query=None):
         """Returns a link to balance this reaction with water."""
         other = self.Clone()
         other.TryBalanceWithWater()
+        return other.GetHyperlink(query)
+
+    def GetBalanceWithCoALink(self, query=None):
+        """Returns a link to balance this reaction with water."""
+        other = self.Clone()
+        other.TryBalanceWithCoA()
+        return other.GetHyperlink(query)
+
+    def GetBalanceWithPiLink(self, query=None):
+        """Returns a link to balance this reaction with water."""
+        other = self.Clone()
+        other.TryBalanceWithPi()
         return other.GetHyperlink(query)
 
     def GetBalanceElectronsLink(self, query=None):
@@ -699,12 +731,20 @@ class Reaction(object):
         template_data = {'reaction': self,
                          'query': query,
                          'alberty_link': self.GetNewPriorityLink(99),
-                         'cc_link': self.GetNewPriorityLink(1)}
+                         'cc_link': self.GetNewPriorityLink(1),
+                         'balance_with_water_link': None,
+                         'balance_electrons_link': None,
+                         'balance_with_coa_link': None,
+                         'balance_with_pi_link': None}
         if not self._is_formation_reaction:
             try:
-                template_data.update({
-                    'balance_with_water_link': self.GetBalanceWithWaterLink(query),
-                    'balance_electrons_link': self.GetBalanceElectronsLink(query)})
+                if not self.IsBalanced():
+                    template_data.update({
+                        'balance_with_water_link': self.GetBalanceWithWaterLink(query),
+                        'balance_with_coa_link': self.GetBalanceWithCoALink(query),
+                        'balance_with_pi_link': self.GetBalanceWithPiLink(query)})
+                if not self.IsElectronBalanced():
+                    template_data['balance_electrons_link'] = self.GetBalanceElectronsLink(query)
             except ReactantFormulaMissingError:
                 pass
 
@@ -748,8 +788,8 @@ class Reaction(object):
         
         rdict = {-1: [], 1: []}
         for c_w_coeff in self.reactants:
-            c = numpy.abs(c_w_coeff.coeff)
-            s = numpy.sign(c_w_coeff.coeff)
+            c = np.abs(c_w_coeff.coeff)
+            s = np.sign(c_w_coeff.coeff)
             if s == 0:
                 continue
             if c == 1:
@@ -757,7 +797,28 @@ class Reaction(object):
             else:
                 rdict[s].append('%g %s' % (c, c_w_coeff.GetName()))
                 
-        return '%s = %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
+        return '%s <=> %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
+
+    def GetSlugQueryString(self):
+        """Get an easily parsed query string for this reaction.
+
+        This string contains no spaces or dashes in the compound names.
+        Much easier to parse with REGEX. Used for generating SBtab.
+
+        TODO unify with above?
+        """
+        rdict = {-1: [], 1: []}
+        for c_w_coeff in self.reactants:
+            c = np.abs(c_w_coeff.coeff)
+            s = np.sign(c_w_coeff.coeff)
+            if s == 0:
+                continue
+            if c == 1:
+                rdict[s].append(c_w_coeff.compound.name_slug)
+            else:
+                rdict[s].append('%g %s' % (c, c_w_coeff.compound.name_slug))
+                
+        return '%s <=> %s' % (' + '.join(rdict[-1]), ' + '.join(rdict[1]))
     
     def IsReactantFormulaMissing(self):
         for compound_w_coeff in self.reactants:
@@ -831,8 +892,70 @@ class Reaction(object):
         else:
             delta_electrons = self._GetElectronDiff()
             assert delta_electrons != 0
-            return numpy.abs(dg_u / (constants.F*delta_electrons))
+            return np.abs(dg_u / (constants.F*delta_electrons))
+
+    def _ExtraPis(self):
+        # TODO probably could write a generic version of this.
+        atom_diff = self._GetAtomDiff()
+
+        if not atom_diff:
+            return None
+        
+        # Pi = P O4       
+        # Ignore hydrogen as usual.
+        atom_diff.pop('H', 0)
+
+        os = atom_diff.pop('O', 0)
+        ps = atom_diff.pop('P', 0)
+
+        n_pis = np.array([ps / 1.0, os / 4.0])
+
+        # Don't need any other elements
+        pi_completes = self._IsBalanced(atom_diff)
+        # Stoichiometry right for pi
+        pi_completes &= np.all(n_pis == n_pis.astype(np.int))
+        pi_completes &= np.all(n_pis ==
+            np.ones(n_pis.size) * n_pis[0])
+
+        extra_pis = int(n_pis[0])
+        if not pi_completes or not extra_pis:
+            return None
+
+        # Number of missing Pis
+        return extra_pis
     
+    def _ExtraCoAs(self):
+        atom_diff = self._GetAtomDiff()
+
+        if not atom_diff:
+            return None
+        
+        # CoA = C21 H36 N7 016 P3 S        
+        # Ignore hydrogen as usual.
+        atom_diff.pop('H', 0)
+
+        cs = atom_diff.pop('C', 0)
+        os = atom_diff.pop('O', 0)
+        ns = atom_diff.pop('N', 0)
+        ps = atom_diff.pop('P', 0)
+        ss = atom_diff.pop('S', 0)
+
+        n_coas = np.array([cs / 21.0, os / 16.0, ns / 7.0, ps / 3.0, ss / 1.0])
+
+        # Don't need any other elements
+        coa_completes = self._IsBalanced(atom_diff)
+        # Stoichiometry right for CoA
+        coa_completes &= np.all(n_coas == n_coas.astype(np.int))
+        coa_completes &= np.all(n_coas ==
+            np.ones(n_coas.size) * n_coas[0])
+
+        extra_coas = int(n_coas[0])
+        if not coa_completes or not extra_coas:
+            return None
+
+        # Number of missing CoAs
+        return extra_coas
+
     def _ExtraWaters(self):
         atom_diff = self._GetAtomDiff()
             
@@ -944,13 +1067,47 @@ class Reaction(object):
         Returns:
             True if the reaction is balanced already or with
             additional waters on either side.
-        """ 
+        """
         extra_waters = self._ExtraWaters()
         if extra_waters is None:
             # cannot balance the reaction with H2O only
             return False
         if extra_waters != 0:
             self._AddCompound('C00001', extra_waters)
+            self._Dedup()
+        return True
+
+    def TryBalanceWithCoA(self):
+        """Try to balance the reaction with water.
+        
+        Returns:
+            True if the reaction is balanced already or with
+            additional waters on either side.
+        """
+        extra_coas = self._ExtraCoAs()
+        if extra_coas is None:
+            # cannot balance the reaction with CoA only
+            return False
+        if extra_coas != 0:
+            self._AddCompound('C00010', extra_coas)
+            self._Dedup()
+        return True
+
+    def TryBalanceWithPi(self):
+        """Try to balance the reaction with water.
+        
+        TODO write a generic version of this?
+
+        Returns:
+            True if the reaction is balanced already or with
+            additional waters on either side.
+        """
+        extra_pis = self._ExtraPis()
+        if extra_pis is None:
+            # cannot balance the reaction with Pi only
+            return False
+        if extra_pis != 0:
+            self._AddCompound('C00009', extra_pis)
             self._Dedup()
         return True
     
@@ -962,15 +1119,37 @@ class Reaction(object):
             return True
         
         return extra_waters is not None
+
+    def CanBalanceWithCoA(self):
+        """Returns True if balanced with or without CoA."""
+        try:
+            extra_coas = self._ExtraCoAs()
+        except ReactantFormulaMissingError:
+            return True
+        
+        return extra_coas is not None
+
+    def CanBalanceWithPi(self):
+        """Returns True if balanced with or without Pi."""
+        try:
+            extra_pis = self._ExtraPis()
+        except ReactantFormulaMissingError:
+            return True
+        
+        return extra_pis is not None
     
     def BalanceElectrons(self,
                          acceptor_id='C00003',           # NAD+
-                         reduced_acceptor_id='C00004'):  # NADH
-        """Try to balance the reaction electons."""        
+                         reduced_acceptor_id='C00004',
+                         n_e=2):  # NADH
+        """Try to balance the reaction electons.
+
+        By default acceptor and reduced accepter differ by 2e-.
+        """    
         net_electrons = self._GetElectronDiff()
         if net_electrons != 0:
-            self._AddCompound(reduced_acceptor_id, -net_electrons/2)
-            self._AddCompound(acceptor_id, net_electrons/2)
+            self._AddCompound(reduced_acceptor_id, -net_electrons/float(n_e))
+            self._AddCompound(acceptor_id, net_electrons/float(n_e))
             self._Dedup()
         
     def _GetConcentrationCorrection(self):
@@ -981,7 +1160,7 @@ class Reaction(object):
                 The correction or None on error.
         """        
         # Shorthand for coeff * log(concentration)
-        mult_log_c_list = [c.coeff * numpy.log(c.phase.Value())
+        mult_log_c_list = [c.coeff * np.log(c.phase.Value())
                            for c in self.reactants]
 
         # Compute log(Q) - the log of the reaction quotient
@@ -1000,16 +1179,19 @@ class Reaction(object):
         """
         # calculate stoichiometric imbalance (how many more products are there
         # compared to substrates). Note that H2O isn't counted
-        sum_logs = sum([c.coeff*numpy.log(c.phase.PhysiologicalValue())
+        sum_logs = sum([c.coeff*np.log(c.phase.PhysiologicalValue())
                         for c in self.reactants])
         
         _r = constants.R
         _t = constants.DEFAULT_TEMP
         return _r * _t * sum_logs
         
-    def DeltaG0Prime(self):
+    def DeltaG0Prime(self, aq_params=None):
         """Compute the DeltaG0' for a reaction.
         
+        Args:
+            aq_params: override whatever params are currently defined.
+
         Returns:
             The DeltaG0' for this reaction, or None if data was missing.
         """
@@ -1017,7 +1199,8 @@ class Reaction(object):
             return self._dg0_prime
 
         logging.debug('Aqueous Params = ' + str(self.aq_params))
-        c_dg0_prime_list = [c.DeltaG0Prime(self.aq_params) for c in self.reactants]
+        aqp = aq_params or self.aq_params
+        c_dg0_prime_list = [c.DeltaG0Prime(aqp) for c in self.reactants]
 
         # find all the IDs of compounds that have no known formation energy
         # if there are any such compounds, print and error message and 
@@ -1074,7 +1257,7 @@ class Reaction(object):
             return None
         
         rt = constants.R * constants.DEFAULT_TEMP
-        keq = numpy.exp(-dg0_prime / rt)
+        keq = np.exp(-dg0_prime / rt)
         return keq
 
     def KeqPrimeHuman(self):
@@ -1086,10 +1269,10 @@ class Reaction(object):
         if dg0_prime is None:
             return None
         
-        rtln10 = constants.R * constants.DEFAULT_TEMP * numpy.log(10)
+        rtln10 = constants.R * constants.DEFAULT_TEMP * np.log(10)
         x = -dg0_prime / rtln10
 
-        expo = numpy.floor(x)
+        expo = np.floor(x)
         prefactor = 10**(x - expo)
         if abs(expo) <= 2:
             return '%.3g' % (10**x)
@@ -1172,29 +1355,27 @@ class Reaction(object):
             if c.phase and not c.phase.IsPhysiological():
                 return False
         return True
-    
-    def GetSourceReference(self):
-        """
-            Assuming that all reactants in the chosen priority group have
-            the same source reference, we provide the ref from the first
-            reactant to represent all of them.
-        """
-        #return self.reactants[0].compound._GetDGSource()
-        source_names = set(map(lambda x : str(x.compound._GetDGSource()), self.reactants))
-        return ', '.join([self.GetSourceReferenceLink(s) for s in source_names])
-    
+        
     def GetSourceReferenceLink(self, source_name):
         try:
             source = models.ValueSource.objects.get(name=source_name)
             url = source.url
         except Exception:
-            url = None
+            url = "/data_refs"
+        url = url or "/data_refs"
+        return url
         
-        if url:
-            return '<a href="%s">%s</a>' % (url, source_name)
-        else:
-            return '<a href="/data_refs">%s</a>' % (source_name)
-    
+    def GetSourceReferences(self):
+        """Returns a list of two-tuples (name, url).
+        
+        Assuming that all reactants in the chosen priority group have
+        the same source reference, we provide the ref from the first
+        reactant to represent all of them.
+        """
+        source_names = set(map(lambda x : str(x.compound._GetDGSource()), self.reactants))
+        urls = [self.GetSourceReferenceLink(n) for n in source_names]
+        return zip(source_names, urls)
+        
     def GetComponentContributionAnalysis(self):
         x, g = Preprocessing.GetReactionVectors(self.reactants)
         return Preprocessing.Analyze(x, g)
@@ -1203,10 +1384,12 @@ class Reaction(object):
     products = property(GetProducts)
     is_reactant_formula_missing = property(IsReactantFormulaMissing)
     reactants_with_missing_formula = property(GetReactantFormulaMissing)
-    is_empty = property(IsEmpty)    
+    is_empty = property(IsEmpty)
     is_balanced = property(IsBalanced)
     is_electron_balanced = property(IsElectronBalanced)
     balanced_with_water = property(CanBalanceWithWater)
+    balanced_with_coa = property(CanBalanceWithCoA)
+    balanced_with_pi = property(CanBalanceWithPi)
     extra_atoms = property(ExtraAtoms)
     missing_atoms = property(MissingAtoms)
     extra_electrons = property(ExtraElectrons)
@@ -1224,10 +1407,11 @@ class Reaction(object):
     e_uncertainty = property(EUncertainty)
     no_dg_explanation = property(NoDeltaGExplanation)
     dg_uncertainty = property(DeltaGUncertainty)
+    link_url = property(GetHyperlink)
     ph_graph_link = property(GetPhGraphLink)
     pmg_graph_link = property(GetPMgGraphLink)
     is_graph_link = property(GetIonicStrengthGraphLink)
     catalyzing_enzymes = property(_GetCatalyzingEnzymes)
     is_phys_conc = property(IsPhysiologicalConcentration)
-    source_reference = property(GetSourceReference)
+    source_references = property(GetSourceReferences)
     analyze_cc = property(GetComponentContributionAnalysis)

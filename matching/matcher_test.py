@@ -2,8 +2,10 @@
 
 import unittest
 from util import django_utils
+from util import django_test_utils
 from gibbs import models
 from matching import matcher
+
 
 class TestMatch(unittest.TestCase):
     """Tests for matcher.Match"""

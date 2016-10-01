@@ -1,0 +1,123 @@
+cid,name,c_min,c_max
+C00001,H2O,1,1
+C00002,ATP,5.00E-03,5.00E-03
+C00003,NAD+,1.00E-03,1.00E-03
+C00004,NADH,1.00E-04,1.00E-04
+C00005,NADPH,1.00E-04,1.00E-04
+C00006,NADP+,1.00E-05,1.00E-05
+C00007,Oxygen,2.73E-04,2.73E-04
+C00008,ADP,5.00E-04,5.00E-04
+C00009,Orthophosphate,1.00E-02,1.00E-02
+C00010,CoA,1.00E-03,1.00E-03
+C00011,CO2,1.00E-05,1.00E-05
+C00013,Pyrophosphate,1.00E-03,1.00E-03
+C00014,NH3,1.00E-02,1.00E-02
+C00015,UDP,,
+C00016,FAD,1.00E-04,1.00E-04
+C00020,AMP,5.00E-04,5.00E-04
+C00023,Iron,,
+C00027,H2O2,,
+C00028,Acceptor,,
+C00030,Reduced acceptor,,
+C00034,Manganese,,
+C00035,GDP,,
+C00044,GTP,,
+C00051,Glutathione,1.70E-02,1.70E-02
+C00055,CMP,,
+C00059,Sulfate,,
+C00063,CTP,,
+C00075,UTP,,
+C00080,H+,,
+C00081,ITP,,
+C00087,Sulfur,,
+C00088,Nitrite,,
+C00094,Sulfite,,
+C00101,Tetrahydrofolate,,
+C00104,IDP,,
+C00105,UMP,,
+C00112,CDP,,
+C00115,Chloride,,
+C00125,Ferricytochrome c,,
+C00126,Ferrocytochrome c,,
+C00127,Glutathione disulfide,2.40E-03,2.40E-03
+C00130,IMP,,
+C00131,dATP,,
+C00138,Reduced ferredoxin,1.00E-04,1.00E-04
+C00139,Oxidized ferredoxin,1.00E-04,1.00E-04
+C00144,GMP,,
+C00175,Cobalt,,
+C00192,Hydroxylamine,,
+C00201,NTP,5.00E-03,5.00E-03
+C00206,dADP,,
+C00244,Nitrate,,
+C00282,Hydrogen,,
+C00283,Hydrogen sulfide,,
+C00286,dGTP,,
+C00291,Nickel,,
+C00305,Magnesium,,
+C00320,Thiosulfate,,
+C00342,Thioredoxin,1.00E-04,1.00E-04
+C00343,Thioredoxin disulfide,1.00E-04,1.00E-04
+C00360,dAMP,,
+C00361,dGDP,,
+C00362,dGMP,,
+C00363,dTDP,,
+C00364,dTMP,,
+C00365,dUMP,,
+C00390,Ubiquinone(red),1.00E-04,1.00E-04
+C00399,Ubiquinone(ox),1.00E-04,1.00E-04
+C00454,NDP,5.00E-04,5.00E-04
+C00459,dTTP,,
+C00460,dUTP,,
+C00462,Halide,,
+C00533,Nitric oxide,,
+C00662,Reduced adernal ferredoxin,,
+C00667,Oxidized adernal ferredoxin,,
+C00697,Nitrogen,,
+C00703,Mercury(2+),,
+C00704,O2.-,,
+C00708,Iodide,,
+C00742,Fluoride,,
+C00828,Menaquinone,1.00E-04,1.00E-04
+C00857,Deamino-NAD+,,
+C00876,Coenzyme F420 (ox),1.00E-04,1.00E-04
+C00887,Nitrous oxide,,
+C01070,Ferricytochrome c-553,,
+C01071,Ferrocytochrome c-553,,
+C01080,Coenzyme F420 (red),1.00E-04,1.00E-04
+C01319,Hg,,
+C01324,Bromide,,
+C01327,Hydrochloric acid % HCl,,
+C01328,HO-,,
+C01344,dIDP,,
+C01345,dITP,,
+C01346,dUDP,,
+C01351,Donor,,
+C01352,FADH2,1.00E-04,1.00E-04
+C01382,Iodine,,
+C01485,Chlorate,,
+C01486,Chlorite,,
+C01528,Selenide,,
+C01529,Selenium,,
+C02084,Tetrathionate,,
+C02177,Oxidized donor,,
+C02306,Phosphoramidate,,
+C02466,Trimetaphosphate,,
+C03024,Reduced flavoprotein,,
+C03161,Oxidized flavoprotein,,
+C05172,Selenophosphate,,
+C05360,Diimine,,
+C05361,Hydrazine,,
+C05590,HI,,
+C05684,Selenite,,
+C05697,Selenate,,
+C05819,Menaquinol,1.00E-04,1.00E-04
+C06196,dIMP,,
+C06697,Arsenite,,
+C09306,Sulfur dioxide,,
+C11215,Arsenate ion,,
+C11481,HSO3-,,
+C13645,Hydrobromic acid,,
+C14818,Fe2+,,
+C14819,Fe3+,,
+C16487,Hydrofluoric acid,,

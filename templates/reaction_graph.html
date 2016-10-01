@@ -5,11 +5,9 @@
         <link href="/media/main.css" rel="stylesheet" type="text/css">
         <link href="/media/style.css" rel="stylesheet" type="text/css">
         <link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
-        <link href="/media/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
-        <script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
-        <script type="text/javascript" src="/media/jquery.lightbox-0.5.min.js"></script>
+        <script type="text/javascript" src="/media/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="/media/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/media/jquery.autocomplete.min.js"></script>
         
         <!-- Tangle and TangleKit -->
         <link rel="stylesheet" href="media/Tangle/TangleKit/TangleKit.css" type="text/css"> 
@@ -104,28 +102,36 @@
                 
                 varyPh: function () {
                     var points = [];
+                    var dGs = [];
                     
                     for (curPh = 4; curPh <= 10; curPh += 0.1) {
                         var DeltaGPrime = this.getDeltaGPrime(curPh, this.is).toFixed(4);
+                        dGs.push(DeltaGPrime);
                         points.push([curPh, DeltaGPrime]);
                     }
                     
                     var series = {
-                        data: points
+                        data: points,
+                        minDg: Math.min.apply(null, dGs),
+                        maxDg: Math.max.apply(null, dGs),
                     };
                     return series;
                 },
 
                 varyIonicStrength: function () {
                     var points = [];
-                    
+                    var dGs = [];
+
                     for (curIs = 0; curIs <= 0.35; curIs += 0.001) {
                         var DeltaGPrime = this.getDeltaGPrime(this.ph, curIs).toFixed(4);
+                        dGs.push(DeltaGPrime);
                         points.push([curIs, DeltaGPrime]);
                     }
-                    
+
                     var series = {
-                        data: points
+                        data: points,
+                        minDg: Math.min.apply(null, dGs),
+                        maxDg: Math.max.apply(null, dGs),
                     };
                     return series;
                 },
@@ -143,22 +149,26 @@
                 },
                 
                 update: function () {
-                    var all_series = [];
+                    var series = null;
+
                     var options = {
                         yaxis: { tickFormatter: this.dgTickFormatter },
                         legend: { container: "#legendContainer" }
                     };
                     
                     if (this.mode == 'varyIs') {
-                        var isSeries = this.varyIonicStrength();
-                        all_series.push(isSeries);
+                        series = this.varyIonicStrength();
                         options.xaxis = { tickFormatter: this.isTickFormatter };
                     } else {
-                        var phSeries = this.varyPh();
-                		all_series.push(phSeries);
+                        series = this.varyPh();
                 		options.xaxis = { tickFormatter: this.phTickFormatter };
                 	}
+
+                    options['yaxis']['min'] = series.minDg - 1.0;
+                    options['yaxis']['max'] = series.maxDg + 1.0;
                 	
+                    var all_series = [];
+                    all_series.push(series);
                     $.plot($("#dgFigure"), all_series, options);
                 }
 
@@ -216,7 +226,11 @@
                         at ionic strength = <span data-var='is' class='TKAdjustableNumber' data-min='0.0' data-max='0.35' data-step='0.01' data-format='%.2f'>  M</span>
                     {% endif %}
                     </br></br>
-                    Estimated using {{ reaction.source_reference|safe }}
+                    Estimated using
+                    {% for source_name, url in reaction.source_references %}
+                        <a href="{{ url }}" target="_blank">{{ source_name }}</a>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
                 </p>
             {% if conditions and conditions != "standard" %}
                 <table class="results">
