@@ -14,8 +14,8 @@ from gibbs import models
 from gibbs import constants
 
 # Column names
-KEGG_ID = '!MiriamID::urn:miriam:kegg.compound'
-NAME = '!Name'
+KEGG_ID = '!Identifiers:kegg.compound'
+NAME = '!Compound'
 INCHI = '!InChI'
 SOURCE = '!Source'
 FORMATION = '!FormationEnergy'

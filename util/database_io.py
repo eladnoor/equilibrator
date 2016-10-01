@@ -421,11 +421,12 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
         logging.info("Writing dG'0_r for %s at pH %g to: %s"
                      % (name, pH, reaction_fname))
         csv_reaction_dict[pH] = csv.writer(gzip.open(reaction_fname, 'w'))
-        csv_reaction_dict[pH].writerow(["!MiriamID::urn:miriam:kegg.reaction",
-                                        "!dG0_prime (kJ/mol)", 
-                                        "!sigma[dG0] (kJ/mol)",
-                                        "!pH",
-                                        "!I (mM)", "!T (Kelvin)", "!Note"])
+        csv_reaction_dict[pH].writerow(["!!SBtab TableType='Reaction' TableName='Reaction Energies pH=5.0"])
+        csv_reaction_dict[pH].writerow(["!Identifiers:kegg.reaction",
+                                        "transformed standard Gibbs free energy of reaction [kJ/mol]:Mean", 
+                                        "transformed standard Gibbs free energy of reaction [kJ/mol]:Std",
+                                        "pH",
+                                        "ionic strength [M]", "temperature [K]", "!Comment"])
     
     for r in models.StoredReaction.objects.all():
         rxn = r.ToReaction()
@@ -473,10 +474,11 @@ def export_compounds(priority, name, ionic_strength, pMg, pH_list):
     for pH in pH_list:
         compound_fname = DOWNLOADS_COMPOUND_PREFIX + '_%s_ph%.1f.csv.gz' % (name, pH)
         csv_compound_dict[pH] = csv.writer(gzip.open(compound_fname, 'w'))
-        csv_compound_dict[pH].writerow(["!MiriamID::urn:miriam:kegg.compound",
-                                        "!Name", "!dG0_prime (kJ/mol)",
-                                        "!pH", "!I (mM)", "!T (Kelvin)",
-                                        "!Note"])
+        csv_compound_dict[pH].writerow(["!!SBtab TableType='Compound' TableName='Compound Formation Energies pH=5.0'"])
+        csv_compound_dict[pH].writerow(["!Identifiers:kegg.compound",
+                                        "!Compound", "transformed standard Gibbs free energy of formation [kJ/mol]",
+                                        "pH", "ionic strength [M]", "temperature [K]",
+                                        "!Comment"])
     
     logging.info("Writing chemical and biochemical formation energies for %s to: %s" %
                  (name, pseudoisomer_fname))
