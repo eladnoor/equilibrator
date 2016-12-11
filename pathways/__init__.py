@@ -285,6 +285,10 @@ class ParsedPathway(object):
         dgs = [-DEFAULT_RT * np.log(float(reaction_keqs[rid]))
                for rid in reaction_ids]
 
+        # Manually set the delta G values on the reaction objects
+        for dg, rxn in zip(dgs, reactions):
+            rxn._dg0_prime = dg
+
         pH = keqs_sbtab.getCustomTableInformation('pH')
         ionic_strength = keqs_sbtab.getCustomTableInformation('IonicStrength')
         ionic_strength_units = keqs_sbtab.getCustomTableInformation(
@@ -399,6 +403,14 @@ class ParsedPathway(object):
 class ReactionMDFData(object):
 
     def __init__(self, reaction, flux, dGr, shadow_price):
+        """
+        Args:
+            reaction: kegg reaction object.
+                should be set to contain user-defined dG0
+            flux: amount of relative flux in pathway.
+            dGr: dG in MDF conditions.
+            shadow_price: shadow price associated with this rxn.
+        """
         self.reaction = reaction
         self.flux = flux
         self.dGr = dGr
@@ -445,7 +457,7 @@ class CompoundMDFData(object):
 
     @property
     def html_ub(self):
-        return self.html_conc(self.ub)   
+        return self.html_conc(self.ub)
 
 
 class PathwayMDFData(object):
@@ -459,7 +471,8 @@ class PathwayMDFData(object):
         fluxes = parsed_pathway.fluxes
         dGs = self.mdf_result.dG_r_prime_adj.flatten().tolist()[0]
         prices = self.mdf_result.reaction_prices.flatten().tolist()[0]
-        self.reaction_data = [ReactionMDFData(*t) for t in zip(rxns, fluxes, dGs, prices)]
+        self.reaction_data = [
+            ReactionMDFData(*t) for t in zip(rxns, fluxes, dGs, prices)]
 
         compounds = parsed_pathway.compounds
         cbounds = [self.model.concentration_bounds.GetBoundTuple(cid)
