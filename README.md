@@ -11,40 +11,60 @@ and is easiest to develop and set up on that operating system. Setup instruction
 only for Ubuntu users.
 
 # Dependencies
-- Django 1.6.2
-- MySql 5.5
-- Django-Haystack & Xapian (autocomplete)
-- PyParsing 1.5.7 (also 2.0.1 tested)
+- Django 1.7.10
+- Django debug toolbag 1.0.1
+- Django extensions 1.5.7
+- Django haystack 2.4.0
+- Xapian 1.2.18 (indexing for search)
+- MySql 5.7.16
+- PyParsing 2.1.8
 - NLTK 2.0.4
-- NumPy and SciPy
+- NumPy 1.11.1
+- SciPy 0.18.1
 - Matplotlib & Seaborn (Plotting)
 - Pulp & GLPK (optimization)
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
-- Xapian (indexing for search)
 
 # Installing binary dependencies on Ubuntu
 ```
-sudo apt-get install mysql-server libmysqlclient-dev
-sudo apt-get install python-pip python-dev
-sudo apt-get install python-numpy python-scipy python-matplotlib python-pandas
-sudo apt-get install glpk-utils python-glpk
+sudo apt install mysql-server libmysqlclient-dev
+sudo apt install python-pip python-dev
+sudo apt install python-numpy python-scipy python-matplotlib python-pandas
+sudo apt install glpk-utils python-glpk uuid-dev
 ```
 
-Follow this gist to install Xapian 
+Follow this gist to install xapian-core-1.2.18 and xapian-bindings-1.2.18 
 https://gist.github.com/areski/0919d3b0874fd49ec172
 
 # Remaining Python Dependencies 
-```
-sudo pip install django==1.7.10 django-extensions django-haystack
-sudo pip install seaborn nltk pulp pyparsing MySQL-python
-sudo pip install django-debug-toolbar
-```
-
-Install a recent version of xapian-haystack from here: 
+Install version 2.0.0 of xapian-haystack from here: 
 https://github.com/notanumber/xapian-haystack
 ```
 sudo pip install git+https://github.com/notanumber/xapian-haystack.git
 ```
+
+Install other PyPI packages:
+```
+sudo pip install django==1.7.10
+sudo pip install django-debug-toolbar==1.4
+sudo pip install django-extensions==1.5.7
+sudo pip install django-haystack==2.4.0
+sudo pip install seaborn nltk pulp pyparsing MySQL-python tablib
+```
+
+# Create MySQL database and user for Django
+```
+sudo mysql --user=root mysql -p
+mysql> CREATE USER 'milolab_eqbtr'@'localhost' IDENTIFIED BY '******';
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'milolab_eqbtr'@'localhost';
+mysql> CREATE DATABASE milolab_eqbtr;
+mysql> exit;
+```
+
+* Put the appropriate database name, username and password in settings.py.
+* Edit sqlload.sh to use the correct username and database name. 
+* Run `./sqlload.sh` to load the database up. 
+* Run `python manage.py rebuild_index` to build the xapian index for search.
 
 # Running the Development Server on a Remote Host
 
@@ -57,19 +77,14 @@ useful for debugging differences between your local and remote environments.
 
 # Setting up Apache + Django eQuilibrator
 
-eQuilibrator is intended to be run under Apache and mod_wsgi. Here is a brief description of how to set this up. First install Apache and ModWSGI. 
-
+* For running eQuilibrator on a web server that can be accessed safely from the internet.
 ```
-sudo apt-get install apache2 libapache2-mod-wsgi git
+sudo apt install apache2 libapache2-mod-wsgi links
 git clone https://github.com/eladnoor/equilibrator.git
 cd equilibrator
+chmod 666 gibbs.log
+sudo cp ~/equilibrator/apache2/default.conf /etc/apache2/sites-available/000-default.conf
+sudo a2enmod wsgi
+sudo apache2ctl restart
 ```
 
-* Create a mysql user for Django to use (if needed).
-* Create a mysql database for Django to use.
-* Put the appropriate database name, username and password in settings.py.
-* Edit sqlload.sh to use the correct username and database name. 
-* Run ./sqlload.sh to load the database up. 
-* Run `python manage.py rebuild_index` to build the xapian index for search.
-* Edit the Apache configuration, after apache/default.conf.
-* Restart Apache, which should give you access to eQuilibrator on port 80. 
