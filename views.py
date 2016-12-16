@@ -6,7 +6,7 @@ import os
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.http import Http404
 from django.template.context_processors import csrf
 from settings import MEDIA_ROOT
@@ -23,39 +23,38 @@ NO_STRUCTURE_THUMBNAIL = '/'.join([MEDIA_ROOT, 'images',
 
 def MainPage(request):
     """Renders the landing page."""
-    return render_to_response('main.html', {})
+    return render(request, 'main.html', {})
 
 
 def AboutPage(request):
     """Renders the about page."""
-    return render_to_response('about.html', {})
+    return render(request, 'about.html', {})
 
 
 def FAQPage(request):
     """Renders the FAQ page."""
-    return render_to_response('faq.html', {})
+    return render(request, 'faq.html', {})
 
 
 def WhatsNewPage(request):
     """Renders the FAQ page."""
-    return render_to_response('new_in_2_0.html', {})
+    return render(request, 'new_in_2_0.html', {})
 
 
 def CitePage(request):
     """Renders the FAQ page."""
-    return render_to_response('cite.html', {})
+    return render(request, 'cite.html', {})
 
 
 def ClassicReactions(request):
     """Renders the classic reactions page."""
-    return render_to_response('classic_reactions.html', {})
+    return render(request, 'classic_reactions.html', {})
 
 
 def DownloadPage(request):
     """Renders the download page."""
     ph_values = map(lambda x: '%.1f' % x, constants.PH_RANGE_VALUES)
-    return render_to_response('download.html', {'ph_values': ph_values},
-                              context_instance=RequestContext(request))
+    return render(request, 'download.html', {'ph_values': ph_values})
 
 
 def RefsPage(request):
@@ -64,12 +63,12 @@ def RefsPage(request):
     sources = ValueSource.objects.all()
     sorted_sources = sorted(sources, key=lambda s: s.citation)
     template_data = {"sources": sorted_sources}
-    return render_to_response('data_refs.html', template_data)
+    return render(request, 'data_refs.html', template_data)
 
 
 def Robots(request):
     """Renders robots.txt."""
-    return render_to_response('robots.txt', {})
+    return render(request, 'robots.txt', {})
 
 
 @csrf_exempt
@@ -119,7 +118,7 @@ def CompoundPage(request):
     template_data.update({'compound': compound,
                           'alberty_link': compound.GetNewPriorityLink(99),
                           'cc_link': compound.GetNewPriorityLink(1)})
-    response = render_to_response('compound_page.html', template_data)
+    response = render(request, 'compound_page.html', template_data)
     rxn.aq_params.SetCookies(response)
     return response
 
@@ -136,7 +135,7 @@ def EnzymePage(request):
     enz = Enzyme.objects.get(ec=form.cleaned_ec)
     template_data = {'is_superuser': django_utils.IsSuperUser(request),
                      'enzyme': enz}
-    return render_to_response('enzyme_page.html', template_data)
+    return render(request, 'enzyme_page.html', template_data)
 
 _REACTION_TEMPLATES_BY_SUBMIT = {'': 'reaction_page.html',
                                  'Update': 'reaction_page.html',
@@ -166,7 +165,7 @@ def ReactionPage(request):
                       form.cleaned_submit)
         raise Http404
     template_name = _REACTION_TEMPLATES_BY_SUBMIT[form.cleaned_submit]
-    response = render_to_response(template_name, rxn.GetTemplateData(query))
+    response = render(request, template_name, rxn.GetTemplateData(query))
     rxn.aq_params.SetCookies(response)
     return response
 
@@ -195,7 +194,7 @@ def ReactionGraph(request):
                      'reaction': rxn,
                      'query': rxn.GetQueryString()}
     template_data.update(rxn.aq_params.GetTemplateData())
-    return render_to_response('reaction_graph.html', template_data)
+    return render(request, 'reaction_graph.html', template_data)
 
 
 def ResultsPage(request):
@@ -210,7 +209,7 @@ def ResultsPage(request):
     query = form.cleaned_query
     logging.debug('Query: "%s"', query)
     if not query.strip():
-        response = render_to_response('main.html', {})
+        response = render(request, 'main.html', {})
         return response
     # Check if we should parse and process the input as a reaction.
     if query_parser.IsReactionQuery(query):
@@ -218,19 +217,18 @@ def ResultsPage(request):
         try:
             parsed_reaction = query_parser.ParseReactionQuery(query)
         except Exception:
-            return render_to_response('parse_error_page.html')
+            return render(request, 'parse_error_page.html')
 
         reaction_matches = reaction_matcher.MatchReaction(parsed_reaction)
         best_reaction = reaction_matches.GetBestMatch()
         if not best_reaction:
-            return render_to_response('search_error_page.html',
-                                      {'query': query})
+            return render(request, 'search_error_page.html', {'query': query})
 
         logging.debug('Generating a reaction from the matched KEGG IDs')
         aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES)
         rxn = reaction.Reaction.FromIds(best_reaction, aq_params)
-        response = render_to_response('reaction_page.html',
-                                      rxn.GetTemplateData(query))
+        response = render(request, 'reaction_page.html',
+                          rxn.GetTemplateData(query))
         return response
 
     else:
@@ -243,7 +241,7 @@ def ResultsPage(request):
         template_data['enzyme_results'] = [m for m in results if m.IsEnzyme()]
         template_data['enzymes_first'] = results and results[0].IsEnzyme()
         template_data['query'] = query
-        response = render_to_response('search_results.html', template_data)
+        response = render(request, 'search_results.html', template_data)
         return response
 
     raise Http404
@@ -272,7 +270,7 @@ def DefinePathwayPage(request):
     """Renders the landing page."""
     template_params = csrf(request)
     template_params['constants'] = constants
-    return render_to_response('define_pathway_page.html', template_params)
+    return render(request, 'define_pathway_page.html', template_params)
 
 
 def PathwayResultPage(request):
@@ -302,7 +300,7 @@ def PathwayResultPage(request):
     except Exception as e:
         logging.error(e)
         return HttpResponseBadRequest(e.message)
-    return render_to_response('pathway_result_page.html', template_data)
+    return render(request, 'pathway_result_page.html', template_data)
 
 
 def BuildPathwayModel(request):

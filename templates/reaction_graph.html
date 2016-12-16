@@ -1,25 +1,26 @@
+{% load static %}
 <html>
     <head>
         <title>Graph</title>
-        <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-        <link href="/media/main.css" rel="stylesheet" type="text/css">
-        <link href="/media/style.css" rel="stylesheet" type="text/css">
-        <link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="/media/jquery-1.11.3.min.js"></script>
-		<script type="text/javascript" src="/media/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="/media/jquery.autocomplete.min.js"></script>
+        <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+        <link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
+        <link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
+        <link href="{% static "jquery-ui-1.8.5.custom.css" %}" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="{% static "jquery-1.11.3.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "jquery-ui.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "jquery.autocomplete.min.js" %}"></script>
         
         <!-- Tangle and TangleKit -->
-        <link rel="stylesheet" href="media/Tangle/TangleKit/TangleKit.css" type="text/css"> 
-        <script type="text/javascript" src="media/Tangle/Tangle.js"></script>
-        <script type="text/javascript" src="media/Tangle/TangleKit/mootools.js"></script> 
-        <script type="text/javascript" src="media/Tangle/TangleKit/sprintf.js"></script> 
-        <script type="text/javascript" src="media/Tangle/TangleKit/BVTouchable.js"></script> 
-        <script type="text/javascript" src="media/Tangle/TangleKit/TangleKit.js"></script>
+        <link rel="stylesheet" href="{% static "Tangle/TangleKit/TangleKit.css" %}" type="text/css"> 
+        <script type="text/javascript" src="{% static "Tangle/Tangle.js" %}"></script>
+        <script type="text/javascript" src="{% static "Tangle/TangleKit/mootools.js" %}"></script> 
+        <script type="text/javascript" src="{% static "Tangle/TangleKit/sprintf.js" %}"></script> 
+        <script type="text/javascript" src="{% static "Tangle/TangleKit/BVTouchable.js" %}"></script> 
+        <script type="text/javascript" src="{% static "Tangle/TangleKit/TangleKit.js" %}"></script>
          
         <!-- flot plotting -->
         <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="flot/excanvas.min.js"></script><![endif]-->
-        <script language="javascript" type="text/javascript" src="media/flot/jquery.flot.js"></script>
+        <script language="javascript" type="text/javascript" src="{% static "flot/jquery.flot.js" %}"></script>
 
     <script type="text/javascript">
 

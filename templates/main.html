@@ -1,15 +1,16 @@
+{% load static %}
 <html>
 	<head>
 		<title>eQuilibrator: The Biochemical Thermodynamics Calculator</title>
-		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-		<link href="/media/main.css" rel="stylesheet" type="text/css">
-		<link href="/media/style.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="/media/jquery-1.11.3.min.js"></script>
-		<script type="text/javascript" src="/media/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="/media/jquery.autocomplete.min.js"></script>
-		<script type="text/javascript" src="/media/main.js"></script>
+		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui.theme.min.css" %}" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="{% static "jquery-1.11.3.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "jquery-ui.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "jquery.autocomplete.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "main.js" %}"></script>
 	    {% include "analytics.html" %}
 	</head>
 	<body>

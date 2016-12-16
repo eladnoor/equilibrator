@@ -1,11 +1,12 @@
+{% load static %}
 <html>
-    <head>
-        <title>eQuilibrator for Metabolic Pathways</title>
-        <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-        <link href="/media/main.css" rel="stylesheet" type="text/css">
-        <link href="/media/style.css" rel="stylesheet" type="text/css">
-        <link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
-        <link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+	<head>
+		<title>eQuilibrator for Metabolic Pathways</title>
+		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui.theme.min.css" %}" rel="stylesheet" type="text/css">
         {% include "analytics.html" %}
     </head>
     <body>

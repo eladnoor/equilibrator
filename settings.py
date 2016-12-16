@@ -79,6 +79,7 @@ ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # for serving static files
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, "static")]
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'b88!&88r-69=r*%q8cgnj&9dfm!^1u!ij3+jnkoebh4vrm41we'
@@ -89,7 +90,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
 )
 
 ROOT_URLCONF = 'equilibrator.urls'
@@ -123,7 +123,6 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django_extensions',
     'gibbs',
-    'debug_toolbar',
 )
 
 # Haystack related settings - for search/autocomplete.
