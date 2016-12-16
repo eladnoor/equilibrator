@@ -3,7 +3,6 @@ from xapian_backend import XapianEngine, XapianSearchBackend
 from xapian_backend import NGRAM_MIN_LENGTH, NGRAM_MAX_LENGTH
 
 
-
 class CustomXapianBackend(XapianSearchBackend):
 
     SETTINGS = {'min_ngram_length': NGRAM_MIN_LENGTH,
@@ -18,12 +17,11 @@ class CustomXapianBackend(XapianSearchBackend):
 
         self.min_ngram_length = self.SETTINGS['min_ngram_length']
         self.max_ngram_length = self.SETTINGS['max_ngram_length']
-        
 
     def _get_ngram_lengths(value):
-        """Use the configurable n-gram length parameters.
-        
-        Allows for some minor memory savings.
+        """
+            Use the configurable n-gram length parameters.
+            Allows for some minor memory savings.
         """
         min_l = self.min_ngram_length
         max_l = self.max_ngram_length + 1
@@ -31,8 +29,7 @@ class CustomXapianBackend(XapianSearchBackend):
         for item in values:
             for ngram_length in six.moves.range(min_l, max_l):
                 yield item, ngram_length
-                
+
 
 class CustomXapianEngine(XapianEngine):
     backend = CustomXapianBackend
-    

@@ -3,9 +3,11 @@ from haystack import indexes
 
 
 class CommonNameIndex(indexes.SearchIndex, indexes.Indexable):
-    """Index for searching CommonNames."""
+    """
+        Index for searching CommonNames.
+    """
     text = indexes.CharField(document=True, use_template=True)
-    
+
     # We add this for autocomplete.
     name_auto = indexes.NgramField(model_attr='name')
 

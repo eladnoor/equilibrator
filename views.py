@@ -3,22 +3,23 @@ import logging
 import json
 import io
 import os
-from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import Http404
 from django.template.context_processors import csrf
-from settings import MEDIA_ROOT
+from django.apps import apps
+from settings import STATIC_URL
 from gibbs import reaction, conditions, constants, service_config, \
                   pathway_result_page
 from gibbs.forms import CompoundForm, EnzymeForm, ReactionForm, \
                         ReactionGraphForm, SearchForm, SuggestForm, \
                         AnalyzePathwayModelForm, BuildPathwayModelForm
 from pathways import ParsedPathway, PathwayParseError
+import util.django_utils
 
-NO_STRUCTURE_THUMBNAIL = '/'.join([MEDIA_ROOT, 'images',
-                                   'structure_not_available.png'])
+NO_STRUCTURE_THUMBNAIL = os.path.join([STATIC_URL, 'images',
+                                       'structure_not_available.png'])
 
 
 def MainPage(request):
@@ -59,8 +60,7 @@ def DownloadPage(request):
 
 def RefsPage(request):
     """Renders the graph page."""
-    from gibbs.models import ValueSource
-    sources = ValueSource.objects.all()
+    sources = apps.get_model('gibbs.ValueSource').objects.all()
     sorted_sources = sorted(sources, key=lambda s: s.citation)
     template_data = {"sources": sorted_sources}
     return render(request, 'data_refs.html', template_data)
@@ -73,12 +73,12 @@ def Robots(request):
 
 @csrf_exempt
 def CompoundImage(request):
-    from gibbs.models import Compound
     data = request.GET
     compound_id = data.get('compoundId', None)
     if compound_id is None:
         return HttpResponseBadRequest('No request data.')
-    compounds = Compound.objects.filter(kegg_id=compound_id)
+    compounds = apps.get_model('gibbs.Compound').objects.filter(
+        kegg_id=compound_id)
     if not compounds:
         return HttpResponseBadRequest('No such compound.')
     compound = compounds[0]
@@ -97,13 +97,11 @@ def CompoundPage(request):
         raise Http404
     aq_params = conditions.AqueousParams.FromForm(form, request.COOKIES)
     rxn = reaction.Reaction.FromForm(form, aq_params)
-
     if len(rxn.reactants) != 1:
         logging.error('There must be only 1 reactant in a "compound" page')
         raise Http404
 
     compound = rxn.reactants[0].compound
-
     logging.info('Submit = ' + form.cleaned_submit)
 
     if form.cleaned_submit == 'Reset':
@@ -125,15 +123,13 @@ def CompoundPage(request):
 
 def EnzymePage(request):
     """Renders a page for a particular enzyme."""
-    from gibbs.models import Enzyme
-    import django_utils
     form = EnzymeForm(request.GET)
     if not form.is_valid():
         logging.error(form.errors)
         raise Http404
 
-    enz = Enzyme.objects.get(ec=form.cleaned_ec)
-    template_data = {'is_superuser': django_utils.IsSuperUser(request),
+    enz = apps.get_model('gibbs.Enzyme').objects.get(ec=form.cleaned_ec)
+    template_data = {'is_superuser': util.django_utils.IsSuperUser(request),
                      'enzyme': enz}
     return render(request, 'enzyme_page.html', template_data)
 

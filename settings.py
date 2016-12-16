@@ -30,9 +30,9 @@ DATABASES = {
         #'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
         # Or path to database file if using sqlite3.
-        'NAME': 'djtest',
+        'NAME': 'milolab_eqbtr',
         # Not used with sqlite3.
-        'USER': 'djangouser',
+        'USER': 'milolab_eqbtr',
         # Not used with sqlite3.
         'PASSWORD': 'password',
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -129,7 +129,7 @@ INSTALLED_APPS = (
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'gibbs.haystack_backends.CustomXapianEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
+        'PATH': os.path.join(PROJECT_ROOT, 'xapian_index'),
     },
 }
 
@@ -157,7 +157,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(os.path.dirname(__file__), 'gibbs.log'),
+            'filename': os.path.join(PROJECT_ROOT, 'gibbs.log'),
             'formatter': 'verbose'
         },
         'console': {
