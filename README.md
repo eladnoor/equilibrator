@@ -12,10 +12,11 @@ only for Ubuntu users.
 
 # Dependencies
 - Django 1.7.10
-- Django debug toolbag 1.0.1
 - Django extensions 1.5.7
+- Django profiler 2.0.0
 - Django haystack 2.4.0
-- Xapian 1.2.18 (indexing for search)
+- Xapian 1.2.23 (indexing for search)
+- Xapain haystack 2.0.0
 - MySql 5.7.16
 - PyParsing 2.1.8
 - NLTK 2.0.4
@@ -25,29 +26,20 @@ only for Ubuntu users.
 - Pulp & GLPK (optimization)
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
 
-# Installing binary dependencies on Ubuntu
+# Install binary dependencies on Ubuntu
 ```
 sudo apt install mysql-server libmysqlclient-dev
 sudo apt install python-pip python-dev
 sudo apt install python-numpy python-scipy python-matplotlib python-pandas
-sudo apt install glpk-utils python-glpk uuid-dev
+sudo apt install glpk-utils python-glpk uuid-dev zlib1g-dev g++
+sudo apt install python-xapian libxapian-dev
 ```
 
-Follow this gist to install xapian-core-1.2.18 and xapian-bindings-1.2.18 
-https://gist.github.com/areski/0919d3b0874fd49ec172
-
-# Remaining Python Dependencies 
-Install version 2.0.0 of xapian-haystack from here: 
-https://github.com/notanumber/xapian-haystack
-```
-sudo pip install git+https://github.com/notanumber/xapian-haystack.git
-```
-
-Install other PyPI packages:
+# Install Python dependencies from PyPI
 ```
 sudo pip install django==1.7.10
-sudo pip install django-debug-toolbar==1.4
 sudo pip install django-extensions==1.5.7
+sudo pip install xapian-haystack==2.0.0
 sudo pip install django-haystack==2.4.0
 sudo pip install seaborn nltk pulp pyparsing MySQL-python tablib
 ```
