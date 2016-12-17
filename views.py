@@ -59,7 +59,7 @@ def DownloadPage(request):
 
 
 def RefsPage(request):
-    """Renders the graph page."""
+    """Renders a list of relevant literature."""
     sources = apps.get_model('gibbs.ValueSource').objects.all()
     sorted_sources = sorted(sources, key=lambda s: s.citation)
     template_data = {"sources": sorted_sources}
