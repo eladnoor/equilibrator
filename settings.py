@@ -100,6 +100,9 @@ TEMPLATES = [
         'DIRS': [os.path.join(PROJECT_ROOT, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
+            # the 'string_if_invalid' should not be left uncommented
+            # except when debugging a spcific template issue
+            'string_if_invalid': 'INVALID %s',
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
