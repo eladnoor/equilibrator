@@ -8,7 +8,7 @@ try:
     _indigo = Indigo()
     _renderer = IndigoRenderer(_indigo)
     _indigo_inchi = IndigoInchi(_indigo)
-    
+
     def InChI2Thumbnail(inchi, output_format='png'):
         _indigo.setOption('render-output-format', output_format)
         _indigo.setOption('render-image-size', 250, 200)
@@ -23,7 +23,7 @@ try:
             indigo_mol = _indigo_inchi.loadMolecule(inchi)
             indigo_mol.aromatize()
             indigo_mol.layout()
-            
+
             buf = _renderer.renderToBuffer(indigo_mol)
             return buf.tostring()
         except IndigoException as e:
@@ -31,7 +31,7 @@ try:
             return None
 
 except ImportError:
-    
+
     def InChI2Thumbnail(inchi, output_format='png'):
         logging.error('Indigo is not installed, cannot draw structures.')
         return None
@@ -43,4 +43,3 @@ if __name__ == '__main__':
         fp = open('temp.html', 'w')
         fp.write(thumb)
         fp.close()
-    

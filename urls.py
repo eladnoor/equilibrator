@@ -1,37 +1,32 @@
-import views
-from django.conf import settings
+import views.compound
+import views.reaction
+import views.views
 from django.conf.urls import include, url
-from django.conf.urls.static import static
 from django.contrib import admin
+from django.views.generic import TemplateView
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', views.MainPage),
-    url(r'^about', views.AboutPage),
-    url(r'^faq', views.FAQPage),
-    url(r'^whats_new', views.WhatsNewPage),
-    url(r'^cite', views.CitePage),
-    url(r'^classic_reactions', views.ClassicReactions),
-    url(r'^compound_image', views.CompoundImage),
-    url(r'^compound', views.CompoundPage),
-    url(r'^download', views.DownloadPage),
-    url(r'^enzyme', views.EnzymePage),
-    url(r'^reaction', views.ReactionPage),
-    url(r'^graph_reaction', views.ReactionGraph),
-    url(r'^data_refs', views.RefsPage),
-    url(r'^search', views.ResultsPage),
-    url(r'^suggest', views.SuggestJson),
-    url(r'^pathway$', views.DefinePathwayPage),
-    url(r'^pathway/build_model', views.BuildPathwayModel),
-    url(r'^pathway/results', views.PathwayResultPage),
-    url(r'^robots\.txt', views.Robots),
-    # Example:
-    # (r'^equilibrator/', include('equilibrator.foo.urls')),
-
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs'
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
+    url(r'^$', TemplateView.as_view(template_name='main.html')),
+    url(r'^about', TemplateView.as_view(template_name='about.html')),
+    url(r'^faq', TemplateView.as_view(template_name='faq.html')),
+    url(r'^whats_new', TemplateView.as_view(template_name='new_in_2.0.html')),
+    url(r'^cite', TemplateView.as_view(template_name='cite.html')),
+    url(r'^classic_reactions',
+        TemplateView.as_view(template_name='classic_reactions.html')),
+    url(r'^compound_image', views.compound.CompoundImage),
+    url(r'^compound', views.compound.CompoundPage),
+    url(r'^download', views.views.DownloadPage),
+    url(r'^enzyme', views.views.EnzymePage),
+    url(r'^reaction', views.reaction.ReactionPage),
+    url(r'^graph_reaction', views.reaction.ReactionGraph),
+    url(r'^data_refs', views.views.RefsPage),
+    url(r'^search', views.views.ResultsPage),
+    url(r'^suggest', views.views.SuggestJson),
+    url(r'^pathway$', views.views.DefinePathwayPage),
+    url(r'^pathway/build_model', views.views.BuildPathwayModel),
+    url(r'^pathway/results', views.views.PathwayResultPage),
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 ]

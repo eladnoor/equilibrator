@@ -10,9 +10,9 @@ import base64
 from django.http import Http404
 from django.db import models
 from django.utils.text import slugify
-from gibbs import constants
-from gibbs import formula_parser
-from gibbs import conditions
+from .. import constants
+from .. import formula_parser
+from .. import conditions
 from util.thumbnail import InChI2Thumbnail
 
 

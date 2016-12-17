@@ -5,12 +5,15 @@ import numpy as np
 import urllib
 import os
 from scipy.sparse import csr_matrix
-from gibbs import conditions, constants, models
+from django.db import models
+from django.apps import apps
+from .. import conditions
+from .. import constants
 
 
 class Preprocessing(object):
     relpath = os.path.dirname(os.path.realpath(__file__))
-    cc_preprocess_fname = os.path.join(relpath, '../data/cc_preprocess.npz')
+    cc_preprocess_fname = os.path.join(relpath, '../../data/cc_preprocess.npz')
     cc_preprocess = np.load(cc_preprocess_fname)
 
     C1 = np.matrix(cc_preprocess['C1'])
@@ -131,7 +134,7 @@ class ReactantFormulaMissingError(Exception):
                 " %s does not have a chemical formula" % self.compound.kegg_id)
 
 
-class CompoundWithCoeff(object):
+class CompoundWithCoeff(models.Model):
     """A compound with a stoichiometric coefficient."""
 
     def __init__(self, coeff, compound, phase, name=None):
@@ -177,7 +180,7 @@ class CompoundWithCoeff(object):
             compound = d['compound']
         else:
             try:
-                compound = models.Compound.objects.get(kegg_id=kegg_id)
+                compound = apps.get_model('gibbs.Compound').objects.get(kegg_id=kegg_id)
             except Exception:
                 return None
 
@@ -330,7 +333,7 @@ class CompoundWithCoeff(object):
     kegg_id = property(GetKeggID)
 
 
-class Reaction(object):
+class Reaction(models.Model):
     """A reaction."""
 
     def __init__(self, reactants=None, aq_params=None):
@@ -595,7 +598,7 @@ class Reaction(object):
             A properly set-up Reaction object or None if there's an error.
         """
         kegg_ids = [d['kegg_id'] for d in compound_list]
-        comps = models.Compound.objects.prefetch_related(
+        comps = apps.get_model('gibbs.Compound').objects.prefetch_related(
             'species_groups', 'species_groups__species',
             'common_names').filter(kegg_id__in=kegg_ids)
         kegg_id_to_compound = {c.kegg_id: c for c in comps}

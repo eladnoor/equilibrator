@@ -1,8 +1,6 @@
 import csv
 import logging
 import numpy as np
-import pulp
-import re
 import seaborn
 import StringIO
 
@@ -10,14 +8,13 @@ from django.utils.text import slugify
 from gibbs import constants
 from gibbs import service_config
 from gibbs.conditions import AqueousParams
-from gibbs.reaction import Reaction, CompoundWithCoeff
+from django.apps import apps
 from matplotlib import pyplot as plt
 from scipy import linalg
 from os import path
 from pathways.bounds import Bounds
 from pathways.concs import ConcentrationConverter
 from pathways.thermo_models import PathwayThermoModel
-from util.SBtab import SBtab
 
 
 RELPATH = path.dirname(path.realpath(__file__))
@@ -45,14 +42,14 @@ class ViolatesFirstLaw(PathwayParseError):
 
 class ParsedPathway(object):
     """A pathway parsed from user input.
-    
+
     Designed for checking input prior to converting to a stoichiometric model.
     """
 
     def __init__(self, reactions, fluxes, dG0_r_primes,
                  bounds=None, aq_params=None):
         """Initialize.
-        
+
         Args:
             reactions: a list of gibbs.reaction.Reaction objects.
             fluxes: np.array of relative fluxes in same order as reactions.
@@ -60,15 +57,15 @@ class ParsedPathway(object):
             bounds: bounds on metabolite concentrations.
                 Uses default bounds if None provided.
             aq_params: specify the pH, ionic strength, etc. at which the
-                dG values are calculated. May be omitted. 
+                dG values are calculated. May be omitted.
         """
         assert len(reactions) == len(fluxes)
         assert len(reactions) == len(dG0_r_primes)
-        
+
         self.reactions = reactions
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
         self.aq_params = aq_params
-        
+
         self.fluxes = np.array(fluxes)
         self.dG0_r_prime = np.array(dG0_r_primes)
 
@@ -103,9 +100,9 @@ class ParsedPathway(object):
         for coeff, kid in zip(net_rxn_stoich, self.compound_kegg_ids):
             if coeff != 0:
                 net_rxn_data.append(self._reactant_dict(coeff, kid))
-        self.net_reaction = Reaction.FromIds(net_rxn_data, fetch_db_names=True)
+        self.net_reaction = apps.get_model('gibbs.reaction').FromIds(net_rxn_data, fetch_db_names=True)
         self._model = self.pathway_model
-            
+
     @staticmethod
     def _reactant_dict(coeff, kid, negate=False):
         """Returns dictionary format expected by Reaction.FromIds."""
@@ -122,9 +119,9 @@ class ParsedPathway(object):
     def from_csv_file(cls, f,
                       bounds=None, aq_params=None):
         """Returns a pathway parsed from an input file.
-        
+
         Caller responsible for closing f.
-        
+
         Args:
             f: file-like object containing CSV data describing the pathway.
         """
@@ -134,7 +131,7 @@ class ParsedPathway(object):
 
         reactions = []
         fluxes = []
-    
+
         for row in csv.DictReader(f):
             rxn_formula = row.get('ReactionFormula')
             if not rxn_formula:
@@ -151,7 +148,7 @@ class ParsedPathway(object):
 
             matches = rxn_matcher.MatchReaction(parsed)
             best_match = matches.GetBestMatch()
-            rxn = Reaction.FromIds(best_match, fetch_db_names=True)
+            rxn = apps.get_model('gibbs.reaction').FromIds(best_match, fetch_db_names=True)
 
             # TODO raise errors in this case.
             if not rxn.IsBalanced():
@@ -180,7 +177,7 @@ class ParsedPathway(object):
 
     def _build_stoichiometric_matrix(self):
         """Builds a stoichiometric matrix.
-        
+
         Returns:
             Two tuple (S, compounds) where compounds is the KEGG IDs of the compounds
             in the order defining the column order of the stoichiometric matrix S.
@@ -193,7 +190,7 @@ class ParsedPathway(object):
             for kegg_id in s:
                 compounds.append(kegg_id)
         compounds = sorted(set(compounds))
-        
+
         # reactions on the rows, compounds on the columns
         n_reactions = len(self.reactions)
         n_compounds = len(compounds)
@@ -202,20 +199,20 @@ class ParsedPathway(object):
             for j, c in enumerate(compounds):
                 smat[i, j] = s.get(c, 0)
         return smat, compounds
-    
+
     @property
     def reactions_balanced(self):
         """Returns true if all pathway reactions are electron and atom-wise balanced."""
         atom_balaned = [r.IsBalanced() for r in self.reactions]
         electron_balaned = [r.IsElectronBalanced() for r in self.reactions]
-        
+
         balanced = np.logical_and(atom_balaned, electron_balaned)
         return np.all(balanced)
-    
+
     @property
     def reactions_have_dG(self):
         return np.all([dG is not None for dG in self.dG0_r_prime])
-    
+
     @property
     def pathway_model(self):
         dGs = np.matrix(self.dG0_r_prime).T
@@ -263,7 +260,7 @@ class ParsedPathway(object):
             for coeff, name in parsed_rxn.products:
                 cid = name_to_cid[name]
                 rxn_ds.append(self._reactant_dict(coeff, cid, negate=False))
-            rxn = Reaction.FromIds(rxn_ds, fetch_db_names=True)
+            rxn = apps.get_model('gibbs.reaction').FromIds(rxn_ds, fetch_db_names=True)
 
             if not rxn.IsBalanced():
                 raise UnbalancedReaction(
@@ -568,7 +565,7 @@ class PathwayMDFData(object):
                  label='MDF-optimized concentrations')
         plt.xticks(xs, family='sans-serif')
         plt.yticks(family='sans-serif')
-        
+
         # TODO: Consider using reaction IDs from the file as xticks?
         plt.xlabel('After Reaction Step', family='sans-serif')
         plt.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)", family='sans-serif')
