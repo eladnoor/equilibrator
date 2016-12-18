@@ -434,21 +434,23 @@ class Reaction(models.Model):
             sparse[r.kegg_id] = r.coeff
         return sparse
 
+    @staticmethod
+    def _GetStoredHashString(s):
+        return apps.get_model('gibbs.StoredReaction').HashableReactionString(s)
+
     def GetHashableReactionString(self):
-        return models.StoredReaction.HashableReactionString(
-            self.GetSparseRepresentation())
+        return Reaction._GetStoredHashString(self.GetSparseRepresentation())
 
     def GetHash(self):
-        return models.StoredReaction.HashReaction(
-            self.GetSparseRepresentation())
+        return Reaction._GetStoredHashString(self.GetSparseRepresentation())
 
     def GetSpecialReactionWarning(self):
         my_hash = self.GetHashableReactionString()
 
         atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
         co2_sparse = {'C00011': -1, 'C00001': -1, 'C01353': 1}
-        atp_hash = models.StoredReaction.HashableReactionString(atp_sparse)
-        co2_hash = models.StoredReaction.HashableReactionString(co2_sparse)
+        atp_hash = Reaction._GetStoredHashString(atp_sparse)
+        co2_hash = Reaction._GetStoredHashString(co2_sparse)
 
         if my_hash == atp_hash:
             return """The &Delta;G' of ATP hydrolysis is highly affected
@@ -490,7 +492,7 @@ class Reaction(models.Model):
         my_string = self.GetHashableReactionString()
 
         matching_stored_reactions = \
-            models.StoredReaction.objects.select_related().filter(
+            apps.get_model('gibbs.StoredReaction').objects.select_related().filter(
                 reaction_hash=my_hash)
         logging.debug('my hash = %s (%d matches)' %
                       (my_hash, len(matching_stored_reactions)))
