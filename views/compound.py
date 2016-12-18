@@ -45,6 +45,8 @@ def CompoundPage(request):
         raise Http404
 
     compound = rxn.reactants[0].compound
+    logging.info('compoundID = ' + form.cleaned_compoundId)
+    logging.info('rxn = ' + rxn.GetQueryString())
     logging.info('Submit = ' + form.cleaned_submit)
 
     if form.cleaned_submit == 'Reset':
@@ -56,7 +58,8 @@ def CompoundPage(request):
 
     query = compound.FirstName()
     template_data = rxn.GetTemplateData(query)
-    template_data.update({'compound': compound,
+    template_data.update({'reaction': rxn,
+                          'compound': compound,
                           'alberty_link': compound.GetNewPriorityLink(99),
                           'cc_link': compound.GetNewPriorityLink(1)})
     response = render(request, 'compound_page.html', template_data)

@@ -265,11 +265,10 @@ class SpeciesGroup(models.Model):
                             (self.kegg_id, phase, self.priority))
             return None
 
-        def transform(x): x.Transform(aq_params)
         logging.debug('Calculating dG0\' for %s' % (self.kegg_id))
         if phase == constants.DEFAULT_PHASE:
             # Compute per-species transforms, scaled down by R*T.
-            scaled_transforms = [(-transform(s) / constants.RT)
+            scaled_transforms = [(-s.Transform(aq_params) / constants.RT)
                                  for s in species]
 
             # Numerical issues: taking a sum of exp(v) for |v| quite large.
@@ -287,7 +286,7 @@ class SpeciesGroup(models.Model):
                 # compounds which are not in solution do not need to be
                 # transformed since they have only one specie and there is no
                 # equilibrium between pseudoisomers in that phase
-                dg0_prime = transform(species[0])
+                dg0_prime = species[0].Transform(aq_params)
 
         logging.debug('total: dG0\' = %.1f' % dg0_prime)
         return dg0_prime

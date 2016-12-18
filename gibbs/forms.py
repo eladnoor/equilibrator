@@ -143,7 +143,8 @@ class CompoundForm(BaseReactionForm):
     cleaned_reactantsId = property(lambda self: [self.cleaned_compoundId])
     cleaned_reactantsCoeff = property(lambda self: [1])
     cleaned_reactantsName = property(lambda self: [None])
-    cleaned_submit = property(lambda self: self._GetWithDefault('submit', 'Update'))
+    cleaned_submit = property(lambda self:
+        self._GetWithDefault('submit', 'Update'))
     
 
 class BuildPathwayModelForm(forms.Form):

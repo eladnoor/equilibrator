@@ -1218,6 +1218,7 @@ class Reaction(models.Model):
             The DeltaG0' for this reaction, or None if data was missing.
         """
         if self._dg0_prime is not None:
+            logging.debug("Using cached dG0'")
             return self._dg0_prime
 
         logging.debug('Aqueous Params = ' + str(self.aq_params))
