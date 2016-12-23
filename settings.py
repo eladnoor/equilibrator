@@ -131,10 +131,11 @@ INSTALLED_APPS = (
 # Haystack related settings - for search/autocomplete.
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'gibbs.haystack_backends.CustomXapianEngine',
-        'PATH': os.path.join(PROJECT_ROOT, 'xapian_index'),
-    },
+                'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+                'PATH': os.path.join(PROJECT_ROOT, 'whoosh_index'),
+                },
 }
+
 
 # Custom Xapian settings
 XAPIAN_SETTINGS = {
