@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import hashlib
 import logging
 import numpy as np
 import urllib
 import os
+import json
 from scipy.sparse import csr_matrix
 from django.db import models
 from django.apps import apps
 from .. import conditions
 from .. import constants
+from compound import CommonName, CompoundWithCoeff
 
 
 class Preprocessing(object):
@@ -132,205 +135,6 @@ class ReactantFormulaMissingError(Exception):
     def __str__(self):
         return ("Cannot test reaction balancing because the reactant"
                 " %s does not have a chemical formula" % self.compound.kegg_id)
-
-
-class CompoundWithCoeff(models.Model):
-    """A compound with a stoichiometric coefficient."""
-
-    def __init__(self, coeff, compound, phase, name=None):
-        """Construct a CompoundWithCoeff object.
-
-        Args:
-            coeff: the coefficient.
-            compound: the Compound object.
-            name: a string of the compound name.
-            concentration: the concentration (molar).
-        """
-        self.compound = compound
-        self.coeff = coeff
-        self.phase = phase
-        self._name = name
-
-    def Clone(self):
-        other = CompoundWithCoeff(self.coeff, self.compound,
-                                  self.phase, self.name)
-        return other
-
-    def AbsoluteCoefficient(self):
-        return np.abs(self.coeff)
-
-    @staticmethod
-    def FromReactant(reactant):
-        return CompoundWithCoeff(reactant.coeff, reactant.compound,
-                                 conditions.StandardAqueousPhase(),
-                                 name=reactant.compound.FirstName())
-
-    @staticmethod
-    def FromId(coeff, kegg_id, phase=None, name=None):
-        d = {'kegg_id': kegg_id, 'coeff': coeff, 'phase': phase}
-        if name is not None:
-            d['name'] = name
-        return CompoundWithCoeff.FromDict(d)
-
-    @staticmethod
-    def FromDict(d):
-        kegg_id = d['kegg_id']
-
-        if 'compound' in d:
-            compound = d['compound']
-        else:
-            try:
-                compound = apps.get_model('gibbs.Compound').objects.get(kegg_id=kegg_id)
-            except Exception:
-                return None
-
-        coeff = d.get('coeff', 1)
-        name = d.get('name', compound.FirstName())
-        phase_name = d.get('phase', None)
-        if phase_name is None:
-            phase_name = compound.GetDefaultPhaseName()
-        conc = d.get('conc', None)
-        phase = conditions._BaseConditions._GeneratePhase(phase_name, conc)
-
-        logging.debug('Compound = %s, name = %s, coeff = %d, %s' %
-                      (kegg_id, name, coeff, phase))
-        return CompoundWithCoeff(coeff, compound, phase, name)
-
-    def ResetConcentration(self):
-        if not self.phase.IsConstant():
-            self.phase.SetValue(None)
-
-    def Minus(self):
-        """Returns a new CompoundWithCoeff with coeff = -self.coeff."""
-        return CompoundWithCoeff(-self.coeff, self.compound, self.phase,
-                                 self.name)
-
-    def __str__(self):
-        name = self.name or str(self.compound)
-        return '%d %s' % (self.coeff, name)
-
-    def ToJson(self, include_species=True):
-        d = {'coeff': self.coeff,
-             'KEGG_ID': self.compound.kegg_id,
-             'phase': str(self.phase),
-             'name': str(self.compound.first_name),
-             'source_used': None}
-
-        if self.compound._species_group is not None:
-            d['source_used'] = \
-                str(self.compound._species_group.formation_energy_source)
-
-        if include_species:
-            d['species'] = self.compound.SpeciesJson()
-
-        return d
-
-    def _GetUrlParams(self):
-        return ['reactantsId=%s' % self.kegg_id,
-                'reactantsCoeff=%g' % self.coeff,
-                'reactantsName=%s' % self.name,
-                'reactantsPhase=%s' % self.phase.PhaseName(),
-                'reactantsConcentration=%s' % self.phase.Value()]
-
-    def GetCompoundList(self):
-        sg = self.compound._species_group
-        species = sg.GetPhaseSpecies(self.phase.PhaseName())
-        logging.debug('KEGG ID = %s' % self.kegg_id)
-        logging.debug('# species in phase %s = %d' %
-                      (self.phase.PhaseName(), len(species)))
-
-        l = []
-        for s in species:
-            l.append({'nh': int(s.number_of_hydrogens),
-                      'charge': int(s.net_charge),
-                      'nmg': int(s.number_of_mgs),
-                      'dgzero': float(s.formation_energy)})
-        logging.debug('compound_list = %s' % str(l))
-        return l
-
-    def GetName(self):
-        """Gives a string name for this compound."""
-        if self.compound.preferred_name:
-            return self.compound.preferred_name
-        if self._name:
-            return self._name
-        return str(self.compound.FirstName())
-
-    def __eq__(self, other):
-        """
-            Check equality with another CompoundWithCoeff.
-
-            Args:
-                other: a second CompoundWithCoeff (or like object).
-        """
-        if self.coeff != other.coeff:
-            return False
-
-        if self.GetKeggID() != other.GetKeggID():
-            return False
-
-        if self.phase.Name() != other.phase.Name():
-            return False
-
-        return True
-
-    def DeltaG0Prime(self, aq_params):
-        dg0_prime = self.compound.DeltaG0Prime(aq_params,
-                                               self.phase.PhaseName())
-        if dg0_prime is None:
-            return None
-        return self.coeff * dg0_prime
-
-    def GetPhaseName(self):
-        return self.phase.PhaseName()
-
-    def GetPossiblePhaseNames(self):
-        return self.compound.GetPossiblePhaseNames()
-
-    def HasMultiplePhases(self):
-        return len(self.GetPossiblePhaseNames()) > 1
-
-    def GetPhaseSubscript(self):
-        # The compound C00288 represents the group of all carbonate species
-        # and CO2 and is called CO2(total). It is technically aqueous, but
-        # also contains a gas component, so the phase is not well defined
-        # and hence the (total) subscript. In this case, we don't need to
-        # add another subscript so we return an empty string
-        if self.name == 'CO2(total)':
-            return ''
-        return self.phase.Subscript()
-
-    def GetPhaseValueString(self):
-        return '%.8g' % self.phase.HumanValueAndUnits()[0]
-
-    def GetPhasePrefactor(self):
-        return self.phase.HumanValueAndUnits()[1]
-
-    def GetPhaseUnits(self):
-        return self.phase.HumanValueAndUnits()[2]
-
-    def GetPhaseIsConstant(self):
-        return self.phase.IsConstant()
-
-    def GetPhaseHumanString(self):
-        value, prefactor, units = self.phase.HumanValueAndUnits_letters()
-        return '%g %s' % (value, units)
-
-    def GetKeggID(self):
-        return self.compound.kegg_id
-
-    name = property(GetName)
-    abs_coeff = property(AbsoluteCoefficient)
-    subscript = property(GetPhaseSubscript)
-    phase_name = property(GetPhaseName)
-    human_string = property(GetPhaseHumanString)
-    phase_value_string = property(GetPhaseValueString)
-    phase_prefactor = property(GetPhasePrefactor)
-    phase_units = property(GetPhaseUnits)
-    is_constant = property(GetPhaseIsConstant)
-    possible_phases = property(GetPossiblePhaseNames)
-    has_multiple_phases = property(HasMultiplePhases)
-    kegg_id = property(GetKeggID)
 
 
 class Reaction(models.Model):
@@ -491,9 +295,9 @@ class Reaction(models.Model):
         my_hash = self.GetHash()
         my_string = self.GetHashableReactionString()
 
-        matching_stored_reactions = \
-            apps.get_model('gibbs.StoredReaction').objects.select_related().filter(
-                reaction_hash=my_hash)
+        matching_stored_reactions = apps.get_model(
+            'gibbs.StoredReaction').objects.select_related().filter(
+            reaction_hash=my_hash)
         logging.debug('my hash = %s (%d matches)' %
                       (my_hash, len(matching_stored_reactions)))
 
@@ -1441,3 +1245,196 @@ class Reaction(models.Model):
     is_phys_conc = property(IsPhysiologicalConcentration)
     source_references = property(GetSourceReferences)
     analyze_cc = property(GetComponentContributionAnalysis)
+
+
+class StoredReaction(models.Model):
+    """A reaction stored in the database."""
+    # The ID of this reaction in KEGG.
+    kegg_id = models.CharField(max_length=10, null=True)
+
+    # a JSON representation of reaction (i.e. the reactants and coefficients)
+    reactants = models.TextField(null=True)
+
+    # a hash string for fast lookup of enzyme names by reaction
+    reaction_hash = models.CharField(max_length=128, db_index=True)
+
+    # a cache for the ToString() function which takes too long due to DB comm
+    reaction_string = models.TextField(null=True)
+
+    # a cache for the Link() function which takes too long due to DB comm
+    link = models.TextField(null=True)
+
+    @staticmethod
+    def FromJson(rd):
+        return StoredReaction(kegg_id=rd['RID'],
+                              reactants=json.dumps(rd['reaction']))
+
+    def GetSparseRepresentation(self):
+        sparse = {}
+        for coeff, kegg_id in json.loads(self.reactants):
+            sparse[kegg_id] = coeff
+        if 'C00080' in sparse:  # ignore H+ in stored reactions
+            sparse.pop('C00080')
+        return sparse
+
+    @staticmethod
+    def _CompoundToString(kegg_id, coeff):
+        try:
+            compound = apps.get_model('gibbs.Compound').objects.get(
+                kegg_id=kegg_id)
+            name = compound.FirstName()
+        except Exception as e:
+            logging.warning('Cannot find the name for %s' % kegg_id)
+            logging.warning(str(e))
+            name = kegg_id
+
+        if coeff == 1:
+            return name
+        else:
+            return "%g %s" % (coeff, name)
+
+    def ToString(self):
+        """
+            String representation.
+        """
+        # TODO: need to replace the KEGG IDs with the common names of the
+        #       compounds
+        left = []
+        right = []
+        for coeff, kegg_id in json.loads(self.reactants):
+            if coeff < 0:
+                left.append(StoredReaction._CompoundToString(kegg_id, -coeff))
+            elif coeff > 0:
+                right.append(StoredReaction._CompoundToString(kegg_id, coeff))
+        return "%s = %s" % (' + '.join(left), ' + '.join(right))
+
+    @staticmethod
+    def HashableReactionString(sparse):
+        """Return a hashable string for a biochemical reaction.
+
+        The string fully identifies the biochemical reaction up to
+        directionality. If it is equal to another reaction's string,
+        then they have identical stoichiometry up to their directionality.
+
+        Args:
+            sparse: a dictionary whose keys are kegg_id and values are
+                    stoichiometric coefficients
+        """
+        if len(sparse) == 0:
+            return ''
+
+        # sort according to KEGG ID and normalize the stoichiometric
+        # coefficients such that the coeff of the reactant with the lowest
+        # ID will be 1
+        kegg_id_list = sorted(sparse.keys())
+        if sparse[kegg_id_list[0]] == 0:
+            raise Exception('One of the stoichiometric coefficients is 0')
+        norm_factor = 1.0 / sparse[kegg_id_list[0]]
+        return ' + '.join(['%g %s' % (norm_factor*sparse[kegg_id], kegg_id)
+                           for kegg_id in kegg_id_list])
+
+    @staticmethod
+    def HashReaction(sparse):
+        md5 = hashlib.md5()
+        md5.update(StoredReaction.HashableReactionString(sparse))
+        return md5.hexdigest()
+
+    @staticmethod
+    def GetAtpHydrolysisHash():
+        atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
+        return StoredReaction.HashableReactionString(atp_sparse)
+
+    @staticmethod
+    def GetCO2HydrationHash():
+        co2_sparse = {'C00011': -1, 'C00001': -1, 'C00288': 1}
+        return StoredReaction.HashableReactionString(co2_sparse)
+
+    def GetHashableReactionString(self):
+        return StoredReaction.HashableReactionString(
+            self.GetSparseRepresentation())
+
+    def GetHash(self):
+        return StoredReaction.HashReaction(self.GetSparseRepresentation())
+
+    def GenerateHash(self):
+        self.reaction_hash = self.GetHash()
+        self.reaction_string = self.ToString()
+        self.link = self.Link()
+
+    def __str__(self):
+        """String representation."""
+        return self.ToString()
+
+    def Link(self):
+        """
+            Returns a link to this reaction's page.
+        """
+        try:
+            rxn = self.ToReaction()
+            return rxn.GetHyperlink(self.ToString())
+        except AttributeError:
+            raise Exception('Cannot find one of the compounds in the database')
+
+    def ToReaction(self, priority=1, aq_params=None):
+        """
+            returns a list of CSV rows with the following columns:
+            kegg ID, dG0_prime, pH, ionic_strength, T, Note
+        """
+        reactants = [CompoundWithCoeff.FromId(coeff, kegg_id)
+                     for coeff, kegg_id in json.loads(self.reactants)]
+        rxn = Reaction(reactants)
+        return rxn
+
+
+class Enzyme(models.Model):
+    """A single enzyme."""
+    # EC class enzyme.
+    ec = models.CharField(max_length=10)
+
+    # A list of common names of the enzyme, used for searching.
+    common_names = models.ManyToManyField(CommonName)
+
+    # List of reactions this enzyme catalyzes.
+    reactions = models.ManyToManyField(StoredReaction)
+
+    def HasData(self):
+        """Checks if it has enough data to display."""
+        return self.ec and self.reactions.all()
+
+    def ToJson(self):
+        """Returns as a JSON-friendly object."""
+        return {'EC': self.ec,
+                'name': str(self.first_name)}
+
+    def Link(self):
+        """Returns a link to this reactions page."""
+        return '/enzyme?ec=%s' % self.ec
+
+    def KeggLink(self):
+        """Returns a link to the KEGG page for this enzyme."""
+        return 'http://kegg.jp/dbget-bin/www_bget?ec:%s' % self.ec
+
+    def BrendaLink(self):
+        """Returns a link to the BRENDA page for this enzyme."""
+        return 'http://www.brenda-enzymes.org/php/result_flat.php4?ecno=%s' \
+            % self.ec
+
+    def AllReactions(self):
+        """Returns all the reactions."""
+        return self.reactions.all()
+
+    def FirstName(self):
+        """The first name in the list of names."""
+        return self.all_common_names[0]
+
+    def __unicode__(self):
+        """Return a single string identifier of this enzyme."""
+        return unicode(self.FirstName())
+
+    all_common_names = property(lambda self: self.common_names.all())
+    all_cofactors = property(lambda self: self.cofactors.all())
+    first_name = property(FirstName)
+    all_reactions = property(AllReactions)
+    kegg_link = property(KeggLink)
+    brenda_link = property(BrendaLink)
+    link = property(Link)

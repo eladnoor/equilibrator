@@ -1,3 +1,3 @@
-from .reaction import Reaction, CompoundWithCoeff
+from .reaction import Reaction, StoredReaction, Enzyme
 from .compound import Compound, CommonName, ValueSource, Specie, SpeciesGroup, \
-                      Reactant, StoredReaction, Enzyme
+                      CompoundWithCoeff, Reactant
