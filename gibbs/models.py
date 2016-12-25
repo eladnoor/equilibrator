@@ -415,8 +415,12 @@ class Compound(models.Model):
         return names[0].name
 
     def NameSlug(self):
-        """Return a name with no whitespace or dashes."""
-        slug = slugify(unicode(self.name))
+        """Return a name with no whitespace or dashes.
+
+        Slug will also never begin with a number to avoid
+        confusing the reaction parser.
+        """
+        slug = 'C_%s' % slugify(unicode(self.name))
         return slug.replace('-', '_')
     
     def DeltaG0Prime(self, aq_params,

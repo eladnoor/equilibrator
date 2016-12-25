@@ -122,7 +122,6 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django_extensions',
     'gibbs',
-    'debug_toolbar',
 )
 
 # Haystack related settings - for search/autocomplete.
