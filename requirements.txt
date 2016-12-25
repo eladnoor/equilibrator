@@ -1,0 +1,17 @@
+django==1.10.4
+django-extensions==1.7.5
+django-haystack==2.5.1
+glpk==0.4.52
+matplotlib==1.5.3
+MySQL-python==1.2.5
+nltk==3.2.1
+numpy==1.11.3
+pulp==1.6.1
+pyparsing==2.1.10
+scipy==0.18.1
+pandas==0.19.1
+seaborn==0.7.1
+tablib==0.11.3
+whoosh==2.7.4
+xlrd==1.0.0
+
