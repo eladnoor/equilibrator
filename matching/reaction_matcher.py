@@ -1,7 +1,7 @@
 import logging, re
 
-from gibbs import models
 from gibbs import constants
+from django.apps import apps
 
 
 class ReactionCompoundMatch(object):
@@ -47,7 +47,7 @@ class ReactionMatches(object):
     def _FindFirstCompoundMatch(matches):
         """Finds the first match that has a Compound as a value."""
         for m in matches:
-            if isinstance(m.value, models.Compound):
+            if isinstance(m.value, apps.get_model('gibbs.Compound')):
                 return m
         return None
     
