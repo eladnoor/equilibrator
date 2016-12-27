@@ -1,12 +1,16 @@
 eQuilibrator
 ============
 
-eQuilibrator is a biochemical thermodynamics calculator website. The website enables calculation 
-of reaction and compound energies through an intuitive free-text interface. The current online
+eQuilibrator is a biochemical thermodynamics calculator website.
+The website enables calculation of reaction and compound energies
+through an intuitive free-text interface. The current online
 version of eQuilibrator can be found at:
 http://equilibrator.weizmann.ac.il/
 
-eQuilibrator is written in Python using the Django framework. It was developed primarily on Ubuntu 16.04 64-bit and is easiest to develop and set up on that operating system. Setup instructions below are really only for Ubuntu users.
+eQuilibrator is written in Python using the Django framework.
+It was developed primarily on Ubuntu 16.04 64-bit and is easiest
+to develop and set up on that operating system. Setup instructions
+below are really only for Ubuntu users.
 
 # Dependencies
 - python 2.7
@@ -30,12 +34,13 @@ Python PyPI:
 - scipy (0.18.1)
 - seaborn (0.7.1)
 - tablib (0.11.3)
-- Whoosh (2.7.4)
+- Solr (3.6.2)
 - xlrd (1.0.0)
 
 # Install binary dependencies on Ubuntu
 ```
-sudo apt install mysql-server libmysqlclient-dev python-pip python-dev glpk-tools python-glpk
+sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
+sudo apt install glpk-tools python-glpk solr-common
 ```
 
 # Install missing Python dependencies from PyPI
@@ -50,6 +55,12 @@ mysql> CREATE USER '<MYSQLUSR>'@'localhost' IDENTIFIED BY '<MYSQLPWD>';
 mysql> GRANT ALL PRIVILEGES ON *.* TO '<MYSQLUSR>'@'localhost';
 mysql> CREATE DATABASE <MYSQLDB>;
 mysql> exit;
+```
+
+# Configure Solr
+```
+sudo cp solr/schema.xml /etc/solr/conf/
+sudo /etc/init.d/tomcat7 restart
 ```
 
 * Replace the appropriate database name (<MYSQLDB>), username (<MYSQLUSR>) 

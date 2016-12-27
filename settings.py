@@ -27,16 +27,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        # Or path to database file if using sqlite3.
         'NAME': 'milolab_eqbtr',
-        # Not used with sqlite3.
         'USER': 'milolab_eqbtr',
-        # Not used with sqlite3.
         'PASSWORD': 'password',
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -131,8 +127,8 @@ INSTALLED_APPS = (
 # Haystack related settings - for search/autocomplete.
 HAYSTACK_CONNECTIONS = {
     'default': {
-                'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-                'PATH': os.path.join(PROJECT_ROOT, 'whoosh_index'),
+                'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+                'URL': 'http://127.0.0.1:8080/solr',
                 },
 }
 
@@ -150,8 +146,8 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s %(filename)s:%(lineno)s] %(levelname)s %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s %(filename)s:%(lineno)s] %(levelname)s %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
