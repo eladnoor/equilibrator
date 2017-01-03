@@ -1,15 +1,16 @@
+{% load static %}
 <html>
     <head>
         <title>Thermodynamic Data References</title>
-        <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-        <link href="/media/main.css" rel="stylesheet" type="text/css">
-        <link href="/media/style.css" rel="stylesheet" type="text/css">
-        <link href="/media/jquery-ui-1.8.5.custom.css" rel="stylesheet" type="text/css">
-        <link href="/media/jquery.lightbox-0.5.css" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="/media/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="/media/jquery-ui-1.8.5.custom.min.js"></script>
-        <script type="text/javascript" src="/media/jquery.autocomplete.js"></script>
-        <script type="text/javascript" src="/media/jquery.lightbox-0.5.min.js"></script>
+		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui-1.8.5.custom.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery.lightbox-0.5.css" %}" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="{% static "jquery-1.4.2.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "jquery-ui-1.8.5.custom.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "jquery.autocomplete.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "jquery.lightbox-0.5.min.js" %}"></script>
     </head>
     <body>
         <div class="centerize">

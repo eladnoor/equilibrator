@@ -1,12 +1,9 @@
-import csv
 import logging
 import numpy as np
 import pulp
-import re
 
 from matching import query_parser
 from gibbs import constants
-from gibbs.reaction import Reaction, CompoundWithCoeff
 
 DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 

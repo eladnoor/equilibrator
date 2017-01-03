@@ -1,16 +1,16 @@
+{% load static %}
 <html>
 <head>
-    <title>New in version 2.0</title>
-    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
-	<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-	<link href="/media/main.css" rel="stylesheet" type="text/css">
-	<link href="/media/style.css" rel="stylesheet" type="text/css">
+    <link href="{% static "info_page.css" %}" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}"> 
+	<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
+	<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
 	{% include "analytics.html" %}
 </head>
     <body>
         <div class="container">
             {% include "logo_large.html" %}
-            <div class="title">What's new in eQuilibrator 2.0+?</div>
+            <div class="title">What's new in eQuilibrator 2.1?</div>
             <ol>
                 <li>The <b>uncertainty</b> of each estimation is now provided. For example,  when we write &Delta;<sub><i>r</i></sub>G' = -32.1 &plusmn; <b>1.4</b> [kJ/mol], the 1.4 represents a 95% confidence interval around the estimated Gibbs energy. This change was facilitated by upgrading our software to the more precise Component Contribution method.</li>
                 <li>A dedicated page for <b>reduction potentials</b> (see for example <a href="/search?query=oxaloacetate+%3D+L-malate">Oxaloacetate reduction</a>).</li>

@@ -1,11 +1,12 @@
+{% load static %}
 <html>
 	<head>
 		<title>eQuilibrator for Metabolic Pathways</title>
-		<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
-		<link href="/media/main.css" rel="stylesheet" type="text/css">
-		<link href="/media/style.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui.structure.min.css" rel="stylesheet" type="text/css">
-		<link href="/media/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">
+		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
+		<link href="{% static "jquery-ui.theme.min.css" %}" rel="stylesheet" type="text/css">
 	    {% include "analytics.html" %}
 	</head>
 	<body>
@@ -25,7 +26,7 @@
 	    			<td colspan="100%">Click <a href="#description">here</a> for an overview of the process. Skip this step if you already have an SBtab model file.</td>
 	    		</tr>
 		    	<tr>
-		    		<td>Pathway definition CSV (<a href="/media/pathways/example_pathway_ethanol_fermentation.csv">example</a>)</td>
+		    		<td>Pathway definition CSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation.csv" %}">example</a>)</td>
 		    		<td><input type="file" name="pathway_file" /></td>
 		    	</tr>
 		    	<tr>
@@ -93,7 +94,7 @@
 	            	<th colspan="100%">Step 3: Perform Pathway <a href='/faq#mdf'>MDF</a> Analysis</th>
 	        	</tr>
 		    	<tr>
-		    		<td>Pathway model TSV (<a href="/media/pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10.tsv">example</a>)</td>
+		    		<td>Pathway model TSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10.tsv" %}">example</a>)</td>
 		    		<td><input type="file" name="pathway_file" /></td>
 			    </tr>
 		    	<tr class='infoTableHeader' align='center'>
@@ -117,7 +118,7 @@
 					<li>Generating an SBtab model of your pathway.</li>
 					<li>Calculating the MDF from your SBtab model file.</li>
 				</ol>
-				The SBtab model of your pathway contains a full stoichiometric definition of all the pathway reactions, equilibrium constants for all reactions and concentration bounds for all metabolites and cofactors in a tab-delimited file format that can be edited in Excel or similar spreadsheeting applications. eQuilibrator can generate an SBtab description of your pathway from a simplified file (like <a href="/media/pathways/example_pathway_ethanol_fermentation.csv">this one</a>) which defines only the reactions (in free text, as you would in the eQuilibrator search box) and their relative fluxes. eQuilibrator will parse all these reactions, calculate their Δ<sub>r</sub>G'&deg; at the pH and ionic strength of your choice and define bounds on all metabolite and cofactor concentrations. All of these data are output in the SBtab file, which should be compatible with <a href="http://www.metabolic-economics.de/enzyme-cost-minimization/">other applications</a> using SBtab. Before calculating the MDF, it is always a good idea to check the SBtab file. eQuilibrator does not always parse free-text reactions perfectly, so it is important to double check that compounds and reactions output are correct. 
+				The SBtab model of your pathway contains a full stoichiometric definition of all the pathway reactions, equilibrium constants for all reactions and concentration bounds for all metabolites and cofactors in a tab-delimited file format that can be edited in Excel or similar spreadsheeting applications. eQuilibrator can generate an SBtab description of your pathway from a simplified file (like <a href="{% static "pathways/example_pathway_ethanol_fermentation.csv" %}">this one</a>) which defines only the reactions (in free text, as you would in the eQuilibrator search box) and their relative fluxes. eQuilibrator will parse all these reactions, calculate their Δ<sub>r</sub>G'&deg; at the pH and ionic strength of your choice and define bounds on all metabolite and cofactor concentrations. All of these data are output in the SBtab file, which should be compatible with <a href="http://www.metabolic-economics.de/enzyme-cost-minimization/">other applications</a> using SBtab. Before calculating the MDF, it is always a good idea to check the SBtab file. eQuilibrator does not always parse free-text reactions perfectly, so it is important to double check that compounds and reactions output are correct. 
 		    	</p>
 		    	<p>
 		    	It is important to fix the concentrations of cofactors like ATP, CoA and NADH because these concentrations are homeostatically maintained by host organisms. If you do not fix these concentrations to reasonable, physiologically-relevant values, the MDF optimization will choose the concentration that makes your pathway the most thermodynamically favorable. In glycolysis, for example, this would set the ATP concentration as low as allowed (e.g. 1 micromolar), making ATP synthesis and glycolysis as a whole appear much more favorable than it really is or could be. In this case the problem is obvious: maintaining a very low ATP concentration is good for producing ATP from ADP, but catastrophic for the cell because ATP-dependent reactions will operate slowly and with very little driving force.</p>

@@ -12,8 +12,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, ".."))
 # Force matplotlib to not use any Xwindows backend.
 matplotlib.use('Agg')
 
-DEBUG = False
-TEMPLATE_DEBUG = DEBUG
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '*',  # Allow domain and subdomains
@@ -28,16 +27,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.mysql',
-        # Or path to database file if using sqlite3.
-        'NAME': 'djtest',
-        # Not used with sqlite3.
-        'USER': 'djangouser',
-        # Not used with sqlite3.
+        'NAME': 'milolab_eqbtr',
+        'USER': 'milolab_eqbtr',
         'PASSWORD': 'password',
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'HOST': '',
+        'PORT': '',
     }
 }
 
@@ -80,16 +75,10 @@ ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # for serving static files
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, "static")]
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'b88!&88r-69=r*%q8cgnj&9dfm!^1u!ij3+jnkoebh4vrm41we'
-
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-)
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -101,12 +90,24 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'equilibrator.urls'
 
-TEMPLATE_DIRS = (
-    os.path.join(PROJECT_ROOT, 'templates'),
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(PROJECT_ROOT, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            # the 'string_if_invalid' should not be left uncommented
+            # except when debugging a spcific template issue
+            'string_if_invalid': 'INVALID %s',
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -115,8 +116,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'haystack', 
-    
+    'haystack',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     'django.contrib.humanize',
@@ -127,10 +127,11 @@ INSTALLED_APPS = (
 # Haystack related settings - for search/autocomplete.
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'gibbs.haystack_backends.CustomXapianEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'xapian_index'),
-    },
+                'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+                'URL': 'http://127.0.0.1:8080/solr',
+                },
 }
+
 
 # Custom Xapian settings
 XAPIAN_SETTINGS = {
@@ -145,8 +146,8 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'verbose': {
-            'format' : "[%(asctime)s %(filename)s:%(lineno)s] %(levelname)s %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s %(filename)s:%(lineno)s] %(levelname)s %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -156,7 +157,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(os.path.dirname(__file__), 'gibbs.log'),
+            'filename': os.path.join(PROJECT_ROOT, 'gibbs.log'),
             'formatter': 'verbose'
         },
         'console': {

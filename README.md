@@ -1,62 +1,73 @@
 eQuilibrator
 ============
 
-eQuilibrator is a biochemical thermodynamics calculator website. The website enables calculation 
-of reaction and compound energies through an intuitive free-text interface. The current online
+eQuilibrator is a biochemical thermodynamics calculator website.
+The website enables calculation of reaction and compound energies
+through an intuitive free-text interface. The current online
 version of eQuilibrator can be found at:
 http://equilibrator.weizmann.ac.il/
 
-eQuilibrator is written in Python using the Django framework. It was developed primarily on Ubuntu
-and is easiest to develop and set up on that operating system. Setup instructions below are really
-only for Ubuntu users.
+eQuilibrator is written in Python using the Django framework.
+It was developed primarily on Ubuntu 16.04 64-bit and is easiest
+to develop and set up on that operating system. Setup instructions
+below are really only for Ubuntu users.
 
 # Dependencies
-- Django 1.7.10
-- Django extensions 1.5.7
-- Django profiler 2.0.0
-- Django haystack 2.4.0
-- Xapian 1.2.23 (indexing for search)
-- Xapain haystack 2.0.0
-- MySql 5.7.16
-- PyParsing 2.1.8
-- NLTK 2.0.4
-- NumPy 1.11.1
-- SciPy 0.18.1
-- Matplotlib & Seaborn (Plotting)
-- Pulp & GLPK (optimization)
+- python 2.7
+- mysql-server (5.7.16)
+- python-glpk
+- glpk-tools
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
+Python PyPI:
+- Django (1.10.4)
+- django-extensions (1.7.5)
+- django-haystack (2.5.1)
+- glpk (0.4.52)
+- matplotlib (1.5.3)
+- MySQL-python (1.2.5)
+- nltk (3.2.1)
+- numpy (1.11.3)
+- pandas (0.19.1)
+- pip (9.0.1)
+- PuLP (1.6.1)
+- pyparsing (2.1.10)
+- scipy (0.18.1)
+- seaborn (0.7.1)
+- tablib (0.11.3)
+- Solr (3.6.2)
+- xlrd (1.0.0)
 
 # Install binary dependencies on Ubuntu
 ```
-sudo apt install mysql-server libmysqlclient-dev
-sudo apt install python-pip python-dev
-sudo apt install python-numpy python-scipy python-matplotlib python-pandas
-sudo apt install glpk-utils python-glpk uuid-dev zlib1g-dev g++
-sudo apt install python-xapian libxapian-dev
+sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
+sudo apt install glpk-tools python-glpk solr-common
 ```
 
-# Install Python dependencies from PyPI
+# Install missing Python dependencies from PyPI
 ```
-sudo pip install django==1.7.10
-sudo pip install django-extensions==1.5.7
-sudo pip install xapian-haystack==2.0.0
-sudo pip install django-haystack==2.4.0
-sudo pip install seaborn nltk pulp pyparsing MySQL-python tablib
+sudo pip install -r requirements.txt
 ```
 
 # Create MySQL database and user for Django
 ```
 sudo mysql --user=root mysql -p
-mysql> CREATE USER 'milolab_eqbtr'@'localhost' IDENTIFIED BY '******';
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'milolab_eqbtr'@'localhost';
-mysql> CREATE DATABASE milolab_eqbtr;
+mysql> CREATE USER '<MYSQLUSR>'@'localhost' IDENTIFIED BY '<MYSQLPWD>';
+mysql> GRANT ALL PRIVILEGES ON *.* TO '<MYSQLUSR>'@'localhost';
+mysql> CREATE DATABASE <MYSQLDB>;
 mysql> exit;
 ```
 
-* Put the appropriate database name, username and password in settings.py.
-* Edit sqlload.sh to use the correct username and database name. 
-* Run `./sqlload.sh` to load the database up. 
-* Run `python manage.py rebuild_index` to build the xapian index for search.
+# Configure Solr
+```
+sudo cp solr/schema.xml /etc/solr/conf/
+sudo /etc/init.d/tomcat7 restart
+```
+
+* Replace the appropriate database name (<MYSQLDB>), username (<MYSQLUSR>) 
+  and password (<MYSQLPWD>) in settings.py.
+* If necessary, run `python manage.py reset_db` to clear history.
+* Run `python sql_load.py` to load the database up. 
+* Run `python manage.py rebuild_index` to build the search index.
 
 # Running the Development Server on a Remote Host
 
@@ -79,4 +90,3 @@ sudo cp ~/equilibrator/apache2/default.conf /etc/apache2/sites-available/000-def
 sudo a2enmod wsgi
 sudo apache2ctl restart
 ```
-

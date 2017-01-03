@@ -11,7 +11,6 @@
 
         <form name="compoundForm" action="/compound" method="get">
             <input type="hidden" name="compoundId" value="{{ compound.kegg_id }}" />
-            {{ reaction.conditions.name }}
 
             {% if reaction.dg_prime == None %}
                 <div class="warning">{{ compound.no_dg_explanation }}</div>

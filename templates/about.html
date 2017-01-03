@@ -1,7 +1,8 @@
+{% load static %}
 <html>
 	<head>
-    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png"> 
+    <link href="{% static "/info_page.css" %}" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="{% static "/images/equilibrator_favicon.png" %}"> 
 		<title>About eQuilibrator</title>
 		{% include "analytics.html" %}
 	</head>

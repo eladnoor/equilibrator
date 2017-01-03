@@ -12,10 +12,10 @@ GC_NULLSPACE_FILENAME = 'data/kegg_gc_nullspace.json.gz'
 CC_FILENAME = 'data/cc_compounds.json.gz'
 ALBERTY_FILENAME = 'data/alberty.json.gz'
 DEFAULT_ADDITIONAL_DATA_FILENAME = 'data/additional_compound_data.json'
-DOWNLOADS_COMPOUND_PREFIX = 'media/downloads/kegg_compounds'
-DOWNLOADS_REACTION_PREFIX = 'media/downloads/kegg_reactions'
-DOWNLOADS_PSEUDOISOMER_PREFIX = 'media/downloads/kegg_pseudoisomers'
-DOWNLOADS_JSON_FNAME = 'media/downloads/kegg_compounds.json.gz'
+DOWNLOADS_COMPOUND_PREFIX = 'static/downloads/kegg_compounds'
+DOWNLOADS_REACTION_PREFIX = 'static/downloads/kegg_reactions'
+DOWNLOADS_PSEUDOISOMER_PREFIX = 'static/downloads/kegg_pseudoisomers'
+DOWNLOADS_JSON_FNAME = 'static/downloads/kegg_compounds.json.gz'
 
 # Cache compounds so we can look them up faster.
 COMPOUNDS_CACHE = {}

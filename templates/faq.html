@@ -1,8 +1,9 @@
+{% load static %}
 <html>
 <head>
     <title>eQuilibrator FAQ</title>
-    <link href="/media/info_page.css" rel="stylesheet" type="text/css">
-	<link rel="icon" type="image/x-icon" href="/media/images/equilibrator_favicon.png">
+    <link href="{% static "info_page.css" %}" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}"> 
     {% include "analytics.html" %}
 </head>
     <body>
@@ -298,7 +299,7 @@
             Several hydrated species form in water through addition or release of protons: carbonic acid (H<sub>2</sub>CO<sub>3</sub>), bicarbonate (HCO<sub>3</sub><sup>-</sup>) and carbonate (CO<sub>3</sub><sup>2-</sup>). In thermodynamics of biochemical reactions, different ionic states (known as pseudo-isomers) are lumped together. If you search for any of these hydrated species, eQuilibrator will use their lumped form - HCO<sub>3</sub><sup>-</sup>(aq). Sometimes it is easier to measure or analyze the sum of CO<sub>2</sub>(aq) and its three hydrated forms (H<sub>2</sub>CO<sub>3</sub>, HCO<sub>3</sub><sup>-</sup> and CO<sub>3</sub><sup>2-</sup>). This sum of species is termed CO<sub>2</sub>(total). Note that in the chemical formula of CO<sub>2</sub>(total) there are actually 3 oxygen atoms because it also includes the hydrating water molecule.
             </p>
 
-            <center><img src="/media/images/co2_hydration.png"></center>
+            <center><img src="{% static "images/co2_hydration.png" %}"></center>
 
             <p>
             When only the total concentration is known, it is assumed that there is equilibrium among the four species and one uses CO<sub>2</sub>(total) in place of CO<sub>2</sub>(aq). If, however, you know or can measure the concentration of CO<sub>2</sub>(aq) alone, then it is reasonable to use CO<sub>2</sub>(aq) as a reactant. The concentration of CO<sub>2</sub>(aq) is usually straightforward to calculate based on Henry’s law dictating, for example, that under standard atmospheric conditions of about 400ppm CO<sub>2</sub>(g) the concentration of CO<sub>2</sub>(aq) is about 10 uM. The concentrations of bicarbonate and CO<sub>2</sub>(total), however, depend strongly on pH. More information is supplied in the figure below and in this <a href="https://docs.google.com/spreadsheets/d/1WLIptgXKhVx17UBhSCrR96PbU9iBVJuKPEvyOx41VYM/edit?usp=sharing">link</a>. 

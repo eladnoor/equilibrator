@@ -4,12 +4,7 @@ try:
     from nltk.metrics import edit_distance
 except ImportError:
     from Levenshtein import distance as edit_distance
-import re
-
-from django.db.models import Q
-from gibbs import models
 from haystack.query import SearchQuerySet
-from haystack.inputs import Clean
 
 
 class HaystackApproxMatcher(matcher.Matcher):
@@ -22,7 +17,7 @@ class HaystackApproxMatcher(matcher.Matcher):
         We then let the parent class logic dedup those and they are ranked
         according to their edit-distance to the query, as per _GetScore below.
     """
-    
+
     def _GetScore(self, query, match):
         """Custom edit-distance based scoring."""
         str_query = str(query)
@@ -34,8 +29,10 @@ class HaystackApproxMatcher(matcher.Matcher):
     def _FindNameMatches(self, query):
         """Override database search."""
         # Try plain old autocomplete. If it works, great.
-        res = SearchQuerySet().autocomplete(name_auto=query)[:self._max_results]
-        logging.debug('Found %d results for "%s" using autocomplete', len(res), query)
+        res = SearchQuerySet().autocomplete(
+            title_autocomplete=query)[:self._max_results]
+        logging.debug('Found %d results (out of max %d) for "%s" using autocomplete',
+                      len(res), self._max_results, query)
         if res:
             return [r.object for r in res]
 
@@ -46,18 +43,19 @@ class HaystackApproxMatcher(matcher.Matcher):
         res = []
         for i in xrange(len(query) - 3):
             ngram = query[i:i+4]
-            auto_res = SearchQuerySet().autocomplete(name_auto=ngram)[:self._max_results]
+            auto_res = SearchQuerySet().autocomplete(
+                title_autocomplete=ngram)[:self._max_results]
             res.extend(auto_res)
         matches = [r.object for r in res]
         logging.debug('Found %d results using ngrams', len(res))
         return matches
-    
+
 
 class CascadingMatcher(matcher.Matcher):
     """A matcher that tries multiple matching strategies."""
-    
+
     def __init__(self, max_results=10, min_score=0.0,
-        match_enzymes=True, return_fast=False):
+                 match_enzymes=True, return_fast=False):
         matcher.Matcher.__init__(self, max_results, min_score, match_enzymes)
         self._return_fast = return_fast
         self._exact_matcher = matcher.Matcher(
@@ -78,11 +76,12 @@ class CascadingMatcher(matcher.Matcher):
         return ret
 
     def Match(self, query):
-        """Override base matching implementation."""  
+        """Override base matching implementation."""
         matches = self._exact_matcher.Match(query)
         # In some cases it's advantageous to return exact matches immediately,
-        # for example in matching a reaction. 
+        # for example in matching a reaction.
         if matches and self._return_fast:
+            logging.debug("Skipping approximate matches for %s", query)
             return self._SortAndClip(matches)
 
         match_set = set(m.key for m in matches)
@@ -93,7 +92,7 @@ class CascadingMatcher(matcher.Matcher):
         for m in approx_matches:
             if m.key not in match_set:
                 matches.append(m)
-        
+
         logging.debug('Found %d matches, while the maximum is %d' %
                       (len(matches), self._max_results))
         matches = self._FilterDups(matches)
