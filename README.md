@@ -86,7 +86,7 @@ sudo apt install apache2 libapache2-mod-wsgi links
 git clone https://github.com/eladnoor/equilibrator.git
 cd equilibrator
 chmod 666 gibbs.log
-sudo cp ~/equilibrator/apache2/default.conf /etc/apache2/sites-available/000-default.conf
+sudo cp ~/equilibrator/apache/default.conf /etc/apache2/sites-available/000-default.conf
 sudo a2enmod wsgi
 sudo apache2ctl restart
 ```
