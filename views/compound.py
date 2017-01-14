@@ -8,10 +8,10 @@ from django.http import Http404
 from django.apps import apps
 from gibbs import conditions
 from gibbs.forms import CompoundForm
-from settings import STATIC_URL
+from settings import STATICFILES_DIRS
 
-NO_STRUCTURE_THUMBNAIL = os.path.join([STATIC_URL, 'images',
-                                       'structure_not_available.png'])
+NO_STRUCTURE_THUMBNAIL = os.path.join(STATICFILES_DIRS[0], 'images',
+                                      'structure_not_available.png')
 
 
 @csrf_exempt
@@ -26,7 +26,9 @@ def CompoundImage(request):
         return HttpResponseBadRequest('No such compound.')
     compound = compounds[0]
     if not compound.thumbnail or compound.thumbnail == 'error':
+        logging.info('No structure available for %s' % compound)
         image_data = open(NO_STRUCTURE_THUMBNAIL, 'r').read()
+
     else:
         image_data = base64.decodestring(compound.thumbnail)
     return HttpResponse(image_data, content_type='image/png')

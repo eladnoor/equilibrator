@@ -40,7 +40,7 @@ Python PyPI:
 # Install binary dependencies on Ubuntu
 ```
 sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
-sudo apt install glpk-tools python-glpk solr-common
+sudo apt install solr-common libglpk-dev glpk-utils
 ```
 
 # Install missing Python dependencies from PyPI
