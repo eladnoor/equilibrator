@@ -1,54 +1,54 @@
 import logging, time, datetime, sys
-import numpy as np
-from util import database_io as db
+import numpy
+from util import database_io
 from django.db import transaction
 from distutils.util import strtobool
 
 def main(draw_thumb=False, export_csv=False):
     transaction.set_autocommit(False)
 
-    db.CheckData()
+    database_io.CheckData()
 
     logging.info('Loading citation data')
-    db.LoadCitationData()
+    database_io.LoadCitationData()
     transaction.commit()
-        
+
     logging.info('Loading KEGG compound names')
-    cid_replace = db.LoadKeggCompoundNames()
+    cid_replace = database_io.LoadKeggCompoundNames()
     transaction.commit()
 
     logging.info('Loading KEGG compound thermodynamic data')
-    db.LoadFormationEnergies()
-    db.LoadAlbertyEnergies()
+    database_io.LoadFormationEnergies()
+    database_io.LoadAlbertyEnergies()
     transaction.commit()
 
     logging.info('Loading KEGG reaction data')
-    db.LoadKeggReactions(cid_replace)
+    database_io.LoadKeggReactions(cid_replace)
     transaction.commit()
 
     logging.info('Loading KEGG enzyme data')
-    db.LoadKeggEnzymes()
+    database_io.LoadKeggEnzymes()
     transaction.commit()
 
     if draw_thumb:
         logging.info('Drawing thumbnails for all KEGG compounds')
-        db.GenerateCompoundThumbnails()
+        database_io.GenerateCompoundThumbnails()
         transaction.commit()
-    
+
     logging.info('Loading corrections/additions to KEGG')
-    db.LoadAdditionalCompoundData()
+    database_io.LoadAdditionalCompoundData()
     transaction.commit()
-    
+
     if export_csv:
         logging.info('Exporting database to JSON and CSV files')
-        db.export_database()
-    
+        database_io.export_database()
+
 def user_yes_no_query(question, default=False):
     if default:
         sys.stdout.write('%s? [(yes)/no] ' % question)
     else:
         sys.stdout.write('%s? [yes/(no)] ' % question)
-    
+
     while True:
         try:
             ri = raw_input().lower()
@@ -57,7 +57,7 @@ def user_yes_no_query(question, default=False):
             return strtobool(ri)
         except ValueError:
             sys.stdout.write('Please respond with \'y\' or \'n\'.\n')
-            
+
 if __name__ == '__main__':
     print 'Welcome to the load_database script.'
     print 'Drawing thumbnails for all the compounds takes about 30 minutes'
@@ -65,9 +65,9 @@ if __name__ == '__main__':
 
     print 'Exporting the raw data as CSV files takes about 1 hour'
     export_csv = user_yes_no_query('Export raw data', default=False)
-    
+
     start = time.time()
     main(draw_thumb, export_csv)
     end = time.time()
-    elapsed = datetime.timedelta(seconds=np.floor(end - start))
+    elapsed = datetime.timedelta(seconds=numpy.floor(end - start))
     logging.info('Elapsed loading time = %s' % str(elapsed))

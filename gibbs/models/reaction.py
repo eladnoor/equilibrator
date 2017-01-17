@@ -2,7 +2,7 @@
 
 import hashlib
 import logging
-import numpy as np
+import numpy
 import urllib
 import os
 import json
@@ -17,15 +17,15 @@ from compound import CommonName, CompoundWithCoeff
 class Preprocessing(object):
     relpath = os.path.dirname(os.path.realpath(__file__))
     cc_preprocess_fname = os.path.join(relpath, '../../data/cc_preprocess.npz')
-    cc_preprocess = np.load(cc_preprocess_fname)
+    cc_preprocess = numpy.load(cc_preprocess_fname)
 
-    C1 = np.matrix(cc_preprocess['C1'])
-    C2 = np.matrix(cc_preprocess['C2'])
-    C3 = np.matrix(cc_preprocess['C3'])
-    G1 = np.matrix(cc_preprocess['G1'])
-    G2 = np.matrix(cc_preprocess['G2'])
-    G3 = np.matrix(cc_preprocess['G3'])
-    S = np.matrix(cc_preprocess['S'])
+    C1 = numpy.matrix(cc_preprocess['C1'])
+    C2 = numpy.matrix(cc_preprocess['C2'])
+    C3 = numpy.matrix(cc_preprocess['C3'])
+    G1 = numpy.matrix(cc_preprocess['G1'])
+    G2 = numpy.matrix(cc_preprocess['G2'])
+    G3 = numpy.matrix(cc_preprocess['G3'])
+    S = numpy.matrix(cc_preprocess['S'])
     cids = cc_preprocess['cids']
     Nc = C1.shape[0]
     Ng = C3.shape[0]
@@ -39,10 +39,10 @@ class Preprocessing(object):
     def GetCompoundVectors(compound):
         # x is the stoichiometric vector of the reaction, only for the
         # compounds that appeared in the original training set for CC
-        x = np.matrix(np.zeros((Preprocessing.Nc, 1)))
+        x = numpy.matrix(numpy.zeros((Preprocessing.Nc, 1)))
 
         # g is the group incidence vector of all the other compounds
-        g = np.matrix(np.zeros((Preprocessing.Ng, 1)))
+        g = numpy.matrix(numpy.zeros((Preprocessing.Ng, 1)))
         logging.debug(compound.compound.kegg_id)
         i = compound.compound.index
         gv = compound.compound.sparse_gv
@@ -62,10 +62,10 @@ class Preprocessing(object):
     def GetReactionVectors(reactants):
         # x is the stoichiometric vector of the reaction, only for the
         # compounds that appeared in the original training set for CC
-        x_reaction = np.matrix(np.zeros((Preprocessing.Nc, 1)))
+        x_reaction = numpy.matrix(numpy.zeros((Preprocessing.Nc, 1)))
 
         # g is the group incidence vector of all the other compounds
-        g_reaction = np.matrix(np.zeros((Preprocessing.Ng, 1)))
+        g_reaction = numpy.matrix(numpy.zeros((Preprocessing.Ng, 1)))
         for x, g in map(Preprocessing.GetCompoundVectors, reactants):
             x_reaction += x
             g_reaction += g
@@ -76,7 +76,7 @@ class Preprocessing(object):
 
     @staticmethod
     def DeltaGUncertainty(x, g):
-        return float(np.sqrt(x.T * Preprocessing.C1 * x +
+        return float(numpy.sqrt(x.T * Preprocessing.C1 * x +
                              x.T * Preprocessing.C2 * g +
                              g.T * Preprocessing.C3 * g))
 
@@ -122,7 +122,7 @@ class Preprocessing(object):
     @staticmethod
     def IsUsingGroupContributions(x, g):
         weights_gc = x.T * Preprocessing.G2 + g.T * Preprocessing.G3
-        sum_w_gc = sum(np.abs(weights_gc).flat)
+        sum_w_gc = sum(numpy.abs(weights_gc).flat)
         logging.debug('sum(w_gc) = %.2g' % sum_w_gc)
         return sum_w_gc > 1e-5
 
@@ -610,8 +610,8 @@ class Reaction(models.Model):
 
         rdict = {-1: [], 1: []}
         for c_w_coeff in self.reactants:
-            c = np.abs(c_w_coeff.coeff)
-            s = np.sign(c_w_coeff.coeff)
+            c = numpy.abs(c_w_coeff.coeff)
+            s = numpy.sign(c_w_coeff.coeff)
             if s == 0:
                 continue
             if c == 1:
@@ -631,8 +631,8 @@ class Reaction(models.Model):
         """
         rdict = {-1: [], 1: []}
         for c_w_coeff in self.reactants:
-            c = np.abs(c_w_coeff.coeff)
-            s = np.sign(c_w_coeff.coeff)
+            c = numpy.abs(c_w_coeff.coeff)
+            s = numpy.sign(c_w_coeff.coeff)
             if s == 0:
                 continue
             if c == 1:
@@ -719,7 +719,7 @@ class Reaction(models.Model):
         else:
             delta_electrons = self._GetElectronDiff()
             assert delta_electrons != 0
-            return np.abs(dg_u / (constants.F*delta_electrons))
+            return numpy.abs(dg_u / (constants.F*delta_electrons))
 
     def _ExtraPis(self):
         # TODO probably could write a generic version of this.
@@ -735,14 +735,14 @@ class Reaction(models.Model):
         os = atom_diff.pop('O', 0)
         ps = atom_diff.pop('P', 0)
 
-        n_pis = np.array([ps / 1.0, os / 4.0])
+        n_pis = numpy.array([ps / 1.0, os / 4.0])
 
         # Don't need any other elements
         pi_completes = self._IsBalanced(atom_diff)
         # Stoichiometry right for pi
-        pi_completes &= np.all(n_pis == n_pis.astype(np.int))
-        pi_completes &= np.all(n_pis ==
-                               np.ones(n_pis.size) * n_pis[0])
+        pi_completes &= numpy.all(n_pis == n_pis.astype(numpy.int))
+        pi_completes &= numpy.all(n_pis ==
+                               numpy.ones(n_pis.size) * n_pis[0])
 
         extra_pis = int(n_pis[0])
         if not pi_completes or not extra_pis:
@@ -767,14 +767,14 @@ class Reaction(models.Model):
         ps = atom_diff.pop('P', 0)
         ss = atom_diff.pop('S', 0)
 
-        n_coas = np.array([cs / 21.0, os / 16.0, ns / 7.0, ps / 3.0, ss / 1.0])
+        n_coas = numpy.array([cs / 21.0, os / 16.0, ns / 7.0, ps / 3.0, ss / 1.0])
 
         # Don't need any other elements
         coa_completes = self._IsBalanced(atom_diff)
         # Stoichiometry right for CoA
-        coa_completes &= np.all(n_coas == n_coas.astype(np.int))
-        coa_completes &= np.all(n_coas ==
-                                np.ones(n_coas.size) * n_coas[0])
+        coa_completes &= numpy.all(n_coas == n_coas.astype(numpy.int))
+        coa_completes &= numpy.all(n_coas ==
+                                numpy.ones(n_coas.size) * n_coas[0])
 
         extra_coas = int(n_coas[0])
         if not coa_completes or not extra_coas:
@@ -988,7 +988,7 @@ class Reaction(models.Model):
                 The correction or None on error.
         """
         # Shorthand for coeff * log(concentration)
-        mult_log_c_list = [c.coeff * np.log(c.phase.Value())
+        mult_log_c_list = [c.coeff * numpy.log(c.phase.Value())
                            for c in self.reactants]
 
         # Compute log(Q) - the log of the reaction quotient
@@ -1007,7 +1007,7 @@ class Reaction(models.Model):
         """
         # calculate stoichiometric imbalance (how many more products are there
         # compared to substrates). Note that H2O isn't counted
-        sum_logs = sum([c.coeff*np.log(c.phase.PhysiologicalValue())
+        sum_logs = sum([c.coeff*numpy.log(c.phase.PhysiologicalValue())
                         for c in self.reactants])
 
         _r = constants.R
@@ -1086,7 +1086,7 @@ class Reaction(models.Model):
             return None
 
         rt = constants.R * constants.DEFAULT_TEMP
-        keq = np.exp(-dg0_prime / rt)
+        keq = numpy.exp(-dg0_prime / rt)
         return keq
 
     def KeqPrimeHuman(self):
@@ -1098,10 +1098,10 @@ class Reaction(models.Model):
         if dg0_prime is None:
             return None
 
-        rtln10 = constants.R * constants.DEFAULT_TEMP * np.log(10)
+        rtln10 = constants.R * constants.DEFAULT_TEMP * numpy.log(10)
         x = -dg0_prime / rtln10
 
-        expo = np.floor(x)
+        expo = numpy.floor(x)
         prefactor = 10**(x - expo)
         if abs(expo) <= 2:
             return '%.3g' % (10**x)

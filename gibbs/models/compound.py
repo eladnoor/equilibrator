@@ -751,7 +751,7 @@ class CompoundWithCoeff(models.Model):
         return other
 
     def AbsoluteCoefficient(self):
-        return np.abs(self.coeff)
+        return numpy.abs(self.coeff)
 
     @staticmethod
     def FromReactant(reactant):
