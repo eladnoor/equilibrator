@@ -1,8 +1,9 @@
 {% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
 <html>
     <head>
     <link href="{% static "info_page.css" %}" rel="stylesheet" type="text/css">
-    <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}"> 
+    <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
         <title>Download eQuilibrator Data</title>
         {% include "analytics.html" %}
     </head>
@@ -13,19 +14,19 @@
 
         <div class="section">
         <div class="title">Formats and Data Sources</div>
-        
+
         <p>
             eQuilibrator data is given in two formats.
             Tabular data is given as CSV and hierarchical data is given in JSON.
             <ul>
                 <li>
-                    JSON: the <a href="http://www.json.org">JavaScript Object Notation</a> 
-                    format is a lightly structured hierarchical format that is 
+                    JSON: the <a href="http://www.json.org">JavaScript Object Notation</a>
+                    format is a lightly structured hierarchical format that is
                     easily parsed in most modern programming languages.
                 </li>
                 <li>
-                    CSV: Comma-Separated Value format is a flat format that is 
-                    mostly unstructured, easy to parse and easy to view in 
+                    CSV: Comma-Separated Value format is a flat format that is
+                    mostly unstructured, easy to parse and easy to view in
                     Excel and other spreadsheet programs.
                 </li>
             </ul>
@@ -36,34 +37,34 @@
         <div class="section">
         <div class="title">Compound Formation Energies</div>
         <p>
-        The standard formation energies of biochemical compounds found in the 
+        The standard formation energies of biochemical compounds found in the
         literature can be downloaded at various pH levels.
         Note that ionic strength is set to 0.1 M for all the files linked below.
-        The thermodynamic data is drawn mostly from the work of the late 
+        The thermodynamic data is drawn mostly from the work of the late
         <a href="http://newsoffice.mit.edu/2014/robert-alberty-professor-emeritus-of-chemistry-and-former-dean-of-science-dies-at-92">
         Prof. Robert Alberty</a> (<a href="/data_refs">references here</a>).</br>
         </p>
-    
+
         <ul>
             {% for ph in ph_values %}
-            <li>pH = {{ph}} : <a href="{% static "downloads/kegg_compounds_Alberty_ph{{ph}}.csv.gz" %}">Download</a></li>
+            <li>pH = {{ ph }} : <a href="{{ STATIC_PREFIX }}downloads/kegg_compounds_Alberty_ph{{ ph }}.csv.gz" %}">Download</a></li>
             {% endfor %}
         </ul>
-        
+
         <p>
-            It is also possible to compute the standard transformed formation 
+            It is also possible to compute the standard transformed formation
             energy for any pH and ionic strength directly using the chemical
             formation energy table of the various protonation states (pseudoisomers)
             of all the compounds
             (<a href="{% static "downloads/kegg_pseudoisomers_Alberty.csv.gz" %}">download here</a>).
             Each row in the CSV file corresponds to one pseudoisomer of one compound. The columns' order is:
             KEGG compound ID, compound name, chemical formation energy (in kJ/mol), number of hydrogen atoms,
-            net charge, number of magnesium ions, note. 
+            net charge, number of magnesium ions, note.
 
         </p>
 
         <div class="title">Reaction Energies</div>
-        
+
         <p>
         The standard Gibbs energies of biochemical reactions in the KEGG database are available for
         download at various pH levels as well. We use the Component Contribution method to
@@ -71,10 +72,10 @@
         As above, ionic strength is set to 0.1 M for all the
         files linked below. When a reaction energy cannot be computed, an explanation is given.
         </p>
-        
+
         <ul>
             {% for ph in ph_values %}
-            <li>pH = {{ph}} : <a href="{% static "downloads/kegg_reactions_CC_ph{{ph}}.csv.gz" %}">Download</a></li>
+            <li>pH = {{ph}} : <a href="{{ STATIC_PREFIX }}downloads/kegg_reactions_CC_ph{{ph}}.csv.gz" %}">Download</a></li>
             {% endfor %}
         </ul>
 
@@ -83,7 +84,7 @@
             done using the compound formation energies in a single model.
             These two datasets are not
             consistent with each other, and mixing could violate the second law
-            of thermodynamics - meaning that a set of reactions that form a 
+            of thermodynamics - meaning that a set of reactions that form a
             cycle might have a total &Delta;G' different than 0 (a biochemical perpetual
             motion machine).
         </p>
@@ -95,18 +96,18 @@
         (<a href="{% static "downloads/kegg_compounds.json.gz" %}">download JSON here</a>).
         A single compound is represented as follows:
          </p>
-         
+
         <pre class="jsonPre">
         {
-            "CID": "C00631", 
-            "InChI": "InChI=1S/C3H7O7P/c4-1-2(3(5)6)10-11(7,8)9/h2,4H,1H2,(H,5,6)(H2,7,8,9)/t2-/m1/s1", 
-            "formula": "C3H7O7P", 
-            "mass": 185.9929, 
-            "name": "2-Phospho-D-glycerate", 
-            "num_electrons": 96, 
+            "CID": "C00631",
+            "InChI": "InChI=1S/C3H7O7P/c4-1-2(3(5)6)10-11(7,8)9/h2,4H,1H2,(H,5,6)(H2,7,8,9)/t2-/m1/s1",
+            "formula": "C3H7O7P",
+            "mass": 185.9929,
+            "name": "2-Phospho-D-glycerate",
+            "num_electrons": 96,
         }
         </pre>
-        
+
         <p>
         Each listed compound will likely have a KEGG ID ("CID"), a chemical formula ("formula"), an InChI identifier ("InChI"),
         a mass ("mass"), a common name ("name") and a number of electrons ("num_electrons"). When values are are unknown
@@ -115,7 +116,7 @@
     </div>
 
     {% include "footer.html" %}
-    
+
     </div>
 
   </body>
