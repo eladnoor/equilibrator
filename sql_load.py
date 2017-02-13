@@ -5,7 +5,7 @@ from settings import DATABASES
 db_user = DATABASES['default']['USER']
 db_name = DATABASES['default']['NAME']
 
-cmd = "gunzip -c data/sqldump.txt.gz | mysql -u %s -p %s" % (db_user, db_name)
+cmd = "gunzip -c data/sqldump.txt.gz | mysql -u %s -D %s -p" % (db_user, db_name)
 
 print cmd
 os.system(cmd)
