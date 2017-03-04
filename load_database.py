@@ -3,8 +3,11 @@ import numpy as np
 from util import database_io as db
 from django.db import transaction
 from distutils.util import strtobool
+import django
 
 def main(draw_thumb=False, export_csv=False):
+    django.setup()
+
     transaction.set_autocommit(False)
 
     db.CheckData()
@@ -12,7 +15,7 @@ def main(draw_thumb=False, export_csv=False):
     logging.info('Loading citation data')
     db.LoadCitationData()
     transaction.commit()
-        
+
     logging.info('Loading KEGG compound names')
     cid_replace = db.LoadKeggCompoundNames()
     transaction.commit()
@@ -34,21 +37,21 @@ def main(draw_thumb=False, export_csv=False):
         logging.info('Drawing thumbnails for all KEGG compounds')
         db.GenerateCompoundThumbnails()
         transaction.commit()
-    
+
     logging.info('Loading corrections/additions to KEGG')
     db.LoadAdditionalCompoundData()
     transaction.commit()
-    
+
     if export_csv:
         logging.info('Exporting database to JSON and CSV files')
         db.export_database()
-    
+
 def user_yes_no_query(question, default=False):
     if default:
         sys.stdout.write('%s? [(yes)/no] ' % question)
     else:
         sys.stdout.write('%s? [yes/(no)] ' % question)
-    
+
     while True:
         try:
             ri = raw_input().lower()
@@ -57,7 +60,7 @@ def user_yes_no_query(question, default=False):
             return strtobool(ri)
         except ValueError:
             sys.stdout.write('Please respond with \'y\' or \'n\'.\n')
-            
+
 if __name__ == '__main__':
     print 'Welcome to the load_database script.'
     print 'Drawing thumbnails for all the compounds takes about 30 minutes'
@@ -65,7 +68,7 @@ if __name__ == '__main__':
 
     print 'Exporting the raw data as CSV files takes about 1 hour'
     export_csv = user_yes_no_query('Export raw data', default=False)
-    
+
     start = time.time()
     main(draw_thumb, export_csv)
     end = time.time()

@@ -100,7 +100,7 @@ C00236	Add	BPG	Adding a default name to the common D version
 C00236	Add	D-Glycerate-1,3-bisphosphate	Adding a default name to the common D version
 C00236	Add	Glycerate-1,3-bisphosphate	Adding a default name to the common D version
 C00236	Add	Glycerate-bisphosphate	Adding a default name to the common D version
-C00236	Add	 D-Glycerate-bisphosphate	Adding a default name to the common D version
+C00236	Add	 D-Glycerate-bisphosphate	Adding a default name to the common D version
 C00257	Add	gluco-Hexonic acid	Adding a default name to the common D version
 C00257	Add	Gluconate	Adding a default name to the common D version
 C00257	Add	Gluconic acid	Adding a default name to the common D version
@@ -112,6 +112,7 @@ C00275	Add	D-Mannose-6-phosphate	Fixing of an incorrect value
 C00275	Add	Mannose-6-phosphate	Adding a default name to the common D version
 C00275	Remove	D-Mannose 6-phosphate	Incorrect value
 C00279	Add	Erythrose-4-phosphate	Adding a default name to the common D version
+C00281	Delete	Entry	
 C00302	Remove	Glutamate	deduplication
 C00303	Add	DL-Glutamine	adding after deletion
 C00303	Remove	Glutamine	deduplication
@@ -580,7 +581,7 @@ C02209	Delete	Entry	Deletion of beta version
 C02264	Add	Glucose oxime	Adding a default name to the common D version
 C02290	Add	Carnitinamide	Adding a default name to the common L version
 C02336	Replace	C00095	Replacement of an alpha/beta value with the common value
-C02338	Delete	Entry	Deletion of beta version 
+C02338	Delete	Entry	Deletion of beta version
 C02350	Add	Allantoin	Adding a default name to the common S version
 C02359	Add	Fluorobenzoate	Adding a default name to the common version
 C02359	Add	Fluorobenzoic acid	Adding a default name to the common version
@@ -589,7 +590,7 @@ C02385	Remove	Arginine	deduplication
 C02427	Add	Homocitrulline	Adding a default name to the common L version
 C02457	Add	Propane-diol	Adding names
 C02457	Add	Propanediol	Adding names
-C02476	Delete	Entry	Deletion of alpha version 
+C02476	Delete	Entry	Deletion of alpha version
 C02479	Delete	Entry	deduplication
 C02488	Add	2-Ethylmalate	Adding a default name to the common R version
 C02522	Add	Quinovose	Adding a default name to the common D version
@@ -977,7 +978,7 @@ C04534	Remove	Cellobiose 6-phosphate	Incorrect value
 C04541	Add	N5-Dinitrophenyl-ornithine methyl ester	Addin a default name to the common L version
 C04541	Add	N5-Dinitrophenyl-ornithine-methyl-ester	Addin a default name to the common L version
 C04544	Add	gamma-Glutamyl-cysteinyl-beta-alanine	Adding a default name to the common L version
-C04544	Add	 gamma-Glu-Cys-beta-Ala	Adding a default name to the common L version
+C04544	Add	 gamma-Glu-Cys-beta-Ala	Adding a default name to the common L version
 C04563	Add	1D-myo-Inositol-1,2,4,5,6-pentakisphosphate	Fixing of an incorrect value
 C04563	Add	D-myo-Inositol-1,2,4,5,6-pentakisphosphate	Fixing of an incorrect value
 C04563	Add	Inositol-1,2,4,5,6-pentakisphosphate	Fixing of an incorrect value
@@ -1664,4 +1665,3 @@ C19761	Remove	1-O-(2-Acetamido-2-deoxy-alpha-D-glucopyranosyl)-1D-myo-inositol 3
 C19770	Add	N-Acetyl-beta-muramate-6-phosphate	Fixing of an incorrect value
 C19770	Remove	N-Acetyl-beta-muramate 6-phosphate	Incorrect value
 C19782	Add	Piperazine-2-carboxamide	Adding a default name to the common L version
-

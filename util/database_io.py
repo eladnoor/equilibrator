@@ -1,7 +1,10 @@
-import util.django_utils
 import logging
-import json, gzip, os, csv
-from gibbs import models, constants, conditions, reaction
+import json
+import gzip
+import os
+import csv
+from django.apps import apps
+from gibbs import constants, conditions
 
 DEFAULT_CITATION_DATA_FILENAME = 'data/citation_data.json'
 COMPOUND_NAME_FILE = 'data/kegg_compound_names.tsv'
@@ -33,15 +36,17 @@ def CheckData():
 
 
 def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
-    models.ValueSource.objects.all().delete()
-    
+    values_source_model = apps.get_model('gibbs.ValueSource')
+    values_source_model.objects.all().delete()
+
     parsed_json = json.load(open(json_filename))
 
     for cd in parsed_json:
         try:
             data = json.dumps(cd)
             name = cd['name']
-            source = models.ValueSource(name=name, data=data)
+            source, created = values_source_model.objects.get_or_create(
+                    name=name, data=data)
             source.save()
         except Exception, e:
             logging.error('Error parsing reference %s', cd)
@@ -51,16 +56,17 @@ def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
 
 def GetReactions(rids_list):
     """Find all the given reactions in the database.
-    
+
     Skip those that are not present.
     """
     if not rids_list:
         return []
-    
+
+    reaction_model = apps.get_model('gibbs.StoredReaction')
     rxns = []
     for rid in rids_list:
         try:
-            rxns.append(models.StoredReaction.objects.get(kegg_id=rid))
+            rxns.append(reaction_model.objects.get(kegg_id=rid))
         except Exception:
             logging.warning('Failed to retrieve reaction %s', rid)
             continue
@@ -70,18 +76,19 @@ def GetReactions(rids_list):
 def GetCompounds(cids_list):
     """
         Find all the given compounds in the database.
-    
+
         Skip those that are not present.
     """
     if not cids_list:
         return []
-    
+
     global COMPOUNDS_CACHE
-    
+
+    compound_model = apps.get_model('gibbs.Compound')
     compounds = []
     for kegg_id in cids_list:
         try:
-            compounds.append(models.Compound.objects.get(kegg_id=kegg_id))
+            compounds.append(compound_model.objects.get(kegg_id=kegg_id))
         except Exception:
             logging.warning('Failed to retrieve compound %s', kegg_id)
             continue
@@ -91,20 +98,21 @@ def GetCompounds(cids_list):
 def GetSource(source_string):
     if not source_string:
         return None
-    
+
+    source_model = apps.get_model('gibbs.ValueSource')
     lsource = source_string.strip().lower()
     if lsource in CITATIONS_CACHE:
         return CITATIONS_CACHE[lsource]
-    
+
     try:
-        source = models.ValueSource.objects.get(name__iexact=lsource)
+        source = source_model.objects.get(name__iexact=lsource)
         CITATIONS_CACHE[lsource] = source
         return source
     except Exception, e:
         logging.warning('Failed to find source "%s"', source_string)
         logging.error(e)
         logging.fatal('Bailing!')
-        
+
     return None
 
 
@@ -113,17 +121,18 @@ def AddPmapToCompound(pmap, compound, priority=1):
     source = GetSource(source_string)
     if not source:
         logging.error('Failed to get source %s', source_string)
-        return 
+        return
 
     logging.debug('Writing data from source %s', source.name)
-    
+
     if 'species' not in pmap:
         logging.error('Malformed pmap field for %s', compound.kegg_id)
         return
-    
-    sg = models.SpeciesGroup(kegg_id=compound.kegg_id,
-                             priority=priority,
-                             formation_energy_source=source)
+
+    sg = apps.get_model('gibbs.SpeciesGroup').objects.get_or_create(
+            kegg_id=compound.kegg_id,
+            priority=priority,
+            formation_energy_source=source)
     sg.save()
 
     for sdict in pmap['species']:
@@ -152,16 +161,17 @@ def AddPmapToCompound(pmap, compound, priority=1):
                 number_of_mgs = 0
             if net_charge is None:
                 net_charge = 0
-        
-        specie = models.Specie(kegg_id=compound.kegg_id,
-                               number_of_hydrogens=number_of_hydrogens,
-                               number_of_mgs=number_of_mgs,
-                               net_charge=net_charge,
-                               formation_energy=formation_energy,
-                               phase=phase)
+
+        specie = apps.get_model('gibbs.Specie').objects.get_or_create(
+                kegg_id=compound.kegg_id,
+                number_of_hydrogens=number_of_hydrogens,
+                number_of_mgs=number_of_mgs,
+                net_charge=net_charge,
+                formation_energy=formation_energy,
+                phase=phase)
         specie.save()
         sg.species.add(specie)
-    
+
     sg.save()
     compound.species_groups.add(sg)
 
@@ -181,14 +191,14 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
             names.remove(name)
             names = [name] + names
         cid2names[compound_id] = names
-    
+
     cid_replace = {}
     for row in csv.DictReader(open(kegg_renaming_filename, 'r'), delimiter='\t'):
         compound_id = row['CID']
         if compound_id not in cid2names:
             raise ValueError('%s appears in the renaming file, but not in the KEGG list'
                              % compound_id)
-        
+
         command = row['command']
         name = row['name']
         if command.lower() == 'remove':
@@ -213,18 +223,20 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
             raise ValueError('Unknown command: %s' % command)
 
     for compound_id, names in sorted(cid2names.iteritems()):
-        names = map(models.CommonName.GetOrCreate, names + [compound_id])
-        
-        compound = models.Compound(kegg_id=compound_id, name=names[0])
+        names = map(apps.get_model('gibbs.CommonName').GetOrCreate,
+                    names + [compound_id])
+
+        compound, created = apps.get_model('gibbs.Compound').objects.get_or_create(
+                kegg_id=compound_id, name=names[0])
         compound.save()
 
         # add the compound_id itself also as an optional name
         map(compound.common_names.add, names)
 
         compound.save()
-    
+
     return cid_replace
-    
+
 def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
     parsed_json = json.load(gzip.open(energy_json_filenane, 'r'))
 
@@ -233,10 +245,9 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
         try:
             compound_id = cd['CID']
             logging.debug('Handling compound %s', compound_id)
-            compound = models.Compound.objects.get(kegg_id=compound_id)
-            if compound is None:
-                continue
-            
+            compound = apps.get_model('gibbs.Compound').objects.get_or_create(
+                    kegg_id=compound_id)
+
             compound.formula = cd.get('formula')
             compound.inchi = cd.get('InChI')
             compound.index = cd.get('compound_index')
@@ -245,7 +256,7 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
             mass = cd.get('mass')
             if mass is not None:
                 compound.mass = float(mass)
-        
+
             num_electrons = cd.get('num_electrons')
             if num_electrons is not None:
                 compound.num_electrons = int(num_electrons)
@@ -258,7 +269,7 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
                     compound.no_dg_explanation = error
             else:
                 AddPmapToCompound(pmap, compound, priority=priority)
-            
+
             compound.save()
 
         except Exception, e:
@@ -274,10 +285,9 @@ def LoadAlbertyEnergies(alberty_json_filenane=ALBERTY_FILENAME, priority=2):
         try:
             compound_id = 'C%05d' % int(cd['cid'])
             logging.debug('Handling compound %s', compound_id)
-            compound = models.Compound.objects.get(kegg_id=compound_id)
-            if compound is None:
-                continue
-            
+            compound = apps.get_model('gibbs.Compound').objects.get_or_create(
+                    kegg_id=compound_id)
+
             # Add the thermodynamic data.
             AddPmapToCompound(cd, compound, priority=priority)
             compound.save()
@@ -287,7 +297,7 @@ def LoadAlbertyEnergies(alberty_json_filenane=ALBERTY_FILENAME, priority=2):
             continue
 
 def DrawThumbnails():
-    for c in models.Compound.objects.all():
+    for c in apps.get_model('gibbs.Compound').objects.all():
         c.WriteStructureThumbnail()
         c.save()
 
@@ -300,17 +310,17 @@ def LoadKeggReactions(cid_replace, reactions_json_filename=REACTION_FILE):
 
             for coeff_cid_pair in rd['reaction']:
                 if coeff_cid_pair[1] in cid_replace:
-                    logging.info('replacing %s with %s in reaction %s' % 
+                    logging.info('replacing %s with %s in reaction %s' %
                                  (coeff_cid_pair[1],
                                   cid_replace[coeff_cid_pair[1]],
                                   rid))
                     coeff_cid_pair[1] = cid_replace[coeff_cid_pair[1]]
 
-            rxn = models.StoredReaction.FromJson(rd)
+            rxn = apps.get_model('gibbs.StoredReaction').FromJson(rd)
             rxn.GenerateHash()
             rxn.save()
         except Exception, e:
-            logging.warning('Missing data for reaction %s', rid)           
+            logging.warning('Missing data for reaction %s', rid)
             logging.warning(e)
             continue
 
@@ -322,36 +332,37 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             ec = ed['EC']
             names = ed['names'] # add the EC number also as an optional name
             reactions = ed['reaction_ids']
-            
+
             if not ec:
                 raise KeyError('Encountered an enzyme without an EC number.')
             if not names:
                 raise KeyError('Common names are required for enzymes (EC) %s.' % ec )
-            
+
             reactions = GetReactions(reactions)
             if not reactions:
                 logging.info('Ignoring EC %s since we found no reactions.' % ec)
                 continue
-            
+
             # Save first so we can do many-to-many mappings.
-            enz = models.Enzyme(ec=ec)
+            enz = apps.get_model('gibbs.Enzyme').objects.get_or_create(ec=ec)
             enz.save()
-            
+
             # Add names, reactions, and compound mappings.
-            names = map(models.CommonName.GetOrCreate, names + [ec])
+            names = map(apps.get_model('gibbs.CommonName').GetOrCreate,
+                        names + [ec])
             map(enz.common_names.add, names)
             map(enz.reactions.add, reactions)
             enz.save()
-            
+
         except Exception, e:
-            logging.warning('Missing data for ec %s', ec)           
+            logging.warning('Missing data for ec %s', ec)
             logging.warning(e)
             continue
 
 
 def GenerateCompoundThumbnails():
-    
-    for compound in models.Compound.objects.all():
+
+    for compound in apps.get_model('gibbs.Compound').objects.all():
         # thumbnail starts as None when the compound is created
         # so an empty string will mean there was an error and the thumbnail
         # cannot be created
@@ -364,9 +375,10 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
     for cd in parsed_json:
         try:
             cid = cd['CID']
-            
-            compound = models.Compound.objects.get(kegg_id=cid)
-            
+
+            compound = apps.get_model('gibbs.Compound').objects.get_or_create(
+                    kegg_id=cid)
+
             note = cd.get('note')
             preferred_name = cd.get('preferred name')
             details_link = cd.get('details_link')
@@ -380,7 +392,8 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
             if details_link:
                 compound.details_link = details_link
             if names:
-                names = map(models.CommonName.GetOrCreate, names)
+                names = map(apps.get_model('gibbs.CommonName').GetOrCreate,
+                            names)
                 map(compound.common_names.add, names)
             if pmaps:
                 # override the pseudoisomer map that appears in the
@@ -389,7 +402,7 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
                 for pmap in pmaps:
                     priority = pmap['priority']
                     AddPmapToCompound(pmap, compound, priority=priority)
-                    
+
             compound.save()
         except Exception, e:
             logging.error('Error parsing cid %s', cid)
@@ -398,7 +411,7 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
 
 
 def export_database():
-    
+
     export_compounds(priority=2, name='Alberty',
                      ionic_strength=constants.DEFAULT_IONIC_STRENGTH,
                      pMg=constants.DEFAULT_PMG,
@@ -415,8 +428,8 @@ def export_database():
 def export_json():
     logging.info("Writing compound data to JSON file: %s" % DOWNLOADS_JSON_FNAME)
     rowdicts = []
-    for c in models.Compound.objects.all():
-        d = {'name': str(c.name), 
+    for c in apps.get_model('gibbs.Compound').objects.all():
+        d = {'name': str(c.name),
              'KEGG_ID': c.kegg_id,
              'InChI': c.inchi,
              'mass': c.mass,
@@ -435,12 +448,12 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
         csv_reaction_dict[pH] = csv.writer(gzip.open(reaction_fname, 'w'))
         csv_reaction_dict[pH].writerow(["!!SBtab TableType='Reaction' TableName='Reaction Energies pH=5.0"])
         csv_reaction_dict[pH].writerow(["!Identifiers:kegg.reaction",
-                                        "transformed standard Gibbs free energy of reaction [kJ/mol]:Mean", 
+                                        "transformed standard Gibbs free energy of reaction [kJ/mol]:Mean",
                                         "transformed standard Gibbs free energy of reaction [kJ/mol]:Std",
                                         "pH",
                                         "ionic strength [M]", "temperature [K]", "!Comment"])
-    
-    for r in models.StoredReaction.objects.all():
+
+    for r in apps.get_model('gibbs.StoredReaction').objects.all():
         rxn = r.ToReaction()
         try:
             dG0_std = rxn.DeltaGUncertainty()
@@ -449,19 +462,19 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
         except Exception as e:
             logging.debug(str(e))
             dG0_std = None
-        
+
         if dG0_std is None or dG0_std > 200:
             for pH in pH_list:
                 row = (r.kegg_id, None, None, pH, ionic_strength,
                        constants.DEFAULT_TEMP, 'uncertainty is too high')
                 csv_reaction_dict[pH].writerow(row)
             continue
-        
+
         for pH in pH_list:
             rxn.aq_params = conditions.AqueousParams(pH=pH, pMg=pMg,
                                                      ionic_strength=ionic_strength,
                                                      max_priority=priority)
-                                                     
+
             try:
                 dG0_prime = rxn.DeltaG0Prime()
                 dG0_prime = round(dG0_prime, 1)
@@ -470,7 +483,7 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
                 logging.warning(str(e))
                 dG0_prime = None
                 comment = rxn.NoDeltaGExplanation()
-            
+
             row = (r.kegg_id, dG0_prime, dG0_std, pH, ionic_strength,
                    constants.DEFAULT_TEMP, comment)
             csv_reaction_dict[pH].writerow(row)
@@ -492,16 +505,16 @@ def export_compounds(priority, name, ionic_strength, pMg, pH_list):
                                         "!Compound", "transformed standard Gibbs free energy of formation [kJ/mol]",
                                         "pH", "ionic strength [M]", "temperature [K]",
                                         "!Comment"])
-    
+
     logging.info("Writing chemical and biochemical formation energies for %s to: %s" %
                  (name, pseudoisomer_fname))
-    for compound in models.Compound.objects.all():
+    for compound in apps.get_model('gibbs.Compound').objects.all():
         phase = compound.GetDefaultPhaseName()
-        rows = compound.ToCSVdG0(priority, phase=phase)        
+        rows = compound.ToCSVdG0(priority, phase=phase)
         csv_pseudoisomers.writerows(rows)
         for pH in pH_list:
             aq_params = conditions.AqueousParams(pH=pH, pMg=pMg,
                                                  ionic_strength=ionic_strength)
-            rows = compound.ToCSVdG0Prime(priority, aq_params=aq_params, 
+            rows = compound.ToCSVdG0Prime(priority, aq_params=aq_params,
                                           phase=phase)
             csv_compound_dict[pH].writerows(rows)
