@@ -1,50 +1,55 @@
-import logging, time, datetime, sys
-import numpy as np
-from util import database_io as db
+import logging
+import time
+import datetime
+import sys
+import numpy
+from util import database_io
 from django.db import transaction
 from distutils.util import strtobool
 import django
+
 
 def main(draw_thumb=False, export_csv=False):
     django.setup()
 
     transaction.set_autocommit(False)
 
-    db.CheckData()
+    database_io.CheckData()
 
     logging.info('Loading citation data')
-    db.LoadCitationData()
+    database_io.LoadCitationData()
     transaction.commit()
 
     logging.info('Loading KEGG compound names')
-    cid_replace = db.LoadKeggCompoundNames()
+    cid_replace = database_io.LoadKeggCompoundNames()
     transaction.commit()
 
     logging.info('Loading KEGG compound thermodynamic data')
-    db.LoadFormationEnergies()
-    db.LoadAlbertyEnergies()
+    database_io.LoadFormationEnergies()
+    database_io.LoadAlbertyEnergies()
     transaction.commit()
 
     logging.info('Loading KEGG reaction data')
-    db.LoadKeggReactions(cid_replace)
+    database_io.LoadKeggReactions(cid_replace)
     transaction.commit()
 
     logging.info('Loading KEGG enzyme data')
-    db.LoadKeggEnzymes()
+    database_io.LoadKeggEnzymes()
     transaction.commit()
 
     if draw_thumb:
         logging.info('Drawing thumbnails for all KEGG compounds')
-        db.GenerateCompoundThumbnails()
+        database_io.GenerateCompoundThumbnails()
         transaction.commit()
 
     logging.info('Loading corrections/additions to KEGG')
-    db.LoadAdditionalCompoundData()
+    database_io.LoadAdditionalCompoundData()
     transaction.commit()
 
     if export_csv:
         logging.info('Exporting database to JSON and CSV files')
-        db.export_database()
+        database_io.export_database()
+
 
 def user_yes_no_query(question, default=False):
     if default:
@@ -72,5 +77,5 @@ if __name__ == '__main__':
     start = time.time()
     main(draw_thumb, export_csv)
     end = time.time()
-    elapsed = datetime.timedelta(seconds=np.floor(end - start))
+    elapsed = datetime.timedelta(seconds=numpy.floor(end - start))
     logging.info('Elapsed loading time = %s' % str(elapsed))

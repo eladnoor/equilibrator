@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 
 POSSIBLE_REACTION_ARROWS = ('=', '=>', '<=>', '->',
                             '<->', u'\u2192', u'\u21CC')
@@ -20,7 +20,7 @@ DEFAULT_ELECTRON_REDUCTION_POTENTIAL = 0  # mV
 PH_RANGE_VALUES = [5.0, 5.5, 6.0, 6.5, 7.0, 7.5, 8.0, 8.5, 9.0]
 
 RT = R * DEFAULT_TEMP
-RTlog10 = R * DEFAULT_TEMP * np.log(10)
+RTlog10 = R * DEFAULT_TEMP * numpy.log(10)
 
 
 PHYS_AQUEOUS_VALUE = 1e-3  # 1 mM

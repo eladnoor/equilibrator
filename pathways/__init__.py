@@ -1,6 +1,6 @@
 import csv
 import logging
-import numpy as np
+import numpy
 import seaborn
 import StringIO
 
@@ -52,7 +52,7 @@ class ParsedPathway(object):
 
         Args:
             reactions: a list of gibbs.reaction.Reaction objects.
-            fluxes: np.array of relative fluxes in same order as reactions.
+            fluxes: numpy.array of relative fluxes in same order as reactions.
             dG0_r_primes: reaction energies.
             bounds: bounds on metabolite concentrations.
                 Uses default bounds if None provided.
@@ -66,8 +66,8 @@ class ParsedPathway(object):
         self.reaction_kegg_ids = [r.stored_reaction_id for r in reactions]
         self.aq_params = aq_params
 
-        self.fluxes = np.array(fluxes)
-        self.dG0_r_prime = np.array(dG0_r_primes)
+        self.fluxes = numpy.array(fluxes)
+        self.dG0_r_prime = numpy.array(dG0_r_primes)
 
         self.bounds = bounds or DEFAULT_BOUNDS
 
@@ -82,11 +82,11 @@ class ParsedPathway(object):
         # If not, dGr is not contained in image(S) and then there
         # is no consistent set of dGfs that generates dGr and the
         # first law of thermo is violated by the model.
-        Smat = np.matrix(self.S)
+        Smat = numpy.matrix(self.S)
         Spinv = linalg.pinv(Smat)
-        null_proj = np.matrix(np.eye(Smat.shape[0])) - Smat*Spinv
-        projected = null_proj * np.matrix(self.dG0_r_prime).T
-        if not np.all(projected < 1e-8):
+        null_proj = numpy.matrix(numpy.eye(Smat.shape[0])) - Smat*Spinv
+        projected = null_proj * numpy.matrix(self.dG0_r_prime).T
+        if not numpy.all(projected < 1e-8):
             raise ViolatesFirstLaw(
                 'Supplied reaction dG values are inconsistent '
                 'with the stoichiometric matrix.')
@@ -194,7 +194,7 @@ class ParsedPathway(object):
         # reactions on the rows, compounds on the columns
         n_reactions = len(self.reactions)
         n_compounds = len(compounds)
-        smat = np.zeros((n_reactions, n_compounds))
+        smat = numpy.zeros((n_reactions, n_compounds))
         for i, s in enumerate(sparses):
             for j, c in enumerate(compounds):
                 smat[i, j] = s.get(c, 0)
@@ -206,16 +206,16 @@ class ParsedPathway(object):
         atom_balaned = [r.IsBalanced() for r in self.reactions]
         electron_balaned = [r.IsElectronBalanced() for r in self.reactions]
 
-        balanced = np.logical_and(atom_balaned, electron_balaned)
-        return np.all(balanced)
+        balanced = numpy.logical_and(atom_balaned, electron_balaned)
+        return numpy.all(balanced)
 
     @property
     def reactions_have_dG(self):
-        return np.all([dG is not None for dG in self.dG0_r_prime])
+        return numpy.all([dG is not None for dG in self.dG0_r_prime])
 
     @property
     def pathway_model(self):
-        dGs = np.matrix(self.dG0_r_prime).T
+        dGs = numpy.matrix(self.dG0_r_prime).T
         model = PathwayThermoModel(self.S.T, self.fluxes, dGs,
                                    self.compound_kegg_ids,
                                    self.reaction_kegg_ids,
@@ -279,7 +279,7 @@ class ParsedPathway(object):
         # grab rows containing keqs.
         keqs = keqs_df[keqs_df['QuantityType'] == 'equilibrium constant']
         reaction_keqs = dict(zip(keqs['Reaction'], keqs['Value']))
-        dgs = [-DEFAULT_RT * np.log(float(reaction_keqs[rid]))
+        dgs = [-DEFAULT_RT * numpy.log(float(reaction_keqs[rid]))
                for rid in reaction_ids]
 
         # Manually set the delta G values on the reaction objects
@@ -368,7 +368,7 @@ class ParsedPathway(object):
         writer.writeheader()
         for i, (rxn_id, rxn, dg) in enumerate(zip(rxn_ids, self.reactions, self.dG0_r_prime)):
             keq_id = 'kEQ_R%d' % i
-            keq = np.exp(-dg / DEFAULT_RT)
+            keq = numpy.exp(-dg / DEFAULT_RT)
             d = {'!QuantityType': 'equilibrium constant',
                  '!Reaction': rxn_id,
                  '!Value': keq,
@@ -500,8 +500,8 @@ class PathwayMDFData(object):
 
     @property
     def conc_plot_svg(self):
-        ys = np.arange(0, len(self.compound_data))
-        concs = np.array([c.concentration for c in self.compound_data])
+        ys = numpy.arange(0, len(self.compound_data))
+        concs = numpy.array([c.concentration for c in self.compound_data])
         cnames = [str(c.compound) for c in self.compound_data]
         default_lb = self.model.concentration_bounds.default_lb
         default_ub = self.model.concentration_bounds.default_ub
@@ -511,14 +511,14 @@ class PathwayMDFData(object):
                for cid in cids]
         ubs = [self.model.concentration_bounds.GetUpperBound(cid)
                for cid in cids]
-        lbs, ubs = np.array(lbs), np.array(ubs)
-        bounds_equal = np.where(lbs == ubs)
+        lbs, ubs = numpy.array(lbs), numpy.array(ubs)
+        bounds_equal = numpy.where(lbs == ubs)
         ys_equal = ys[bounds_equal]
         concs_equal = concs[bounds_equal]
 
         # Special color for metabolites with nonzero shadow prices.
-        shadow_prices = np.array([c.shadow_price for c in self.compound_data])
-        nz_shadow = np.where(shadow_prices != 0)
+        shadow_prices = numpy.array([c.shadow_price for c in self.compound_data])
+        nz_shadow = numpy.where(shadow_prices != 0)
         ys_nz_shadow = ys[nz_shadow]
         concs_nz_shadow = concs[nz_shadow]
 
@@ -552,10 +552,10 @@ class PathwayMDFData(object):
     def mdf_plot_svg(self):
         dgs = [0] + [r.dGr for r in self.reaction_data]
         dgms = [0] + [r.dGm_prime for r in self.reaction_data]
-        cumulative_dgs = np.cumsum(dgs)
-        cumulative_dgms = np.cumsum(dgms)
+        cumulative_dgs = numpy.cumsum(dgs)
+        cumulative_dgms = numpy.cumsum(dgms)
 
-        xs = np.arange(0, len(cumulative_dgs))
+        xs = numpy.arange(0, len(cumulative_dgs))
 
         mdf_fig = plt.figure(figsize=(8, 8))
         seaborn.set_style('darkgrid')

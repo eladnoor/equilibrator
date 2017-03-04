@@ -2,7 +2,7 @@
 
 import logging
 import csv
-import numpy as np
+import numpy
 
 from copy import deepcopy
 from pathways.concs import ConcentrationConverter
@@ -25,15 +25,15 @@ class BaseBounds(object):
 
     def GetLowerBound(self, key):
         """Get the lower bound for this key.
-        
+
         Args:
             key: a string key.
         """
         raise NotImplementedError
-        
+
     def GetUpperBound(self, key):
         """Get the upper bound for this key.
-        
+
         Args:
             key: a string key.
         """
@@ -45,37 +45,37 @@ class BaseBounds(object):
 
     def GetBounds(self, keys):
         """Get the bounds for a set of keys in order.
-        
+
         Args:
             keys: an iterable of keys.
-        
+
         Returns:
             A two-tuple (lower_bounds, upper_bounds) where both
             items are Numpy arrays of dimensions 1xlen(keys)
         """
-        lbs = np.matrix(np.ones((len(keys), 1)))
-        ubs = np.matrix(np.ones((len(keys), 1)))
+        lbs = numpy.matrix(numpy.ones((len(keys), 1)))
+        ubs = numpy.matrix(numpy.ones((len(keys), 1)))
         for i, key in enumerate(keys):
             lbs[i, 0] = self.GetLowerBound(key)
             ubs[i, 0] = self.GetUpperBound(key)
         return lbs, ubs
-        
+
     def GetLnBounds(self, keys):
         """Get the bounds for a set of keys in order.
-        
+
         Args:
             keys: an iterable of keys.
-        
+
         Returns:
             A two-tuple (lower_bounds, upper_bounds) where both
             items are Numpy arrays of dimensions 1xlen(keys)
         """
         lb, ub = self.GetBounds(keys)
-        return np.log(lb), np.log(ub)
-    
+        return numpy.log(lb), numpy.log(ub)
+
     def SetBounds(self, key, lb, ub):
         """Set bounds for a specific key.
-        
+
         Args:
             key: the key for the bounds.
             lb: the lower bound value.
@@ -84,18 +84,18 @@ class BaseBounds(object):
         assert lb <= ub
         self.lower_bounds[key] = lb
         self.upper_bounds[key] = ub
-    
+
 
 class Bounds(BaseBounds):
     """Contains upper and lower bounds for various keys. Allows for defaults."""
-    
+
     def __init__(self,
                  lower_bounds=None,
                  upper_bounds=None,
                  default_lb=None,
                  default_ub=None):
         """Initialize the bounds object.
-        
+
         Args:
             lower_bounds: a dictionary mapping strings to float lower bounds.
             upper_bounds: a dictionary mapping strings to float upper bounds.
@@ -189,26 +189,25 @@ class Bounds(BaseBounds):
         return Bounds(new_lb, new_ub,
                       self.default_lb,
                       self.default_ub)
-        
+
     def GetRange(self):
         """Returns a 2-tuple of the concentration range."""
         return self.c_range
 
     def GetLowerBound(self, key):
         """Get the lower bound for this key.
-        
+
         Args:
             key: a string key.
         """
         val = self.lower_bounds.get(key) or self.default_lb
         return val
-    
+
     def GetUpperBound(self, key):
         """Get the upper bound for this key.
-        
+
         Args:
             key: a string key.
         """
         val = self.upper_bounds.get(key) or self.default_ub
         return val
-    
