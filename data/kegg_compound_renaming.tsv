@@ -1050,16 +1050,16 @@ C05345	Replace	C00085	Replacement of an alpha/beta value with the common value
 C05378	Remove	beta-D-Fructose 1,6-bisphosphate	Incorrect value
 C05378	Add	Fructose-1,6-bisphosphate	Adding a default name to the common D version
 C05378	Add	beta-D-Fructose-1,6-bisphosphate	Fixing of an incorrect value
-C05382	Add	altro-Heptulose-7-phosphate	Fixing of an incorrect value
-C05382	Add	D-altro-Heptulose-7-phosphate	Fixing of an incorrect value
+C05382	Remove	D-Sedoheptulose 7-phosphate	Incorrect value
 C05382	Add	D-Sedoheptulose-7-phosphate	Fixing of an incorrect value
+C05382	Remove	Sedoheptulose 7-phosphate	Incorrect value
 C05382	Add	Sedoheptulose-7-phosphate	Fixing of an incorrect value
+C05382	Remove	altro-Heptulose 7-phosphate	Incorrect value
+C05382	Add	altro-Heptulose-7-phosphate	Fixing of an incorrect value
+C05382	Remove	D-altro-Heptulose 7-phosphate	Incorrect value
+C05382	Add	D-altro-Heptulose-7-phosphate	Fixing of an incorrect value
 C05382	Add	Sedoheptulose-phosphate	Adding a default name to the common version
 C05382	Add	Sedoheptulosephosphate	Adding a default name to the common version
-C05382	Remove	altro-Heptulose 7-phosphate	Incorrect value
-C05382	Remove	D-altro-Heptulose 7-phosphate	Incorrect value
-C05382	Remove	D-Sedoheptulose 7-phosphate	Incorrect value
-C05382	Remove	Sedoheptulose 7-phosphate	Incorrect value
 C05385	Add	D-Glucuronate-1-phosphate	Fixing of an incorrect value
 C05385	Add	Glucuronate-1-phosphate	Adding a default name to the common D version
 C05385	Remove	D-Glucuronate 1-phosphate	Incorrect value
