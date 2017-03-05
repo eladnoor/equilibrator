@@ -129,7 +129,7 @@ def AddPmapToCompound(pmap, compound, priority=1):
         logging.error('Malformed pmap field for %s', compound.kegg_id)
         return
 
-    sg = apps.get_model('gibbs.SpeciesGroup').objects.get_or_create(
+    sg, created = apps.get_model('gibbs.SpeciesGroup').objects.get_or_create(
             kegg_id=compound.kegg_id,
             priority=priority,
             formation_energy_source=source)
@@ -162,7 +162,7 @@ def AddPmapToCompound(pmap, compound, priority=1):
             if net_charge is None:
                 net_charge = 0
 
-        specie = apps.get_model('gibbs.Specie').objects.get_or_create(
+        specie, created = apps.get_model('gibbs.Specie').objects.get_or_create(
                 kegg_id=compound.kegg_id,
                 number_of_hydrogens=number_of_hydrogens,
                 number_of_mgs=number_of_mgs,
@@ -245,7 +245,7 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
         try:
             compound_id = cd['CID']
             logging.debug('Handling compound %s', compound_id)
-            compound = apps.get_model('gibbs.Compound').objects.get_or_create(
+            compound = apps.get_model('gibbs.Compound').objects.get(
                     kegg_id=compound_id)
 
             compound.formula = cd.get('formula')
@@ -285,7 +285,7 @@ def LoadAlbertyEnergies(alberty_json_filenane=ALBERTY_FILENAME, priority=2):
         try:
             compound_id = 'C%05d' % int(cd['cid'])
             logging.debug('Handling compound %s', compound_id)
-            compound = apps.get_model('gibbs.Compound').objects.get_or_create(
+            compound = apps.get_model('gibbs.Compound').objects.get(
                     kegg_id=compound_id)
 
             # Add the thermodynamic data.
@@ -344,7 +344,7 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
                 continue
 
             # Save first so we can do many-to-many mappings.
-            enz = apps.get_model('gibbs.Enzyme').objects.get_or_create(ec=ec)
+            enz, created = apps.get_model('gibbs.Enzyme').objects.get_or_create(ec=ec)
             enz.save()
 
             # Add names, reactions, and compound mappings.
@@ -376,8 +376,7 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
         try:
             cid = cd['CID']
 
-            compound = apps.get_model('gibbs.Compound').objects.get_or_create(
-                    kegg_id=cid)
+            compound = apps.get_model('gibbs.Compound').objects.get(kegg_id=cid)
 
             note = cd.get('note')
             preferred_name = cd.get('preferred name')
