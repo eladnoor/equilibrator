@@ -63,11 +63,12 @@ sudo cp solr/schema.xml /etc/solr/conf/
 sudo /etc/init.d/tomcat7 restart
 ```
 
-* Replace the appropriate database name (<MYSQLDB>), username (<MYSQLUSR>) 
-  and password (<MYSQLPWD>) in settings.py.
-* If necessary, run `python manage.py reset_db` to clear history.
-* Run `python sql_load.py` to load the database up. 
-* Run `python manage.py rebuild_index` to build the search index.
+* Replace the appropriate database name (`<MYSQLDB>`), username (`<MYSQLUSR>`) 
+  and password (`<MYSQLPWD>`) in settings.py.
+* Run `python manage.py migrate --run-syncdb` to build database schema.
+* Run `python db_load_from_sqldump.py` to load the data into the database.
+* (optional) instead of `db_load_from_sqldump`, you can use `db_load_from_raw_files`
+  which will take much longer (2 hours).
 
 # Running the Development Server on a Remote Host
 
