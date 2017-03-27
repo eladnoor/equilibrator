@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, ".."))
 # Force matplotlib to not use any Xwindows backend.
 matplotlib.use('Agg')
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '*',  # Allow domain and subdomains
