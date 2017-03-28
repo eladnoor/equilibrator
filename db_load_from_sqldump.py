@@ -13,7 +13,7 @@ from django.core.management import execute_from_command_line
 def main():
     django.setup()
     logging.info('> Flushing SQL data')
-    execute_from_command_line(['', 'flush', '--noinput'])
+    execute_from_command_line(['', 'reset_db', '--noinput'])
 
     logging.info('> Loading data from sqldump into MySQL')
     db_user, db_name, db_pass = map(settings.DATABASES['default'].get, ['USER', 'NAME', 'PASSWORD'])
