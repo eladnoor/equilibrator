@@ -7,6 +7,11 @@ through an intuitive free-text interface. The current online
 version of eQuilibrator can be found at:
 http://equilibrator.weizmann.ac.il/
 
+If you are looking for the back-end library used to estimate standard Gibbs free energies
+[DOI: 10.1371/journal.pcbi.1003098](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003098),
+you can find it in the following GitHub repository:
+[Component Contribution](https://github.com/eladnoor/component-contribution)
+
 eQuilibrator is written in Python using the Django framework.
 It was developed primarily on Ubuntu 16.04 64-bit and is easiest
 to develop and set up on that operating system. Setup instructions
