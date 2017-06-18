@@ -181,11 +181,11 @@
 <p>Glucose ⇌ 2 Pyruvate + 4 e-</p>
 <p>In order track the electrons explicitly. These electrons don’t just float around the cell: they are carried by specific compounds called electron carriers. In glycolysis, the electron carrier of choice is nicotinamide adenine dinucleotide (NAD). To fix the electron imbalance, try clicking on the “Balance with NAD+/NADH” link.</p>
 <p>The full glycolysis reaction, including electron carriers and ATP production is:</p>
-<p>Glucose + 2 NAD+ + 2 ADP + 2 Pi ⇌ 2 Pyruvate + 2 NADH + 2 ATP + 2 H2O</p>
+<p>Glucose + 2 NAD+ + 2 ADP + 2 Pi ⇌ 2 Pyruvate + 2 NADH + 2 ATP + 2 H<sub>2</sub>O</p>
 <p>Clearly glycolysis produces ATP without any oxygen. However, if you ran glycolysis over and over again to provide ATP, the amount of NADH in the cell would grow continually. The ratio of NAD+ concentration to NADH concentration - sometimes called the “redox state” - is very important to living cells because it affects the energetics of redox reactions, in particular in glycolysis. In order to keep this ratio constant (homeostasis), the electrons stored in NADH need to move on to a different molecule. Fermentation to lactate solves this problem by taking the electrons carried by NADH and giving them to pyruvate to form lactate:</p>
 <p>2 Pyruvate + 2 NADH ⇌ 2 Lactate + 2 NAD+</p>
 <p>Since lactate build-up is problematic (in much the same way that NADH build up is) the lactate is then excreted from the cell. Fermentation to lactate, then, produces 2 ATP from one glucose while forming 2 lactate:</p>
-<p>Glucose + 2 ADP + 2 Pi ⇌ 2 Lactate + 2 ATP + 2 H2O</p>
+<p>Glucose + 2 ADP + 2 Pi ⇌ 2 Lactate + 2 ATP + 2 H<sub>2</sub>O</p>
 <p>This neat biochemical trick enables organisms as varied as E. coli and humans to produce energy from sugars even when oxygen isn’t available.</p>
 <div class="section" id="nadh-as-an-electron-carrier">
 <h2>NADH as an Electron Carrier<a class="headerlink" href="#nadh-as-an-electron-carrier" title="Permalink to this headline">¶</a></h2>
@@ -215,22 +215,22 @@ NADH &lt;=&gt; NAD+ + 2e- E’m ≈ -330 mV</p>
 <h2>Mixtures of Fermentation Products<a class="headerlink" href="#mixtures-of-fermentation-products" title="Permalink to this headline">¶</a></h2>
 <p>Bacteria produce many different kinds of fermentation products. The only requirement is that the products of a fermentation pathway contain the same number of electrons as the substrates. Indeed, as we saw with ethanol fermentation, it’s possible to make multiple fermentation products (ethanol + CO2) so long as redox balance is preserved.</p>
 <p>In mixed fermentation, cells produce (surprise!) a precise mixture of products that together are redox balanced with their substrate. E. coli, for example, can use this strategy to make an extra ATP by converting pyruvate to a 1:1:1 mixture of acetate, ethanol and formate.</p>
-<p>2 Pyruvate + 2 NADH + H2O &lt;=&gt; Acetate + Ethanol + 2 Formate + 2 NAD+</p>
+<p>2 Pyruvate + 2 NADH + H<sub>2</sub>O &lt;=&gt; Acetate + Ethanol + 2 Formate + 2 NAD+</p>
 <p>Formate is fairly toxic, so it is subsequently converted to CO2 and molecular hydrogen by an enzyme called formate hydrogenlyase</p>
 <p>Formate &lt;=&gt; CO2 + H2</p>
 <p>Considering the net reaction of this process in eQuilibrator</p>
-<p>2 Pyruvate + 2 NADH + H2O &lt;=&gt; Acetate + Ethanol + 2 CO2 + 2 NAD+ + 2 H2</p>
+<p>2 Pyruvate + 2 NADH + H <sub>2</sub> O &lt;=&gt; Acetate + Ethanol + 2 CO2 + 2 NAD+ + 2 H2</p>
 <p>We see that it has a ΔrG’m around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable</p>
-<p>Glucose + 3 ADP + 3 Pi &lt;=&gt; Acetate + Ethanol + 2 CO2 + 2 H2 + 3 ATP + 2 H2O</p>
+<p>Glucose + 3 ADP + 3 Pi &lt;=&gt; Acetate + Ethanol + 2 CO2 + 2 H2 + 3 ATP + 2 H<sub>2</sub>O</p>
 <p>So how does E. coli get an extra ATP out of this transformation from pyruvate to acetate, ethanol and formate? To see how, consider the conversion of pyruvate to acetate, which takes place in the following 3 steps</p>
 <ol class="arabic simple">
 <li>CoA + Pyruvate &lt;=&gt; Acetyl-CoA + Formate</li>
 <li>Acetyl-CoA + Pi &lt;=&gt; Acetyl-Phosphate + CoA</li>
 <li>ADP + Acetyl phosphate &lt;=&gt; ATP + Acetate</li>
 </ol>
-<p>Acetate is formed via the intermediate of acetyl-CoA, which allows for the production of ATP (as discussed above). Notice, however, that this 3-step pathway is redox neutral - it does not consume any of the NADH that would have been produced in glycolysis to make pyruvate. So E. coli can’t ferment glucose entirely to acetate and formate because that would not be a redox neutral transformation, as you can see by balancing the net reaction on eQuilibrator.
-Glucose + 2 NAD+ + 2 H2O &lt;=&gt; 2 Acetate + 2 Formate + 2 NADH
-Producing one ethanol for every acetate ensures that the overall fermentation pathway is redox balanced. This can be seen by considering how ethanol is made from pyruvate in this case</p>
+<p>Acetate is formed via the intermediate of acetyl-CoA, which allows for the production of ATP (as discussed above). Notice, however, that this 3-step pathway is redox neutral - it does not consume any of the NADH that would have been produced in glycolysis to make pyruvate. So E. coli can’t ferment glucose entirely to acetate and formate because that would not be a redox neutral transformation, as you can see by balancing the net reaction on eQuilibrator.</p>
+<p>Glucose + 2 NAD+ + H<sub>2</sub>O &lt;=&gt; 2 Acetate + 2 Formate + 2 NADH</p>
+<p>Producing one ethanol for every acetate ensures that the overall fermentation pathway is redox balanced. This can be seen by considering how ethanol is made from pyruvate in this case</p>
 <ol class="arabic simple">
 <li>CoA + Pyruvate &lt;=&gt; Acetyl-CoA + Formate</li>
 <li>NADH + Acetyl-CoA &lt;=&gt; NAD+ + CoA + Acetaldehyde</li>

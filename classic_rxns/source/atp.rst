@@ -3,7 +3,7 @@ Energy Currency and ATP Hydrolysis
 
 ATP is considered the energy "currency" of the cell. But how much is that currency worth? How much energy is in an ATP hydrolysis reaction? The hydrolysis of one phosphoanhydride bond to form ADP and phosphate
 
-`ATP + H2O ⇌ ADP + Pi <http://equilibrator.weizmann.ac.il/search?query=ATP+%2B+Water+%3C%3D%3E+ADP+%2B+Phosphate>`_
+ATP + H\ :sub:`2`\ O ⇌ ADP + Pi
 
 has a ΔrG'° of about -26 kJ / mol. That is, if you hydrolyze 1 mol of ATP to ADP in standard conditions, 26 kJ of energy that is usable for work is released. Conversely, it takes 26 kJ of work to form 1 mol of ATP from ADP in standard conditions.
 

@@ -5,7 +5,7 @@ Phosphoanhydride bonds like those in ATP are not the only energy-carrying bonds 
 
 So how much energy is there in a thioester bond? We can use eQuilibrator to examine the hydrolysis of the common biological thioester, acetyl-CoA
 
-Acetyl-CoA + H2O <=> Acetate + CoA
+Acetyl-CoA + H\ :sub:`2`\ O <=> Acetate + CoA
 
 We find that this hydrolysis reaction has a ΔrG'm around -40 kJ/mol - very similar to the energetic scale of ATP hydrolysis. In fact, the thioester bond is sometimes exchanged with a phosphoester bond (like the one in ATP) during metabolism of acetyl-CoA
 
