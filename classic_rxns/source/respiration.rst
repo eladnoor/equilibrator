@@ -3,7 +3,7 @@ Respiration
 
 When molecular oxygen (O\ :sub:`2`) is available many organisms will opt to respire - to donate electrons withdrawn from glucose to O\ :sub:`2` - and store even more energy as ATP in the process. Instead of reducing pyruvate to some fermentation product(s) (i.e. donating electrons to pyruvate as in the examples above), the carbon enters the tricarboxylic acid (TCA), which oxidizes it (withdraws its electrons) one step at a time to produce 3 CO\ :sub:`2` and 5 reduced electron carriers (3 NADH, 1 FADH2 and one reduced quinone).
 
-Pyruvate + 3 NAD+ + 1 FAD + Ubiquinone + 3 H :sub:`2` O <=> 3 CO\ :sub:`2` + 3 NADH + 1 FADH2 + Ubiquinol
+Pyruvate + 3 NAD+ + 1 FAD + Ubiquinone + 3 H :sub:`2` O ⇌ 3 CO\ :sub:`2` + 3 NADH + 1 FADH2 + Ubiquinol
 
 While the oxidation of pyruvate is quite favorable, one caveat has to be considered in examining the net reaction above: the Ubiquinone electron acceptor used in the TCA cycle is a highly hydrophobic molecule that resides primarily in lipid membranes and not in the cytosol (or the mitochondrial matrix of eukaryotes). In fact, the enzyme that donates electrons to ubiquinone (succinate dehydrogenase) also resides on the membrane. What’s the problem? Well, if some reactants reside in the cytosol (or mitochondrial matrix) and others reside in the membrane, it is difficult to compare their concentrations and calculate Δ\ :sub:`r`\ G'. So we can calculate a Δ\ :sub:`r`\ G'° of about -120 kJ/mol and a Δ\ :sub:`r`\ G'm of about -155 kJ/mol for the reaction above, but it is not clear whethe these values are representative of what happens in the cell. 
 

@@ -190,10 +190,10 @@
 <div class="section" id="nadh-as-an-electron-carrier">
 <h2>NADH as an Electron Carrier<a class="headerlink" href="#nadh-as-an-electron-carrier" title="Permalink to this headline">¶</a></h2>
 <p>Many reactions in metabolism redox reactions (reduction/oxidation reactions) involving the transfer of electrons between molecules. One classic such reaction is the lactate dehydrogenase reaction described above.</p>
-<p>NADH + Pyruvate &lt;=&gt; NAD+ + Lactate</p>
+<p>NADH + Pyruvate ⇌ NAD+ + Lactate</p>
 <p>We can identify that this is a redox reaction from the presence of the two-electron carrier NAD+/NADH. One way to understand the energetics of redox reactions is to split them into “half-reactions.”</p>
-<p>Pyruvate + 2e- &lt;=&gt; Lactate E’m ≈ -190 mV
-NADH &lt;=&gt; NAD+ + 2e- E’m ≈ -330 mV</p>
+<p>Pyruvate + 2e- ⇌ Lactate E’m ≈ -190 mV
+NADH ⇌ NAD+ + 2e- E’m ≈ -330 mV</p>
 <p>If we add these two half-reactions together we see that the electrons balance and cancel: the two half-cells produce a balanced chemical reaction.</p>
 <p>The energetics of these half-reactions can be characterized by a number called the “reduction potential,” given above as E’m. What do these reduction potentials mean? The -190 mV E’m given for converting pyruvate to lactate represents the amount of energy that each electron needs to carry in order to convert pyruvate into lactate assuming, as above, 1 mM concentrations for pyruvate and lactate (denoted by the m superscript). Here, for example, we have to donate 2 e- to pyruvate to form lactate and each electron must carry roughly -190 mV of potential.</p>
 <p>The reduction potential is relative value - in order to know whether the pyruvate/lactate half-reaction will be favorable, we need to know where electrons came from. We can tell that NADH is a suitable donor for this reaction because the electrons in NADH have a potential of -330 mV. Electrons flow towards more positive potentials, and so we can tell that donating electrons from NADH to pyruvate to form NAD+ and lactate will be favorable - each electron gains about 140 mV of potential.</p>
@@ -215,26 +215,26 @@ NADH &lt;=&gt; NAD+ + 2e- E’m ≈ -330 mV</p>
 <h2>Mixtures of Fermentation Products<a class="headerlink" href="#mixtures-of-fermentation-products" title="Permalink to this headline">¶</a></h2>
 <p>Bacteria produce many different kinds of fermentation products. The only requirement is that the products of a fermentation pathway contain the same number of electrons as the substrates. Indeed, as we saw with ethanol fermentation, it’s possible to make multiple fermentation products (ethanol + CO<sub>2</sub>) so long as redox balance is preserved.</p>
 <p>In mixed fermentation, cells produce (surprise!) a precise mixture of products that together are redox balanced with their substrate. E. coli, for example, can use this strategy to make an extra ATP by converting pyruvate to a 1:1:1 mixture of acetate, ethanol and formate.</p>
-<p>2 Pyruvate + 2 NADH + H<sub>2</sub>O &lt;=&gt; Acetate + Ethanol + 2 Formate + 2 NAD+</p>
+<p>2 Pyruvate + 2 NADH + H<sub>2</sub>O ⇌ Acetate + Ethanol + 2 Formate + 2 NAD+</p>
 <p>Formate is fairly toxic, so it is subsequently converted to CO<sub>2</sub> and molecular hydrogen by an enzyme called formate hydrogenlyase</p>
-<p>Formate &lt;=&gt; CO<sub>2</sub> + H2</p>
+<p>Formate ⇌ CO<sub>2</sub> + H2</p>
 <p>Considering the net reaction of this process in eQuilibrator</p>
-<p>2 Pyruvate + 2 NADH + H <sub>2</sub> O &lt;=&gt; Acetate + Ethanol + 2 CO<sub>2</sub> + 2 NAD+ + 2 H2</p>
+<p>2 Pyruvate + 2 NADH + H <sub>2</sub> O ⇌ Acetate + Ethanol + 2 CO<sub>2</sub> + 2 NAD+ + 2 H2</p>
 <p>We see that it has a Δ<sub>r</sub>G’m around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable</p>
-<p>Glucose + 3 ADP + 3 Pi &lt;=&gt; Acetate + Ethanol + 2 CO<sub>2</sub> + 2 H2 + 3 ATP + 2 H<sub>2</sub>O</p>
+<p>Glucose + 3 ADP + 3 Pi ⇌ Acetate + Ethanol + 2 CO<sub>2</sub> + 2 H2 + 3 ATP + 2 H<sub>2</sub>O</p>
 <p>So how does E. coli get an extra ATP out of this transformation from pyruvate to acetate, ethanol and formate? To see how, consider the conversion of pyruvate to acetate, which takes place in the following 3 steps</p>
 <ol class="arabic simple">
-<li>CoA + Pyruvate &lt;=&gt; Acetyl-CoA + Formate</li>
-<li>Acetyl-CoA + Pi &lt;=&gt; Acetyl-Phosphate + CoA</li>
-<li>ADP + Acetyl phosphate &lt;=&gt; ATP + Acetate</li>
+<li>CoA + Pyruvate ⇌ Acetyl-CoA + Formate</li>
+<li>Acetyl-CoA + Pi ⇌ Acetyl-Phosphate + CoA</li>
+<li>ADP + Acetyl phosphate ⇌ ATP + Acetate</li>
 </ol>
 <p>Acetate is formed via the intermediate of acetyl-CoA, which allows for the production of ATP (as discussed above). Notice, however, that this 3-step pathway is redox neutral - it does not consume any of the NADH that would have been produced in glycolysis to make pyruvate. So E. coli can’t ferment glucose entirely to acetate and formate because that would not be a redox neutral transformation, as you can see by balancing the net reaction on eQuilibrator.</p>
-<p>Glucose + 2 NAD+ + H<sub>2</sub>O &lt;=&gt; 2 Acetate + 2 Formate + 2 NADH</p>
+<p>Glucose + 2 NAD+ + H<sub>2</sub>O ⇌ 2 Acetate + 2 Formate + 2 NADH</p>
 <p>Producing one ethanol for every acetate ensures that the overall fermentation pathway is redox balanced. This can be seen by considering how ethanol is made from pyruvate in this case</p>
 <ol class="arabic simple">
-<li>CoA + Pyruvate &lt;=&gt; Acetyl-CoA + Formate</li>
-<li>NADH + Acetyl-CoA &lt;=&gt; NAD+ + CoA + Acetaldehyde</li>
-<li>NADH + Acetaldehyde &lt;=&gt; NAD+ + Ethanol</li>
+<li>CoA + Pyruvate ⇌ Acetyl-CoA + Formate</li>
+<li>NADH + Acetyl-CoA ⇌ NAD+ + CoA + Acetaldehyde</li>
+<li>NADH + Acetaldehyde ⇌ NAD+ + Ethanol</li>
 </ol>
 <p>We notice that the production of ethanol from pyruvate in these three steps involves the consumption of 2 NADH. So if the cell makes sure to make one ethanol molecule for every acetate, then redox balance will be preserved and one extra ATP will be made for every two pyruvates metabolized - a balancing act indeed!</p>
 <p>There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (Kim and Gadd, 2008). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on Wikipedia and Biocyc.</p>

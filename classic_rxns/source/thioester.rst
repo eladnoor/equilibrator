@@ -5,11 +5,11 @@ Phosphoanhydride bonds like those in ATP are not the only energy-carrying bonds 
 
 So how much energy is there in a thioester bond? We can use eQuilibrator to examine the hydrolysis of the common biological thioester, acetyl-CoA
 
-Acetyl-CoA + H\ :sub:`2`\ O <=> Acetate + CoA
+Acetyl-CoA + H\ :sub:`2`\ O ⇌ Acetate + CoA
 
 We find that this hydrolysis reaction has a Δ\ :sub:`r`\ G'm around -40 kJ/mol - very similar to the energetic scale of ATP hydrolysis. In fact, the thioester bond is sometimes exchanged with a phosphoester bond (like the one in ATP) during metabolism of acetyl-CoA
 
-Acetyl-CoA + Pi <=> Acetyl-phosphate + CoA
+Acetyl-CoA + Pi ⇌ Acetyl-phosphate + CoA
 
 Notice that this reaction has a positive Δ\ :sub:`r`\ G'm  ≈ 10 kJ/mol, meaning that it would flow in the reverse direction (forming acetyl-CoA) if all the reactants had 1 mM concentrations. However, concentrations are of course not exactly 1 mM in cells. Cellular concentrations of inorganic phosphate are, for example, typically closer to 10 mM (e.g. for E. coli see BNID 105540). 
 

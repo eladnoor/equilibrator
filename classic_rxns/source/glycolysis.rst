@@ -32,12 +32,12 @@ NADH as an Electron Carrier
 
 Many reactions in metabolism redox reactions (reduction/oxidation reactions) involving the transfer of electrons between molecules. One classic such reaction is the lactate dehydrogenase reaction described above. 
 
-NADH + Pyruvate <=> NAD+ + Lactate
+NADH + Pyruvate ⇌ NAD+ + Lactate
 
 We can identify that this is a redox reaction from the presence of the two-electron carrier NAD+/NADH. One way to understand the energetics of redox reactions is to split them into “half-reactions.”
 
-Pyruvate + 2e- <=> Lactate E'm ≈ -190 mV
-NADH <=> NAD+ + 2e- E'm ≈ -330 mV
+Pyruvate + 2e- ⇌ Lactate E'm ≈ -190 mV
+NADH ⇌ NAD+ + 2e- E'm ≈ -330 mV
 
 If we add these two half-reactions together we see that the electrons balance and cancel: the two half-cells produce a balanced chemical reaction. 
 
@@ -75,39 +75,39 @@ Bacteria produce many different kinds of fermentation products. The only require
 
 In mixed fermentation, cells produce (surprise!) a precise mixture of products that together are redox balanced with their substrate. E. coli, for example, can use this strategy to make an extra ATP by converting pyruvate to a 1:1:1 mixture of acetate, ethanol and formate. 
 
-2 Pyruvate + 2 NADH + H\ :sub:`2`\ O <=> Acetate + Ethanol + 2 Formate + 2 NAD+
+2 Pyruvate + 2 NADH + H\ :sub:`2`\ O ⇌ Acetate + Ethanol + 2 Formate + 2 NAD+
 
 Formate is fairly toxic, so it is subsequently converted to CO\ :sub:`2` and molecular hydrogen by an enzyme called formate hydrogenlyase
 
-Formate <=> CO\ :sub:`2` + H2
+Formate ⇌ CO\ :sub:`2` + H2
 
 Considering the net reaction of this process in eQuilibrator 
 
-2 Pyruvate + 2 NADH + H :sub:`2` O <=> Acetate + Ethanol + 2 CO\ :sub:`2` + 2 NAD+ + 2 H2
+2 Pyruvate + 2 NADH + H :sub:`2` O ⇌ Acetate + Ethanol + 2 CO\ :sub:`2` + 2 NAD+ + 2 H2
 
 We see that it has a Δ\ :sub:`r`\ G'm around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable
 
-Glucose + 3 ADP + 3 Pi <=> Acetate + Ethanol + 2 CO\ :sub:`2` + 2 H2 + 3 ATP + 2 H\ :sub:`2`\ O
+Glucose + 3 ADP + 3 Pi ⇌ Acetate + Ethanol + 2 CO\ :sub:`2` + 2 H2 + 3 ATP + 2 H\ :sub:`2`\ O
 
 So how does E. coli get an extra ATP out of this transformation from pyruvate to acetate, ethanol and formate? To see how, consider the conversion of pyruvate to acetate, which takes place in the following 3 steps 
 
-#. CoA + Pyruvate <=> Acetyl-CoA + Formate
+#. CoA + Pyruvate ⇌ Acetyl-CoA + Formate
 
-#. Acetyl-CoA + Pi <=> Acetyl-Phosphate + CoA
+#. Acetyl-CoA + Pi ⇌ Acetyl-Phosphate + CoA
 
-#. ADP + Acetyl phosphate <=> ATP + Acetate
+#. ADP + Acetyl phosphate ⇌ ATP + Acetate
 
 Acetate is formed via the intermediate of acetyl-CoA, which allows for the production of ATP (as discussed above). Notice, however, that this 3-step pathway is redox neutral - it does not consume any of the NADH that would have been produced in glycolysis to make pyruvate. So E. coli can’t ferment glucose entirely to acetate and formate because that would not be a redox neutral transformation, as you can see by balancing the net reaction on eQuilibrator.
 
-Glucose + 2 NAD+ + H\ :sub:`2`\ O <=> 2 Acetate + 2 Formate + 2 NADH
+Glucose + 2 NAD+ + H\ :sub:`2`\ O ⇌ 2 Acetate + 2 Formate + 2 NADH
 
 Producing one ethanol for every acetate ensures that the overall fermentation pathway is redox balanced. This can be seen by considering how ethanol is made from pyruvate in this case 
 
-#. CoA + Pyruvate <=> Acetyl-CoA + Formate
+#. CoA + Pyruvate ⇌ Acetyl-CoA + Formate
 
-#. NADH + Acetyl-CoA <=> NAD+ + CoA + Acetaldehyde
+#. NADH + Acetyl-CoA ⇌ NAD+ + CoA + Acetaldehyde
 
-#. NADH + Acetaldehyde <=> NAD+ + Ethanol
+#. NADH + Acetaldehyde ⇌ NAD+ + Ethanol
 
 We notice that the production of ethanol from pyruvate in these three steps involves the consumption of 2 NADH. So if the cell makes sure to make one ethanol molecule for every acetate, then redox balance will be preserved and one extra ATP will be made for every two pyruvates metabolized - a balancing act indeed!
 
