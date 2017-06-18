@@ -1,7 +1,7 @@
 Glycolysis and Fermentation
 ==========================================================
 
-The reason that glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP. This process is called oxidative phosphorylation. In anaerobic conditions, however, oxygen is not available (by definition) and it's impossible to drive oxidative phosphorylation by donating electrons to O2.
+The reason that glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP. This process is called oxidative phosphorylation. In anaerobic conditions, however, oxygen is not available (by definition) and it's impossible to drive oxidative phosphorylation by donating electrons to O\ :sub:`2`.
 
 The anaerobic breakdown of glucose for energy production is called fermentation. Several approaches to fermenting glucose occur in nature, but here we'll discuss only one in this section: fermentation of glucose to lactate. Fermentation of glucose begins in the same way that complete oxidation of glucose does: by breaking glucose down into two pyruvate molecules through a process known as glycolysis:
 
@@ -45,9 +45,9 @@ The energetics of these half-reactions can be characterized by a number called t
 
 The reduction potential is relative value - in order to know whether the pyruvate/lactate half-reaction will be favorable, we need to know where electrons came from. We can tell that NADH is a suitable donor for this reaction because the electrons in NADH have a potential of -330 mV. Electrons flow towards more positive potentials, and so we can tell that donating electrons from NADH to pyruvate to form NAD+ and lactate will be favorable - each electron gains about 140 mV of potential. 
 
-We can convert these mV values into more familiar kJ/mol using the Nernst equation ΔrG' = nFΔE’, where n is the number of electrons transferred and F is the Faraday constant (F ≈ 96.4x103 kJ/mV/mol). Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a ΔrGm ≈ 2 x 96.4x10-3 (-330-190) ≈ -27 kJ/mol (consistent with our calculation above using eQuilibrator). 
+We can convert these mV values into more familiar kJ/mol using the Nernst equation Δ\ :sub:`r`\ G' = nFΔE’, where n is the number of electrons transferred and F is the Faraday constant (F ≈ 96.4x103 kJ/mV/mol). Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a Δ\ :sub:`r`\ Gm ≈ 2 x 96.4x10-3 (-330-190) ≈ -27 kJ/mol (consistent with our calculation above using eQuilibrator). 
 
-There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O2) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O2 and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O2 (Nelson et al., 2008). NADH is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (Bar-Even et al., 2012). 
+There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O\ :sub:`2`) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O\ :sub:`2` and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O\ :sub:`2` (Nelson et al., 2008). NADH is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (Bar-Even et al., 2012). 
 
 Ethanol Fermentation
 ----------------------------------------------------------
@@ -56,38 +56,38 @@ Fermentation isn’t limited to making lactate - cells can produce anything that
 
 We can use eQuilibrator to check that ethanol production is in fact redox neutral (relative to glucose) by searching for the reaction producing ethanol from pyruvate
 
-2 pyruvate + 4 e- ⇌ 2 ethanol + 2 CO2
+2 pyruvate + 4 e- ⇌ 2 ethanol + 2 CO\ :sub:`2`
 
 This reaction is categorized as a “half-reaction” by eQuilibrator, meaning that there are excess electrons on one side of the reaction. The 4 electrons required can be withdrawn from NADH as discussed above (eQuilibrator does this automatically if you click the “Balance with NAD+/NADH” link).
 
-2 Pyruvate + 2 NADH ⇌ 2 Ethanol + 2 CO2 + 2 NAD+
+2 Pyruvate + 2 NADH ⇌ 2 Ethanol + 2 CO\ :sub:`2` + 2 NAD+
 
 As with lactate, we see that production of ethanol from two pyruvate molecules perfectly balances the production of two pyruvate from glucose -- glucose breakdown produces two NADH and ethanol production consumes them both. As a result, the NADH cancel and the net reaction for ethanol fermentation contains no electron carriers.
 
-Glucose ⇌ 2 Ethanol + 2 CO2
+Glucose ⇌ 2 Ethanol + 2 CO\ :sub:`2`
 
-Indeed, production of ethanol and CO2 from pyruvate is quite favorable (ΔrG'm = -114 kJ / mol) which helps explain why yeast are so content to make large quantities of ethanol for our enjoyment. 
+Indeed, production of ethanol and CO\ :sub:`2` from pyruvate is quite favorable (Δ\ :sub:`r`\ G'm = -114 kJ / mol) which helps explain why yeast are so content to make large quantities of ethanol for our enjoyment. 
 
 Mixtures of Fermentation Products
 ----------------------------------------------------------
 
-Bacteria produce many different kinds of fermentation products. The only requirement is that the products of a fermentation pathway contain the same number of electrons as the substrates. Indeed, as we saw with ethanol fermentation, it’s possible to make multiple fermentation products (ethanol + CO2) so long as redox balance is preserved.
+Bacteria produce many different kinds of fermentation products. The only requirement is that the products of a fermentation pathway contain the same number of electrons as the substrates. Indeed, as we saw with ethanol fermentation, it’s possible to make multiple fermentation products (ethanol + CO\ :sub:`2`) so long as redox balance is preserved.
 
 In mixed fermentation, cells produce (surprise!) a precise mixture of products that together are redox balanced with their substrate. E. coli, for example, can use this strategy to make an extra ATP by converting pyruvate to a 1:1:1 mixture of acetate, ethanol and formate. 
 
 2 Pyruvate + 2 NADH + H\ :sub:`2`\ O <=> Acetate + Ethanol + 2 Formate + 2 NAD+
 
-Formate is fairly toxic, so it is subsequently converted to CO2 and molecular hydrogen by an enzyme called formate hydrogenlyase
+Formate is fairly toxic, so it is subsequently converted to CO\ :sub:`2` and molecular hydrogen by an enzyme called formate hydrogenlyase
 
-Formate <=> CO2 + H2
+Formate <=> CO\ :sub:`2` + H2
 
 Considering the net reaction of this process in eQuilibrator 
 
-2 Pyruvate + 2 NADH + H :sub:`2` O <=> Acetate + Ethanol + 2 CO2 + 2 NAD+ + 2 H2
+2 Pyruvate + 2 NADH + H :sub:`2` O <=> Acetate + Ethanol + 2 CO\ :sub:`2` + 2 NAD+ + 2 H2
 
-We see that it has a ΔrG'm around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable
+We see that it has a Δ\ :sub:`r`\ G'm around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable
 
-Glucose + 3 ADP + 3 Pi <=> Acetate + Ethanol + 2 CO2 + 2 H2 + 3 ATP + 2 H\ :sub:`2`\ O
+Glucose + 3 ADP + 3 Pi <=> Acetate + Ethanol + 2 CO\ :sub:`2` + 2 H2 + 3 ATP + 2 H\ :sub:`2`\ O
 
 So how does E. coli get an extra ATP out of this transformation from pyruvate to acetate, ethanol and formate? To see how, consider the conversion of pyruvate to acetate, which takes place in the following 3 steps 
 

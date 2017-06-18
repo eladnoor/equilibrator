@@ -7,10 +7,10 @@ So how much energy is there in a thioester bond? We can use eQuilibrator to exam
 
 Acetyl-CoA + H\ :sub:`2`\ O <=> Acetate + CoA
 
-We find that this hydrolysis reaction has a ΔrG'm around -40 kJ/mol - very similar to the energetic scale of ATP hydrolysis. In fact, the thioester bond is sometimes exchanged with a phosphoester bond (like the one in ATP) during metabolism of acetyl-CoA
+We find that this hydrolysis reaction has a Δ\ :sub:`r`\ G'm around -40 kJ/mol - very similar to the energetic scale of ATP hydrolysis. In fact, the thioester bond is sometimes exchanged with a phosphoester bond (like the one in ATP) during metabolism of acetyl-CoA
 
 Acetyl-CoA + Pi <=> Acetyl-phosphate + CoA
 
-Notice that this reaction has a positive ΔrG'm  ≈ 10 kJ/mol, meaning that it would flow in the reverse direction (forming acetyl-CoA) if all the reactants had 1 mM concentrations. However, concentrations are of course not exactly 1 mM in cells. Cellular concentrations of inorganic phosphate are, for example, typically closer to 10 mM (e.g. for E. coli see BNID 105540). 
+Notice that this reaction has a positive Δ\ :sub:`r`\ G'm  ≈ 10 kJ/mol, meaning that it would flow in the reverse direction (forming acetyl-CoA) if all the reactants had 1 mM concentrations. However, concentrations are of course not exactly 1 mM in cells. Cellular concentrations of inorganic phosphate are, for example, typically closer to 10 mM (e.g. for E. coli see BNID 105540). 
 
-Try using eQuilibrator to set the phosphate concentration to 10 mM, leaving everything else at 1 mM. Notice that the ΔrG'm value changed by about 6 kJ/mol. As an exercise: show with some simple math that a 10-fold change in one reactant concentration will always alter the ΔrG' by about 6 kJ/mol (hint: think about the formula for ΔrG' = ΔrG'° + RT ln Q).
+Try using eQuilibrator to set the phosphate concentration to 10 mM, leaving everything else at 1 mM. Notice that the Δ\ :sub:`r`\ G'm value changed by about 6 kJ/mol. As an exercise: show with some simple math that a 10-fold change in one reactant concentration will always alter the Δ\ :sub:`r`\ G' by about 6 kJ/mol (hint: think about the formula for Δ\ :sub:`r`\ G' = Δ\ :sub:`r`\ G'° + RT ln Q).

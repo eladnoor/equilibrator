@@ -5,7 +5,7 @@ Proteins are made of amino acids and amino acids have amine groups (-NH2). Here 
 
 Glutamate + NH3 <=> Glutamine + H\ :sub:`2`\ O
 
-Using eQuilibrator we can see that this reaction is highly unfavorable with a positive ΔrG'm around 28 kJ/mol. In fact, the enzyme that catalyzes this reaction (glutamine synthetase) couples the reaction to ATP hydrolysis in order to make it favorable (ΔrG'm = -15 kJ / mol). Glutamine is an amino acid with two nitrogen atoms - one derived from glutamate and another from ammonia. Once glutamine is formed, cells use an enzyme (glutamine:oxoglutarate aminotransferase) to transfer the ammonia-derived nitrogen to another molecule (an alpha-keto acid called 2-oxoglutarate) to end up with two glutamates.
+Using eQuilibrator we can see that this reaction is highly unfavorable with a positive Δ\ :sub:`r`\ G'm around 28 kJ/mol. In fact, the enzyme that catalyzes this reaction (glutamine synthetase) couples the reaction to ATP hydrolysis in order to make it favorable (Δ\ :sub:`r`\ G'm = -15 kJ / mol). Glutamine is an amino acid with two nitrogen atoms - one derived from glutamate and another from ammonia. Once glutamine is formed, cells use an enzyme (glutamine:oxoglutarate aminotransferase) to transfer the ammonia-derived nitrogen to another molecule (an alpha-keto acid called 2-oxoglutarate) to end up with two glutamates.
 
 NADPH + 2-Oxoglutarate + Glutamine <=> NADP+ + 2 Glutamate
 
@@ -19,5 +19,5 @@ Aspartate can be made by transferring an amine to oxaloacetate
 
 Glutamate + Oxaloacetate <=> 2-Oxoglutarate + Aspartate
 
-If we inspect these reactions in eQuilibrator, we find that they have ΔrG'm values that are very close to 0 kJ / mol. This makes intuitive sense because both reactions involve the transfer of a group (an amine) from one molecule to the same position on another molecule (both the substrate and product are amino acids). In other words, these reactions are not intrinsically thermodynamically driven in either direction. Rather, it is the extremely high concentration of glutamate (upwards of 50 mM in many cell types) that drives these reactions forward (in the direction of making various amino acids). Try setting the glutamate concentration to 50 mM using eQuilibrator to see what happens to the ΔrG' value. 
+If we inspect these reactions in eQuilibrator, we find that they have Δ\ :sub:`r`\ G'm values that are very close to 0 kJ / mol. This makes intuitive sense because both reactions involve the transfer of a group (an amine) from one molecule to the same position on another molecule (both the substrate and product are amino acids). In other words, these reactions are not intrinsically thermodynamically driven in either direction. Rather, it is the extremely high concentration of glutamate (upwards of 50 mM in many cell types) that drives these reactions forward (in the direction of making various amino acids). Try setting the glutamate concentration to 50 mM using eQuilibrator to see what happens to the Δ\ :sub:`r`\ G' value. 
 
