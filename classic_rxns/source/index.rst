@@ -25,7 +25,10 @@ Things to do!
 ==================
 
 .. todo::
-    finish adding all content
+    google analytics on this stuff.
+
+.. todo::
+    finish writing TCA content
 
 .. todo::
     add links to external resources.
