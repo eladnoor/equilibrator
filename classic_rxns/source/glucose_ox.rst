@@ -1,6 +1,10 @@
 The Oxidation of Glucose
 ==========================================================
 
+.. todo::
+    figure of various projections of glucose
+
+
 With glucose being one of the most common sugars in the biosphere (and certainly the most common in labs), the oxidation of glucose is a major source of chemical energy for many organisms. This process - the conservation of energy through complete oxidation of glucose using oxygen - is called “respiration.” Much of the energy produced during glucose oxidation is stored as ATP. If we take a look at the full oxidation of glucose to carbon dioxide and water
 
 |gluc_ox|_
