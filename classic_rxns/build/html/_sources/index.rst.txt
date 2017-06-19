@@ -25,7 +25,10 @@ Things to do!
 ==================
 
 .. todo::
-    finish adding all content
+    google analytics on this stuff.
+
+.. todo::
+    finish writing TCA content
 
 .. todo::
     add links to external resources.
@@ -37,7 +40,7 @@ Things to do!
     subscripts/superscripts/italics as appropriate.
 
 .. todo::
-    latex formatting for math stuff.
+    latex formatting for math stuff as needed.
 
 .. todo:: 
     do something consistent with reaction arrows. 
