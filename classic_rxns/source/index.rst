@@ -40,7 +40,7 @@ Things to do!
     subscripts/superscripts/italics as appropriate.
 
 .. todo::
-    latex formatting for math stuff.
+    latex formatting for math stuff as needed.
 
 .. todo:: 
     do something consistent with reaction arrows. 
