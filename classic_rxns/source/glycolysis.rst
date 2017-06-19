@@ -58,7 +58,20 @@ The energetics of these half-reactions can be characterized by a number called t
 
 The reduction potential is relative value - in order to know whether the pyruvate/lactate half-reaction will be favorable, we need to know where electrons came from. We can tell that NADH is a suitable donor for this reaction because the electrons in NADH have a potential of -330 mV. Electrons flow towards more positive potentials, and so we can tell that donating electrons from NADH to pyruvate to form NAD+ and lactate will be favorable - each electron gains about 140 mV of potential. 
 
-We can convert these mV values into more familiar kJ/mol using the Nernst equation Δ\ :sub:`r`\ G' = nFΔE’, where n is the number of electrons transferred and F is the Faraday constant (F ≈ 96.4x103 kJ/mV/mol). Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a Δ\ :sub:`r`\ G\ :sup:`m` ≈ 2 x 96.4x10-3 (-330-190) ≈ -27 kJ/mol (consistent with our earlier calculation using eQuilibrator). 
+We can convert these mV values into more familiar kJ/mol using the Nernst equation
+
+.. math::
+	\begin{eqnarray}
+	\Delta_r G' &=& n F \Delta E \\
+	F &\approx& 96.4 \times 10^3 \frac{kJ}{mV mol}
+	\end{eqnarray}
+
+where n is the number of electrons transferred and F is the Faraday constant. Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a 
+
+.. math::
+	\Delta_r G'^m \approx 2 \times 96.4 \times 10^{-3} \times (-330 - 190) \approx -27 \frac{kJ}{mol}
+
+consistent with our earlier calculation of Δ\ :sub:`r`\ G\ :sup:`m` using eQuilibrator. 
 
 There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O\ :sub:`2`) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O\ :sub:`2` and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O\ :sub:`2` (Nelson et al., 2008). NADH is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (Bar-Even et al., 2012). 
 
