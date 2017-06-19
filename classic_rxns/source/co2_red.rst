@@ -15,4 +15,4 @@ It’s clear that the reaction is extremely unfavorable, with a positive Δ\ :su
 
 As a result, we expect that plants need at least 16 moles of photons to make 1 mole of glucose from CO\ :sub:`2`. In fact, `estimates indicate <http://book.bionumbers.org/how-many-photons-does-it-take-to-make-a-cyanobacterium/>`_ that the carbon fixation pathways of contemporary plants are much less efficient than our lower-bound, using about 10 photons energy per CO\ :sub:`2` or 60 photons per glucose. As we saw above, biological processes often leave a bunch of energy “on the table.” It is often suggested that this excess energy or “overpotential” is used to drive reactions in the forward direction more quickly (Milo, 2009). 
 
-.. [1] try to verify this calculation yourself, remembering that "h" is Planck's constant, c is the speed of light in a vacuum and λ is the photonic wavelength. 
+.. [1] Try to verify this calculation yourself, remembering that "h" is Planck's constant, c is the speed of light in a vacuum and λ is the photonic wavelength. 
