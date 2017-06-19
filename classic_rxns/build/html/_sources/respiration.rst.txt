@@ -1,7 +1,7 @@
 Respiration
 ==========================================================
 
-When molecular oxygen (O\ :sub:`2`) is available many organisms will opt to respire - to donate electrons withdrawn from glucose to O\ :sub:`2` - and store even more energy as ATP in the process. Instead of reducing pyruvate to some fermentation product(s) (i.e. donating electrons to pyruvate as in the examples above), the carbon enters the tricarboxylic acid (TCA), which oxidizes it (withdraws its electrons) one step at a time to produce 3 CO\ :sub:`2` and 5 reduced electron carriers (3 NADH, 1 FADH2 and one reduced quinone).
+When molecular oxygen (O\ :sub:`2`) is available many organisms will opt to respire - to donate electrons withdrawn from glucose to O\ :sub:`2`. Respiration is advantageous (as compared to fermentation) because it allows cells to store much more energy as ATP while metabolizing glucose. Instead of reducing pyruvate to some fermentation product(s) (i.e. donating electrons to pyruvate as in the examples above), the carbon enters the tricarboxylic acid (TCA), which oxidizes it (withdraws its electrons) one step at a time to produce 3 CO\ :sub:`2` and 5 reduced electron carriers (3 NADH, 1 FADH2 and one reduced quinone).
 
 |pyr_resp_carriers|_
 

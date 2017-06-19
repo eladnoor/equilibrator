@@ -28,6 +28,9 @@ Things to do!
     google analytics on this stuff.
 
 .. todo::
+    figure out how to insert references between sections of the text
+
+.. todo::
     finish writing TCA content
 
 .. todo::
