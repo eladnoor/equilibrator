@@ -16,7 +16,7 @@ ATP is considered the energy "currency" of the cell. But how much is that curren
 
 has a Δ\ :sub:`r`\ G'° of about -26 kJ / mol. That is, if you hydrolyze 1 mol of ATP to ADP in standard conditions, 26 kJ of energy that is usable for work is released. Conversely, it takes 26 kJ of work to form 1 mol of ATP from ADP in standard conditions.
 
-Keep in mind that Δ\ :sub:`r`\ G'° is defined in standard conditions (1 molar concentrations) while biological concentrations are much closer to 1 millimolar (1 mM). We can calculate the Δ\ :sub:`r`\ G' in these conditions using one of the most basic equations of biochemical thermodynamics
+Keep in mind that Δ\ :sub:`r`\ G'° is defined in standard conditions (1 molar concentrations) while `biological concentrations are much closer to 1 millimolar <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_ (1 mM). We can calculate the Δ\ :sub:`r`\ G' in these conditions using one of the most basic equations of biochemical thermodynamics
 
 .. math::
 	\begin{eqnarray}

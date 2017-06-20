@@ -3,11 +3,17 @@ Thioester Bonds are Energetic Too
 
 Phosphoanhydride bonds like those in ATP are not the only energy-carrying bonds used by biology. In fact, phosphate was likely scarce during the early history of Earth and some researchers hypothesize that `thioester bonds <https://en.wikipedia.org/wiki/Thioester>`_ - bonds between a sulfur and a carbonyl carbon (R–S–CO–R') - were used as energy currency during the evolution of early life (Goldford et al.).
 
+.. figure:: _static/_images/thioacetate.png
+   :alt: Thioacetate
+   :align: center
+
+   Thioacetate is a simple example of a compound with a thioester bond.
+
 .. figure:: _static/_images/accoa.png
    :alt: Acetyl-CoA
    :align: center
 
-   Acetyl-CoA is the protypical example of a biological molecule containing a thioester bond.
+   Acetyl-CoA is the protypical example of a biological molecule containing a thioester bond. Can you locate the thioester? It might help to look at a `larger image <https://en.wikipedia.org/wiki/Acetyl-CoA>`_. 
 
 So how much energy is there in a thioester bond? We can use eQuilibrator to examine the hydrolysis of the common biological thioester, acetyl-CoA
 
@@ -22,7 +28,7 @@ We find that this hydrolysis reaction has a Δ\ :sub:`r`\ G'\ :sup:`m` around -4
 
 Notice that this reaction has a positive Δ\ :sub:`r`\ G'\ :sup:`m`  ≈ 10 kJ/mol, meaning that it would flow in the reverse direction (forming acetyl-CoA) if all the reactants had 1 mM concentrations. However, concentrations are of course not exactly 1 mM in cells. Cellular concentrations of inorganic phosphate are, for example, typically closer to 10 mM [1]_.
 
-Try using eQuilibrator to set the phosphate concentration to 10 mM, leaving everything else at 1 mM. Notice that the Δ\ :sub:`r`\ G'\ :sup:`m` value changed by about 6 kJ/mol. As an exercise: show with some simple math that a 10-fold change in one reactant concentration will always alter the Δ\ :sub:`r`\ G' by about 6 kJ/mol [2]_
+Try using eQuilibrator to set the phosphate concentration to 10 mM, leaving everything else at 1 mM. Notice that the Δ\ :sub:`r`\ G'\ :sup:`m` value changed by about 6 kJ/mol. As an exercise: show with some simple math that a 10-fold change in one reactant concentration will always alter the Δ\ :sub:`r`\ G' by about 6 kJ/mol. [2]_
 
 .. [1] For typical concentrations in *E. coli* see `BioNumbers ID 105540 <http://bionumbers.hms.harvard.edu/bionumber.aspx?&id=105540&ver=3&trm=inorganic%20phosphate%20concentration>`_
 .. [2] Hint: think about the formula for Δ\ :sub:`r`\ G' = Δ\ :sub:`r`\ G'° + RT ln Q.
