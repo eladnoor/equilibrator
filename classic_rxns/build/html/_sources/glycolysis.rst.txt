@@ -1,13 +1,13 @@
 Glycolysis and Fermentation
 ==========================================================
 
-The reason that glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP. This process is called oxidative phosphorylation. In anaerobic conditions, however, oxygen is not available (by definition) and it's impossible to drive oxidative phosphorylation by donating electrons to O\ :sub:`2`.
+The reason that complete glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP through a process is called oxidative phosphorylation or `respiration <respiration.html>`_. In anaerobic conditions, however, oxygen is not available (by definition) and it's not possible to drive oxidative phosphorylation by donating electrons to O\ :sub:`2`.
 
-The anaerobic breakdown of glucose for energy production is called fermentation. Several approaches to fermenting glucose occur in nature, but here we'll discuss only one in this section: fermentation of glucose to lactate. Fermentation of glucose begins in the same way that complete oxidation of glucose does: by breaking glucose down into two pyruvate molecules through a process known as glycolysis:
+The anaerobic breakdown of glucose for energy production is called fermentation. Several approaches to fermenting glucose occur in nature, but we'll start by discussing a relatively simple one: fermentation of glucose to lactate. Fermentation of glucose begins in the same way that complete oxidation of glucose does: by breaking glucose down into two pyruvate molecules through a process known as glycolysis:
 
 `Glucose ⇌ 2 Pyruvate <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate>`_
 
-If you inspect this reaction in eQuilibrator, you'll notice that it is not "electron-balanced." That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule. We should write this reaction as a “half-reaction” 
+If you inspect this reaction in eQuilibrator, you'll notice that it is not "electron-balanced." That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule. Really, we should write this reaction as a “half-reaction” 
 
 `Glucose ⇌ 2 Pyruvate + 4 e- <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate+%2B+4+e->`_
 
