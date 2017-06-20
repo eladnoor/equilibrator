@@ -62,6 +62,9 @@ Respiring using nitrate or nitrite as the electron acceptor will release less en
 
 So it’s not surprising that *E. coli* prefers to use O\ :sub:`2` as a terminal electron acceptor over nitrate and nitrite - respiring glucose using oxygen releases 1000 kJ/mol more energy! That’s more than 20 ATPs worth of energy! In fact, the presence of O\ :sub:`2` represses all of *E. coli*’s alternative respiratory pathways.
 
+.. todo::
+	reference for repression statement above
+
 An exercise for the reader: try using eQuilibrator to combine the glucose/CO\ :sub:`2` half-reactions with the electron acceptor half-reactions (O\ :sub:`2`, nitrate and nitrite) to calculate the stoichiometries of these alternate respiratory pathways. 
 
 .. [3] consistent with our earlier of this Δ\ :sub:`r`\ G above using eQuilibrator.
