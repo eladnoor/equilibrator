@@ -131,7 +131,7 @@ Considering the net reaction of this process in eQuilibrator
 .. |ma_ferm_net_h2| replace:: 2 Pyruvate + 2 NADH + H :sub:`2` O ⇌ Acetate + Ethanol + 2 CO\ :sub:`2` + 2 NAD+ + 2 H\ :sub:`2`
 .. _ma_ferm_net_h2: http://equilibrator.weizmann.ac.il/search?query=2+Pyruvate+%2B+2+NADH+%2B+H2O+%3C%3D%3E+Acetate+%2B+Ethanol+%2B+2+CO2+%2B+2+NAD%2B+%2B+2+H2
 
-We see that it has a Δ\ :sub:`r`\ G'm around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable
+We see that it has a Δ\ :sub:`r`\ G'\ :sup:`m` around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable
 
 |ma_ferm_net_atp|_
 
@@ -164,3 +164,61 @@ Producing one ethanol for every acetate ensures that the overall fermentation pa
 Notice that the production of ethanol from pyruvate in these three steps involves the consumption of 2 NADH. So if the cell makes exactly one ethanol molecule for every acetate, then redox balance will be preserved and one extra ATP will be made for every two pyruvates metabolized - a balancing act indeed!
 
 There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (Kim and Gadd, 2008). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on `Wikipedia <https://en.wikipedia.org/wiki/Mixed_acid_fermentation>`_ and `Biocyc <https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=FERMENTATION-PWY>`_. 
+
+Glycolysis in Gory Detail
+----------------------------------------------------------
+
+.. figure:: _static/_images/glucose.png
+   :alt: D-Glucose
+   :align: center
+
+   D-Glucose in pyranose ring conformation.
+
+As discussed above, glycolysis is the process by which glucose is partially oxidized and converted into two pyruvate molecules. Two ATP are made through the biochemical conversion steps in this pathway:
+
+|glycolysis_net2|_
+
+.. |glycolysis_net2| replace:: Glucose + 2 NAD+ + 2 ADP + 2 Pi ⇌ 2 Pyruvate + 2 NADH + 2 ATP + 2 H\ :sub:`2`\ O
+.. _glycolysis_net2: http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+NAD%2B+%2B+2+ADP+%2B+2+Phosphate+%3C%3D%3E+2+Pyruvate+%2B+2+NADH+%2B+2+ATP+%2B+2+H2O
+
+Glycolysis is `often presented <https://www.ncbi.nlm.nih.gov/books/NBK22593/>`_ as having two phases, upper glycolysis and lower glycolysis. Upper glycolysis is considered an "investment phase" where ATP is expended to set up the reactions of lower glycolysis, the 
+"payoff phase" where the initial ATP investment is repaid. The investment phase converts glucose into two trioses (three carbon sugars) called glyceraldehyde.
+
+`Glucose ⇌ 2 Glyceraldehyde <http://equilibrator.weizmann.ac.il/search?query=glucose+%3D+2+glyceraldehyde>`_
+
+If we consider this reaction in eQuilibrator, we can see that it has a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0 kJ / mol. Moreover, in order to make ATP in lower glycolysis (through a process called `substrate level phosphorylation <https://en.wikipedia.org/wiki/Substrate-level_phosphorylation>`_) it is necessary to make phosphorylated trioses - glyceraldehyde 3-phosphate - in upper glycolysis.
+
+.. figure:: _static/_images/g3p.png
+   :alt: Glyceraldehyde 3-phosphate (g3p)
+   :align: center
+
+   Glyceraldehyde 3-phosphate
+
+`Glucose + 2 ATP ⇌ 2 Glyceraldehyde 3-phosphate + 2 ADP <http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+ATP+%3D+2+Glyceraldehyde+3-phosphate+%2B+2+ADP>`_
+
+Being "activated" by ATP hydrolysis, this net reaction is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -24 kJ / mol, which helps enable cells to process glucose quickly through upper glycolysis. Once glyceraldehyde 3-phosphate is produced it can enter the "payoff phase" of lower glycolysis, which produces pyruvate and ATP:
+
+|lower_glyc_net|_
+
+.. |lower_glyc_net| replace:: Glyceraldehyde 3-phosphate + 2 ADP + Pi + NAD+ <=> Pyruvate + 2 ATP + NADH + H\ :sub:`2`\ O
+.. _lower_glyc_net: http://equilibrator.weizmann.ac.il/search?query=DL-Glyceraldehyde+3-phosphate+%2B+2+ADP+%2B+Pi+%2B+NAD%2B+%3C%3D%3E+Pyruvate+%2B+2+ATP+%2B+NADH+%2B+H2O
+
+Because the oxidation of sugars (like glucose and glyceraldehyde) 
+by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impressively, lower glycolysis manages to make 2 ATP for every glyceraldehyde 3-phosphate molecule that it oxidizes to pyruvate. We can calculate the ATP yield of the overall pathway as follows: 2 ATP were invested for each glucose molecule, which was converted into 2 glyceraldehyde 3-phosphate, each of which yield 2 ATP from lower glycolysis:
+
+.. math::
+	- 2 \frac{ATP}{glucose} + 2 \frac{g3p}{glucose} \times 2 \frac{ATP}{g3p} = 2 \frac{ATP}{glucose} \text{ net}
+
+This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Overall, this process is quite favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -63 kJ / mol. However, as you can see in the figure below, glycolysis has 10 reaction steps and each individual reaction step must be favorable in order for the pathway to proceed. 
+
+ .. figure:: _static/_images/glycolysis.png
+   :alt: The Embden-Meyerhoff glycolytic pathway (EMP pathway)
+   :align: center
+
+   The Embden-Meyerhoff glycolytic pathway (EMP pathway).
+
+These individual steps along with their enzymatic mechanisms are covered in great detail in `textbooks <https://www.ncbi.nlm.nih.gov/books/NBK22593/>`_ and review papers (Bar-Even et al., 2012). We note, however, that some of these individual steps are not very thermodynamically favorable, especially those that are involved in ATP production. For example, the first reaction of the payoff phase adds a phosphate to glyceraldehyde 3-phosphate to produce 1,3-bisphophoglycerate. This phosphate will is later transfered to ADP to make ATP and this reaction, catalyzed by the enzyme glyceraldehyde 3-phosphate dehydrogenase (labeled "gap" above), and is quite unfavorable 
+
+`NAD+ + Pi + D-Glyceraldehyde 3-phosphate <=> NADH + Bisphosphoglycerate <http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate>`_
+
+with a of Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +25 kJ/mol. Remembering that `each ~6 kJ/mol demands an order of magnitude concentration difference <thioester.html>`_, we can estimate that making this reaction favorable will require the reaction products to have ~1000-fold lower concentration than substrates. 
