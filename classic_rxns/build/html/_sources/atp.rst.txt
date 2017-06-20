@@ -21,7 +21,7 @@ Keep in mind that Δ\ :sub:`r`\ G'° is defined in standard conditions (1 molar 
 .. math::
 	\begin{eqnarray}
 	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{Q} \\
-	&=& \Delta_r G'^{\circ} + RT \ln{\left( \frac{[ATP][Pi]}{[ADP][H_2O]} \right)}
+	&=& \Delta_r G'^{\circ} + RT \ln{\left( \frac{[ADP][Pi]}{[ATP][H_2O]} \right)}
 	\end{eqnarray}
 
 Here Q is the ratio of product concentrations to substrate concentrations for the ATP hydrolysis reaction - concentrations are denoted by square brackets like [ATP]. [1]_ Q is called the "reaction quotient" or sometimes the "mass-action ratio" in textbooks. Because biology takes place in water, [H\ :sub:`2`\ O] is assumed to be 1 molar. If we set the other three concentrations to 10\ :sup:`-3` molar we get
