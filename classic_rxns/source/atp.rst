@@ -28,7 +28,7 @@ Here Q is the ratio of product concentrations to substrate concentrations for th
 
 .. math::
 	\begin{eqnarray}
-	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{\left( \frac{10^{-3} \times 10^{-3}}{10^{-3}} \right)} \\
+	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{\left( \frac{10^{-3} M \times 10^{-3} M}{10^{-3} M \times 1 M} \right)} \\
 	&=& \Delta_r G'^{\circ} + RT \ln{10^{-3}} \\
 	&\approx& \Delta_r G'^{\circ} - 17.1 \frac{kJ}{mol}
 	\end{eqnarray}
