@@ -1,6 +1,8 @@
 Glycolysis and Fermentation
 ==========================================================
 
+.. todo:: Elad's glycolysis figure goes in here somewhere.
+
 The reason that complete glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP through a process is called oxidative phosphorylation or `respiration <respiration.html>`_. In anaerobic conditions, however, oxygen is not available (by definition) and it's not possible to drive oxidative phosphorylation by donating electrons to O\ :sub:`2`.
 
 The anaerobic breakdown of glucose for energy production is called fermentation. Several approaches to fermenting glucose occur in nature, but we'll start by discussing a relatively simple one: fermentation of glucose to lactate. Fermentation of glucose begins in the same way that complete oxidation of glucose does: by breaking glucose down into two pyruvate molecules through a process known as glycolysis:
