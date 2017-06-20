@@ -103,6 +103,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#nadh-as-an-electron-carrier">NADH as an Electron Carrier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ethanol-fermentation">Ethanol Fermentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mixtures-of-fermentation-products">Mixtures of Fermentation Products</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#glycolysis-in-gory-detail">Glycolysis in Gory Detail</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="respiration.html">Respiration</a></li>
@@ -237,7 +238,7 @@ F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV mol}
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Formate+%3D+CO2+%2B+H2">Formate ⇌ CO<sub>2</sub> + H<sub>2</sub></a></p>
 <p>Considering the net reaction of this process in eQuilibrator</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=2+Pyruvate+%2B+2+NADH+%2B+H2O+%3C%3D%3E+Acetate+%2B+Ethanol+%2B+2+CO2+%2B+2+NAD%2B+%2B+2+H2">2 Pyruvate + 2 NADH + H <sub>2</sub> O ⇌ Acetate + Ethanol + 2 CO<sub>2</sub> + 2 NAD+ + 2 H<sub>2</sub></a></p>
-<p>We see that it has a Δ<sub>r</sub>G’m around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable</p>
+<p>We see that it has a Δ<sub>r</sub>G’<sup>m</sup> around -100 kJ/mol, more than sufficient to make an additional ATP. Altogether, the net reaction from glucose makes 3 ATP and is still quite favorable</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00031&amp;reactantsCoeff=-1&amp;reactantsName=Glucose&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00008&amp;reactantsCoeff=-3&amp;reactantsName=ADP&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00009&amp;reactantsCoeff=-3&amp;reactantsName=Pi&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00033&amp;reactantsCoeff=1&amp;reactantsName=Acetate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00469&amp;reactantsCoeff=1&amp;reactantsName=Ethanol&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00011&amp;reactantsCoeff=2&amp;reactantsName=CO2&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00282&amp;reactantsCoeff=2&amp;reactantsName=H2&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00002&amp;reactantsCoeff=3&amp;reactantsName=ATP&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00001&amp;reactantsCoeff=2&amp;reactantsName=H2O&amp;reactantsPhase=liquid&amp;reactantsConcentration=1&amp;ph=7.000000&amp;pmg=14.000000&amp;ionic_strength=0.100000&amp;e_reduction_potential=0.000000&amp;max_priority=0&amp;mode=BA&amp;query=Glucose%20%2B%203%20ADP%20%2B%203%20Pi%20%2B%20H2O%20%3C%3D%3E%20Acetate%20%2B%20Ethanol%20%2B%202%20CO2%20%2B%202%20H2%20%2B%203%20ATP">Glucose + 3 ADP + 3 Pi ⇌ Acetate + Ethanol + 2 CO<sub>2</sub> + 2 H<sub>2</sub> + 3 ATP + 2 H<sub>2</sub>O</a></p>
 <p>So how does <em>E. coli</em> get an extra ATP out of this transformation from pyruvate to acetate, ethanol and formate? To see how, consider the conversion of pyruvate to acetate, which takes place in the following 3 steps</p>
 <ol class="arabic simple">
@@ -255,6 +256,40 @@ F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV mol}
 </ol>
 <p>Notice that the production of ethanol from pyruvate in these three steps involves the consumption of 2 NADH. So if the cell makes exactly one ethanol molecule for every acetate, then redox balance will be preserved and one extra ATP will be made for every two pyruvates metabolized - a balancing act indeed!</p>
 <p>There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (Kim and Gadd, 2008). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on <a class="reference external" href="https://en.wikipedia.org/wiki/Mixed_acid_fermentation">Wikipedia</a> and <a class="reference external" href="https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&amp;object=FERMENTATION-PWY">Biocyc</a>.</p>
+</div>
+<div class="section" id="glycolysis-in-gory-detail">
+<h2>Glycolysis in Gory Detail<a class="headerlink" href="#glycolysis-in-gory-detail" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center" id="id3">
+<img alt="D-Glucose" src="_images/glucose.png" />
+<p class="caption"><span class="caption-text">D-Glucose in pyranose ring conformation.</span></p>
+</div>
+<p>As discussed above, glycolysis is the process by which glucose is partially oxidized and converted into two pyruvate molecules. Two ATP are made through the biochemical conversion steps in this pathway:</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+NAD%2B+%2B+2+ADP+%2B+2+Phosphate+%3C%3D%3E+2+Pyruvate+%2B+2+NADH+%2B+2+ATP+%2B+2+H2O">Glucose + 2 NAD+ + 2 ADP + 2 Pi ⇌ 2 Pyruvate + 2 NADH + 2 ATP + 2 H<sub>2</sub>O</a></p>
+<p>Glycolysis is <a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK22593/">often presented</a> as having two phases, upper glycolysis and lower glycolysis. Upper glycolysis is considered an “investment phase” where ATP is expended to set up the reactions of lower glycolysis, the
+“payoff phase” where the initial ATP investment is repaid. The investment phase converts glucose into two trioses (three carbon sugars) called glyceraldehyde.</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=glucose+%3D+2+glyceraldehyde">Glucose ⇌ 2 Glyceraldehyde</a></p>
+<p>If we consider this reaction in eQuilibrator, we can see that it has a Δ<sub>r</sub>G’<sup>m</sup> ≈ 0 kJ / mol. Moreover, in order to make ATP in lower glycolysis (through a process called <a class="reference external" href="https://en.wikipedia.org/wiki/Substrate-level_phosphorylation">substrate level phosphorylation</a>) it is necessary to make phosphorylated trioses - glyceraldehyde 3-phosphate - in upper glycolysis.</p>
+<div class="figure align-center" id="id4">
+<img alt="Glyceraldehyde 3-phosphate (g3p)" src="_images/g3p.png" />
+<p class="caption"><span class="caption-text">Glyceraldehyde 3-phosphate</span></p>
+</div>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+ATP+%3D+2+Glyceraldehyde+3-phosphate+%2B+2+ADP">Glucose + 2 ATP ⇌ 2 Glyceraldehyde 3-phosphate + 2 ADP</a></p>
+<p>Being “activated” by ATP hydrolysis, this net reaction is quite favorable with a Δ<sub>r</sub>G’<sup>m</sup> ≈ -24 kJ / mol, which helps enable cells to process glucose quickly through upper glycolysis. Once glyceraldehyde 3-phosphate is produced it can enter the “payoff phase” of lower glycolysis, which produces pyruvate and ATP:</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=DL-Glyceraldehyde+3-phosphate+%2B+2+ADP+%2B+Pi+%2B+NAD%2B+%3C%3D%3E+Pyruvate+%2B+2+ATP+%2B+NADH+%2B+H2O">Glyceraldehyde 3-phosphate + 2 ADP + Pi + NAD+ &lt;=&gt; Pyruvate + 2 ATP + NADH + H<sub>2</sub>O</a></p>
+<p>Because the oxidation of sugars (like glucose and glyceraldehyde)
+by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impressively, lower glycolysis manages to make 2 ATP for every glyceraldehyde 3-phosphate molecule that it oxidizes to pyruvate. We can calculate the ATP yield of the overall pathway as follows: 2 ATP were invested for each glucose molecule, which was converted into 2 glyceraldehyde 3-phosphate, each of which yield 2 ATP from lower glycolysis:</p>
+<div class="math">
+\[- 2 \frac{ATP}{glucose} + 2 \frac{g3p}{glucose} \times 2 \frac{ATP}{g3p} = 2 \frac{ATP}{glucose} \text{ net}\]</div>
+<p>This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Overall, this process is quite favorable, having a Δ<sub>r</sub>G’<sup>m</sup> ≈ -63 kJ / mol. However, as you can see in the figure below, glycolysis has 10 reaction steps and each individual reaction step must be favorable in order for the pathway to proceed.</p>
+<blockquote>
+<div><div class="figure align-center" id="id5">
+<img alt="The Embden-Meyerhoff glycolytic pathway (EMP pathway)" src="_images/glycolysis.png" />
+<p class="caption"><span class="caption-text">The Embden-Meyerhoff glycolytic pathway (EMP pathway).</span></p>
+</div>
+</div></blockquote>
+<p>These individual steps along with their enzymatic mechanisms are covered in great detail in <a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK22593/">textbooks</a> and review papers (Bar-Even et al., 2012). We note, however, that some of these individual steps are not very thermodynamically favorable, especially those that are involved in ATP production. For example, the first reaction of the payoff phase adds a phosphate to glyceraldehyde 3-phosphate to produce 1,3-bisphophoglycerate. This phosphate will is later transfered to ADP to make ATP and this reaction, catalyzed by the enzyme glyceraldehyde 3-phosphate dehydrogenase (labeled “gap” above), and is quite unfavorable</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate">NAD+ + Pi + D-Glyceraldehyde 3-phosphate &lt;=&gt; NADH + Bisphosphoglycerate</a></p>
+<p>with a of Δ<sub>r</sub>G’<sup>m</sup> ≈ +24 kJ/mol. Remembering that <a class="reference external" href="thioester.html">each ~6 kJ/mol demands an order of magnitude concentration difference</a>, we can estimate that making the “gap” reaction favorable will require the reaction products to be ~1000-fold lower concentration than the substrates.</p>
 </div>
 </div>
 
