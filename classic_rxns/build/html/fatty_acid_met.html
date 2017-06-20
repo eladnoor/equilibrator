@@ -175,18 +175,18 @@
   <div class="section" id="metabolism-of-alkanes-and-fatty-acids">
 <h1>Metabolism of Alkanes and Fatty Acids<a class="headerlink" href="#metabolism-of-alkanes-and-fatty-acids" title="Permalink to this headline">¶</a></h1>
 <p>Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the <a class="reference external" href="http://aem.asm.org/content/77/22/7962.short">terrible Deep Water Horizon oil spill</a> (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).</p>
-<div class="admonition-todo admonition" id="index-0">
-<p class="first admonition-title">Todo</p>
-<p class="last">figure of alkane and oil spill?</p>
+<div class="figure align-center" id="id1">
+<img alt="Octane" src="_images/octane.png" />
+<p class="caption"><span class="caption-text">Octane (C<sub>8</sub>H<sub>18</sub>) is an alkane and a major component of automotive fuel.</span></p>
 </div>
 <p>Oil is made up of many kinds of reduced carbon molecules (carbons with many electrons), including alkane chain hydrocarbons - typically chains of 10-30 carbons bonded to hydrogen. Bacteria break down hydrocarbons in an iterative fashion - they remove units of two carbons at a time. These two carbon units come in the form of <a class="reference external" href="http://equilibrator.weizmann.ac.il/compound?compoundId=C00024">acetyl-CoA</a>, a two-carbon acetyl group with a <a class="reference external" href="http://equilibrator.weizmann.ac.il/compound?compoundId=C00010">coenzyme A</a> molecule attached by a thioester linkage. At first blush it seems odd to attach large molecule like CoA to acetate. CoA has 21 carbons - why add all that mass to metabolize only two carbons?</p>
-<p>Producing acetyl-CoA has several advantages. First, the CoA provides a “handle” by which enzymes can recognize the molecule (Bar-Even et al., 2011). It is simpler for an enzyme to recognize and bind a roughly 750 Dalton molecule (CoA) containing multiple elements, aromatic rings, phosphates, etc. than it is to recognize a 60 Dalton molecule (acetate) containing only two carbons, two oxygens and 4 hydrogens. Second, as we saw above, the thioester linkage is a high energy bond: a bond whose hydrolysis releases substantial energy. Finally, acetyl-CoA is a very central molecule in metabolism - it can be used for many different purposes ranging from energy production to biosynthesis of lipids and sterols for membranes.</p>
+<div class="figure align-center" id="id2">
+<img alt="Coenzyme A" src="_images/CoA.png" />
+<p class="caption"><span class="caption-text">Coenzyme A in all of its 767 Daltons of glory.</span></p>
+</div>
+<p>Producing acetyl-CoA has several advantages. First, the CoA provides a “handle” by which enzymes can recognize the molecule (Bar-Even et al., 2011). It is simpler for an enzyme to recognize and bind a ~750 Dalton molecule (CoA) containing multiple elements, aromatic rings, phosphates, etc. than it is to recognize a 60 Dalton molecule (acetate) containing only two carbons, two oxygens and 4 hydrogens. Second, as we saw above, the thioester linkage is a high energy bond: a bond whose hydrolysis releases substantial energy. Finally, acetyl-CoA is a very central molecule in metabolism - it can be used for many different purposes ranging from energy production to biosynthesis of lipids and sterols for membranes.</p>
 <div class="section" id="example-of-octane-breakdown">
 <h2>Example of Octane Breakdown<a class="headerlink" href="#example-of-octane-breakdown" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-1">
-<p class="first admonition-title">Todo</p>
-<p class="last">add octane image.</p>
-</div>
 <p>Returning to the metabolism of alkanes we notice that acetyl-CoA is different from an alkane chain. In alkanes the carbons are all bonded to hydrogens while in the acetyl group of acetyl-CoA there are carbon-oxygen and carbon-sulfur bonds. Forming these bonds requires a number of oxidation steps (removal of electrons - convince yourself that this is true). To see what’s required, let’s use eQuilibrator to consider making acetyl-CoA from an example alkane, the 8-carbon chain octane.</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+2+CoA+%3D%3E+Hexanoyl-CoA+%2B+Acetyl-CoA">Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA</a></p>
 <p>If you load this reaction on eQuilibrator you’ll notice that it is not balanced - it requires a source of oxygen atoms to account for the fact that hexanoyl-CoA and acetyl-CoA are both more oxidized than octane (having c=o and c-s bonds that octane does not). Notice also that we chose to produce hexanoyl-CoA instead of hexane. The biological pathway for alkane degradation does this so that acetyl-CoA units can be removed in an iterative process, two by two carbons.
@@ -223,11 +223,15 @@ You can use eQuilibrator to automatically redox balance the reaction using NAD+ 
 </div>
 <div class="section" id="fatty-acid-metabolism">
 <h2>Fatty Acid Metabolism<a class="headerlink" href="#fatty-acid-metabolism" title="Permalink to this headline">¶</a></h2>
-<div class="admonition-todo admonition" id="index-2">
-<p class="first admonition-title">Todo</p>
-<p class="last">figure of beta-oxidation pathway or link to lehninger?</p>
+<div class="figure align-center" id="id3">
+<img alt="Palmitic Acid" src="_images/palmitate.png" />
+<p class="caption"><span class="caption-text">Hexadecanoic acid, also known as palmitic acid (C<sub>16</sub>H<sub>32</sub>O<sub>2</sub>), is a fatty acid and a major component of olive oil (about 10%). Fatty acids can be identified as alkane chains with terminal carboxylic acids.</span></p>
 </div>
-<p>Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to a fatty acid tail via an ester linkage. Fatty acids are just alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 above is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid.</p>
+<p>Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to one or more fatty acid tails via an ester linkage. Fatty acids like the palmitic acid shown above are simply alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 of the previous section is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">figure of beta-oxidation pathway?</p>
+</div>
 </div>
 </div>
 
