@@ -28,9 +28,6 @@ Things to do!
     google analytics on this stuff.
 
 .. todo::
-    figure out how to insert references between sections of the text
-
-.. todo::
     finish writing TCA content
 
 .. todo::
@@ -38,14 +35,5 @@ Things to do!
 
 .. todo::
     links for references
-
-.. todo::
-    subscripts/superscripts/italics as appropriate.
-
-.. todo::
-    latex formatting for math stuff as needed.
-
-.. todo:: 
-    do something consistent with reaction arrows. 
 
 

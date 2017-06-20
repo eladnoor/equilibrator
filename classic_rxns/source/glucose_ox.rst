@@ -12,7 +12,7 @@ With glucose being one of the most common sugars in the biosphere (and certainly
 .. |gluc_ox| replace:: Glucose + 6 O\ :sub:`2` ⇌ 6 CO\ :sub:`2` + 6 H\ :sub:`2`\ O
 .. _gluc_ox: http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+6+oxygen+%3D+6+CO2+%2B+6+H2O
 
-we find that Δ\ :sub:`r`\ G'° is about -2930 kJ / mol. In this case the effect of correcting for a more typical biological concentration of 1 mM is almost negligible, Δ\ :sub:`r`\ G' ≈ -2910 kJ / mol. According to our calculation from above, that's enough energy to make 66 ATP (in theory). But most organisms generate 30 ATP or less through the oxidization of glucose (Nelson et al., 2008; Flamholz et al., 2014). [1]_
+we find that Δ\ :sub:`r`\ G'° is about -2930 kJ / mol. In this case the effect of correcting for a more typical biological concentration of 1 mM is almost negligible, Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -2910 kJ / mol. According to our calculation from above, that's enough energy to make 66 ATP (in theory). But most organisms generate 30 ATP or less through the oxidization of glucose (Nelson et al., 2008; Flamholz et al., 2014). [1]_
 
 Biochemistry textbooks often write this pathway as generating 36 ATP
 
