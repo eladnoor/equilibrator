@@ -1,74 +1,98 @@
 Metabolism of Alkanes and Fatty Acids
 ==========================================================
 
-Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the terrible Deep Water Horizon oil spill (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).
+Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the `terrible Deep Water Horizon oil spill <http://aem.asm.org/content/77/22/7962.short>`_ (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).
 
-Oil is made up of many kinds of reduced carbon molecules (carbons with many electrons), including alkane chain hydrocarbons - typically chains of 10-30 carbons bonded to hydrogen. Bacteria break down hydrocarbons in an iterative fashion - they remove units of two carbons at a time. These two carbon units come in the form of acetyl-CoA, a two-carbon acetyl group with a coenzyme A molecule attached by a thioester linkage. At first blush it seems odd to attach large molecule like CoA to acetate. CoA has 21 carbons - why add all that mass to metabolize only two carbons?
+.. todo:: figure of alkane and oil spill? 
+
+Oil is made up of many kinds of reduced carbon molecules (carbons with many electrons), including alkane chain hydrocarbons - typically chains of 10-30 carbons bonded to hydrogen. Bacteria break down hydrocarbons in an iterative fashion - they remove units of two carbons at a time. These two carbon units come in the form of `acetyl-CoA <http://equilibrator.weizmann.ac.il/compound?compoundId=C00024>`_, a two-carbon acetyl group with a `coenzyme A <http://equilibrator.weizmann.ac.il/compound?compoundId=C00010>`_ molecule attached by a thioester linkage. At first blush it seems odd to attach large molecule like CoA to acetate. CoA has 21 carbons - why add all that mass to metabolize only two carbons?
 
 Producing acetyl-CoA has several advantages. First, the CoA provides a “handle” by which enzymes can recognize the molecule (Bar-Even et al., 2011). It is simpler for an enzyme to recognize and bind a roughly 750 Dalton molecule (CoA) containing multiple elements, aromatic rings, phosphates, etc. than it is to recognize a 60 Dalton molecule (acetate) containing only two carbons, two oxygens and 4 hydrogens. Second, as we saw above, the thioester linkage is a high energy bond: a bond whose hydrolysis releases substantial energy. Finally, acetyl-CoA is a very central molecule in metabolism - it can be used for many different purposes ranging from energy production to biosynthesis of lipids and sterols for membranes. 
 
 Example of Octane Breakdown
 ----------------------------------------------------------
 
+.. todo:: add octane image.
+
 Returning to the metabolism of alkanes we notice that acetyl-CoA is different from an alkane chain. In alkanes the carbons are all bonded to hydrogens while in the acetyl group of acetyl-CoA there are carbon-oxygen and carbon-sulfur bonds. Forming these bonds requires a number of oxidation steps (removal of electrons - convince yourself that this is true). To see what’s required, let’s use eQuilibrator to consider making acetyl-CoA from an example alkane, the 8-carbon chain octane. 
 
-Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA
+`Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+2+CoA+%3D%3E+Hexanoyl-CoA+%2B+Acetyl-CoA>`_
 
 If you load this reaction on eQuilibrator you’ll notice that it is not balanced - it requires a source of oxygen atoms to account for the fact that hexanoyl-CoA and acetyl-CoA are both more oxidized than octane (having c=o and c-s bonds that octane does not). Notice also that we chose to produce hexanoyl-CoA instead of hexane. The biological pathway for alkane degradation does this so that acetyl-CoA units can be removed in an iterative process, two by two carbons.
 Use eQuilibrator to automatically balance the missing waters. Now we find that this reaction is not redox balanced and the left hand side has an excess of electrons: 
 
-Octane + 2 CoA + 2 H\ :sub:`2`\ O ⇌ Hexanoyl-CoA + Acetyl-CoA
+|octane_beta|_
+
+.. |octane_beta| replace:: Octane + 2 CoA + 2 H\ :sub:`2`\ O ⇌ Hexanoyl-CoA + Acetyl-CoA
+.. _octane_beta: http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01387&reactantsCoeff=-1&reactantsName=Octane&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-2&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C05270&reactantsCoeff=1&reactantsName=Hexanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00024&reactantsCoeff=1&reactantsName=Acetyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-2&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octane%20%2B%202%20CoA%20%3D%3E%20Hexanoyl-CoA%20%2B%20Acetyl-CoA
 
 This makes sense because acetyl-CoA is oxidized relative to octane, as mentioned above. We need an electron acceptor like NAD+ to accept the electrons generated by oxidizing octane. 
 You can use eQuilibrator to automatically redox balance the reaction using NAD+ and NADH. While NAD(H) is not the only electron carrier used in the real pathway of alkane degradation, this is a good place for us to start.
 
-Octane + 2 CoA + 5 NAD+ + 2 H\ :sub:`2`\ O ⇌ Hexanoyl-CoA + Acetyl-CoA + 5 NADH
+|octane_beta_all_nadh|_
 
-Now that we’ve handled elemental and electron balance we need to think about energy. We might expect this pathway to be intrinsically downhill because it involves the oxidation of carbons (like in glycolysis) but there are two uphill components of the pathway: the formation of two thioester bonds and the reduction NAD+ to make NADH. Together this produces a positive Δ\ :sub:`r`\ G'm  ≈ 140 kJ/mol, not a small barrier to breaking down alkanes!
+.. |octane_beta_all_nadh| replace:: Octane + 2 CoA + 5 NAD+ + 2 H\ :sub:`2`\ O ⇌ Hexanoyl-CoA + Acetyl-CoA + 5 NADH
+.. _octane_beta_all_nadh: http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01387&reactantsCoeff=-1&reactantsName=Octane&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-2&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C05270&reactantsCoeff=1&reactantsName=Hexanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00024&reactantsCoeff=1&reactantsName=Acetyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00004&reactantsCoeff=5&reactantsName=NADH&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00003&reactantsCoeff=-5&reactantsName=NAD+&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-2&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octane%20%2B%202%20CoA%20%2B%202%20H2O%20%3C%3D%3E%20Hexanoyl-CoA%20%2B%20Acetyl-CoA
+
+Now that we’ve handled elemental and electron balance we need to think about energy. We might expect this pathway to be intrinsically downhill because it involves the oxidation of carbons (like in glycolysis) but there are two uphill components of the pathway: the formation of two thioester bonds and the reduction NAD+ to make NADH. Together this produces a positive Δ\ :sub:`r`\ G'\ :sup:`m`  ≈ 140 kJ/mol, not a small barrier to breaking down alkanes!
 
 Energy Balance in Octane Breakdown
 ----------------------------------------------------------
 
 How does biology overcome this barrier in order to produce NADH and ultimately ATP? Using a classic biological pattern - expending some energy up front in order to conserve more energy later. To understand how this works, it’s useful to think about the pathway in three parts: the oxidation of the octane to octanoic acid (octane with a terminal carboxyl group), the attachment of CoA to form octanoyl-CoA and finally removal of a two carbon unit forming acetyl-CoA (2 carbons) hexanoyl-CoA (6 carbons). 
 
-#. Octane + 2 H\ :sub:`2`\ O ⇌ Octanoic acid
+#. `Octane + 2 Water ⇌ Octanoic acid <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01387&reactantsCoeff=-1&reactantsName=Octane&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C06423&reactantsCoeff=1&reactantsName=Octanoic%20acid&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-2&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octane%20%3D%20Octanoic%20acid>`_
 
-#. Octanoic acid + CoA ⇌ Octanoyl-CoA + H\ :sub:`2`\ O
+#. `Octanoic acid + CoA ⇌ Octanoyl-CoA + Water <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C06423&reactantsCoeff=-1&reactantsName=Octanoic%20acid&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C01944&reactantsCoeff=1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoic%20acid%20%2B%20CoA%20%3D%20Octanoyl-CoA>`_
 
-#. Octanoyl-CoA + CoA + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA
+#. `Octanoyl-CoA + CoA + Water ⇌ Acetyl-CoA + Hexanoyl-CoA <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01944&reactantsCoeff=-1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00024&reactantsCoeff=1&reactantsName=Acetyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C05270&reactantsCoeff=1&reactantsName=Hexanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoyl-CoA%20%2B%20CoA%20%3D%20Acetyl-CoA%20%2B%20Hexanoyl-CoA>`_
 
-Steps 1 & 3 are redox reactions that require electron acceptors, so their energetics will depend on the particular acceptors used (as we discuss below). Step 2, which produces octanoyl-CoA, is not a redox reaction but is unfavorable, having a Δ\ :sub:`r`\ G'm value of about +40 kJ/mol - it makes a thioester bond after all. So to understand this pathway we must understand how it is that each of these steps are made thermodynamically favorable. 
+Steps 1 & 3 are redox reactions that require electron acceptors, so their energetics will depend on the particular acceptors used (as we discuss below). Step 2, which produces octanoyl-CoA, is not a redox reaction but is unfavorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` value of about +40 kJ/mol - it makes a thioester bond after all. So to understand this pathway we must understand how it is that each of these steps are made thermodynamically favorable. 
 
-Although we assumed that NAD+ was the electron acceptor in our analysis above, you can see using eQuilibrator that step 1 would be quite unfavorable if all six electrons were donated to 3 NAD+ to form 3 NADH (Δ\ :sub:`r`\ G'm would be +50 kJ / mol). Rather, the natural pathway for step 1 uses O\ :sub:`2` to accept four of the six electrons produced (van Beilen and Funhoff, 2007), giving an extremely favorable net reaction of
+Although we assumed that NAD+ was the electron acceptor in our analysis above, you can see using eQuilibrator that step 1 would be quite unfavorable if all six electrons were donated to 3 NAD+ to form 3 NADH (Δ\ :sub:`r`\ G'\ :sup:`m` would be +50 kJ / mol). Rather, the natural pathway for step 1 uses O\ :sub:`2` to accept four of the six electrons produced (van Beilen and Funhoff, 2007), giving an extremely favorable net reaction of
 
-Octane + 1 NAD+ + Oxygen ⇌ Octanoic acid + 1 NADH
+`Octane + 1 NAD+ + Oxygen ⇌ Octanoic acid + 1 NADH <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+1+NAD%2B+%2B+Oxygen+%3C%3D%3E+Octanoic+acid+%2B+1+NADH+>`_
 
-with a Δ\ :sub:`r`\ G'm around -390 kJ/mol. So in this case the pathway is made favorable by directly donating ⅔ of the electrons to oxygen and forgoing ATP that would otherwise be generated from NADH through respiration. 
+with a Δ\ :sub:`r`\ G'\ :sup:`m` around -390 kJ/mol. So in this case the pathway is made favorable by directly donating ⅔ of the electrons to oxygen and forgoing ATP that would otherwise be generated from NADH through respiration. 
 
-The biological activation of step 2 - producing of octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed above) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'm of the double hydrolysis reaction
+The biological activation of step 2 - producing of octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed above) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
 
-ATP + 2 H\ :sub:`2`\ O ⇌ AMP + 2 Pi
+|atp_hydrolysis_amp|_
 
-This reaction has a Δ\ :sub:`r`\ G'm around -85 kJ/mol. This number makes sense because it is roughly twice the value we got for hydrolysing one phosphoanhydride bond on ATP, and is more than enough to balance the 50 kJ/mol required to form octanoyl-CoA from octanoic acid and free CoA. As in the case of step 1, cells spend some energy up front (this time in the form of ATP) in order to make alkane metabolism proceed in the direction of degradation and energy conservation (i.e. making more ATP). 
+.. |atp_hydrolysis_amp| replace:: ATP + 2 H\ :sub:`2`\ O ⇌ AMP + 2 Pi
+.. _atp_hydrolysis_amp: http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00002&reactantsCoeff=-1&reactantsName=ATP&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00020&reactantsCoeff=1&reactantsName=AMP&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00009&reactantsCoeff=2&reactantsName=Pi&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-2&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=atp%20%3D%20amp%20%2B%202%20pi
+
+This reaction has a Δ\ :sub:`r`\ G'\ :sup:`m` around -85 kJ/mol. This number makes sense because it is roughly twice the value we got for hydrolysing one phosphoanhydride bond on ATP, and is more than enough to balance the 50 kJ/mol required to form octanoyl-CoA from octanoic acid and free CoA. As in the case of step 1, cells spend some energy up front (this time in the form of ATP) in order to make alkane metabolism proceed in the direction of degradation and energy conservation (i.e. making more ATP). 
 
 Finally we consider step 3, the removal of a two-carbon unit from octanoyl-CoA. If we assume that the pathway donates electrons to NAD+
 
-Octanoyl-CoA + CoA + 2 NAD+ + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA + 2 NADH
+|acetyl_removal|_
 
-The pathway looks quite unfavorable, with a Δ\ :sub:`r`\ G'm ≈ +50 kJ/mol. Cells sidestep this problem with two “tricks” - as in step 1, not all the electrons are donated to NAD+. Rather, the true pathway utilizes a higher potential carrier called FAD - a carrier that more readily accepts electrons but less readily donates them. 
+.. |acetyl_removal| replace:: Octanoyl-CoA + CoA + 2 NAD+ + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA + 2 NADH
+.. _acetyl_removal: http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01944&reactantsCoeff=-1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00024&reactantsCoeff=1&reactantsName=Acetyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C05270&reactantsCoeff=1&reactantsName=Hexanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00004&reactantsCoeff=2&reactantsName=NADH&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00003&reactantsCoeff=-2&reactantsName=NAD+&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoyl-CoA%20%2B%20CoA%20%2B%20H2O%20%3C%3D%3E%20Acetyl-CoA%20%2B%20Hexanoyl-CoA
 
-Octanoyl-CoA + CoA + FAD + NAD+ + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA + FADH2 + NADH
+The pathway looks quite unfavorable, with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +50 kJ/mol. Cells sidestep this problem with two “tricks” - as in step 1, not all the electrons are donated to NAD+. Rather, the true pathway utilizes a higher potential carrier called FAD - a carrier that more readily accepts electrons but less readily donates them. 
 
-Using FAD only partially solves the problem, however, lowering Δ\ :sub:`r`\ G'm to about +30 kJ/mol. This is highly unlikely to work in biological conditions: as we saw above, a tenfold difference in concentration between substrates and products gives 6 kJ / mol, so we’d need a 105-fold (100,000x) concentration gradient to make this approach work. So how does it work?
+|acetyl_removal_fad|_
+
+.. |acetyl_removal_fad| replace:: Octanoyl-CoA + CoA + FAD + NAD+ + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA + FADH2 + NADH
+.. _acetyl_removal_fad: http://equilibrator.weizmann.ac.il/search?query=Octanoyl-CoA+%2B+CoA+%2B+FAD+%2B+NAD%2B+%2B+H2O+%3C%3D%3E+Acetyl-CoA+%2B+Hexanoyl-CoA+%2B+FADH2+%2B+NADH
+
+Using FAD only partially solves the problem, however, lowering Δ\ :sub:`r`\ G'\ :sup:`m` to about +30 kJ/mol. This is highly unlikely to work in biological conditions: as we saw above, a tenfold difference in concentration between substrates and products gives 6 kJ / mol, so we’d need a 10\ :sup:`5`\ -fold (100,000x) concentration gradient to make this approach work. So how does it work?
 
 The way that animal mitochondria “square this circle” is that FAD is not the true electron acceptor either! Rather, FAD is bound to the electron transfer flavoprotein (ETF) that is estimated to have a redox potential around 0 mV (Gustafson et al., 1986). Although ETF is not in the eQuilibrator database, you can still use eQuilibrator to investigate the energetics of this reaction by dropping the FAD acceptor in the reaction above
 
-Octanoyl-CoA + CoA + NAD+ + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA + NADH
+|acetyl_removal_free_e|_
 
-and setting the potential of the extra electrons to 0 mV (which is the default). This gives a Δ\ :sub:`r`\ G'm ≈ -10 kJ/mol, finally feasible! This example highlights a number of interesting facets of metabolism. As above (in step 1), some energy is diverted to making step 3 favorable by using higher potential electron acceptors for crucial steps - in this case using FAD-bound ETF as the acceptor. Secondly, flavin-based electron acceptors like FAD (flavin-adenine dinucleotide) are typically very oxygen sensitive and often tightly-bound to proteins. This can prevent direct interaction with O\ :sub:`2` (which could spontaneously oxidize them) and can also alter their reduction potential from the free (not protein-bound) form, as we saw in the case of ETF.
+.. |acetyl_removal_free_e| replace:: Octanoyl-CoA + CoA + NAD+ + H\ :sub:`2`\ O ⇌ Acetyl-CoA + Hexanoyl-CoA + NADH + 2 e-
+.. _acetyl_removal_free_e: http://equilibrator.weizmann.ac.il/reaction?query=Octanoyl-CoA+%2B+CoA+%2B+NAD%2B+%2B+H2O+%3C%3D%3E+Acetyl-CoA+%2B+Hexanoyl-CoA+%2B+NADH&ph=7.0&ionic_strength=0.1&electronReductionPotential=0.0&reactantsCoeff=-1.0&reactantsId=C01944&reactantsName=Octanoyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00003&reactantsName=NAD%2B&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C05270&reactantsName=Hexanoyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00004&reactantsName=NADH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00001&reactantsName=H2O&reactantsConcentration=1000&reactantsConcentrationPrefactor=0.001&reactantsPhase=liquid&max_priority=0&submit=Update
+
+and setting the potential of the extra electrons to 0 mV (which is the default). This gives a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -10 kJ/mol, finally feasible! This example highlights a number of interesting facets of metabolism. As above (in step 1), some energy is diverted to making step 3 favorable by using higher potential electron acceptors for crucial steps - in this case using FAD-bound ETF as the acceptor. Secondly, flavin-based electron acceptors like FAD (flavin-adenine dinucleotide) are typically very oxygen sensitive and often tightly-bound to proteins. This can prevent direct interaction with O\ :sub:`2` (which could spontaneously oxidize them) and can also alter their reduction potential from the free (not protein-bound) form, as we saw in the case of ETF.
 
 Fatty Acid Metabolism
 ----------------------------------------------------------
+
+.. todo:: figure of beta-oxidation pathway or link to lehninger?
 
 Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to a fatty acid tail via an ester linkage. Fatty acids are just alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 above is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid. 
 
