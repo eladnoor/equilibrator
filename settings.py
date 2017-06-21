@@ -110,12 +110,12 @@ TEMPLATES = [
 ]
 
 INSTALLED_APPS = (
+    'django.contrib.staticfiles',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'haystack',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
