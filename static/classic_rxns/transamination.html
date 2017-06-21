@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Transamination for Making Amino Acids &mdash; eQuilibrator Classic Reactions 0.1 beta documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="eQuilibrator Classic Reactions 0.1 beta documentation" href="index.html"/>
+        <link rel="next" title="Metabolism of Alkanes and Fatty Acids" href="fatty_acid_met.html"/>
+        <link rel="prev" title="Respiration" href="respiration.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> eQuilibrator Classic Reactions
+          
+
+          
+            
+            <img src="_static/equilibrator_logo_80px.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="atp.html">Energy Currency and ATP Hydrolysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thioester.html">Thioester Bonds are Energetic Too</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glucose_ox.html">The Oxidation of Glucose</a></li>
+<li class="toctree-l1"><a class="reference internal" href="co2_red.html">Plants Make Glucose from CO<sub>2</sub></a></li>
+<li class="toctree-l1"><a class="reference internal" href="glycolysis.html">Glycolysis and Fermentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="respiration.html">Respiration</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Transamination for Making Amino Acids</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fatty_acid_met.html">Metabolism of Alkanes and Fatty Acids</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">eQuilibrator Classic Reactions</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Transamination for Making Amino Acids</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/transamination.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transamination-for-making-amino-acids">
+<h1>Transamination for Making Amino Acids<a class="headerlink" href="#transamination-for-making-amino-acids" title="Permalink to this headline">¶</a></h1>
+<p>Proteins are made of amino acids and amino acids have amine groups (-NH2). Here we consider two related questions: (a) where do the amines come from and (b) how are different amino acids made? The most common way that cells make new amines is to incorporate ammonia into glutamate, forming glutamine</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glutamate+%2B+NH3+%3C%3D%3E+Glutamine+%2B+H2O">Glutamate + NH3 ⇌ Glutamine + H<sub>2</sub>O</a></p>
+<p>Using eQuilibrator we can see that this reaction is highly unfavorable with a positive Δ<sub>r</sub>G’m around 28 kJ/mol. In fact, the enzyme that catalyzes this reaction (<a class="reference external" href="http://equilibrator.weizmann.ac.il/enzyme?ec=6.3.1.2">glutamine synthetase</a>) <a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00002&amp;reactantsCoeff=-1&amp;reactantsName=ATP&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00008&amp;reactantsCoeff=1&amp;reactantsName=ADP&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00009&amp;reactantsCoeff=1&amp;reactantsName=Orthophosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00014&amp;reactantsCoeff=-1&amp;reactantsName=NH3&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00025&amp;reactantsCoeff=-1&amp;reactantsName=L-Glutamate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00064&amp;reactantsCoeff=1&amp;reactantsName=L-Glutamine&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;ph=7.000000&amp;pmg=14.000000&amp;ionic_strength=0.100000&amp;e_reduction_potential=0.000000&amp;max_priority=0&amp;mode=BA&amp;query=ATP%20%2B%20NH3%20%2B%20L-Glutamate%20%3D%20ADP%20%2B%20Orthophosphate%20%2B%20L-Glutamine">couples the reaction to ATP hydrolysis</a> in order to make it favorable (Δ<sub>r</sub>G’m = -15 kJ / mol). Glutamine is an amino acid with two nitrogen atoms - one derived from glutamate and another from ammonia. Once glutamine is formed, cells use an enzyme (<a class="reference external" href="http://equilibrator.weizmann.ac.il/enzyme?ec=1.4.1.13">glutamine:oxoglutarate aminotransferase</a>) to transfer the ammonia-derived nitrogen to another molecule (an alpha-keto acid called 2-oxoglutarate) to end up with two glutamates.</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?query=NADP++%2B+2+L-Glutamate+%3C%3D%3E+NADPH+%2B+2-Oxoglutarate+%2B+L-Glutamine&amp;ph=7.0&amp;ionic_strength=0.1&amp;reactantsCoeff=1.0&amp;reactantsId=C00005&amp;reactantsName=NADPH&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-1.0&amp;reactantsId=C00006&amp;reactantsName=NADP+&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-2.0&amp;reactantsId=C00025&amp;reactantsName=L-Glutamate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=1.0&amp;reactantsId=C00026&amp;reactantsName=2-Oxoglutarate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=1.0&amp;reactantsId=C00064&amp;reactantsName=L-Glutamine&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;max_priority=0&amp;submit=Reverse">NADPH + 2-Oxoglutarate + Glutamine ⇌ NADP+ + 2 Glutamate</a></p>
+<p>This reaction is highly favorable, in part because it is coupled to the oxidation of NADPH. So by tracing the pathway you can see that it has the net effect of converting ammonia to amines stored on glutamate. Exercise for the reader: explain why this reaction is a reduction reaction, i.e. why it requires electrons from NADPH?</p>
+<p>The most common way that amino acids are made is by transferring amines from glutamate to the right alpha-keto acid acceptor (as there are several such alpha keto acid compounds).</p>
+<div class="figure align-center" id="id3">
+<img alt="α-ketoglutaric acid or 2-oxoglutarate" src="_images/alphaketoglutarate.png" />
+<p class="caption"><span class="caption-text">α-ketoglutaric acid or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.</span></p>
+</div>
+<div class="figure align-center" id="id4">
+<img alt="L-glutamate" src="_images/glutamate.png" />
+<p class="caption"><span class="caption-text">L-glutamate: notice that glutamate is identical to α-ketoglutaric acid except the the α carbonyl group of has been replaced by an amine.</span></p>
+</div>
+<p>Phenylalanine, for example, can be made by transferring an amine to phenylpyruvate</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?query=2-Oxoglutarate+%2B+L-Phenylalanine+%3C%3D%3E+L-Glutamate+%2B+Phenylpyruvate&amp;ph=7.0&amp;ionic_strength=0.1&amp;reactantsCoeff=1.0&amp;reactantsId=C00025&amp;reactantsName=L-Glutamate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-1.0&amp;reactantsId=C00026&amp;reactantsName=2-Oxoglutarate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-1.0&amp;reactantsId=C00079&amp;reactantsName=L-Phenylalanine&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=1.0&amp;reactantsId=C00166&amp;reactantsName=Phenylpyruvate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;max_priority=0&amp;submit=Reverse">Glutamate + Phenylpyruvate ⇌ 2-Oxoglutarate + Phenylalanine</a></p>
+<p>Similarly, aspartate can be made by transferring an amine to oxaloacetate</p>
+<p><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?query=2-Oxoglutarate+%2B+L-Aspartate+%3C%3D%3E+L-Glutamate+%2B+Oxaloacetate&amp;ph=7.0&amp;ionic_strength=0.1&amp;reactantsCoeff=1.0&amp;reactantsId=C00025&amp;reactantsName=L-Glutamate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-1.0&amp;reactantsId=C00026&amp;reactantsName=2-Oxoglutarate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=1.0&amp;reactantsId=C00036&amp;reactantsName=Oxaloacetate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-1.0&amp;reactantsId=C00049&amp;reactantsName=L-Aspartate&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;max_priority=0&amp;submit=Reverse">Glutamate + Oxaloacetate ⇌ 2-Oxoglutarate + Aspartate</a></p>
+<p>If we inspect these reactions in eQuilibrator, we find that they have Δ<sub>r</sub>G’m values that are very close to 0 kJ / mol. This makes intuitive sense because both reactions involve the transfer of a group (an amine) from one molecule to the same position on another molecule (both the substrate and product are amino acids). In other words, these reactions are not intrinsically thermodynamically driven in either direction. Rather, it is the extremely high concentration of glutamate <a class="footnote-reference" href="#id2" id="id1">[1]</a>  that drives these reactions forward (in the direction of making various amino acids). Try setting the glutamate concentration to 50 mM using eQuilibrator to see what happens to the Δ<sub>r</sub>G’ value.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/">Upwards of 50 mM in many cell types</a></td></tr>
+</tbody>
+</table>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fatty_acid_met.html" class="btn btn-neutral float-right" title="Metabolism of Alkanes and Fatty Acids" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="respiration.html" class="btn btn-neutral" title="Respiration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Avi Flamholz, Elad Noor, Ron Milo.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1 beta',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
