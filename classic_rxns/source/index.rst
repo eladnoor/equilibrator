@@ -20,10 +20,6 @@ eQuilibrator Classic Reactions
    fatty_acid_met
    refs
 
-
-Things to do!
-==================
-
 .. todo::
     google analytics on this stuff.
 
