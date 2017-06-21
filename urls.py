@@ -13,8 +13,6 @@ urlpatterns = [
     url(r'^faq', TemplateView.as_view(template_name='faq.html')),
     url(r'^whats_new', TemplateView.as_view(template_name='new_in_2_0.html')),
     url(r'^cite', TemplateView.as_view(template_name='cite.html')),
-    url(r'^classic_reactions',
-        TemplateView.as_view(template_name='classic_reactions.html')),
     url(r'^compound_image', views.compound.CompoundImage),
     url(r'^compound', views.compound.CompoundPage),
     url(r'^download', views.views.DownloadPage),
