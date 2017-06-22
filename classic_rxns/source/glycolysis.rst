@@ -198,7 +198,7 @@ Being "activated" by ATP hydrolysis, this net reaction is quite favorable with a
 
 |lower_glyc_net|_
 
-.. |lower_glyc_net| replace:: Glyceraldehyde 3-phosphate + 2 ADP + Pi + NAD+ <=> Pyruvate + 2 ATP + NADH + H\ :sub:`2`\ O
+.. |lower_glyc_net| replace:: Glyceraldehyde 3-phosphate + 2 ADP + Pi + NAD+ ⇌ Pyruvate + 2 ATP + NADH + H\ :sub:`2`\ O
 .. _lower_glyc_net: http://equilibrator.weizmann.ac.il/search?query=DL-Glyceraldehyde+3-phosphate+%2B+2+ADP+%2B+Pi+%2B+NAD%2B+%3C%3D%3E+Pyruvate+%2B+2+ATP+%2B+NADH+%2B+H2O
 
 Because the oxidation of sugars (like glucose and glyceraldehyde) 
@@ -215,8 +215,8 @@ This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Ove
 
    The Embden-Meyerhoff glycolytic pathway (EMP pathway).
 
-These individual steps along with their enzymatic mechanisms are covered in great detail in `textbooks <https://www.ncbi.nlm.nih.gov/books/NBK22593/>`_ and review papers (Bar-Even et al., 2012). We note, however, that some of these individual steps are not very thermodynamically favorable, especially those that are involved in ATP production. For example, the first reaction of the payoff phase adds a phosphate to glyceraldehyde 3-phosphate to produce 1,3-bisphophoglycerate. This phosphate will is later transfered to ADP to make ATP and this reaction, catalyzed by the enzyme glyceraldehyde 3-phosphate dehydrogenase (labeled "gap" above), and is quite unfavorable 
+These individual steps along with their enzymatic mechanisms are covered in great detail in `textbooks <https://www.ncbi.nlm.nih.gov/books/NBK22593/>`_ and review papers (Bar-Even et al., 2012). We note, however, that some of these individual steps are not very thermodynamically favorable, especially those that are involved in ATP production. For example, the first reaction of the payoff phase adds a phosphate to glyceraldehyde 3-phosphate to produce 1,3-bisphophoglycerate. This phosphate is later transfered to ADP to make ATP and this reaction, catalyzed by the enzyme glyceraldehyde 3-phosphate dehydrogenase (labeled "gap" above), and is quite unfavorable 
 
-`NAD+ + Pi + D-Glyceraldehyde 3-phosphate <=> NADH + Bisphosphoglycerate <http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate>`_
+`NAD+ + Pi + D-Glyceraldehyde 3-phosphate ⇌ NADH + Bisphosphoglycerate <http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate>`_
 
 with a of Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +25 kJ/mol. Remembering that `each ~6 kJ/mol demands an order of magnitude concentration difference <thioester.html>`_, we can estimate that making this reaction favorable will require the reaction products to have ~1000-fold lower concentration than substrates. 
