@@ -209,7 +209,7 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
 
 This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Overall, this process is quite favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -63 kJ / mol. However, as you can see in the figure below, glycolysis has 10 reaction steps and each individual reaction step must be favorable in order for the pathway to proceed. 
 
- .. figure:: _static/_images/glycolysis.png
+ .. figure:: _static/_images/glycolysis.svg
    :alt: The Embden-Meyerhoff glycolytic pathway (EMP pathway)
    :align: center
 
