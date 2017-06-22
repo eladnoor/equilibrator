@@ -20,8 +20,8 @@ eQuilibrator Classic Reactions
    fatty_acid_met
    refs
 
-.. todo::
-    google analytics on this stuff.
+.. todo:: 
+    do the FAQ in this format. 
 
 .. todo::
     finish writing TCA content
