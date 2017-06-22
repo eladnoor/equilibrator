@@ -22,11 +22,25 @@ Producing acetyl-CoA has several advantages. First, the CoA provides a “handle
 Example of Octane Breakdown
 ----------------------------------------------------------
 
+.. figure:: _static/_images/accoa.png
+   :alt: Acetyl-CoA
+   :align: center
+
+   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a `thioester linkage <thioester.html>`_.
+
+
+.. figure:: _static/_images/thioacetate.png
+   :alt: Thioacetate
+   :align: center
+
+   Thioacetate is a simple example of a compound with a thioester bond and easier to look at than acetyl-CoA. Notice that unlike octane, thioacetate (and acetyl-CoA) have carbon-oxygen and carbon-sulfur bonds. 
+
 Returning to the metabolism of alkanes we notice that acetyl-CoA is different from an alkane chain. In alkanes the carbons are all bonded to hydrogens while in the acetyl group of acetyl-CoA there are carbon-oxygen and carbon-sulfur bonds. Forming these bonds requires a number of oxidation steps (removal of electrons - convince yourself that this is true). To see what’s required, let’s use eQuilibrator to consider making acetyl-CoA from an example alkane, the 8-carbon chain octane. 
 
 `Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+2+CoA+%3D%3E+Hexanoyl-CoA+%2B+Acetyl-CoA>`_
 
 If you load this reaction on eQuilibrator you’ll notice that it is not balanced - it requires a source of oxygen atoms to account for the fact that hexanoyl-CoA and acetyl-CoA are both more oxidized than octane (having c=o and c-s bonds that octane does not). Notice also that we chose to produce hexanoyl-CoA instead of hexane. The biological pathway for alkane degradation does this so that acetyl-CoA units can be removed in an iterative process, two by two carbons.
+
 Use eQuilibrator to automatically balance the missing waters. Now we find that this reaction is not redox balanced and the left hand side has an excess of electrons: 
 
 |octane_beta|_
