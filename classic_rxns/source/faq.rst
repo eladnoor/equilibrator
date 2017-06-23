@@ -11,9 +11,9 @@ The search results page shows the top matches for your query. Results are shown 
 How do I search for a reaction?
 ----------------------------------------------------------
 
-You can search for a reaction by entering an (almost) free-text description of the reaction. For example, you can type "`glucose = 2 ethanol + 2 co2 <search?query=glucose+%3D+2+ethanol+%2B+2+co2>`_".
+You can search for a reaction by entering an (almost) free-text description of the reaction. For example, you can type "`glucose = 2 ethanol + 2 CO\ :sub:`2` <search?query=glucose+%3D+2+ethanol+%2B+2+CO\ :sub:`2`>`_".
 
-In general, write your reaction using " = " or " <=> " to separate the substrates from the products. The spaces around " = " are required. Always use spaces before and after compound names, "+" and stoichiometric coefficients. Also note that you can find reactions through the enzymes that catalyze them. For example, instead of typing in the full reaction "`Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate </search?query=glucose+%3D+2+ethanol+%2B+2+co2>`_" you can instead search for "`aldolase </search?query=aldolase>`_" or "`fructose bisphosphate aldolase </search?query=fructose+bisphosphate+aldolase>`_."
+In general, write your reaction using " = " or " <=> " to separate the substrates from the products. The spaces around " = " are required. Always use spaces before and after compound names, "+" and stoichiometric coefficients. Also note that you can find reactions through the enzymes that catalyze them. For example, instead of typing in the full reaction "`Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate </search?query=glucose+%3D+2+ethanol+%2B+2+CO\ :sub:`2`>`_" you can instead search for "`aldolase </search?query=aldolase>`_" or "`fructose bisphosphate aldolase </search?query=fructose+bisphosphate+aldolase>`_."
 
 What are "standard conditions?"
 ----------------------------------------------------------
@@ -32,10 +32,16 @@ Where Q is the "reaction quotient" or "mass-action ratio." Read more about these
 What are Δ\ :sub:`r`\ G°, Δ\ :sub:`r`\ G'° and Δ\ :sub:`r`\ G'?
 ----------------------------------------------------------------------------
 
+G is the Gibbs free energy of a physical system. It quantifies the amount of energy available for work in a system that is at constant temperature and pressure. Biological systems do not often experience radical changes in temperature or pressure, so G is appropriate for their analysis. On eQuilibrator we assume that the temperature is 25 °C (298.15 K) and the pressue is 1 bar. As a consequence of the second law of thermodynamics, spontaneous changes in systems at constant temperature and pressure must lead to a reduction in G. Chemical reactions change biochemical systems, so the same must be true of them: in order to occur, a reaction must lead to a reduction in the Gibbs free energy, implying that Δ\ :sub:`r`\ G' < 0.
+
+Δ\ :sub:`r`\ G° is the change in Gibbs free energy due to a chemical reaction in standard conditions and without accounting for pH, ionic strength or any other cellular factors (i.e. they are taken as 0). Δ\ :sub:`r`\ G'° is the change in Gibbs free energy due to a chemical reaction due a reaction at a particular pH and ionic strength. These are convenient reference points, but neither Δ\ :sub:`r`\ G° nor Δ\ :sub:`r`\ G'° account for the effect of reactant concentrations on the free energy.
+
+In cells there are certain prevailing metabolite concentrations. Concentrations affect the entropic component of the free energy: if substrate concentrations are higher than product concentrations then forward flow of the reaction will balance the concentrations and increase the entropy of the system. Δ\ :sub:`r`\ G' accounts for the effect of concentrations. It is very important to use Δ\ :sub:`r`\ G' values derived from physiologically plausible concentrations in thermodynamic analysis because reactant concentrations have a substantial effect on Δ\ :sub:`r`\ G' and because the laws of thermodynamics constrain only Δ\ :sub:`r`\ G', not Δ\ :sub:`r`\ G° or Δ\ :sub:`r`\ G'°.
+
 What are Δ\ :sub:`f`\ G' and Δ\ :sub:`f`\ G'°?
 ----------------------------------------------------------
 
-The formation energy of a compound is the change in free energy due to the compound's formation reaction - the reaction forming it from elements in their standard form. For example, the formation reaction of carbon dioxide is O2 + C ⇌ CO2. Δ\ :sub:`f`\ G° is the formation energy of a compound in standard conditions and without accounting for pH, ionic strength or any other cellular factors (i.e. they are taken as 0).
+The formation energy of a compound is the change in free energy due to the compound's formation reaction - the reaction forming it from elements in their standard form. For example, the formation reaction of carbon dioxide is O2 + C ⇌ CO\ :sub:`2`. Δ\ :sub:`f`\ G° is the formation energy of a compound in standard conditions and without accounting for pH, ionic strength or any other cellular factors (i.e. they are taken as 0).
 
 In contrast, Δ\ :sub:`f`\ G'° is the formation energy of a compound at a particular set of cellular conditions. When we show a Δ\ :sub:`f`\ G'° on eQuilibrator, as we do on compound and reaction pages, it has been transformed to the pH and ionic strength values. The default pH is 7 and the default ionic strength is 0.1 M.
 
@@ -65,7 +71,7 @@ In order to fully understand how to calculate estimation uncertainties, you'll p
 How do you deal with gases like O\ :sub:`2` and H\ :sub:`2`?
 ---------------------------------------------------------------
 
-For gases the standard condition is defined as 1 atmosphere (bar) partial pressure. However, if one knows the soluble concentration of the gas of interest it should be specified by choosing "custom" concentrations. Alternatively, if you know the partial pressure of a reactant in the gas phase of the reaction chamber, and assume there is an equilibrium with the solution phase, then you can set a concentration for the gas (in units of mbar) by clicking on the test tube icon. You can also indicate that you want to use the standard gas phase for the ΔG'° by adding (g) to the end of the compound name. For example, try to search for: `CO2(g) + PEP + H2O = Oxaloacetate + Pi </search?query=CO2%28g%29+%2B+PEP+%2B+H2O+%3D+Oxaloacetate+%2B+Pi>`_. This will work only for compounds for which the formation energy in gas phase is found in our database, namely O\ :sub:`2`\ , N\ :sub:`2`\ , H\ :sub:`2`\ , CO\ :sub:`2`\ , and CO.
+For gases the standard condition is defined as 1 atmosphere (bar) partial pressure. However, if one knows the soluble concentration of the gas of interest it should be specified by choosing "custom" concentrations. Alternatively, if you know the partial pressure of a reactant in the gas phase of the reaction chamber, and assume there is an equilibrium with the solution phase, then you can set a concentration for the gas (in units of mbar) by clicking on the test tube icon. You can also indicate that you want to use the standard gas phase for the ΔG'° by adding (g) to the end of the compound name. For example, try to search for: `CO\ :sub:`2`(g) + PEP + H\ :sub:`2`\ O = Oxaloacetate + Pi </search?query=CO\ :sub:`2`%28g%29+%2B+PEP+%2B+H\ :sub:`2`\ O+%3D+Oxaloacetate+%2B+Pi>`_. This will work only for compounds for which the formation energy in gas phase is found in our database, namely O\ :sub:`2`\ , N\ :sub:`2`\ , H\ :sub:`2`\ , CO\ :sub:`2`\ , and CO.
 
 Why can't I change the concentration of H\ :sup:`+` ions?
 ----------------------------------------------------------
@@ -85,6 +91,25 @@ The temperature is fixed at 25 °C (298.15 K) for all ΔG values given. The grou
 What are CO\ :sub:`2`\ (aq) and CO\ :sub:`2`\ (total)?
 ----------------------------------------------------------
 
+CO\ :sub:`2` in solution gives rise to several chemical species. It can be quite confusing to think about the equilibrium between these species - doing so requires care. CO\ :sub:`2`\ (aq) is dissolved CO\ :sub:`2`. CO\ :sub:`2`\ (aq) undergoes a spontaneous hydration reaction to form carbonic acid: 
+
+CO\ :sub:`2` + H\ :sub:`2`\ O ⇌ H\ :sub:`2`\ CO\ :sub:`3`
+
+or a similar reaction of: 
+
+CO\ :sub:`2` + OH\ :sup:`-` ⇌ HCO\ :sub:`3`\ :sup:`-`
+
+Several hydrated species form in water through addition or release of protons: carbonic acid (H\ :sub:`2`\ CO\ :sub:`3`), bicarbonate (HCO\ :sub:`3`\ :sup:`-`\ ) and carbonate (CO\ :sub:`3`\ :sup:`2-`\ ). In thermodynamics of biochemical reactions, different ionic states (known as pseudo-isomers) are lumped together. If you search for any of these hydrated species, eQuilibrator will use their lumped form - HCO3-(aq). Sometimes it is easier to measure or analyze the sum of CO\ :sub:`2`\ (aq) and its three hydrated forms (H\ :sub:`2`\ CO\ :sub:`3`, HCO3- and CO32-). This sum of species is termed CO\ :sub:`2`\ (total). Note that in the chemical formula of CO\ :sub:`2`\ (total) there are actually 3 oxygen atoms because it also includes the hydrating water molecule.
+
+
+When only the total concentration is known, it is assumed that there is equilibrium among the four species and one uses CO\ :sub:`2`\ (total) in place of CO\ :sub:`2`\ (aq). If, however, you know or can measure the concentration of CO\ :sub:`2`\ (aq) alone, then it is reasonable to use CO\ :sub:`2`\ (aq) as a reactant. The concentration of CO\ :sub:`2`(aq) is usually straightforward to calculate based on Henry’s law dictating, for example, that under standard atmospheric conditions of about 400ppm CO\ :sub:`2`\ (g) the concentration of CO\ :sub:`2`\ (aq) is about 10 uM. The concentrations of bicarbonate and CO\ :sub:`2`\ (total), however, depend strongly on pH. More information is supplied in the figure below and in this link.
+
+The uncatalyzed hydration reaction (CO\ :sub:`2`\ (aq) + H\ :sub:`2`\ O ⇌ H\ :sub:`2`\ CO\ :sub:`3`) takes minutes to equilibrate. In many organisms, however, this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds up the reaction by several orders of magnitude [3]. In cells, therefore, CO\ :sub:`2`\ (aq) is generally considered to be in equilibrium with its hydrated forms (carbonic acid, bicarbonate and carbonate) save in some special cases such as in cyanobacterial carbon concentrating mechanisms where carbonic anhydrase is absent from some parts of the cell.
+
+We note that anaplerotic reactions use bicarbonate as their substrate whereas decarboxylation reactions release CO\ :sub:`2` but in finding the ΔG' they can be written using either CO\ :sub:`2`\ (aq), HCO\ :sub:`3`\ :sup:`-`\ (aq) or CO\ :sub:`2`\ (total) as long as the concentrations used are accurate. This is true because of the equilibrium among these species.
+
+We know that this whole issue is quite confusing. You are welcome to suggest how to explain this better.
+
 What are "half-reactions?""
 ----------------------------------------------------------------------------
 
@@ -97,7 +122,7 @@ What's so complicated about redox reactions involving iron?
 
 The reduction or oxidation of the pair Fe(III)/Fe(II) is ubiquitous in biology, for example in the iron-sulfur clusters of ferredoxins. However, the chemical environment of the iron atom can have a large effect on the reduction potential of the Fe(III)/Fe(II) pair with the measured reduction potentials of natural ferredoxins varying by more than 350 mV [4]. That is, variation in the measured reduction potential of ferredoxins equals to reduction potential of NAD/NADH!
 
-Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [9]. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO2>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
+Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [9]. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO\ :sub:`2`>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
 
 Why is the value for ATP hydrolysis different than some textbooks?
 ----------------------------------------------------------------------------
