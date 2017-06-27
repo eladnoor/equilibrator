@@ -11,9 +11,9 @@ The search results page shows the top matches for your query. Results are shown 
 How do I search for a reaction?
 ----------------------------------------------------------
 
-You can search for a reaction by entering an (almost) free-text description of the reaction. For example, you can type "`glucose = 2 ethanol + 2 CO\ :sub:`2` <search?query=glucose+%3D+2+ethanol+%2B+2+CO\ :sub:`2`>`_".
+You can search for a reaction by entering an (almost) free-text description of the reaction. For example, you can type "`glucose = 2 ethanol + 2 CO\ :sub:`2` <search?query=glucose+%3D+2+ethanol+%2B+2+CO2>`_".
 
-In general, write your reaction using " = " or " <=> " to separate the substrates from the products. The spaces around " = " are required. Always use spaces before and after compound names, "+" and stoichiometric coefficients. Also note that you can find reactions through the enzymes that catalyze them. For example, instead of typing in the full reaction "`Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate </search?query=glucose+%3D+2+ethanol+%2B+2+CO\ :sub:`2`>`_" you can instead search for "`aldolase </search?query=aldolase>`_" or "`fructose bisphosphate aldolase </search?query=fructose+bisphosphate+aldolase>`_."
+In general, write your reaction using " = " or " <=> " to separate the substrates from the products. The spaces around " = " are required. Always use spaces before and after compound names, "+" and stoichiometric coefficients. Also note that you can find reactions through the enzymes that catalyze them. For example, instead of typing in the full reaction "`Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate </search?query=glucose+%3D+2+ethanol+%2B+2+CO2>`_" you can instead search for "`aldolase </search?query=aldolase>`_" or "`fructose bisphosphate aldolase </search?query=fructose+bisphosphate+aldolase>`_."
 
 What are "standard conditions?"
 ----------------------------------------------------------
@@ -71,7 +71,14 @@ In order to fully understand how to calculate estimation uncertainties, you'll p
 How do you deal with gases like O\ :sub:`2` and H\ :sub:`2`?
 ---------------------------------------------------------------
 
-For gases the standard condition is defined as 1 atmosphere (bar) partial pressure. However, if one knows the soluble concentration of the gas of interest it should be specified by choosing "custom" concentrations. Alternatively, if you know the partial pressure of a reactant in the gas phase of the reaction chamber, and assume there is an equilibrium with the solution phase, then you can set a concentration for the gas (in units of mbar) by clicking on the test tube icon. You can also indicate that you want to use the standard gas phase for the ΔG'° by adding (g) to the end of the compound name. For example, try to search for: `CO\ :sub:`2`(g) + PEP + H\ :sub:`2`\ O = Oxaloacetate + Pi </search?query=CO\ :sub:`2`%28g%29+%2B+PEP+%2B+H\ :sub:`2`\ O+%3D+Oxaloacetate+%2B+Pi>`_. This will work only for compounds for which the formation energy in gas phase is found in our database, namely O\ :sub:`2`\ , N\ :sub:`2`\ , H\ :sub:`2`\ , CO\ :sub:`2`\ , and CO.
+For gases the standard condition is defined as 1 atmosphere (bar) partial pressure. However, if one knows the soluble concentration of the gas of interest it should be specified by choosing "custom" concentrations. Alternatively, if you know the partial pressure of a reactant in the gas phase of the reaction chamber, and assume there is an equilibrium with the solution phase, then you can set a concentration for the gas (in units of mbar) by clicking on the test tube icon. You can also indicate that you want to use the standard gas phase for the ΔG'° by adding (g) to the end of the compound name. For example, try to search for: 
+
+|pep_carb|_
+
+.. |pep_carb| replace:: CO\ :sub:`2`\ (g) + PEP + H\ :sub:`2`\ O = Oxaloacetate + Pi 
+.. _pep_carb: /search?query=CO2%28g%29+%2B+PEP+%2B+H2O+%3D+Oxaloacetate+%2B+Pi
+
+This will work only for compounds for which the formation energy in gas phase is found in our database, namely O\ :sub:`2`\ , N\ :sub:`2`\ , H\ :sub:`2`\ , CO\ :sub:`2`\ , and CO.
 
 Why can't I change the concentration of H\ :sup:`+` ions?
 ----------------------------------------------------------
