@@ -19,6 +19,7 @@ eQuilibrator Classic Reactions
    transamination
    fatty_acid_met
    refs
+   faq
 
 .. todo:: 
     do the FAQ in this format. 
