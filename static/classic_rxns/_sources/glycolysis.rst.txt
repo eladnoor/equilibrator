@@ -63,7 +63,7 @@ We can convert these mV values into more familiar kJ/mol using the Nernst equati
 .. math::
 	\begin{eqnarray}
 	\Delta_r G' &=& n F \Delta E \\
-	F &\approx& 96.4 \times 10^3 \frac{kJ}{mV mol}
+	F &\approx& 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 	\end{eqnarray}
 
 where n is the number of electrons transferred and F is the Faraday constant. Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a 
