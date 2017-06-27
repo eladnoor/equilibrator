@@ -99,16 +99,23 @@ or a similar reaction of:
 
 CO\ :sub:`2` + OH\ :sup:`-` ⇌ HCO\ :sub:`3`\ :sup:`-`
 
-Several hydrated species form in water through addition or release of protons: carbonic acid (H\ :sub:`2`\ CO\ :sub:`3`), bicarbonate (HCO\ :sub:`3`\ :sup:`-`\ ) and carbonate (CO\ :sub:`3`\ :sup:`2-`\ ). In thermodynamics of biochemical reactions, different ionic states (known as pseudo-isomers) are lumped together. If you search for any of these hydrated species, eQuilibrator will use their lumped form - HCO3-(aq). Sometimes it is easier to measure or analyze the sum of CO\ :sub:`2`\ (aq) and its three hydrated forms (H\ :sub:`2`\ CO\ :sub:`3`, HCO3- and CO32-). This sum of species is termed CO\ :sub:`2`\ (total). Note that in the chemical formula of CO\ :sub:`2`\ (total) there are actually 3 oxygen atoms because it also includes the hydrating water molecule.
+Several hydrated species form in water through addition or release of protons: carbonic acid (H\ :sub:`2`\ CO\ :sub:`3`), bicarbonate (HCO\ :sub:`3`\ :sup:`-`\ ) and carbonate (CO\ :sub:`3`\ :sup:`2-`\ ). In thermodynamics of biochemical reactions, different ionic states (known as pseudo-isomers) are lumped together. If you search for any of these hydrated species, eQuilibrator will use their lumped form - HCO\ :sub:`3`\ :sup:`-`\ (aq). Sometimes it is easier to measure or analyze the sum of CO\ :sub:`2`\ (aq) and its three hydrated forms (H\ :sub:`2`\ CO\ :sub:`3`, HCO3- and CO32-). This sum of species is termed CO\ :sub:`2`\ (total). Note that in the chemical formula of CO\ :sub:`2`\ (total) there are actually 3 oxygen atoms because it also includes the hydrating water molecule.
 
+.. figure:: _static/_images/co2_hydration.png
+   :alt: Hydration of Carbon Dioxide
+   :align: center
 
-When only the total concentration is known, it is assumed that there is equilibrium among the four species and one uses CO\ :sub:`2`\ (total) in place of CO\ :sub:`2`\ (aq). If, however, you know or can measure the concentration of CO\ :sub:`2`\ (aq) alone, then it is reasonable to use CO\ :sub:`2`\ (aq) as a reactant. The concentration of CO\ :sub:`2`(aq) is usually straightforward to calculate based on Henry’s law dictating, for example, that under standard atmospheric conditions of about 400ppm CO\ :sub:`2`\ (g) the concentration of CO\ :sub:`2`\ (aq) is about 10 uM. The concentrations of bicarbonate and CO\ :sub:`2`\ (total), however, depend strongly on pH. More information is supplied in the figure below and in this link.
+   Hydration of CO\ :sub:`2`
+
+When only the total concentration is known, it is assumed that there is equilibrium among the four species and one uses CO\ :sub:`2`\ (total) in place of CO\ :sub:`2`\ (aq). If, however, you know or can measure the concentration of CO\ :sub:`2`\ (aq) alone, then it is reasonable to use CO\ :sub:`2`\ (aq) as a reactant. The concentration of CO\ :sub:`2`\ (aq) is usually straightforward to calculate based on Henry’s law dictating, for example, that under standard atmospheric conditions of about 400ppm CO\ :sub:`2`\ (g) the concentration of CO\ :sub:`2`\ (aq) is about 10 uM. The concentrations of bicarbonate and CO\ :sub:`2`\ (total), however, depend strongly on pH. More information is supplied in the figure below and in this link.
 
 The uncatalyzed hydration reaction (CO\ :sub:`2`\ (aq) + H\ :sub:`2`\ O ⇌ H\ :sub:`2`\ CO\ :sub:`3`) takes minutes to equilibrate. In many organisms, however, this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds up the reaction by several orders of magnitude [3]. In cells, therefore, CO\ :sub:`2`\ (aq) is generally considered to be in equilibrium with its hydrated forms (carbonic acid, bicarbonate and carbonate) save in some special cases such as in cyanobacterial carbon concentrating mechanisms where carbonic anhydrase is absent from some parts of the cell.
 
 We note that anaplerotic reactions use bicarbonate as their substrate whereas decarboxylation reactions release CO\ :sub:`2` but in finding the ΔG' they can be written using either CO\ :sub:`2`\ (aq), HCO\ :sub:`3`\ :sup:`-`\ (aq) or CO\ :sub:`2`\ (total) as long as the concentrations used are accurate. This is true because of the equilibrium among these species.
 
-We know that this whole issue is quite confusing. You are welcome to suggest how to explain this better.
+We know that this whole issue is quite confusing. We sincerely hope this explanation helps - please contact us if you have suggestions to explain the topic better.
+
+.. todo:: link to TCA cycle/anaplerotic reactions when we have some content for it. 
 
 What are "half-reactions?""
 ----------------------------------------------------------------------------
@@ -122,7 +129,7 @@ What's so complicated about redox reactions involving iron?
 
 The reduction or oxidation of the pair Fe(III)/Fe(II) is ubiquitous in biology, for example in the iron-sulfur clusters of ferredoxins. However, the chemical environment of the iron atom can have a large effect on the reduction potential of the Fe(III)/Fe(II) pair with the measured reduction potentials of natural ferredoxins varying by more than 350 mV [4]. That is, variation in the measured reduction potential of ferredoxins equals to reduction potential of NAD/NADH!
 
-Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [9]. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO\ :sub:`2`>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
+Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [9]. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO2>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
 
 Why is the value for ATP hydrolysis different than some textbooks?
 ----------------------------------------------------------------------------
@@ -140,10 +147,7 @@ What is the MDF of a pathway?
 
 The MDF of a pathway is a metric of how thermodynamically favorable a pathway can be in physiological conditions. The value of the MDF is smallest -ΔG' obtained by any pathway reaction when metabolite concentrations are chosen to make all pathway reactions as favorable as possible (-ΔG' as positive as possible).
 
-You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_.
-
-.. todo:: add inline reference.
-
+You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_ [12].
 
 How can I contact the people behind eQuilibrator?
 ----------------------------------------------------------
@@ -176,4 +180,6 @@ References
 #. E. Noor, A. Bar-Even, A. Flamholz, Y. Lubling, D. Davidi, R. Milo, "An integrated open framework for thermodynamics of reactions that combines accuracy and coverage" Bioinformatics (2012) 28:2037-2044.
 
 #. E. Noor, H.S. Haraldsdóttir, R. Milo, R.M.T. Fleming, "Consistent Estimation of Gibbs Energy Using Component Contributions" PLoS Comput Biol (2013) 9:e1003098.
+
+#. E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483.
 
