@@ -1,7 +1,7 @@
 Thioester Bonds are Energetic Too
 ==========================================================
 
-Phosphoanhydride bonds like those in ATP are not the only energy-carrying bonds used by biology. In fact, phosphate was likely scarce during the early history of Earth and some researchers hypothesize that `thioester bonds <https://en.wikipedia.org/wiki/Thioester>`_ - bonds between a sulfur and a carbonyl carbon (R–S–CO–R') - were used as energy currency during the evolution of early life (Goldford et al.).
+Phosphoanhydride bonds like those in ATP are not the only energy-carrying bonds used by biology. In fact, phosphate was likely scarce during the early history of Earth and some researchers hypothesize that `thioester bonds <https://en.wikipedia.org/wiki/Thioester>`_ - bonds between a sulfur and a carbonyl carbon (R–S–CO–R') - were used as energy currency during the evolution of early life (`Goldford et al. 2017 <refs.html>`_).
 
 .. figure:: _static/_images/thioacetate.png
    :alt: Thioacetate

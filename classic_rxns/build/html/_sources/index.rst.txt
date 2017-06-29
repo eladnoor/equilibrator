@@ -33,4 +33,10 @@ eQuilibrator Classic Reactions
 .. todo::
     links for references
 
+.. todo::
+    external links open in a new tab
+
+.. todo::
+    add a glossary of terms
+
 
