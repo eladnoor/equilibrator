@@ -13,7 +13,7 @@ References
 
 #. Flamholz, A., Phillips, R., and Milo, R. (2014). The quantified cell. Mol. Biol. Cell 25, 3497–3500.
 
-#. Goldford, J. E., Hartman, H., Smith, T. F., and Segrè, D. Remnants of an Ancient Metabolism without Phosphate. Cell.
+#. Goldford, J. E., Hartman, H., Smith, T. F., and Segrè, D. (2017). Remnants of an Ancient Metabolism without Phosphate. Cell 168, 1126–1134.e9.
 
 #. Gustafson, W. G., Feinberg, B. A., and McFarland, J. T. (1986). Energetics of beta-oxidation. Reduction potentials of general fatty acyl-CoA dehydrogenase, electron transfer flavoprotein, and fatty acyl-CoA substrates. J. Biol. Chem. 261, 7733–7741.
 
@@ -28,3 +28,5 @@ References
 #. Phillips, R. B., Kondev, J., Theriot, J., Orme, N., and Garcia, H. (2009). Physical biology of the cell, Garland Science New York.
 
 #. Unden, G., and Bongaerts, J. (1997). Alternative respiratory pathways of Escherichia coli: energetics and transcriptional regulation in response to electron acceptors. Biochim. Biophys. Acta 1320, 217–234.
+
+#. Alberty, R. a., Cornish-Bowden, A., Goldberg, R. N., Hammes, G. G., Tipton, K., and Westerhoff, H. V. (2011). Recommendations for terminology and databases for biochemical thermodynamics. Biophys. Chem. 155, 89–103.
