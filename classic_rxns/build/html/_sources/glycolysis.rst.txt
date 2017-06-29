@@ -7,11 +7,11 @@ The anaerobic breakdown of glucose for energy production is called fermentation.
 
 `Glucose ⇌ 2 Pyruvate <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate>`_
 
-If you inspect this reaction in eQuilibrator, you'll notice that it is not "electron-balanced." That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule. Really, we should write this reaction as a “half-reaction” 
+If you inspect this reaction in eQuilibrator, you'll notice that it is not "electron-balanced." That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule. Try counting the electrons in each molecule to verify that this is true; this is a good exercise to remind yourself about chemistry concepts like the `oxidation state <https://en.wikipedia.org/wiki/Oxidation_state>`_ of an atom and `Lewis structures <https://en.wikipedia.org/wiki/Lewis_structure>`_. Really, we should write the oxidation of glucose to pyruvate as a “half-reaction” 
 
 `Glucose ⇌ 2 Pyruvate + 4 e- <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate+%2B+4+e->`_
 
-In order track the electrons explicitly. These electrons don't just float around the cell: they are carried by specific compounds called electron carriers. In glycolysis, the electron carrier of choice is nicotinamide adenine dinucleotide (NAD). To fix the electron imbalance, try clicking on the "Balance with NAD+/NADH" link.
+In order track the electrons explicitly. These extra four electrons don't just float around the cell: they are carried by specific compounds called electron carriers. In glycolysis, the electron carrier of choice is nicotinamide adenine dinucleotide (NAD+). To fix the electron imbalance, try clicking on the "Balance with NAD+/NADH" link. 
 
 .. figure:: _static/_images/nadh.png
    :alt: Reduced Nicotinamide Adenine Dinucleotide (NADH)
@@ -26,7 +26,7 @@ The full glycolysis reaction, including electron carriers and ATP production is:
 .. |glycolysis_net| replace:: Glucose + 2 NAD+ + 2 ADP + 2 Pi ⇌ 2 Pyruvate + 2 NADH + 2 ATP + 2 H\ :sub:`2`\ O
 .. _glycolysis_net: http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+NAD%2B+%2B+2+ADP+%2B+2+Phosphate+%3C%3D%3E+2+Pyruvate+%2B+2+NADH+%2B+2+ATP+%2B+2+H2O
 
-Clearly glycolysis produces ATP without any oxygen. However, if you ran glycolysis over and over again to provide ATP, the amount of NADH in the cell would grow continually. The ratio of NAD+ concentration to NADH concentration - sometimes called the "redox state" - is very important to living cells because it affects the energetics of redox reactions, in particular in glycolysis. In order to keep this ratio constant (homeostasis), the electrons stored in NADH need to move on to a different molecule. Fermentation to lactate solves this problem by taking the electrons carried by NADH and giving them to pyruvate to form lactate:
+Clearly glycolysis produces ATP without any oxygen. However, if you ran glycolysis over and over again to provide ATP, the amount of NADH in the cell would grow continually. The ratio of NAD+ concentration to NADH concentration - sometimes called the "redox state" - is very important to living cells because it affects the energetics of redox reactions, in particular in glycolysis. In order to keep this ratio constant (homeostasis), the electrons stored in NADH need to move on to a different molecule. Fermentation to lactate solves this problem by taking the electrons carried by NADH and donating them to pyruvate to form lactate:
 
 `2 Pyruvate + 2 NADH ⇌ 2 Lactate + 2 NAD+ <http://equilibrator.weizmann.ac.il/search?query=2+Pyruvate+%2B+2+NADH+%3C%3D%3E+2+Lactate+%2B+2+NAD%2B>`_
 
@@ -52,7 +52,7 @@ We can identify that this is a redox reaction from the presence of the two-elect
 
 `NADH ⇌ NAD+ + 2e- <http://equilibrator.weizmann.ac.il/search?query=NADH+%3C%3D%3E+NAD%2B>`_ (E'\ :sup:`m` ≈ -330 mV)
 
-If we add these two half-reactions together we see that the electrons balance and cancel: the two half-cells produce a balanced chemical reaction. 
+If we add these two half-reactions together we see that the electrons cancel out: the two half-cells together produce a balanced chemical reaction. 
 
 The energetics of these half-reactions can be characterized by a number called the “reduction potential,” given above as E'\ :sup:`m`. What do these reduction potentials mean? The -190 mV E'\ :sup:`m` given for converting pyruvate to lactate represents the amount of energy that each electron needs to carry in order to convert pyruvate into lactate assuming, as above, 1 mM concentrations for pyruvate and lactate (denoted by the m superscript). Here, for example, we have to donate 2 e- to pyruvate to form lactate and each electron must carry roughly -190 mV of potential. 
 
@@ -73,7 +73,9 @@ where n is the number of electrons transferred and F is the Faraday constant. Re
 
 consistent with our earlier calculation of Δ\ :sub:`r`\ G\ :sup:`m` using eQuilibrator. 
 
-There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O\ :sub:`2`) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O\ :sub:`2` and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O\ :sub:`2` (Nelson et al., 2008). NADH is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (Bar-Even et al., 2012). 
+There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O\ :sub:`2`) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O\ :sub:`2` and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O\ :sub:`2` (Nelson et al., 2008). NAD(P)H is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (Bar-Even et al., 2012). 
+
+.. todo:: links for the redox carriers.
 
 Ethanol Fermentation
 ----------------------------------------------------------
@@ -94,7 +96,7 @@ This reaction is categorized as a “half-reaction” by eQuilibrator, meaning t
 .. |pyr_eth_net| replace:: 2 Pyruvate + 2 NADH ⇌ 2 Ethanol + 2 CO\ :sub:`2` + 2 NAD+
 .. _pyr_eth_net: http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00022&reactantsCoeff=-2&reactantsName=Pyruvate&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00469&reactantsCoeff=2&reactantsName=Ethanol&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00011&reactantsCoeff=2&reactantsName=CO2&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00004&reactantsCoeff=-2&reactantsName=NADH&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00003&reactantsCoeff=2&reactantsName=NAD+&reactantsPhase=aqueous&reactantsConcentration=0.001&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=2%20pyruvate%20%3D%202%20ethanol%20%2B%202%20CO2
 
-As with lactate, we see that production of ethanol from two pyruvate molecules perfectly balances the production of two pyruvate from glucose -- glucose breakdown produces two NADH and ethanol production consumes them both. As a result, the NADH cancel and the net reaction for ethanol fermentation contains no electron carriers.
+As with lactate, we see that production of ethanol from two pyruvate molecules perfectly balances the production of two pyruvate from glucose - glucose breakdown produces two NADH and ethanol production consumes them both. As a result, the NADH cancel and the net reaction for ethanol fermentation contains no electron carriers.
 
 |ethanol_ferm_net|_
 
