@@ -154,7 +154,7 @@ What is the MDF of a pathway?
 
 The MDF of a pathway is a metric of how thermodynamically favorable a pathway can be in physiological conditions. The value of the MDF is smallest -ΔG' obtained by any pathway reaction when metabolite concentrations are chosen to make all pathway reactions as favorable as possible (-ΔG' as positive as possible).
 
-You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_ [12].
+You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_ [13].
 
 How can I contact the people behind eQuilibrator?
 ----------------------------------------------------------
@@ -164,29 +164,17 @@ If you have questions about eQuilibrator, please consult the `eQuilibrator Googl
 References
 ----------------------------------------------------------
 
-#. R. Guynn, R.J. Veech, "The equilibrium constants of the adenosine triphosphate hydrolysis and the adenosine triphosphate-citrate lyase reactions", The Journal of Biological Chemistry (1973) 248:6966-6972.
-
-#. M.L. Mavrovouniotis, "Estimation of standard Gibbs energy changes of biotransformations" The Journal of Biological Chemistry (1991) 266(22):14440-14445.
-
-#. A. Radzicka, R. Wolfenden, "A proficient enzyme", Science (1995) 267:90-93.
-
-#. P. J. Stephens, D. R. Jollie, A. Warshel, "Protein Control of Redox Potentials of Iron−Sulfur Proteins" Chem. Rev. (1996) 96:2491–2514.
-
-#. M. Kanehisa, S. Goto, "KEGG: Kyoto Encyclopedia of Genes and Genomes" Nucleic Acids Research (2000) 28(1):27-30.
-
-#. R.A. Alberty, "Thermodynamics of biochemical reactions" (Hoboken N.J.: Wiley-Interscience, 2003).
-
-#. R.N. Goldberg, Y.B. Tewari, T.N. Bhat, "Thermodynamics of Enzyme-Catalyzed Reactions - a Database for Quantitative Biochemistry", Bioinformatics (2004) 20(16):2874-2877.
-
-#. R.A. Alberty, "Biochemical Thermodynamics" (Hoboken, NJ, USA: John Wiley & Sons, Inc., 2006).
-
-#. A. Navrotsky, L. Mazeina, J. Majzlan, "Size-Driven Structural And Thermodynamic Complexity In Iron-Oxides" Science (2008) 319:1635–1638.
-
-#. M.D. Jankowski et al., "Group Contribution Method for Thermodynamic Analysis of Complex Metabolic Networks" Biophysical Journal (2008) 95(3):1487-1499.
-
-#. E. Noor, A. Bar-Even, A. Flamholz, Y. Lubling, D. Davidi, R. Milo, "An integrated open framework for thermodynamics of reactions that combines accuracy and coverage" Bioinformatics (2012) 28:2037-2044.
-
-#. E. Noor, H.S. Haraldsdóttir, R. Milo, R.M.T. Fleming, "Consistent Estimation of Gibbs Energy Using Component Contributions" PLoS Comput Biol (2013) 9:e1003098.
-
-#. E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483.
+#. R. Guynn, R.J. Veech, "The equilibrium constants of the adenosine triphosphate hydrolysis and the adenosine triphosphate-citrate lyase reactions", The Journal of Biological Chemistry (1973) 248:6966-6972
+#. M.L. Mavrovouniotis, "Estimation of standard Gibbs energy changes of biotransformations" The Journal of Biological Chemistry (1991) 266(22):14440-14445
+#. A. Radzicka, R. Wolfenden, "A proficient enzyme", Science (1995) 267:90-93
+#. P. J. Stephens, D. R. Jollie, A. Warshel, "Protein Control of Redox Potentials of Iron−Sulfur Proteins" Chem. Rev. (1996) 96:2491–2514
+#. M. Kanehisa, S. Goto, "KEGG: Kyoto Encyclopedia of Genes and Genomes" Nucleic Acids Research (2000) 28(1):27-30
+#. R.A. Alberty, "Thermodynamics of biochemical reactions" (Hoboken N.J.: Wiley-Interscience, 2003)
+#. R.N. Goldberg, Y.B. Tewari, T.N. Bhat, "Thermodynamics of Enzyme-Catalyzed Reactions - a Database for Quantitative Biochemistry", Bioinformatics (2004) 20(16):2874-2877
+#. R.A. Alberty, "Biochemical Thermodynamics" (Hoboken, NJ, USA: John Wiley & Sons, Inc., 2006)
+#. A. Navrotsky, L. Mazeina, J. Majzlan, "Size-Driven Structural And Thermodynamic Complexity In Iron-Oxides" Science (2008) 319:1635–1638
+#. M.D. Jankowski et al., "Group Contribution Method for Thermodynamic Analysis of Complex Metabolic Networks" Biophysical Journal (2008) 95(3):1487-1499
+#. E. Noor, A. Bar-Even, A. Flamholz, Y. Lubling, D. Davidi, R. Milo, "An integrated open framework for thermodynamics of reactions that combines accuracy and coverage" Bioinformatics (2012) 28:2037-2044
+#. E. Noor, H.S. Haraldsdóttir, R. Milo, R.M.T. Fleming, "Consistent Estimation of Gibbs Energy Using Component Contributions" PLoS Comput Biol (2013) 9:e1003098
+#. E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483
 

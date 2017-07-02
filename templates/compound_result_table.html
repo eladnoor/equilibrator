@@ -1,3 +1,4 @@
+{% load static %}
 <table class="results">
     <tr class="infoTableHeader">
         <th colspan="100%">Formation Gibbs Energy</th>
@@ -6,13 +7,13 @@
     <tr>
         <td width="25%">
             <strong>
-                Estimated <a href="faq#dgr">&Delta;<sub><i>f</i></sub>G'</a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-rg-rg-and-rg>&Delta;<sub><i>f</i></sub>G'</a>
             </strong>
         </td>
         <td colspan="5">
             <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
-                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }}
             {% endif %}
             [kJ/mol]
         </td>
@@ -22,39 +23,39 @@
     <tr>
         <td width="25%">
             <strong>
-                Estimated <a href="faq#dgm">&Delta;<sub><i>f</i></sub>G'<sup>m</sup></a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#what-does-the-m-in-rg-m-fg-m-and-e-m-mean>&Delta;<sub><i>f</i></sub>G'<sup>m</sup></a>
             </strong>
         </td>
         <td colspan="5">
             <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
-                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }}
             {% endif %}
             [kJ/mol]
             &nbsp;&nbsp;&nbsp;<font size="2"><a href="#" title="Close concentration panel" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">Enter custom concentration &raquo;</a></font>
         </td>
     </tr>
-        
+
     <tr>
         <td width="25%">
             <strong>
-                Estimated <a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'&deg;</a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-fg-and-fg>&Delta;<sub><i>f</i></sub>G'&deg;</a>
             </strong>
         </td>
         <td colspan="5">
             <strong>{{ reaction.dg0_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
-                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }}
             {% endif %}
             [kJ/mol]
         </td>
-    </tr>    
-    
+    </tr>
+
     {% if compound.dg_source %}
         <tr>
             <td width="25%">
                 <strong>
-                    Estimated using 
+                    Estimated using
                 </strong>
             </td>
             <td colspan="5">
@@ -65,6 +66,6 @@
             </td>
         </tr>
     {% endif %}
-    
+
     {% include "reaction_sliders.html" %}
 </table>

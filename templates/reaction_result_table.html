@@ -1,3 +1,4 @@
+{% load static %}
 <table class="results">
     <tr class="infoTableHeader">
         <th colspan="100%">Reaction Gibbs Energy</th>
@@ -6,15 +7,15 @@
     <tr>
         <td>
             <strong>
-                Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'</a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-rg-rg-and-rg>&Delta;<sub><i>r</i></sub>G'</a>
             </strong>
         </td>
         <td colspan="100%">
-            <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>               
+            <strong>{{ reaction.dg_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
                 {% if advanced_mode and reaction.is_using_gc %}<font color="red">{% else %}<font>{% endif %}
-                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
-                </font> 
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }}
+                </font>
             {% endif %}
             [kJ/mol]
         </td>
@@ -24,25 +25,25 @@
     <tr>
         <td width="25%">
             <strong>
-                Estimated <a href="faq#dgm">&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#what-does-the-m-in-rg-m-fg-m-and-e-m-mean>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a>
             </strong>
         </td>
         <td colspan="100%">
-            <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong> 
+            <strong>{{ reaction.dgm_prime|floatformat:1 }}</strong>
             {% if reaction.dg_uncertainty != None %}
                 {% if advanced_mode and reaction.is_using_gc %}<font color="red">{% else %}<font>{% endif %}
-                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }} 
-                </font> 
+                &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }}
+                </font>
             {% endif %}
             [kJ/mol]
             &nbsp;&nbsp;&nbsp;<font size="2"><a href="#" title="Close concentration panel" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">Enter custom concentrations &raquo;</a></font>
         </td>
     </tr>
-    
+
     <tr>
         <td>
             <strong>
-                Estimated <a href="faq#dgr">&Delta;<sub><i>r</i></sub>G'&deg;</a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-rg-rg-and-rg>&Delta;<sub><i>r</i></sub>G'&deg;</a>
             </strong>
         </td>
         <td colspan="100%">
@@ -50,7 +51,7 @@
             {% if reaction.dg_uncertainty != None %}
                 {% if advanced_mode and reaction.is_using_gc %}<font color="red">{% else %}<font>{% endif %}
                 &plusmn; {{ reaction.dg_uncertainty|floatformat:1 }}
-                </font> 
+                </font>
             {% endif %}
             [kJ/mol]
             &nbsp;&nbsp;&nbsp; K'<sub>eq</sub> = {{ reaction.k_eq_prime_human|safe }}
@@ -60,7 +61,7 @@
     <tr>
         <td>
             <strong>
-                Estimated using 
+                Estimated using
             </strong>
         </td>
         <td colspan="100%">
@@ -69,7 +70,7 @@
                 {% if not forloop.last %}, {% endif %}
             {% endfor %}
         </td>
-    </tr>    
+    </tr>
     {% if reaction.catalyzing_enzymes %}
         <tr>
             <td><strong>Catalyzed by</strong></td>

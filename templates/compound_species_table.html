@@ -1,12 +1,12 @@
 <tr class="infoTableHeader">
-    <th colspan="100%">Species Formation Energies</th>        
+    <th colspan="100%">Species Formation Energies</th>
 </tr>
 <tr class="speciesHeader">
     <td>Phase</td>
     <td witdh="10%">Net charge</td>
     <td witdh="10%">#Hydrogens</td>
-    <td witdh="15%"><a href="faq#dgf">&Delta;<sub><i>f</i></sub>G&deg;</a> [kJ/mol]</td>
-    <td witdh="15%"><a href="faq#dgf">&Delta;<sub><i>f</i></sub>G'&deg;</a> [kJ/mol]</td>
+    <td witdh="15%"><a href={% static "classic_rxns/faq.html" %}#what-are-fg-and-fg>&Delta;<sub><i>f</i></sub>G&deg;</a> [kJ/mol]</td>
+    <td witdh="15%"><a href={% static "classic_rxns/faq.html" %}#what-are-fg-and-fg>&Delta;<sub><i>f</i></sub>G'&deg;</a> [kJ/mol]</td>
     <td>Reference</td>
 </tr>
 
@@ -24,7 +24,7 @@
                     N/A
                 {% endif %}
             </td>
-            
+
             {% if forloop.first %}
             <td class="reference {% if not forloop.parentloop.last %}border{% endif %}" rowspan="{{ sg.all_species|length }}">
                 <a href="{{ sg.source_reference|safe }}" title="Reference list" target="_blank">{{ sg.formation_energy_source|safe }}</a>

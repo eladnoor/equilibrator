@@ -1,3 +1,4 @@
+{% load static %}
 {% with "Reaction" as title %}
     {% include "header.html" %}
 {% endwith %}
@@ -34,11 +35,11 @@
         {% include "parsed_reaction.html" %}
     {% else %}
     {% if reaction.dg0_prime == None %}
-        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds cannot by decomposed by our algorithm</br><a href="/faq#notAvailable">Learn more &raquo;</a></div>
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds cannot by decomposed by our algorithm</br><a href={% static "classic_rxns/faq.html" %}#why-is-rg-not-available>Learn more &raquo;</a></div>
         {% include "parsed_reaction.html" %}
     {% else %}
     {% if reaction.dg_uncertainty != None and reaction.dg_uncertainty > 200 %}
-        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' with any level of certainty </br><a href="/faq#uncertainties">Learn more &raquo;</a></div>
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' with any level of certainty </br><a href={% static "classic_rxns/faq.html" %}#how-do-you-calculate-the-uncertainty-for-each-estimation>Learn more &raquo;</a></div>
         {% include "parsed_reaction.html" %}
     {% else %}
         {% if reaction.special_reaction_warning %}
@@ -46,13 +47,13 @@
                 {{ reaction.special_reaction_warning|safe}}
             </div>
         {% endif %}
-    
+
         {% if not reaction.is_electron_balanced %}
             <div class="warning">
                 This is a
                     {% if reaction.extra_electrons %}reduction{% else %}oxidation{% endif %}
-                half-reaction 
-                <a href="/faq#halfReactions">Learn more &raquo;</a></br>
+                half-reaction
+                <a href={% static "classic_rxns/faq.html" %}#what-are-half-reactions>Learn more &raquo;</a></br>
                 <a href="{{ balance_electrons_link }}">Balance with NAD<sup>+</sup>/NADH</a>?
             </div>
         {% endif %}
@@ -71,12 +72,12 @@
                 {% include "concentration_sub_table.html" %}
 
                 <div class="buttonSet">
-                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" 
+                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';"
                            title="update estimations according to chosen pH, I"/>
                     {% if advanced_mode %}<input type="submit" value="Save" name="submit" onclick="form.target = '_blank';" />{% endif %}
-                    <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';" 
+                    <input type="submit" value="Reverse" name="submit" onclick="form.target = '_self';"
                            title="switch substrates and products" />
-                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" 
+                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';"
                            title="reset all parameters (e.g. pH, I) to default values" />
                 </div>
 

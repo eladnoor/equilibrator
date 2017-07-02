@@ -16,19 +16,19 @@
                 <div class="warning">{{ compound.no_dg_explanation }}</div>
             {% else %}
             {% if reaction.dg_uncertainty != None and reaction.dg_uncertainty > 200 %}
-                <div class="warning">Cannot estimate &Delta;<sub><i>f</i></sub>G' with any level of certainty </br><a href="/faq#uncertainties">Learn more &raquo;</a></div>
+                <div class="warning">Cannot estimate &Delta;<sub><i>f</i></sub>G' with any level of certainty </br><a href={% static "classic_rxns/faq.html" %}#how-do-you-calculate-the-uncertainty-for-each-estimation>Learn more &raquo;</a></div>
             {% else %}
                 {% include "compound_result_table.html" %}
-    
+
                 {% include "concentration_sub_table.html" %}
-    
+
                 <div class="buttonSet">
-                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';" 
+                    <input type="submit" value="Update" name="submit" onclick="form.target = '_self';"
                            title="update estimations according to chosen pH, I" />
-                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';" 
+                    <input type="submit" value="Reset" name="submit" onclick="form.target = '_self';"
                            title="reset all parameters (e.g. pH, I) to default values" />
                 </div>
-                    
+
             {% endif %}
             {% endif %}
 
