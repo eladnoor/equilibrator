@@ -194,11 +194,11 @@
   <div class="section" id="the-tca-cycle">
 <h1>The TCA Cycle<a class="headerlink" href="#the-tca-cycle" title="Permalink to this headline">¶</a></h1>
 <p>As we’ve discussed elsewhere (in the sections on <a class="reference external" href="thioester.html">thioesters</a> and <a class="reference external" href="fatty_acid_met.html">fatty acid metabolism</a>) acetyl-CoA is a very central molecule in metabolism.</p>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id3">
 <img alt="Acetyl-CoA" src="_images/accoa.png" />
 <p class="caption"><span class="caption-text">Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of sugars, alkanes, fatty acids and some amino acids like leucine.</span></p>
 </div>
-<p>Indeed, during the after glucose is metabolized to pyruvate through <a class="reference external" href="glycolysis.html">glycolysis</a> acetyl-CoA is made from pyruvate by a very complex enzyme called <a class="reference external" href="pdb101.rcsb.org/motm/153">the pyruvate dehydrogenase complex</a>.</p>
+<p>Indeed, after glucose is metabolized to pyruvate through <a class="reference external" href="glycolysis.html">glycolysis</a> acetyl-CoA is made from pyruvate by a very complex enzyme called <a class="reference external" href="pdb101.rcsb.org/motm/153">the pyruvate dehydrogenase complex</a>.</p>
 <p>Pyruvate + CoA + NAD+ ⇌ acetyl-CoA + CO<sub>2</sub> + NADH</p>
 <p>This reaction is an oxidative decarboxylation - pyruvate is oxidized and decarboxylated (a CO<sub>2</sub> is removed) to form acetate. The free-energy released by this transformation is substantial (Δ<sub>r</sub>G’<sup>m</sup> ≈ -80 kJ/mol) and is harnessed to make a thioester bond on acetyl-CoA. You can see directly how favorable this transformation is by omitting the CoA from the reaction and entering it into eQuilibrator:</p>
 <p>Pyruvate + H<sub>2</sub>O + NAD+ ⇌ acetate + CO<sub>2</sub> + NADH</p>
@@ -206,20 +206,15 @@
 <div class="section" id="metabolism-of-acetyl-coa">
 <h2>Metabolism of Acetyl-CoA<a class="headerlink" href="#metabolism-of-acetyl-coa" title="Permalink to this headline">¶</a></h2>
 <p>We will approach the metabolism of acetyl-CoA through a sort of back door by reminding ourselves about <a class="reference external" href="transamination.html">transamination</a>. Remember that many amino acids are made by transamination of an appropriate alpha-keto acid acceptor. For example, glutamate can be made transaminating a five carbon dicarboxylic acid called α-ketoglutarate (also known as 2-oxoglutarate).</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id4">
 <img alt="α-ketoglutaric acid or 2-oxoglutarate" src="_images/alphaketoglutarate.png" />
 <p class="caption"><span class="caption-text">α-ketoglutarate or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.</span></p>
 </div>
 <p>Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (ref). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (ref).</p>
 <p>In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle (TCA cycle) is as a cycle for the production of ATP through metabolism of acetyl-CoA that also continually produces both α-ketoglutarate and oxaloacetate. Let’s consider the net reaction of the TCA cycle starting from acetyl-CoA</p>
 <p>Acetyl-CoA + 3 H2O ⇌ 2 CO2 + CoA + 8 e-</p>
-<p>We can see that the net effect of the TCA cycle is to decarboxylate acetyl twice to make  CO<sub>2</sub> and electrons. These electrons have an average potential of E’<sup>m</sup> ≈ -350 mV, meaning that they can be donated to NAD+ to form NADH (E’<sup>m</sup> ≈ -330 mV). <a class="footnote-reference" href="#id2" id="id1">[1]</a> These electrons are mostly donated to NAD+ to form NADH, which can then be donated to O<sub>2</sub> and coupled to the formation of ATP via the <a class="reference external" href="respiration.html">respiratory electron transport chain</a>.</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>You might notice that these E’<sup>m</sup> values are very close to each other, meaning small variations in concentrations might make these redox reactions infeasible. In practice this is “fixed” in two ways. First, as we will see, not all the electrons are donated to NADH. Two of the 8 electrons produced by oxidizing acetyl-CoA are donated to a higher (more positive) potential acceptor FAD+ (E’<sup>m</sup> ≈ -240 mV). Second, the NAD and NADH concentrations are not exactly 1 mM. Typically [NAD+] is about 30-50 times greater than [NADH] - try using eQuilibrator to see how this concentration ratio affects the E’ value for NAD+ reduction to NADH.</td></tr>
-</tbody>
-</table>
+<p>We can see that the net effect of the TCA cycle is to decarboxylate acetyl twice to make  CO<sub>2</sub> and electrons. These electrons have an average potential of E’<sup>m</sup> ≈ -350 mV, meaning that they can be donated to NAD+ to form NADH (E’<sup>m</sup> ≈ -330 mV). In the TCA cycle, electrons are mostly donated to NAD+ to form NADH, which can then be donated to O<sub>2</sub> and coupled to the formation of ATP via the <a class="reference external" href="respiration.html">respiratory electron transport chain</a>.</p>
+<p>You might notice that the E’<sup>m</sup> values above are very close to each other, meaning small variations in concentrations might make these redox reactions infeasible. In practice this is “fixed” in two ways. First, as we will see, not all the electrons are donated to NADH. Two of the 8 electrons produced by oxidizing acetyl-CoA are donated to a higher (more positive) potential acceptor FAD+ (E’<sup>m</sup> ≈ -240 mV). Second, the NAD and NADH concentrations are not exactly 1 mM. Typically [NAD+] is about 30-50 times greater than [NADH] - try using eQuilibrator to see how this concentration ratio affects the E’ value for NAD+ reduction to NADH.</p>
 </div>
 <div class="section" id="constructing-the-tca-cycle">
 <h2>Constructing the TCA Cycle<a class="headerlink" href="#constructing-the-tca-cycle" title="Permalink to this headline">¶</a></h2>
@@ -230,20 +225,20 @@
 <p>alpha-ketoglutarate + 2 H2O ⇌ oxaloacetate + CO2 + 6 e-</p>
 <p>As we said, α-ketoglutarate (α-KG for short) contains 5 carbon atoms and oxaloacetate (OAA for short) contains 4. Therefore, production of OAA from α-KG requires the decarboxylation of α-KG - i.e. the removal of a carbon atom. As we foreshadowed above, this proceeds through the mechanism of oxidative decaboxylation of α-KG to make succinyl-CoA</p>
 <p>alpha-ketoglutarate + CoA + NAD+ ⇌ succinyl-CoA + CO2 + NADH</p>
-<p>The thioester on succinyl-CoA is <a class="reference external" href="thioester.html">approximately energetically equivalent to ATP</a> which explains how the next reaction step manages to make ATP while hydrolysing the thioester. <a class="footnote-reference" href="#id4" id="id3">[2]</a></p>
+<p>The thioester on succinyl-CoA is <a class="reference external" href="thioester.html">approximately energetically equivalent to ATP</a> which explains how the next reaction step manages to make ATP while hydrolysing the thioester. <a class="footnote-reference" href="#id2" id="id1">[1]</a></p>
 <p>succinyl-CoA + ADP + Pi ⇌ succinate + CoA + ATP</p>
 <p>Succinate has 4 carbons, just like OAA, but it is more reduced - having 4 more electrons. So it must be reduced twice to make oxaloacetate.</p>
 <p>succinate + NAD+ + FAD + H2O ⇌ oxaloacetate + NADH + FADH2</p>
-<p>Notice that two electrons are donated to NAD+ and two are donated to a similar, but higher-potential donor called FAD (as discussed in the footnote above). Altogether, this arm of the TCA cycle has a net reaction of</p>
+<p>Notice that two electrons are donated to NAD+ and two are donated to a similar, but higher-potential donor called FAD (as discussed in above). Altogether, this arm of the TCA cycle has a net reaction of</p>
 <p>alpha-ketoglutarate + 2 H2O + 2 NAD+ + FAD ⇌ oxaloacetate + CO2 + 2 NADH + FADH2</p>
-<p>Notice also that this net reaction has a Δ<sub>r</sub>G’<sup>m</sup> ≈ 0. As discussed in the footnote above, this can be remedied by setting the NAD+ and NADH concentrations to more physiologically relevant values. For example, <a class="reference external" href="http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/">measurements in E. coli</a> give [NAD+] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ<sub>r</sub>G’ in eQuilibrator - does this help resolve the problem?</p>
+<p>Notice also that this net reaction has a Δ<sub>r</sub>G’<sup>m</sup> ≈ 0. As discussed above, this can be remedied by setting the NAD+ and NADH concentrations to more physiologically relevant values. For example, <a class="reference external" href="http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/">measurements in E. coli</a> give [NAD+] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ<sub>r</sub>G’ in eQuilibrator - does this help resolve the problem?</p>
 </div>
 <div class="section" id="oxaloacetate-back-to-ketoglutarate">
 <h3>Oxaloacetate back to α-Ketoglutarate<a class="headerlink" href="#oxaloacetate-back-to-ketoglutarate" title="Permalink to this headline">¶</a></h3>
 <p>First of all - it is important to note that the TCA cycle can’t possibly follow the same reaction scheme in both directions. If the TCA cycle used one reaction sequence from α-ketoglutarate to oxaloacetate and then the same sequence in the reverse direction to get back to α-ketoglutarate, this would be a closed cycle with nonzero flux - a perpetual motion machine in violation of the first law of thermodynamics. Another, perhaps an even simpler reason that the TCA cycle can’t use the same reaction sequence in the reverse direction is that we haven’t yet incorporated acetyl-CoA into the cycle. Acetyl-CoA needs to find it’s way into the cycle in order for the TCA cycle to metabolize acetyl-CoA, after all! The way acetyl-CoA gets into the TCA cycle is through the citrate synthase reaction</p>
 <p>acetyl-CoA + oxaloacetate + H2O ⇌ CoA + citrate</p>
 <p>which adds acetyl-CoA to oxaloacetate to form the tricarboxylic acid citrate (after which the cycle is named).</p>
-<div class="figure align-center" id="id7">
+<div class="figure align-center" id="id5">
 <img alt="Citrate" src="_images/citrate.png" />
 <p class="caption"><span class="caption-text">Citrate is the a tricarboxylic acid after which the TCA cycle is named.</span></p>
 </div>
@@ -255,10 +250,10 @@
 <p>to form αKG and close the cycle. The net reaction of this arm of the cycle is</p>
 <p>oxaloacetate + acetyl-CoA + NAD+ + H2O &lt;=&gt; α-ketoglutarate + CO2 + NADH + CoA</p>
 <p>and is quite favorable with a Δ<sub>r</sub>G’<sup>m</sup> ≈ -40 kJ/mol. Putting together the two arms of the TCA cycle, we see that acetyl-CoA is added to oxaloacetate, oxidatively decarboxylated once to α-ketoglutarate, which is subsequently oxidatively decarboxylated once and oxidized twice to remake oxaloacetate. The two decarboxylations and 4 reduced electron carriers formed (3 NADH and 1 FADH2) account for the 2 carbons and 8 e- introduced to the cycle by the acetyl group of acetyl-CoA.</p>
-<table class="docutils footnote" frame="void" id="id4" rules="none">
+<table class="docutils footnote" frame="void" id="id2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>The enzyme that catalyzes this reaction, succinyl-CoA synthetase, is unfortunately named for the reverse direction of the reaction.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>The enzyme that catalyzes this reaction, succinyl-CoA synthetase, is unfortunately named for the reverse direction of the reaction.</td></tr>
 </tbody>
 </table>
 </div>
