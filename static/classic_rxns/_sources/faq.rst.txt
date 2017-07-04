@@ -1,6 +1,8 @@
 Frequently Asked Questions
 ==========================================================
 
+.. _search-compound-enz:
+
 How do I search for a compound or enzyme?
 ----------------------------------------------------------
 
@@ -8,12 +10,16 @@ You can search for a compound or enzyme by entering their common name into the s
 
 The search results page shows the top matches for your query. Results are shown in two sections: one for compounds and another for enzymes. If you're interested in a compound, click on it to see more details and to find Δ\ :sub:`f`\ G. If you're interested in an enzyme, click on the enzyme name to see detailed information about it. If you want to explore the thermodynamics of an enzyme-catalyzed reaction, choose a reaction listed under the enzyme name to get a Δ\ :sub:`r`\ G estimation.
 
+.. _search-reaction:
+
 How do I search for a reaction?
 ----------------------------------------------------------
 
 You can search for a reaction by entering an (almost) free-text description of the reaction. For example, you can type "`glucose = 2 ethanol + 2 CO\ :sub:`2` <search?query=glucose+%3D+2+ethanol+%2B+2+CO2>`_".
 
 In general, write your reaction using " = " or " <=> " to separate the substrates from the products. The spaces around " = " are required. Always use spaces before and after compound names, "+" and stoichiometric coefficients. Also note that you can find reactions through the enzymes that catalyze them. For example, instead of typing in the full reaction "`Fructose 1,6-bisphosphate = Glycerone phosphate + Glyceraldehyde 3-phosphate </search?query=glucose+%3D+2+ethanol+%2B+2+CO2>`_" you can instead search for "`aldolase </search?query=aldolase>`_" or "`fructose bisphosphate aldolase </search?query=fructose+bisphosphate+aldolase>`_."
+
+.. _std-conditions:
 
 What are "standard conditions?"
 ----------------------------------------------------------
@@ -29,6 +35,8 @@ In general, Δ\ :sub:`r`\ G'\ :sup:`m` is a better reference than Δ\ :sub:`r`\ 
 
 Where Q is the "reaction quotient" or "mass-action ratio." Read more about these calculations `here <atp.html>`_.
 
+.. _drg:
+
 What are Δ\ :sub:`r`\ G°, Δ\ :sub:`r`\ G'° and Δ\ :sub:`r`\ G'?
 ----------------------------------------------------------------------------
 
@@ -38,6 +46,8 @@ G is the Gibbs free energy of a physical system. It quantifies the amount of ene
 
 In cells there are certain prevailing metabolite concentrations. Concentrations affect the entropic component of the free energy: if substrate concentrations are higher than product concentrations then forward flow of the reaction will balance the concentrations and increase the entropy of the system. Δ\ :sub:`r`\ G' accounts for the effect of concentrations. It is very important to use Δ\ :sub:`r`\ G' values derived from physiologically plausible concentrations in thermodynamic analysis because reactant concentrations have a substantial effect on Δ\ :sub:`r`\ G' and because the laws of thermodynamics constrain only Δ\ :sub:`r`\ G', not Δ\ :sub:`r`\ G° or Δ\ :sub:`r`\ G'°.
 
+.. _dfg:
+
 What are Δ\ :sub:`f`\ G' and Δ\ :sub:`f`\ G'°?
 ----------------------------------------------------------
 
@@ -45,12 +55,16 @@ The formation energy of a compound is the change in free energy due to the compo
 
 In contrast, Δ\ :sub:`f`\ G'° is the formation energy of a compound at a particular set of cellular conditions. When we show a Δ\ :sub:`f`\ G'° on eQuilibrator, as we do on compound and reaction pages, it has been transformed to the pH and ionic strength values. The default pH is 7 and the default ionic strength is 0.1 M.
 
+.. _dgm:
+
 What does the 'm' in Δ\ :sub:`r`\ G'\ :sup:`m`, Δ\ :sub:`f`\ G'\ :sup:`m`, and E'\ :sup:`m` mean?
 ----------------------------------------------------------------------------------------------------------------
 
 As explained above, the reaction Gibbs energy depends on the concentrations of the reactants (and similarly for the formation energy Δ\ :sub:`f`\ G' and the reduction potential E'). It is useful to have a standard for these concentrations in order to compare reactions without specifying a concentration explicitly. It is standard to use 1 M concentrations to compare reactions in solution. However, in the context of metabolic reactions inside living cells, 1 mM is a much more appropriate standard concentration because metabolite concentrations typically range from 1 nM to 10 mM and never exceed 100 mM. As such, 1 M standard concentrations are entirely non-physiological.
 
 The notation for the reaction Gibbs energy in the standard 1M concentrations is Δ\ :sub:`r`\ G'°, i.e. the degree sign (°) represents 1M. For our physiological standard we use the superscript 'm' to mark the 1mM concentration that is used for all reactants: Δ\ :sub:`r`\ G'm, Δ\ :sub:`f`\ G'm, and E'\ :sup:`m`.
+
+.. _not-available:
 
 Why is Δ\ :sub:`r`\ G "not available?"
 ----------------------------------------------------------
@@ -63,10 +77,14 @@ Our list of compounds is taken from the Kyoto Encyclopedia of Genomes and Genes 
 
 In some cases, a compound may contain a chemical group that was not observed in any of the compounds that have experimental Δ\ :sub:`f`\ G measurements. We cannot produce estimates for these compounds as we cannot estimate the contribution of unknown groups. In other cases, our algorithm for analyzing compound structure fails to decompose the compound into groups. If we are unable to decompose the compound then we cannot use the group contribution method. Moreover, we can't estimate Δ\ :sub:`r`\ G for any reaction that contains a compound that we cannot estimate Δ\ :sub:`f`\ G for.
 
+.. _uncertainty:
+
 How do you calculate the uncertainty for each estimation?
 ----------------------------------------------------------
 
 In order to fully understand how to calculate estimation uncertainties, you'll probably need to read our paper on the Component Contribution method [12]. The short answer would be that we ran a cross-validation benchmark using a set of reactions for which the Δ\ :sub:`r`\ G' has been measured. Any reaction that you type in, is decomposed into compounds and these compounds are decomposed into groups. By comparing this decomposition vector with the ones from our database, we can estimate the Δ\ :sub:`r`\ G'. Along the way, we can also evaluate how good our estimation is, by checking how good we were for similar reactions in our benchmark.
+
+.. _gas:
 
 How do you deal with gases like O\ :sub:`2` and H\ :sub:`2`?
 ---------------------------------------------------------------
@@ -80,20 +98,28 @@ For gases the standard condition is defined as 1 atmosphere (bar) partial pressu
 
 This will work only for compounds for which the formation energy in gas phase is found in our database, namely O\ :sub:`2`\ , N\ :sub:`2`\ , H\ :sub:`2`\ , CO\ :sub:`2`\ , and CO.
 
+.. _change-conc-H:
+
 Why can't I change the concentration of H\ :sup:`+` ions?
 ----------------------------------------------------------
 
 eQuilibrator uses the "Alberty method" for biochemical thermodynamics. In the Alberty method, H\ :sup:`+` is defined to have 0 free energy [6,8]. Instead of correcting for H\ :sup:`+` concentration, a pH correction accounts for the abundance of H+. You can use the pH "slider" to see the effect of H\ :sup:`+` concentration on your reaction.
+
+.. _change-conc-water:
 
 Why can't I change the concentration of water?
 ----------------------------------------------------------
 
 Biochemical systems are generally assumed to be aqueous environments [6,8]. Therefore, the concentration of water is fixed.
 
+.. _change-temp:
+
 Why can't I change the temperature?
 ----------------------------------------------------------
 
 The temperature is fixed at 25 °C (298.15 K) for all ΔG values given. The group contribution method enables us to approximate Δ\ :sub:`f`\ G of compounds at a particular temperature (the temperature at which they were measured) [10]. As the change in free energy is defined as ΔG = ΔH - TΔS and we don't know the value of ΔS in most cases, we cannot predict how changes in temperature will affect Δ\ :sub:`f`\ G.
+
+.. _co2-total:
 
 What are CO\ :sub:`2`\ (aq) and CO\ :sub:`2`\ (total)?
 ----------------------------------------------------------
@@ -124,12 +150,16 @@ We know that this whole issue is quite confusing. We sincerely hope this explana
 
 .. todo:: link to TCA cycle/anaplerotic reactions when we have some content for it. 
 
+.. _half-reactions:
+
 What are "half-reactions?""
 ----------------------------------------------------------------------------
 
 A `half-reaction <http://en.wikipedia.org/wiki/Half-reaction>`_ is the oxidation or reduction component of a `redox reaction <http://en.wikipedia.org/wiki/Redox>`_, without the other component. When you search for such a reaction, eQuilibrator recognizes that the number of electrons is not balanced and automatically switches to 'half-reaction' mode. Without knowing the other half, the change in Gibbs energy is not well defined. The parameter that is used to describe the potential difference (in Volts) between the products and substrates of a half-reaction is called the "`standard redox potential <http://en.wikipedia.org/wiki/Redox_reaction#Standard_electrode_potentials_.28reduction_potentials.29>`_" and is marked by E'°. The redox potential is equal to the voltage at equilibrium under standard conditions of an electrochemical cell in which the cathode reaction is the half-reaction considered and the anode is a standard hydrogen electrode where hydrogen is oxidized: ½ H\ :sub:`2` ⇌ H\ :sup:`+` + e\ :sup:`-`.
 
 Assuming you do want the Gibbs energy of a reaction, you have two options. The first option is to balance the electrons in the half-reaction by supplying the other half. eQuilibrator make this simple providing a link for balancing with the biologically ubiquitous redox donor:acceptor pair `NAD+/NADH <glycolysis.html>`_. Alternatively, you can use the bottom panel of results page to adjust the potential of the electrons in the other half-reaction (i.e. change the value of e- potential in mV). This is useful in cases where eQuilibrator doesn't have a value for the second half-reaction, which is sometimes the case when the donors are complicated or not well-defined. For example, protein-based redox carriers like ferredoxin can vary quite quite a lot in their potential.
+
+.. _iron-redox:
 
 What's so complicated about redox reactions involving iron?
 ----------------------------------------------------------------------------
@@ -138,16 +168,21 @@ The reduction or oxidation of the pair Fe(III)/Fe(II) is ubiquitous in biology, 
 
 Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [9]. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO2>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
 
+.. _atp-hydrolysis:
+
 Why is the value for ATP hydrolysis different than some textbooks?
 ----------------------------------------------------------------------------
 
 The ΔG'° of the ATP hydrolysis reaction is affected by many factors, notably also by the concentration of free Mg\ :sub:`2`\ :sup:`+`\  ions. The value cited in [1] and used in the original version of eQuilibrator (-36.4 kJ/mol) assumes no magnesium ([Mg\ :sub:`2`\ :sup:`+`\ ] = 0). In the current version of eQuilibrator2.0 we use the component contribution method [12] that uses measurements collected in the NIST thermodynamic database for enzyme-catalyzed reactions [7] that were performed under varying levels of Mg\ :sub:`2`\ :sup:`+`\ . This is also the more relevant situation in vivo. As noted in many studies, when taking into account [Mg\ :sub:`2`\ :sup:`+`\ ], the value changes and is observed to be in the range -26 to -32 kJ/mol depending on the reference. A clear discussion can be found at [8].
+
+.. _total-driving-force:
 
 What is the total driving force of a pathway?
 ----------------------------------------------------------
 
 We define the driving force of a reaction or pathway as -ΔG' - i.e. a favorable reaction has a negative ΔG' and a positive driving force. The total driving force for a pathway is the driving force associated with the pathway net reaction at particular metabolite and cofactor concentrations. The minimum total driving force, which we calculate in `analyzing a pathway </pathway>`_, is the smallest driving force associated with that pathway given the limits assumed on metabolite an cofactor concentrations. Similarly, the maximum total driving force is the largest driving force associated with pathway given those same limits.
 
+.. _MDF:
 
 What is the MDF of a pathway?
 ----------------------------------------------------------
@@ -156,10 +191,14 @@ The MDF of a pathway is a metric of how thermodynamically favorable a pathway ca
 
 You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_ [12].
 
+.. _contact:
+
 How can I contact the people behind eQuilibrator?
 ----------------------------------------------------------
 
 If you have questions about eQuilibrator, please consult the `eQuilibrator Google Group <https://groups.google.com/forum/#!forum/equilibrator-users>`_ to see if your question has been asked and answered before. Please also post your questions to the group so that all eQuilibrator users can benefit from your experience. If you have questions about the data and methods on which eQuilibrator is based, please consult `these references <http://localhost:8000/cite>`_. If you'd like to contact us directly, reach out to the `Milo Lab <http://www.weizmann.ac.il/plants/Milo/>`_, which maintains eQuilibrator.
+
+.. _refs:
 
 References
 ----------------------------------------------------------

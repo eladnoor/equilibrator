@@ -66,7 +66,7 @@ We can convert these mV values into more familiar kJ/mol using the `Nernst equat
 	F &\approx& 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 	\end{eqnarray}
 
-where n is the number of electrons transferred and F is the Faraday constant. Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a 
+where n is the number of electrons transferred and F is the Faraday constant. Notice the minus sign in the Nernst equation - a favorable redox reaction has a positive ΔE and a negative Δ\ :sub:`r`\ G'. Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a 
 
 .. math::
 	\Delta_r G'^m \approx -2 \times 96.4 \times 10^{-3} \times (-330 - (-190)) \approx -27 \frac{kJ}{mol}
