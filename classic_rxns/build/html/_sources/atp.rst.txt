@@ -33,7 +33,7 @@ Here Q is the ratio of product concentrations to substrate concentrations for th
 	&\approx& \Delta_r G'^{\circ} - 17.1 \frac{kJ}{mol}
 	\end{eqnarray}
 
-Since R = 8.315 x 10\ :sup:`-3` kJ/mol/K and we assume a temperature of T = 298.15 K (25 °C). [3]_ This calculation gives a Δ\ :sub:`r`\ G' value around -44 kJ/mol. Try using eQuilibrator to verify this. [4]_ We call this value the Δ\ :sub:`r`\ G'\ :sup:`m` - the Δ\ :sub:`r`\ G' value when all reactants have 1 mM concentration (except H\ :sub:`2`\ O). We will often use this value instead of Δ\ :sub:`r`\ G'° in this document and on eQuilibrator because 1 mM concentrations are much more representative of small molecule concentrations inside cells than the usual 1 M standard.
+Since R = 8.315 x 10\ :sup:`-3` kJ/mol/K and we assume a temperature of T = 298.15 K (25 °C). [3]_ This calculation gives a Δ\ :sub:`r`\ G' value around -44 kJ/mol. Try using eQuilibrator to check this value. [4]_ We call this value the Δ\ :sub:`r`\ G'\ :sup:`m` - the Δ\ :sub:`r`\ G' value when all reactants have 1 mM concentration (except H\ :sub:`2`\ O). We will often use this value instead of Δ\ :sub:`r`\ G'° in this document and on eQuilibrator because 1 mM concentrations are much more representative of small molecule concentrations inside cells than the usual 1 M standard.
 
 We can also convert the energy of ATP hydrolysis into other units, for example units of mechanical force relevant on the molecular scale: piconewton nanometers (pN nm). Looking up the `definitions of these units <https://en.wikipedia.org/wiki/KT_(energy)>`_, we find that 1 pN nm = 10\ :sup:`-24` kJ. Hydrolysing 1 mol of ATP yields ~45 kJ of energy (assuming mM concentrations) and so one ATP hydrolysis yields 
 

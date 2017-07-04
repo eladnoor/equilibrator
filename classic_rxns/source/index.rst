@@ -18,6 +18,7 @@ eQuilibrator Classic Reactions
    respiration
    transamination
    fatty_acid_met
+   tca
    refs
    faq
 

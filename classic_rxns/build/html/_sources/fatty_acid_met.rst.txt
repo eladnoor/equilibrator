@@ -35,7 +35,7 @@ Example of Octane Breakdown
 
    Thioacetate is a simple example of a compound with a thioester bond and easier to look at than acetyl-CoA. Notice that unlike octane, thioacetate (and acetyl-CoA) have carbon-oxygen and carbon-sulfur bonds. 
 
-Returning to the metabolism of alkanes we notice that acetyl-CoA is different from an alkane chain. In alkanes the carbons are all bonded to hydrogens while in the acetyl group of acetyl-CoA there are carbon-oxygen and carbon-sulfur bonds. Forming these bonds requires a number of oxidation steps (removal of electrons - convince yourself that this is true). To see what’s required, let’s use eQuilibrator to consider making acetyl-CoA from an example alkane, the 8-carbon chain octane. 
+Returning to the metabolism of alkanes we notice that acetyl-CoA is different from an alkane chain. In alkanes the carbons are all bonded to hydrogens while in the acetyl group of acetyl-CoA there are carbon-oxygen and carbon-sulfur bonds. Forming these bonds requires a number of oxidation steps (removal of electrons - convince yourself that this is true). To see what’s required, let’s use eQuilibrator to consider a net reaction making acetyl-CoA from an example alkane, the 8-carbon chain octane. 
 
 `Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+2+CoA+%3D%3E+Hexanoyl-CoA+%2B+Acetyl-CoA>`_
 
@@ -122,6 +122,11 @@ Fatty Acid Metabolism
 
 Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to one or more fatty acid tails via an ester linkage. Fatty acids like the palmitic acid shown above are simply alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 of the previous section is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how lipid and fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid. 
 
+This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the `TCA cycle <tca.html>`_ to produce ATP and enable the production of important amino acids for the production of proteins.
+
 .. todo:: figure of beta-oxidation pathway?
+
+.. [1] It's interesting and instructive to consider how fatty acids with an odd number of carbons are metabolized. How would you tackle that problem?
+
 
 
