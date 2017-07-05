@@ -8,7 +8,7 @@
     <tr>
         <td width="20%">
             <strong>
-                Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-half-reactions>E'</a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#half-reactions>E'</a>
             </strong>
         </td>
         <td colspan="100%">
@@ -26,7 +26,7 @@
     <tr>
         <td width="20%">
             <strong>
-                Estimated <a href={% static "classic_rxns/faq.html" %}#what-does-the-m-in-rg-m-fg-m-and-e-m-mean>E'<sup>m</sup></a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#dgm>E'<sup>m</sup></a>
             </strong>
         </td>
         <td colspan="100%">
@@ -42,7 +42,7 @@
     <tr>
         <td width="20%">
             <strong>
-                Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-half-reactions>E'&deg;</a>
+                Estimated <a href={% static "classic_rxns/faq.html" %}#half-reactions>E'&deg;</a>
             </strong>
         </td>
         <td colspan="100%">
@@ -77,7 +77,7 @@
     </tr>
 
     <tr style="border-top: 1px dotted silver;">
-        <td width="20%"><strong>Estimated <a href={% static "classic_rxns/faq.html" %}#what-are-rg-rg-and-rg>&Delta;<sub><i>r</i></sub>G'</strong></a></td>
+        <td width="20%"><strong>Estimated <a href={% static "classic_rxns/faq.html" %}#drg>&Delta;<sub><i>r</i></sub>G'</strong></a></td>
         <td colspan="100%">
         <strong>{{ reaction.half_reaction_dg_prime|floatformat:1 }}</strong>
         {% if reaction.dg_uncertainty != None %}

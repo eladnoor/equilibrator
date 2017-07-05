@@ -91,7 +91,7 @@
 		    {% csrf_token %}
 		    <table class='results'>
 		    	<tr class='infoTableHeader'>
-	            	<th colspan="100%">Step 3: Perform Pathway <a href={% static "classic_rxns/faq.html" %}#what-is-the-mdf-of-a-pathway>MDF</a> Analysis</th>
+	            	<th colspan="100%">Step 3: Perform Pathway <a href={% static "classic_rxns/faq.html" %}#mdf>MDF</a> Analysis</th>
 	        	</tr>
 		    	<tr>
 		    		<td>Pathway model TSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10.tsv" %}">example</a>)</td>
@@ -123,7 +123,7 @@
 		    	<p>
 		    	It is important to fix the concentrations of cofactors like ATP, CoA and NADH because these concentrations are homeostatically maintained by host organisms. If you do not fix these concentrations to reasonable, physiologically-relevant values, the MDF optimization will choose the concentration that makes your pathway the most thermodynamically favorable. In glycolysis, for example, this would set the ATP concentration as low as allowed (e.g. 1 micromolar), making ATP synthesis and glycolysis as a whole appear much more favorable than it really is or could be. In this case the problem is obvious: maintaining a very low ATP concentration is good for producing ATP from ADP, but catastrophic for the cell because ATP-dependent reactions will operate slowly and with very little driving force.</p>
 
-		    	<p>By default, eQuilibrator uses cofactor concentrations chosen in <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1003483">Noor et al., PloS Comp. Bio 2014</a>. If you wish to use different values, you can edit the SBtab file directly in Excel. You can also edit the reaction Δ<sub>r</sub>G'&deg; values, which are recorded in the SBtab file as equilibrium constants (K<sub>eq</sub>). This may be useful if your pathway contains a reaction whose Δ<sub>r</sub>G'&deg; eQuilibrator cannot calculate (for example <a href={% static "classic_rxns/faq.html" %}#what-s-so-complicated-about-redox-reactions-involving-iron>iron redox reactions</a> are problematic for eQuilibrator). When calculating the MDF, eQuilibrator verifies that the Δ<sub>r</sub>G'&deg; are consistent with the first law of thermodynamics, i.e. that they could arise from compound formation energies Δ<sub>f</sub>G'&deg; that are internally consistant with the stoichiometry of your pathway.</p>
+		    	<p>By default, eQuilibrator uses cofactor concentrations chosen in <a href="http://journals.plos.org/ploscompbiol/article?id=10.1371%2Fjournal.pcbi.1003483">Noor et al., PloS Comp. Bio 2014</a>. If you wish to use different values, you can edit the SBtab file directly in Excel. You can also edit the reaction Δ<sub>r</sub>G'&deg; values, which are recorded in the SBtab file as equilibrium constants (K<sub>eq</sub>). This may be useful if your pathway contains a reaction whose Δ<sub>r</sub>G'&deg; eQuilibrator cannot calculate (for example <a href={% static "classic_rxns/faq.html" %}#iron-redox>iron redox reactions</a> are problematic for eQuilibrator). When calculating the MDF, eQuilibrator verifies that the Δ<sub>r</sub>G'&deg; are consistent with the first law of thermodynamics, i.e. that they could arise from compound formation energies Δ<sub>f</sub>G'&deg; that are internally consistant with the stoichiometry of your pathway.</p>
 
 			</tr>
 			<tr class='infoTableHeader' id='overview'>

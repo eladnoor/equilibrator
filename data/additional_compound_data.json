@@ -27,7 +27,7 @@
         ],
         "preferred name": "CO2",
         "note": "CO2(aq) is dissolved CO2. This is different from CO2(total), which includes the hydrated forms of CO2 - carbonate, bicarbonate and carbonic acid.",
-    	"details_link": "/static/classic_rxns/faq.html#what-are-co2-aq-and-co2-total"
+    	"details_link": "/static/classic_rxns/faq.html#co2-total"
     },
     {
         "CID": "C00026",
@@ -118,7 +118,7 @@
         ],
         "preferred name": "CO2(total)",
         "note": "CO2(total) is a collection of the hydrated and dehydrated forms of CO2 - aqueous CO2, carbonate, carbonic acid and bicarbonate. These forms are often considered to be in equilibrium in biochemical systems.",
-    	"details_link": "/static/classic_rxns/faq.html#what-are-co2-aq-and-co2-total"
+    	"details_link": "/static/classic_rxns/faq.html#co2-total"
     },
     {
         "CID": "C00342",
@@ -175,7 +175,7 @@
         ],
         "preferred name": "HCO3-",
         "note": "HCO3-(aq) is different from CO2(total), which includes the unhydrated form of CO2(aq).",
-    	"details_link": "/static/classic_rxns/faq.html#what-are-co2-aq-and-co2-total"
+    	"details_link": "/static/classic_rxns/faq.html#co2-total"
     },
     {
         "CID": "C04442",

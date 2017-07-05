@@ -263,29 +263,29 @@ class Reaction(models.Model):
         if my_hash == atp_hash:
             return ("The &Delta;G' of ATP hydrolysis is highly affected " +
                     "by Mg<sup>2+</sup> ions." +
-                    GetLearnMoreLink("why-is-the-value-for-atp-hydrolysis-different-than-some-textbooks"))
+                    GetLearnMoreLink("atp-hydrolysis"))
         elif my_hash == co2_hash:
             return ("You are looking at the &Delta;G' of CO<sub>2</sub> hydration." +
-                    GetLearnMoreLink("what-are-co2-aq-and-co2-total"))
+                    GetLearnMoreLink("co2-total"))
         elif (self._FindCompoundIndex('C14818') is not None and
               self._FindCompoundIndex('C14819') is not None):
             return ("Energetics of iron redox reactions depend heavily on the " +
                     "chemical forms of iron involved." +
-                    GetLearnMoreLink("what-s-so-complicated-about-redox-reactions-involving-iron"))
+                    GetLearnMoreLink("iron-redox"))
         elif (self._FindCompoundIndex('C00011') is not None and
               self._FindCompoundIndex('C00288') is None):
             return ('Did you mean <a href="%s">CO<sub>2</sub>(total)</a>?' % self.GetReplaceCO2Link() +
-                    GetLearnMoreLink("what-are-co2-aq-and-co2-total"))
+                    GetLearnMoreLink("co2-total"))
         elif (self._FindCompoundIndex('C00011') is not None and
               self._FindCompoundIndex('C00288') is not None):
             return ("One should not use CO<sub>2</sub>(aq) together with " +
                     "CO<sub>2</sub>(total) in the same reaction." +
-                    GetLearnMoreLink("what-are-co2-aq-and-co2-total"))
+                    GetLearnMoreLink("co2-total"))
         elif (self._FindCompoundIndex('C01353') is not None and
               self._FindCompoundIndex('C00288') is not None):
             return ("One should not use HCO<sub>3</sub><sup>-</sup>(aq) together with " +
                     "CO<sub>2</sub>(total) in the same reaction." +
-                    GetLearnMoreLink("what-are-co2-aq-and-co2-total"))
+                    GetLearnMoreLink("co2-total"))
         else:
             return False
 
