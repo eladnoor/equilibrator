@@ -35,11 +35,11 @@
         {% include "parsed_reaction.html" %}
     {% else %}
     {% if reaction.dg0_prime == None %}
-        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds cannot by decomposed by our algorithm</br><a href={% static "classic_rxns/faq.html" %}#why-is-rg-not-available>Learn more &raquo;</a></div>
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' because one of the compounds cannot by decomposed by our algorithm</br><a href={% static "classic_rxns/faq.html" %}#not-available>Learn more &raquo;</a></div>
         {% include "parsed_reaction.html" %}
     {% else %}
     {% if reaction.dg_uncertainty != None and reaction.dg_uncertainty > 200 %}
-        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' with any level of certainty </br><a href={% static "classic_rxns/faq.html" %}#how-do-you-calculate-the-uncertainty-for-each-estimation>Learn more &raquo;</a></div>
+        <div class="warning">Cannot estimate &Delta;<sub><i>r</i></sub>G' with any level of certainty </br><a href={% static "classic_rxns/faq.html" %}#uncertainty>Learn more &raquo;</a></div>
         {% include "parsed_reaction.html" %}
     {% else %}
         {% if reaction.special_reaction_warning %}
@@ -53,7 +53,7 @@
                 This is a
                     {% if reaction.extra_electrons %}reduction{% else %}oxidation{% endif %}
                 half-reaction
-                <a href={% static "classic_rxns/faq.html" %}#what-are-half-reactions>Learn more &raquo;</a></br>
+                <a href={% static "classic_rxns/faq.html" %}#half-reactions>Learn more &raquo;</a></br>
                 <a href="{{ balance_electrons_link }}">Balance with NAD<sup>+</sup>/NADH</a>?
             </div>
         {% endif %}
