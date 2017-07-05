@@ -132,9 +132,39 @@ pyruvate + ATP + CO2 ⇌ oxaloacetate + ADP + Pi
 
 replenishes oxaloacetate from pyruvate. Notice that this actually replenishes all the TCA cycle intermediates, including α-KG, because oxaloacetate will be quickly converted into those metabolites through the action of the TCA cycle. In fact, there is no anaplerotic reaction that directly produces α-KG - cells rely on the TCA cycle to do this for them.
 
-.. [3] In technical terms we would say that this configuration - where transamination happens at a constant nonzero rate but cycle intermediates are not replenished - has no nonzero "steady-state". By this we mean that there is no way to arrange this system where the flux through the TCA cycle is greater than 0. 
+.. [3] In technical terms we would say that this configuration - where transamination happens at a constant nonzero rate but cycle intermediates are not replenished - has no nonzero "steady-state". By this we mean that there is no way to arrange this system where the flux through the TCA cycle is greater than 0 for an extended period of time. 
 
 pH Dependence
 ----------------------------------------------------------
-Add content here
+The TCA cycle reaction that makes oxaloacetate is called `malate dehydrogenase <http://pdb101.rcsb.org/motm/154>`_ because, well, it dehydrogenates malate
 
+malate + NAD+ ⇌ oxaloacetate + NADH
+
+this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD+] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, `malate <https://en.wikipedia.org/wiki/Malic_acid>`_ and `oxaloacetate <https://en.wikipedia.org/wiki/Oxaloacetic_acid>`_ have different pKas on their carboxylic acid groups, meaning that Δ\ :sub:`r`\ G' will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ\ :sub:`r`\ G' and Δ\ :sub:`r`\ G'° depend on the pH. 
+
+The pKa of an acid is the pH at which that acidic group is 50% protonated (also 50% deprotonated). Overall, the pKas associated with oxaloacetate (pKa = 2.2, 3.9) are lower than those associated with malate (pKa = 3.4, 5.2). This means that as the pH goes down from 7 (i.e. becomes more acidic) and approaches the higher pKa of malate, malate reaches a pH where it has multiple populated protonation states but oxaloacetate does not. [4]_ As a result of this effect, we find that lowering the pH (making the environment more acidic) makes the Δ\ :sub:`r`\ G' more positive, favoring the reverse reaction even more. 
+
+Some organisms maintain a pH of 6 in their cytosol (`Noor et. al, 2014 <refs.html>`_). If we assume [NAD+] ≈ 3 mM and [NADH] ≈ 0.08, then the malate dehydrogenase reaction would have a Δ\ :sub:`r`\ G' ≈ +27 kJ/mol. Let's consider what it would take to make this reaction flow in the direction of oxaloacetate (i.e. make the Δ\ :sub:`r`\ G' negative). In these conditions Δ\ :sub:`r`\ G'° = +36 kJ/mol. We know that 
+
+.. math::
+	\begin{eqnarray}
+	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{Q} \\
+	&=& 36 \frac{kJ}{mol} + RT \ln{\left( \frac{[NADH][oxaloacetate]}{[NAD+][malate]} \right)} \\
+	&=& 36 \frac{kJ}{mol} + RT \ln{\left( \frac{0.08 mM \times [oxaloacetate]}{3 mM \times [malate]} \right)} \\
+	&=& 36 \frac{kJ}{mol} + RT \left( \ln{\left( \frac{0.08 mM}{3 mM} \right)} + \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} \right) \\
+	\end{eqnarray}
+
+Since R = 8.315 x 10\ :sup:`-3` kJ/mol/K and we assume a temperature of T = 298.15 K, RT ln(0.08/3) ≈ -9 kJ/mol. Therefore, in order for Δ\ :sub:`r`\ G' = 0 we need 
+
+.. math::
+	\begin{eqnarray}
+	RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &\approx& 27 \frac{kJ}{mol} \\
+	\frac{[oxaloacetate]}{[malate]} &\approx& \exp{\left( \frac{27 \frac{kJ}{mol}}{RT} \right)} \\
+	\frac{[oxaloacetate]}{[malate]} &\approx& 1.8\times10^{-5}
+	\end{eqnarray}
+
+In other words, we need 1/(1.8e-5) ≈ 54000 times more malate than oxaloacetate to make this reaction flow towards oxaloacetate spontaneously. A 5x10\ :sup:`4`\ -fold difference is `biologically plausibile <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_, but we must remember that the previous reaction in the TCA cycle, the one that makes malate, must also be thermodynamically feasible for the TCA cycle to work. Forcing a very high malate concentration will strongly constrain the operation of the TCA cycle! 
+
+One solution employed by some organisms is to use a different, higher potential `quinone <https://en.wikipedia.org/wiki/Coenzyme_Q10>`_ electron carrier (`Noor et. al, 2014 <refs.html>`_). This has the effect of increasing the intrinsic favorability of the reaction so that such extreme malate concentrations are not required. Since the quinone has a higher potential, however, less energy is released and less ATP can be formed when electrons carried by the quinone are ultimately donated to O\ :sub:`2`. 
+
+.. [4] Remember that the pH is a log base 10 scale, meaning that the 1.3 pH point difference between the higher pKa of malate and that of oxaloacetate indicates a very large difference more than 10-fold difference in the abundance of protonated carboxylic acid at pH 5.2. 

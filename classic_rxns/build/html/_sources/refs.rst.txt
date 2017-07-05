@@ -30,3 +30,5 @@ References
 #. Unden, G., and Bongaerts, J. (1997). Alternative respiratory pathways of Escherichia coli: energetics and transcriptional regulation in response to electron acceptors. Biochim. Biophys. Acta 1320, 217–234.
 
 #. Alberty, R. a., Cornish-Bowden, A., Goldberg, R. N., Hammes, G. G., Tipton, K., and Westerhoff, H. V. (2011). Recommendations for terminology and databases for biochemical thermodynamics. Biophys. Chem. 155, 89–103.
+
+#. E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483
