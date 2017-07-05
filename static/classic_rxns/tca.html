@@ -194,7 +194,7 @@
   <div class="section" id="the-tca-cycle">
 <h1>The TCA Cycle<a class="headerlink" href="#the-tca-cycle" title="Permalink to this headline">¶</a></h1>
 <p>As we’ve discussed elsewhere (in the sections on <a class="reference external" href="thioester.html">thioesters</a> and <a class="reference external" href="fatty_acid_met.html">fatty acid metabolism</a>) acetyl-CoA is a very central molecule in metabolism.</p>
-<div class="figure align-center" id="id9">
+<div class="figure align-center" id="id12">
 <img alt="Acetyl-CoA" src="_images/accoa.png" />
 <p class="caption"><span class="caption-text">Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of sugars, alkanes, fatty acids and some amino acids like leucine.</span></p>
 </div>
@@ -206,16 +206,16 @@
 <div class="section" id="metabolism-of-acetyl-coa">
 <h2>Metabolism of Acetyl-CoA<a class="headerlink" href="#metabolism-of-acetyl-coa" title="Permalink to this headline">¶</a></h2>
 <p>We will approach the metabolism of acetyl-CoA through a sort of back door by reminding ourselves about <a class="reference external" href="transamination.html">transamination</a>. Remember that many amino acids are made by transamination of an appropriate alpha-keto acid acceptor. For example, glutamate can be made transaminating a five carbon dicarboxylic acid called α-ketoglutarate (also known as 2-oxoglutarate).</p>
-<div class="figure align-center" id="id10">
+<div class="figure align-center" id="id13">
 <img alt="α-ketoglutaric acid or 2-oxoglutarate" src="_images/alphaketoglutarate.png" />
 <p class="caption"><span class="caption-text">α-ketoglutarate or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.</span></p>
 </div>
 <p>Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (ref). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (ref).</p>
-<div class="figure align-center" id="id11">
+<div class="figure align-center" id="id14">
 <img alt="Oxaloacetate" src="_images/oxaloacetate.png" />
 <p class="caption"><span class="caption-text">Oxaloacetate is a four carbon dicarboxylic acid that can be transaminated to form aspartate.</span></p>
 </div>
-<div class="figure align-center" id="id12">
+<div class="figure align-center" id="id15">
 <img alt="Aspartate" src="_images/aspartate.png" />
 <p class="caption"><span class="caption-text">Aspartate is made by transamination of oxaloacetate - notice how the only difference between the two is the amino group.</span></p>
 </div>
@@ -247,7 +247,7 @@
 <p>Acetyl-CoA gets into the TCA cycle is through the citrate synthase reaction</p>
 <p>acetyl-CoA + oxaloacetate + H2O ⇌ CoA + citrate</p>
 <p>which adds acetyl-CoA to oxaloacetate to form the tricarboxylic acid citrate (after which the cycle is named).</p>
-<div class="figure align-center" id="id13">
+<div class="figure align-center" id="id16">
 <img alt="Citrate" src="_images/citrate.png" />
 <p class="caption"><span class="caption-text">Citrate is the a tricarboxylic acid after which the TCA cycle is named.</span></p>
 </div>
@@ -282,13 +282,39 @@
 <table class="docutils footnote" frame="void" id="id8" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id6">[3]</a></td><td>In technical terms we would say that this configuration - where transamination happens at a constant nonzero rate but cycle intermediates are not replenished - has no nonzero “steady-state”. By this we mean that there is no way to arrange this system where the flux through the TCA cycle is greater than 0.</td></tr>
+<tr><td class="label"><a class="fn-backref" href="#id6">[3]</a></td><td>In technical terms we would say that this configuration - where transamination happens at a constant nonzero rate but cycle intermediates are not replenished - has no nonzero “steady-state”. By this we mean that there is no way to arrange this system where the flux through the TCA cycle is greater than 0 for an extended period of time.</td></tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="ph-dependence">
 <h2>pH Dependence<a class="headerlink" href="#ph-dependence" title="Permalink to this headline">¶</a></h2>
-<p>Add content here</p>
+<p>The TCA cycle reaction that makes oxaloacetate is called <a class="reference external" href="http://pdb101.rcsb.org/motm/154">malate dehydrogenase</a> because, well, it dehydrogenates malate</p>
+<p>malate + NAD+ ⇌ oxaloacetate + NADH</p>
+<p>this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ<sub>r</sub>G’<sup>m</sup> ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD+] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, <a class="reference external" href="https://en.wikipedia.org/wiki/Malic_acid">malate</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Oxaloacetic_acid">oxaloacetate</a> have different pKas on their carboxylic acid groups, meaning that Δ<sub>r</sub>G’ will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ<sub>r</sub>G’ and Δ<sub>r</sub>G’° depend on the pH.</p>
+<p>The pKa of an acid is the pH at which that acidic group is 50% protonated (also 50% deprotonated). Overall, the pKas associated with oxaloacetate (pKa = 2.2, 3.9) are lower than those associated with malate (pKa = 3.4, 5.2). This means that as the pH goes down from 7 (i.e. becomes more acidic) and approaches the higher pKa of malate, malate reaches a pH where it has multiple populated protonation states but oxaloacetate does not. <a class="footnote-reference" href="#id11" id="id9">[4]</a> As a result of this effect, we find that lowering the pH (making the environment more acidic) makes the Δ<sub>r</sub>G’ more positive, favoring the reverse reaction even more.</p>
+<p>Some organisms maintain a pH of 6 in their cytosol (<a class="reference external" href="refs.html">Noor et. al, 2014</a>). If we assume [NAD+] ≈ 3 mM and [NADH] ≈ 0.08, then the malate dehydrogenase reaction would have a Δ<sub>r</sub>G’ ≈ +27 kJ/mol. Let’s consider what it would take to make this reaction flow in the direction of oxaloacetate (i.e. make the Δ<sub>r</sub>G’ negative). In these conditions Δ<sub>r</sub>G’° = +36 kJ/mol. We know that</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+\Delta_r G' &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{Q} \\
+&amp;=&amp; 36 \frac{kJ}{mol} + RT \ln{\left( \frac{[NADH][oxaloacetate]}{[NAD+][malate]} \right)} \\
+&amp;=&amp; 36 \frac{kJ}{mol} + RT \ln{\left( \frac{0.08 mM \times [oxaloacetate]}{3 mM \times [malate]} \right)} \\
+&amp;=&amp; 36 \frac{kJ}{mol} + RT \left( \ln{\left( \frac{0.08 mM}{3 mM} \right)} + \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} \right) \\
+\end{eqnarray}\end{split}\]</div>
+<p>Since R = 8.315 x 10<sup>-3</sup> kJ/mol/K and we assume a temperature of T = 298.15 K, RT ln(0.08/3) ≈ -9 kJ/mol. Therefore, in order for Δ<sub>r</sub>G’ = 0 we need</p>
+<div class="math">
+\[\begin{split}\begin{eqnarray}
+RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &amp;\approx&amp; 27 \frac{kJ}{mol} \\
+\frac{[oxaloacetate]}{[malate]} &amp;\approx&amp; \exp{\left( \frac{27 \frac{kJ}{mol}}{RT} \right)} \\
+\frac{[oxaloacetate]}{[malate]} &amp;\approx&amp; 1.8\times10^{-5}
+\end{eqnarray}\end{split}\]</div>
+<p>In other words, we need 1/(1.8e-5) ≈ 54000 times more malate than oxaloacetate to make this reaction flow towards oxaloacetate spontaneously. A 5x10<sup>4</sup>-fold difference is <a class="reference external" href="http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/">biologically plausibile</a>, but we must remember that the previous reaction in the TCA cycle, the one that makes malate, must also be thermodynamically feasible for the TCA cycle to work. Forcing a very high malate concentration will strongly constrain the operation of the TCA cycle!</p>
+<p>One solution employed by some organisms is to use a different, higher potential <a class="reference external" href="https://en.wikipedia.org/wiki/Coenzyme_Q10">quinone</a> electron carrier (<a class="reference external" href="refs.html">Noor et. al, 2014</a>). This has the effect of increasing the intrinsic favorability of the reaction so that such extreme malate concentrations are not required. Since the quinone has a higher potential, however, less energy is released and less ATP can be formed when electrons carried by the quinone are ultimately donated to O<sub>2</sub>.</p>
+<table class="docutils footnote" frame="void" id="id11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[4]</a></td><td>Remember that the pH is a log base 10 scale, meaning that the 1.3 pH point difference between the higher pKa of malate and that of oxaloacetate indicates a very large difference more than 10-fold difference in the abundance of protonated carboxylic acid at pH 5.2.</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 
