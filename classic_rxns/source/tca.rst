@@ -80,11 +80,11 @@ Succinate has 4 carbons, like OAA, but is more reduced - having 4 more electrons
 
 succinate + NAD+ + FAD + H2O ⇌ oxaloacetate + NADH + FADH2
 
-Notice that two electrons are donated to NAD+ and two are donated to a similar, but higher-potential donor called FAD (as discussed in above). Altogether, this arm of the TCA cycle has a net reaction of
+The above reaction is actually a three-step process catalyzed by three different enzymes in the TCA cycle. Notice that two electrons are donated to NAD+ and two are donated to a similar, but higher-potential donor called FAD (as discussed in above). Altogether, this arm of the TCA cycle has a net reaction of
 
 alpha-ketoglutarate + 2 H2O + 2 NAD+ + FAD ⇌ oxaloacetate + CO2 + 2 NADH + FADH2
 
-Notice also that this net reaction has a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0. As discussed above, this can be remedied by setting the NAD+ and NADH concentrations to more physiologically relevant values. For example, `measurements in E. coli <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_ give [NAD+] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ\ :sub:`r`\ G' in eQuilibrator - does this help resolve the problem?
+and a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0. As discussed above, this almost infeasible Δ\ :sub:`r`\ G'\ :sup:`m` can be remedied by setting the NAD+ and NADH concentrations to more physiologically relevant values. For example, `measurements in E. coli <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_ give [NAD+] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ\ :sub:`r`\ G' in eQuilibrator - does this help resolve the problem?
 
 Oxaloacetate back to α-Ketoglutarate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -124,7 +124,7 @@ and is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -40 kJ/mol. Putting
 
 Anaplerotic Reactions
 ----------------------------------------------------------
-As discussed above and in the section on `transamination <transamination.html>`_ α-ketoglutarate to oxaloacetate are constantly being consumed by transamination reactions to make various amino acids. However, we also discussed how they are both intermediates of the TCA cycle meaning that they are neither created or destroyed by the action of the cycle. So we have a problem! If α-KG and OAA are removed from the cycle by transamination reactions but never replenished then their concentrations will eventually dwindle to 0 - the TCA cycle would stop, amino acids could no longer be made and the cell would die. [3]_
+α-Ketoglutarate to oxaloacetate are constantly being consumed by transamination reactions to make various amino acids. However, they are both also intermediates of the TCA cycle, meaning that they are neither created or destroyed by the action of the cycle. So we have a conundrum! If α-KG and OAA are removed from the cycle by transamination reactions but never replenished, their concentrations will eventually dwindle to 0, the TCA cycle would come to a halt, amino acids could no longer be made and the cell would die. [3]_
 
 Cells sidestep this problem by continually replenishing TCA cycle intermediates through "`anaplerotic reactions <https://en.wikipedia.org/wiki/Anaplerotic_reactions>`_" from the `Greek meaning <https://en.wiktionary.org/wiki/anaplerotic>`_ "filling up" or "replenishing" reactions. For example, the pyruvate carboxylase reaction
 
@@ -132,7 +132,7 @@ pyruvate + ATP + CO2 ⇌ oxaloacetate + ADP + Pi
 
 replenishes oxaloacetate from pyruvate. Notice that this actually replenishes all the TCA cycle intermediates, including α-KG, because oxaloacetate will be quickly converted into those metabolites through the action of the TCA cycle. In fact, there is no anaplerotic reaction that directly produces α-KG - cells rely on the TCA cycle to do this for them.
 
-.. [3] In technical terms we would say that this configuration - where transamination happens at a constant nonzero rate but cycle intermediates are not replenished - has no nonzero "steady-state". By this we mean that there is no way to arrange this system where the flux through the TCA cycle is greater than 0 for an extended period of time. 
+.. [3] In technical terms we would say that this configuration - where transamination happens at a constant nonzero rate but cycle intermediates are not replenished - has no nonzero "steady-state". By this we mean that there is no way to arrange this system where the flux through the TCA cycle is greater than 0 for an extended period of time. Try to convince yourself of this. 
 
 pH Dependence
 ----------------------------------------------------------
@@ -158,8 +158,8 @@ Since R = 8.315 x 10\ :sup:`-3` kJ/mol/K and we assume a temperature of T = 298.
 
 .. math::
 	\begin{eqnarray}
-	RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &\approx& 27 \frac{kJ}{mol} \\
-	\frac{[oxaloacetate]}{[malate]} &\approx& \exp{\left( \frac{27 \frac{kJ}{mol}}{RT} \right)} \\
+	RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &\approx& -27 \frac{kJ}{mol} \\
+	\frac{[oxaloacetate]}{[malate]} &\approx& \exp{\left( \frac{-27 \frac{kJ}{mol}}{RT} \right)} \\
 	\frac{[oxaloacetate]}{[malate]} &\approx& 1.8\times10^{-5}
 	\end{eqnarray}
 
