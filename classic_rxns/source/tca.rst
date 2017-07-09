@@ -57,7 +57,7 @@ Glutamate is a proteogenic amino acid in its own right, but also a precursor for
 
 .. todo:: footnote about variation in AA biosynthetic pathways. references.
 
-In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We could imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which could explain why they evolved to be so central to acetyl-CoA metabolism (ref).
+In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We might imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which could explain why they evolved to be so central to acetyl-CoA metabolism (ref).
 
 With this in mind, let's consider again the net reaction of the TCA cycle starting from acetyl-CoA
 
