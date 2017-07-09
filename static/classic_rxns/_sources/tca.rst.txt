@@ -127,6 +127,12 @@ oxaloacetate + acetyl-CoA + NAD+ + H2O ⇌ α-ketoglutarate + CO2 + NADH + CoA
 
 and is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -40 kJ/mol. Putting together the two arms of the TCA cycle, we see that acetyl-CoA is added to oxaloacetate, oxidatively decarboxylated once to α-ketoglutarate, which is subsequently oxidatively decarboxylated once and oxidized twice to remake oxaloacetate. The two decarboxylations and 4 reduced electron carriers formed (3 NADH and 1 FADH2) account for the 2 carbons and 8 e- introduced to the cycle by the acetyl group of acetyl-CoA.
 
+.. figure:: _static/_images/tca_cycle.svg
+   :alt: The TCA Cycle
+   :align: center
+
+   The TCA cycle and anaplerotic reactions.
+
 .. [1] The enzyme that catalyzes this reaction, succinyl-CoA synthetase, is unfortunately named for the reverse direction of the reaction.
 
 .. [2] By nonzero flux we mean that the cycle moves in a particular direction. For example the cell presumably "wants" the cycle to move in the direction of acetyl-CoA metabolism and energy production. In equilibrium the forward and reverse fluxes are definitionally equal and the cycle carries no net flux (forward - reverse = 0), meaning (in this case) that acetyl-CoA is neither created or destroyed by the cycle. However if we assume there is some acetyl-CoA degradation happening through the TCA cycle it must therefore carry net flux and not be in equilibrium. Above we implied that using P and P' (a pathway P and its reverse) for both arms of the TCA cycle would imply that we are in equilibrium (because the concentrations of all pathway intermediates are the same in both arms). But if we are in equilibrium there cannot be any net flux.
