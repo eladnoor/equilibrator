@@ -69,7 +69,7 @@ You might notice that these E'\ :sup:`m` values are very close to each other (wi
 
 Constructing the TCA Cycle
 ----------------------------------------------------------
-We are left with the task of building a cycle for the metabolism of acetyl-CoA to CO2 and electrons that passes produces the central amine acceptors α-ketoglutarate and oxaloacetate "on the way." 
+We are left with the task of building a cycle for the metabolism of acetyl-CoA to CO2 and electrons that uses the central amine acceptors α-ketoglutarate and oxaloacetate as scaffolds. We'll do this by considering the two arms of this cycle - from α-ketoglutarate and oxaloacetate and back again. 
 
 α-Ketoglutarate to Oxaloacetate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
