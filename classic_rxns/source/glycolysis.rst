@@ -39,6 +39,8 @@ Since lactate build-up is problematic (in much the same way that NADH build up i
 
 This neat biochemical trick enables organisms as varied as *E. coli* and humans to produce energy from sugars even when oxygen isn't available.
 
+.. _nadh:
+
 NADH as an Electron Carrier
 ----------------------------------------------------------
 

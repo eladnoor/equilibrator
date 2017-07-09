@@ -23,7 +23,15 @@ We will not go into detail about this complex enzyme here. Rather, we bring it u
 
 Metabolism of Acetyl-CoA
 ----------------------------------------------------------
-We will approach the metabolism of acetyl-CoA through a sort of back door by reminding ourselves about `transamination <transamination.html>`_. Remember that many amino acids are made by transamination of an appropriate alpha-keto acid acceptor. For example, glutamate can be made transaminating a five carbon dicarboxylic acid called α-ketoglutarate (also known as 2-oxoglutarate). 
+The tricarboxylic acid (TCA) cycle oxidizes the acetyl group of acetyl-CoA
+
+Acetyl-CoA + 3 H2O ⇌ 2 CO\ :sub:`2` + CoA + 8 e- 
+
+We can see that the net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and 8 electrons. In the TCA cycle, electrons are mostly donated to NAD+ to form `NADH <glycolysis.html#nadh>`_. These electrons are subsequently donated to O\ :sub:`2` in a manner that is coupled to the formation of ATP via the `respiratory electron transport chain <respiration.html#etc>`_.
+
+You might think that the oxidation of acetyl-CoA would proceed directly. However, the direct decarboxylation of acetate would give CO\ :sub:`2` and CH\ :sub:`4` (methane) a reduced (electron-rich) one-carbon molecule that is very stable gas that is quite complex to metabolize (Lehninger). In fact, methanotrophs (organisms that consume methane) use very complex and sensitive enzymes to do so (ref). The direct decarboxylation of acetyl-CoA poses similar problems. Biology solves this problem by using "scaffold" molecules - the acetyl group is first attached to another metabolite and only then does metabolism proceed by decarboxylation and oxidation. These scaffolds aid by "holding onto" the acetyl group and by providing a chemical environment that increases its reactivity (making it more straightforward to metabolize, Lehninger).
+
+We will approach the scaffold-based metabolism of acetyl-CoA through a sort of back door by reminding ourselves about `transamination <transamination.html>`_. Remember that many amino acids are made by transamination of an appropriate alpha-keto acid acceptor. For example, glutamate can be made transaminating a five carbon dicarboxylic acid called α-ketoglutarate (also known as 2-oxoglutarate). 
 
 .. figure:: _static/_images/alphaketoglutarate.png
    :alt: α-ketoglutaric acid or 2-oxoglutarate
@@ -32,7 +40,6 @@ We will approach the metabolism of acetyl-CoA through a sort of back door by rem
    α-ketoglutarate or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.
 
 Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (ref). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (ref).
-
 
 .. figure:: _static/_images/oxaloacetate.png
    :alt: Oxaloacetate
@@ -50,13 +57,15 @@ Glutamate is a proteogenic amino acid in its own right, but also a precursor for
 
 .. todo:: footnote about variation in AA biosynthetic pathways. references.
 
-In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle (TCA cycle) is as a cycle for the production of ATP through metabolism of acetyl-CoA that also continually produces both α-ketoglutarate and oxaloacetate. Let's consider the net reaction of the TCA cycle starting from acetyl-CoA
+In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We could imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which could explain why they evolved to be so central to acetyl-CoA metabolism (ref).
+
+With this in mind, let's consider again the net reaction of the TCA cycle starting from acetyl-CoA
 
 Acetyl-CoA + 3 H2O ⇌ 2 CO\ :sub:`2` + CoA + 8 e- 
 
-Notice that both α-ketoglutarate and oxaloacetate are absent from the net reaction because they are intermediates of the cycle - they are neither created or destroyed in cycle, but rather serve as co-substrates for the metabolism of acetyl-CoA. We can see that the net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and electrons. These electrons have an average potential of E'\ :sup:`m` ≈ -350 mV, meaning that they can be donated to NAD+ to form NADH (which has a more positive E'\ :sup:`m` ≈ -330 mV). In the TCA cycle, electrons are mostly donated to NAD+ to form NADH. They are subsequently donated to O\ :sub:`2` in a manner that is coupled to the formation of ATP via the `respiratory electron transport chain <respiration.html>`_. 
+Notice that both α-ketoglutarate and oxaloacetate are absent from the net reaction because they are intermediates of the cycle - the scaffolds are neither created or destroyed in cycle, but rather serve as co-substrates for the metabolism of acetyl-CoA. The net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and 8 electrons. These electrons have an average potential of E'\ :sup:`m` ≈ -350 mV, meaning that they can be donated to NAD+ to form NADH (which has a more positive E'\ :sup:`m` ≈ -330 mV). 
 
-You might notice that the E'\ :sup:`m` values above are very close to each other, meaning small variations in concentrations might make these redox reactions infeasible. In practice this problem is "solved" in two ways. First, as we will see, not all the electrons are donated to NADH. Two of the 8 electrons produced by oxidizing acetyl-CoA are donated to a higher (more positive) potential acceptor FAD+ (E'\ :sup:`m` ≈ -240 mV). Second, the NAD+ and NADH concentrations are not exactly 1 mM. Typically [NAD+] is about 30-50 times greater than [NADH] - try using eQuilibrator to see how this concentration ratio affects the E' value for NAD+ reduction to NADH.
+You might notice that these E'\ :sup:`m` values are very close to each other (within 20 mV), meaning small variations in concentrations might make these redox reactions infeasible. Cells solve this problem in two ways. First, as we will see, only 6 of 8  electrons are donated to NADH. The other two e- are donated to a higher (more positive) potential acceptor FAD+ (E'\ :sup:`m` ≈ -240 mV). Second, the NAD+ and NADH concentrations are not exactly 1 mM. Typically [NAD+] is about 30-50 times greater than [NADH] - try using eQuilibrator to see how this concentration ratio affects the E' value for NAD+ reduction to NADH.
 
 Constructing the TCA Cycle
 ----------------------------------------------------------
