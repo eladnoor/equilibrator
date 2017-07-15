@@ -31,4 +31,5 @@ References
 
 #. Alberty, R. a., Cornish-Bowden, A., Goldberg, R. N., Hammes, G. G., Tipton, K., and Westerhoff, H. V. (2011). Recommendations for terminology and databases for biochemical thermodynamics. Biophys. Chem. 155, 89–103.
 
-#. E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483
+#. Noor, E., Bar-Even, A. , Flamholz, A. , Reznik, E. , Liebermeister, W. , Milo, R. (2014) Pathway thermodynamics highlights kinetic obstacles in central metabolism. PLoS Comput Biol. 10:e1003483
+
