@@ -11,11 +11,18 @@ As we've discussed elsewhere (in the sections on `thioesters <thioester.html>`_ 
 
 Indeed, after glucose is metabolized to pyruvate through `glycolysis <glycolysis.html>`_ acetyl-CoA is made from pyruvate and CoA by a very large enzyme called `the pyruvate dehydrogenase complex <pdb101.rcsb.org/motm/153>`_. 
 
-Pyruvate + CoA + NAD\ :sup:`+` ⇌ acetyl-CoA + CO\ :sub:`2` + NADH
+|pdh|_
+
+.. |pdh| replace:: Pyruvate + CoA + NAD\ :sup:`+` ⇌ acetyl-CoA + CO\ :sub:`2` + NADH
+.. _pdh: http://equilibrator.weizmann.ac.il/search?query=Pyruvate+%2B+CoA+%2B+NAD%2B+%E2%87%8C+acetyl-CoA+%2B+CO2+%2B+NADH
+
 
 This reaction is an oxidative decarboxylation - pyruvate is oxidized and decarboxylated (a CO\ :sub:`2` is removed) to form acetate. The free-energy released by this transformation is substantial (Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -80 kJ/mol) and is harnessed to make a thioester bond on acetyl-CoA. You can see directly how favorable this transformation is by omitting the CoA from the reaction and entering it into eQuilibrator:
 
-Pyruvate + H\ :sub:`2`\ O + NAD\ :sup:`+` ⇌ acetate + CO\ :sub:`2` + NADH
+|pdh_noA|_
+
+.. |pdh_noA| replace:: Pyruvate + H\ :sub:`2`\ O + NAD\ :sup:`+` ⇌ acetate + CO\ :sub:`2` + NADH
+.. _pdh_noA: http://equilibrator.weizmann.ac.il/search?query=Pyruvate+%2B+H2O+%2B+NAD%2B+%E2%87%8C+acetate+%2B+CO2+%2B+NADH
 
 .. todo:: mention why we need water in a footnote?
 
@@ -25,7 +32,10 @@ Metabolism of Acetyl-CoA
 ----------------------------------------------------------
 The tricarboxylic acid (TCA) cycle oxidizes the acetyl group of acetyl-CoA
 
-Acetyl-CoA + 3 H\ :sub:`2`\ O ⇌ 2 CO\ :sub:`2` + CoA + 8 e\ :sup:`-` 
+|TCA_net_acCoA|_
+
+.. |TCA_net_acCoA| replace:: Acetyl-CoA + 3 H\ :sub:`2`\ O ⇌ 2 CO\ :sub:`2` + CoA + 8 e\ :sup:`-` 
+.. _TCA_net_acCoA: http://equilibrator.weizmann.ac.il/search?query=Acetyl-CoA+%2B+3+H2O+%E2%87%8C+2+CO2+%2B+CoA+%2B+8+e-
 
 We can see that the net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and 8 electrons. In the TCA cycle, electrons are mostly donated to NAD\ :sup:`+` to form `NADH <glycolysis.html#nadh>`_. These electrons are subsequently donated to O\ :sub:`2` in a manner that is coupled to the formation of ATP via the `respiratory electron transport chain <respiration.html#etc>`_.
 
@@ -61,7 +71,10 @@ In order to make amino acids, therefore, cells need to make α-ketoglutarate and
 
 With this in mind, let's consider again the net reaction of the TCA cycle starting from acetyl-CoA
 
-Acetyl-CoA + 3 H\ :sub:`2`\ O ⇌ 2 CO\ :sub:`2` + CoA + 8 e\ :sup:`-` 
+|TCA_net_acCoA2|_
+
+.. |TCA_net_acCoA2| replace:: Acetyl-CoA + 3 H\ :sub:`2`\ O ⇌ 2 CO\ :sub:`2` + CoA + 8 e\ :sup:`-` 
+.. _TCA_net_acCoA2: http://equilibrator.weizmann.ac.il/search?query=Acetyl-CoA+%2B+3+H2O+%E2%87%8C+2+CO2+%2B+CoA+%2B+8+e-
 
 Notice that both α-ketoglutarate and oxaloacetate are absent from the net reaction because they are intermediates of the cycle - the scaffolds are neither created or destroyed in cycle, but rather serve as co-substrates for the metabolism of acetyl-CoA. The net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and 8 electrons. These electrons have an average potential of E'\ :sup:`m` ≈ -350 mV, meaning that they can be donated to NAD\ :sup:`+` to form NADH (which has a more positive E'\ :sup:`m` ≈ -330 mV). 
 
@@ -75,23 +88,38 @@ We are left with the task of building a cycle for the metabolism of acetyl-CoA t
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Let's first consider what it would take to make oxaloacetate from α-ketoglutarate.
 
-α-ketoglutarate + 2 H\ :sub:`2`\ O ⇌ oxaloacetate + CO\ :sub:`2` + 6 e\ :sup:`-`
+|AKG_2_OAA|_
+
+.. |AKG_2_OAA| replace:: α-ketoglutarate + 2 H\ :sub:`2`\ O ⇌ oxaloacetate + CO\ :sub:`2` + 6 e\ :sup:`-` 
+.. _AKG_2_OAA: http://equilibrator.weizmann.ac.il/search?query=alpha-ketoglutarate+%2B+2+H2O+%E2%87%8C+oxaloacetate+%2B+CO2+%2B+6+e-
 
 As we said, α-ketoglutarate (α-KG for short) contains 5 carbon atoms and oxaloacetate (OAA for short) contains 4. Therefore, production of OAA from α-KG requires the decarboxylation of α-KG - i.e. the removal of a carbon atom. As we foreshadowed above, this proceeds through the mechanism of oxidative decaboxylation of α-KG to make succinyl-CoA
 
-α-ketoglutarate + CoA + NAD\ :sup:`+` ⇌ succinyl-CoA + CO\ :sub:`2` + NADH
+|AKG_2_OAA_NADH|_
+
+.. |AKG_2_OAA_NADH| replace:: α-ketoglutarate + CoA + NAD\ :sup:`+` ⇌ succinyl-CoA + CO\ :sub:`2` + NADH
+.. _AKG_2_OAA_NADH: http://equilibrator.weizmann.ac.il/search?query=alpha-ketoglutarate+%2B+CoA+%2B+NAD%2B+%E2%87%8C+succinyl-CoA+%2B+CO2+%2B+NADH
 
 The thioester on succinyl-CoA is `approximately energetically equivalent to ATP <thioester.html>`_, which explains how the next reaction step manages to make ATP while hydrolysing the thioester. [1]_
 
-succinyl-CoA + ADP + Pi ⇌ succinate + CoA + ATP
+|ScCoA_synth|_
+
+.. |ScCoA_synth| replace:: succinyl-CoA + ADP + Pi ⇌ succinate + CoA + ATP
+.. _ScCoA_synth: http://equilibrator.weizmann.ac.il/search?query=succinyl-CoA+%2B+ADP+%2B+Pi+%E2%87%8C+succinate+%2B+CoA+%2B+ATP
 
 Succinate has 4 carbons, like OAA, but is more reduced - having 4 more electrons. So it must be oxidized twice to make oxaloacetate. 
 
-succinate + NAD\ :sup:`+` + FAD + H\ :sub:`2`\ O ⇌ oxaloacetate + NADH + FADH\ :sub:`2`
+|SUCC_2_OAA|_
+
+.. |SUCC_2_OAA| replace:: succinate + NAD\ :sup:`+` + FAD + H\ :sub:`2`\ O ⇌ oxaloacetate + NADH + FADH\ :sub:`2`
+.. _SUCC_2_OAA: http://equilibrator.weizmann.ac.il/search?query=succinate+%2B+NAD%2B+%2B+FAD+%2B+H2O+%E2%87%8C+oxaloacetate+%2B+NADH+%2B+FADH2
 
 The above reaction is actually a three-step process catalyzed by three different enzymes in the TCA cycle. Notice that two electrons are donated to NAD\ :sup:`+` and two are donated to a similar, but higher-potential donor called FAD (as discussed in above). Altogether, this arm of the TCA cycle has a net reaction of
 
-α-ketoglutarate + 2 H\ :sub:`2`\ O + 2 NAD\ :sup:`+` + FAD ⇌ oxaloacetate + CO\ :sub:`2` + 2 NADH + FADH\ :sub:`2`
+|AKG_2_OAA_NET|_
+
+.. |AKG_2_OAA_NET| replace:: α-ketoglutarate + 2 H\ :sub:`2`\ O + 2 NAD\ :sup:`+` + FAD ⇌ oxaloacetate + CO\ :sub:`2` + 2 NADH + FADH\ :sub:`2`
+.. _AKG_2_OAA_NET: http://equilibrator.weizmann.ac.il/search?query=alpha-ketoglutarate+%2B+2+H2O+%2B+2+NAD%2B+%2B+FAD+%E2%87%8C+oxaloacetate+%2B+CO2+%2B+2+NADH+%2B+FADH2
 
 and a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0. As discussed above, this almost infeasible Δ\ :sub:`r`\ G'\ :sup:`m` can be remedied by setting the NAD\ :sup:`+` and NADH concentrations to more physiologically relevant values. For example, `measurements in E. coli <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_ give [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ\ :sub:`r`\ G' in eQuilibrator - does this help resolve the problem?
 
@@ -101,7 +129,10 @@ First of all - it is important to note that the TCA cycle can't possibly follow 
 
 Acetyl-CoA gets into the TCA cycle is through the citrate synthase reaction
 
-acetyl-CoA + oxaloacetate + H\ :sub:`2`\ O ⇌ CoA + citrate
+|citrate_synthase|_
+
+.. |citrate_synthase| replace:: acetyl-CoA + oxaloacetate + H\ :sub:`2`\ O ⇌ CoA + citrate
+.. _citrate_synthase: http://equilibrator.weizmann.ac.il/search?query=acetyl-CoA+%2B+oxaloacetate+%2B+H2O+%E2%87%8C+CoA+%2B+citrate
 
 which adds acetyl-CoA to oxaloacetate to form the tricarboxylic acid citrate (after which the cycle is named). 
 
@@ -113,17 +144,26 @@ which adds acetyl-CoA to oxaloacetate to form the tricarboxylic acid citrate (af
 
 The citrate synthase reaction is quite favorable (Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -35 kJ/mol) due to the hydrolysis of a thioester bond. If we consider the citrate synthase reaction without thioester hydrolysis, i.e. adding acetate to oxaloacetate directly, we see that the reaction is intrinsically unfavorable
 
-acetate + oxaloacetate ⇌ citrate
+|citrate_synthase_noA|_
+
+.. |citrate_synthase_noA| replace:: acetate + oxaloacetate ⇌ citrate
+.. _citrate_synthase_noA: http://equilibrator.weizmann.ac.il/search?query=acetate+%2B+oxaloacetate+%E2%87%8C+citrate
 
 From this we learn that the formation of a thioester on acetyl-CoA in the pyruvate dehydrogenase reaction above essentially "carries forward" the energy output oxidative decarboxylation into the citrate synthase step. Yet another example of an intrinsically unfavorable chemical reaction that biology enables through clever energetic activation.
 
 Since we added two carbons from acetyl-CoA to oxaloacetate to form citrate, citrate must have 6 carbons. This means that it must be decarboxylated one time to form α-ketoglutarate. Due to the mechanism of enzymes carrying out oxidative decarboxylation, `citrate must be isomerized to isocitrate <https://www.ncbi.nlm.nih.gov/books/NBK22427/>`_. It can then undergo oxidative decarboxylation 
 
-isocitrate + NAD\ :sup:`+` ⇌ α-ketoglutarate + CO\ :sub:`2` + NADH
+|iso_dehy|_
+
+.. |iso_dehy| replace:: isocitrate + NAD\ :sup:`+` ⇌ α-ketoglutarate + CO\ :sub:`2` + NADH
+.. _iso_dehy: http://equilibrator.weizmann.ac.il/search?query=isocitrate+%2B+NAD%2B+%E2%87%8C+alpha-ketoglutarate+%2B+CO2+%2B+NADH
 
 to form α-KG and close the cycle. The net reaction of this arm of the cycle is 
 
-oxaloacetate + acetyl-CoA + NAD\ :sup:`+` + H\ :sub:`2`\ O ⇌ α-ketoglutarate + CO\ :sub:`2` + NADH + CoA
+|OAA_2_AKG_NET|_
+
+.. |OAA_2_AKG_NET| replace:: oxaloacetate + acetyl-CoA + NAD\ :sup:`+` + H\ :sub:`2`\ O ⇌ α-ketoglutarate + CO\ :sub:`2` + NADH + CoA
+.. _OAA_2_AKG_NET: http://equilibrator.weizmann.ac.il/search?query=oxaloacetate+%2B+acetyl-CoA+%2B+NAD%2B+%2B+H2O+%E2%87%8C+alpha-ketoglutarate+%2B+CO2+%2B+NADH+%2B+CoA
 
 and is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -40 kJ/mol. Putting together the two arms of the TCA cycle, we see that acetyl-CoA is added to oxaloacetate, oxidatively decarboxylated once to α-ketoglutarate, which is subsequently oxidatively decarboxylated once and oxidized twice to remake oxaloacetate. The two decarboxylations and 4 reduced electron carriers formed (3 NADH and 1 FADH\ :sub:`2`) account for the 2 carbons and 8 e- introduced to the cycle by the acetyl group of acetyl-CoA.
 
@@ -141,9 +181,12 @@ Anaplerotic Reactions
 ----------------------------------------------------------
 α-Ketoglutarate to oxaloacetate are constantly being consumed by transamination reactions to make various amino acids. However, they are both also intermediates of the TCA cycle, meaning that they are neither created or destroyed by the action of the cycle. So we have a conundrum! If α-KG and OAA are removed from the cycle by transamination reactions but never replenished, their concentrations will eventually dwindle to 0, the TCA cycle would come to a halt, amino acids could no longer be made and the cell would die. [3]_
 
-Cells sidestep this problem by continually replenishing TCA cycle intermediates through "`anaplerotic reactions <https://en.wikipedia.org/wiki/Anaplerotic_reactions>`_" from the `Greek meaning <https://en.wiktionary.org/wiki/anaplerotic>`_ "filling up" or "replenishing" reactions. For example, the pyruvate carboxylase reaction
+Cells sidestep this problem by continually replenishing TCA cycle intermediates through "`anaplerotic reactions <https://en.wikipedia.org/wiki/Anaplerotic_reactions>`_" from the `Greek meaning <https://en.wiktionary.org/wiki/anaplerotic>`_ "filling up" or "replenishing" reactions. Several of these reactions are illustrated in the TCA cycle figure above. For example, the pyruvate carboxylase reaction
 
-pyruvate + ATP + CO\ :sub:`2` ⇌ oxaloacetate + ADP + Pi
+|pyr_carboxylase|_
+
+.. |pyr_carboxylase| replace:: pyruvate + ATP + CO\ :sub:`2` + H\ :sub:`2`\ O ⇌ oxaloacetate + ADP + Pi
+.. _pyr_carboxylase: http://equilibrator.weizmann.ac.il/search?query=Pyruvate+%2B+ATP+%2B+CO2+%2B+H2O+%3C%3D%3E+Oxaloacetate+%2B+ADP+%2B+Pi
 
 replenishes oxaloacetate from pyruvate. Notice that this actually replenishes all the TCA cycle intermediates, including α-KG, because oxaloacetate will be quickly converted into those metabolites through the action of the TCA cycle. In fact, there is no anaplerotic reaction that directly produces α-KG - cells rely on the TCA cycle to do this for them.
 
@@ -153,7 +196,10 @@ pH Dependence
 ----------------------------------------------------------
 The TCA cycle reaction that makes oxaloacetate is called `malate dehydrogenase <http://pdb101.rcsb.org/motm/154>`_ because, well, it dehydrogenates malate
 
-malate + NAD\ :sup:`+` ⇌ oxaloacetate + NADH
+|malate_dehy|_
+
+.. |malate_dehy| replace:: malate + NAD\ :sup:`+` ⇌ oxaloacetate + NADH
+.. _malate_dehy: http://equilibrator.weizmann.ac.il/search?query=malate+%2B+NAD%2B+%E2%87%8C+oxaloacetate+%2B+NADH
 
 this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, `malate <https://en.wikipedia.org/wiki/Malic_acid>`_ and `oxaloacetate <https://en.wikipedia.org/wiki/Oxaloacetic_acid>`_ have different pKas on their carboxylic acid groups, meaning that Δ\ :sub:`r`\ G' will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ\ :sub:`r`\ G' and Δ\ :sub:`r`\ G'° depend on the pH. 
 
