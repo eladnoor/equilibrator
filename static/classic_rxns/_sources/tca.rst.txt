@@ -171,7 +171,7 @@ and is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -40 kJ/mol. Putting
    :alt: The TCA Cycle
    :align: center
 
-   The TCA cycle and anaplerotic reactions.
+   The TCA cycle and anaplerotic reactions. Red titles denote the abbreviated names of the enzymes catalyzing the labeled reaction in E. coli.
 
 .. [1] The enzyme that catalyzes this reaction, succinyl-CoA synthetase, is unfortunately named for the reverse direction of the reaction.
 
@@ -201,7 +201,7 @@ The TCA cycle reaction that makes oxaloacetate is called `malate dehydrogenase <
 .. |malate_dehy| replace:: malate + NAD\ :sup:`+` ⇌ oxaloacetate + NADH
 .. _malate_dehy: http://equilibrator.weizmann.ac.il/search?query=malate+%2B+NAD%2B+%E2%87%8C+oxaloacetate+%2B+NADH
 
-this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, `malate <https://en.wikipedia.org/wiki/Malic_acid>`_ and `oxaloacetate <https://en.wikipedia.org/wiki/Oxaloacetic_acid>`_ have different pKas on their carboxylic acid groups, meaning that Δ\ :sub:`r`\ G' will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ\ :sub:`r`\ G' and Δ\ :sub:`r`\ G'° depend on the pH. 
+this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, `malate <https://en.wikipedia.org/wiki/Malic_acid>`_ and `oxaloacetate <https://en.wikipedia.org/wiki/Oxaloacetic_acid>`_ have different pKas on their two carboxylic acid groups, meaning that Δ\ :sub:`r`\ G' of the malate dehydrogenase reaction will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ\ :sub:`r`\ G' and Δ\ :sub:`r`\ G'° depend on the pH. 
 
 The pKa of an acid is the pH at which that acidic group is 50% protonated (also 50% deprotonated). Overall, the pKas associated with oxaloacetate (pKa = 2.2, 3.9) are lower than those associated with malate (pKa = 3.4, 5.2). This means that as the pH goes down from 7 (i.e. becomes more acidic) and approaches the higher pKa of malate, malate reaches a pH where it has multiple populated protonation states but oxaloacetate does not. [4]_ As a result of this effect, we find that lowering the pH (making the environment more acidic) makes the Δ\ :sub:`r`\ G' more positive, favoring the reverse reaction even more. 
 
