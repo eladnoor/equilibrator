@@ -49,7 +49,7 @@ We will approach the scaffold-based metabolism of acetyl-CoA through a sort of b
 
    α-ketoglutarate or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.
 
-Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (ref). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (ref).
+Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (`Lehninger Principles of Biochemistry, 2008 <refs.html>`_). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (`Lehninger Principles of Biochemistry, 2008 <refs.html>`_).
 
 .. figure:: _static/_images/oxaloacetate.png
    :alt: Oxaloacetate
@@ -67,7 +67,7 @@ Glutamate is a proteogenic amino acid in its own right, but also a precursor for
 
 .. todo:: footnote about variation in AA biosynthetic pathways. references.
 
-In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We might imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which could explain why they evolved to be so central to acetyl-CoA metabolism (ref).
+In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We might imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which could explain why they evolved to be so central to acetyl-CoA metabolism.
 
 With this in mind, let's consider again the net reaction of the TCA cycle starting from acetyl-CoA
 
@@ -210,7 +210,7 @@ Some organisms maintain a pH of 6 in their cytosol (`Noor et. al, 2014 <refs.htm
 .. math::
 	\begin{eqnarray}
 	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{Q} \\
-	&=& 36 \frac{kJ}{mol} + RT \ln{\left( \frac{[NADH][oxaloacetate]}{[NAD\ :sup:`+`][malate]} \right)} \\
+	&=& 36 \frac{kJ}{mol} + RT \ln{\left( \frac{[NADH][oxaloacetate]}{[NAD^+][malate]} \right)} \\
 	&=& 36 \frac{kJ}{mol} + RT \ln{\left( \frac{0.08 mM \times [oxaloacetate]}{3 mM \times [malate]} \right)} \\
 	&=& 36 \frac{kJ}{mol} + RT \left( \ln{\left( \frac{0.08 mM}{3 mM} \right)} + \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} \right) \\
 	\end{eqnarray}

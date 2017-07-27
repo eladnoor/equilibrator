@@ -1,6 +1,8 @@
 References 
 ==========================================================
 
+#. Nelson, D. L., Lehninger, A. L., and Cox, M. M. (2008). Lehninger Principles of Biochemistry, Macmillan.
+
 #. Atlas, R. M., and Hazen, T. C. (2011). Oil biodegradation and bioremediation: a tale of the two worst spills in U.S. history. Environ. Sci. Technol. 45, 6709–6715.
 
 #. Bar-Even, A., Flamholz, A., Noor, E., and Milo, R. (2012). Rethinking glycolysis: on the biochemical logic of metabolic pathways. Nat. Chem. Biol. 8, 509–517.
