@@ -67,7 +67,7 @@ Glutamate is a proteogenic amino acid in its own right, but also a precursor for
 
 .. todo:: footnote about variation in AA biosynthetic pathways. references.
 
-In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We might imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which could explain why they evolved to be so central to acetyl-CoA metabolism.
+In order to make amino acids, therefore, cells need to make α-ketoglutarate and oxaloacetate continually. One way to think about the tricaboxylic acid cycle, then, is as means for metabolizing acetyl-CoA that uses these very central molecules, α-ketoglutarate and oxaloacetate, as scaffolds. We might imagine that these two very central molecules were already present in the cell at relatively high concentrations because they are necessary for amino acid synthesis, which is one potential explanation for why they are so central to acetyl-CoA metabolism. 
 
 With this in mind, let's consider again the net reaction of the TCA cycle starting from acetyl-CoA
 
@@ -173,6 +173,9 @@ and is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -40 kJ/mol. Putting
 
    The TCA cycle and anaplerotic reactions. Red titles denote the abbreviated names of the enzymes catalyzing the labeled reaction in E. coli.
 
+.. todo::
+    less detailed schematic further up.
+
 .. [1] The enzyme that catalyzes this reaction, succinyl-CoA synthetase, is unfortunately named for the reverse direction of the reaction.
 
 .. [2] By nonzero flux we mean that the cycle moves in a particular direction. For example the cell presumably "wants" the cycle to move in the direction of acetyl-CoA metabolism and energy production. In equilibrium the forward and reverse fluxes are definitionally equal and the cycle carries no net flux (forward - reverse = 0), meaning (in this case) that acetyl-CoA is neither created or destroyed by the cycle. However if we assume there is some acetyl-CoA degradation happening through the TCA cycle it must therefore carry net flux and not be in equilibrium. Above we implied that using P and P' (a pathway P and its reverse) for both arms of the TCA cycle would imply that we are in equilibrium (because the concentrations of all pathway intermediates are the same in both arms). But if we are in equilibrium there cannot be any net flux.
@@ -180,6 +183,9 @@ and is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -40 kJ/mol. Putting
 Anaplerotic Reactions
 ----------------------------------------------------------
 α-Ketoglutarate to oxaloacetate are constantly being consumed by transamination reactions to make various amino acids. However, they are both also intermediates of the TCA cycle, meaning that they are neither created or destroyed by the action of the cycle. So we have a conundrum! If α-KG and OAA are removed from the cycle by transamination reactions but never replenished, their concentrations will eventually dwindle to 0, the TCA cycle would come to a halt, amino acids could no longer be made and the cell would die. [3]_
+
+.. todo::
+    need a diagram here.
 
 Cells sidestep this problem by continually replenishing TCA cycle intermediates through "`anaplerotic reactions <https://en.wikipedia.org/wiki/Anaplerotic_reactions>`_" from the `Greek meaning <https://en.wiktionary.org/wiki/anaplerotic>`_ "filling up" or "replenishing" reactions. Several of these reactions are illustrated in the TCA cycle figure above. For example, the pyruvate carboxylase reaction
 

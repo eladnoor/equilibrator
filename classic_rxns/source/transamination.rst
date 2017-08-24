@@ -12,7 +12,7 @@ Using eQuilibrator we can see that this reaction is highly unfavorable with a po
 
 `NADPH + 2-Oxoglutarate + Glutamine ⇌ NADP+ + 2 Glutamate <http://equilibrator.weizmann.ac.il/reaction?query=NADP++%2B+2+L-Glutamate+%3C%3D%3E+NADPH+%2B+2-Oxoglutarate+%2B+L-Glutamine&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00005&reactantsName=NADPH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00006&reactantsName=NADP+&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-2.0&reactantsId=C00025&reactantsName=L-Glutamate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00026&reactantsName=2-Oxoglutarate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00064&reactantsName=L-Glutamine&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
 
-This reaction is highly favorable, in part because it is coupled to the oxidation of NADPH. So by tracing the pathway you can see that it has the net effect of converting ammonia to amines stored on glutamate. [1]_ 
+This reaction is highly favorable, in part because it couples to the oxidation of NADPH to the reduction of a carbonyl group on 2-oxoglutarate (see the images below and `Bar-Even et al., 2012 <refs.html>`_). So by tracing the pathway you can see that it has the net effect of converting ammonia to amines stored on glutamate. [1]_ 
 
 The most common way that amino acids are made is by transferring amines from glutamate to the right alpha-keto acid acceptor (as there are several such alpha keto acid compounds). 
 
@@ -21,6 +21,9 @@ The most common way that amino acids are made is by transferring amines from glu
    :align: center
 
    α-ketoglutaric acid or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.
+
+.. todo::
+    charges on carboxylic acids in figures???
 
 .. figure:: _static/_images/glutamate.png
    :alt: L-glutamate
