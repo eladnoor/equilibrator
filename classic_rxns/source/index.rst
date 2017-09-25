@@ -14,6 +14,7 @@ While there are many links between the sections of "eQuilibrator Classic Reactio
    :maxdepth: 2
    :caption: Contents:
 
+   about
    atp
    thioester
    glucose_ox
@@ -23,8 +24,10 @@ While there are many links between the sections of "eQuilibrator Classic Reactio
    transamination
    fatty_acid_met
    tca
-   refs
    faq
+   cite
+   refs
+   new_in_2.0
 
 
 .. todo::

@@ -9,9 +9,6 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='main.html')),
-    url(r'^about', TemplateView.as_view(template_name='about.html')),
-    url(r'^whats_new', TemplateView.as_view(template_name='new_in_2_0.html')),
-    url(r'^cite', TemplateView.as_view(template_name='cite.html')),
     url(r'^compound_image', views.compound.CompoundImage),
     url(r'^compound', views.compound.CompoundPage),
     url(r'^download', views.views.DownloadPage),

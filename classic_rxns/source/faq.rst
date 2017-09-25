@@ -198,8 +198,6 @@ How can I contact the people behind eQuilibrator?
 
 If you have questions about eQuilibrator, please consult the `eQuilibrator Google Group <https://groups.google.com/forum/#!forum/equilibrator-users>`_ to see if your question has been asked and answered before. Please also post your questions to the group so that all eQuilibrator users can benefit from your experience. If you have questions about the data and methods on which eQuilibrator is based, please consult `these references <http://localhost:8000/cite>`_. If you'd like to contact us directly, reach out to the `Milo Lab <http://www.weizmann.ac.il/plants/Milo/>`_, which maintains eQuilibrator.
 
-.. _refs:
-
 References
 ----------------------------------------------------------
 
