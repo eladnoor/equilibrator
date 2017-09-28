@@ -1,5 +1,6 @@
+-------------------------------------
 Transamination for Making Amino Acids
-==========================================================
+-------------------------------------
 
 Proteins are made of amino acids and amino acids have amine groups (-NH\ :sub:`2`). Here we consider two related questions: (a) where do the amines come from and (b) how are different amino acids made? The most common way that cells make new amines is to incorporate ammonia into glutamate, forming glutamine
 
@@ -12,7 +13,7 @@ Using eQuilibrator we can see that this reaction is highly unfavorable with a po
 
 `NADPH + 2-Oxoglutarate + Glutamine ⇌ NADP+ + 2 Glutamate <http://equilibrator.weizmann.ac.il/reaction?query=NADP++%2B+2+L-Glutamate+%3C%3D%3E+NADPH+%2B+2-Oxoglutarate+%2B+L-Glutamine&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00005&reactantsName=NADPH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00006&reactantsName=NADP+&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-2.0&reactantsId=C00025&reactantsName=L-Glutamate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00026&reactantsName=2-Oxoglutarate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00064&reactantsName=L-Glutamine&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
 
-This reaction is highly favorable, in part because it couples to the oxidation of NADPH to the reduction of a carbonyl group on 2-oxoglutarate (see the images below and `Bar-Even et al., 2012 <refs.html>`_). So by tracing the pathway you can see that it has the net effect of converting ammonia to amines stored on glutamate. [1]_ 
+This reaction is highly favorable, in part because it couples to the oxidation of NADPH to the reduction of a carbonyl group on 2-oxoglutarate (see the images below and :ref:`Bar-Even et al., 2012 <refs>`). So by tracing the pathway you can see that it has the net effect of converting ammonia to amines stored on glutamate. [#tra1]_ 
 
 The most common way that amino acids are made is by transferring amines from glutamate to the right alpha-keto acid acceptor (as there are several such alpha keto acid compounds). 
 
@@ -39,9 +40,9 @@ Similarly, aspartate can be made by transferring an amine to oxaloacetate
 
 `Glutamate + Oxaloacetate ⇌ 2-Oxoglutarate + Aspartate <http://equilibrator.weizmann.ac.il/reaction?query=2-Oxoglutarate+%2B+L-Aspartate+%3C%3D%3E+L-Glutamate+%2B+Oxaloacetate&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00025&reactantsName=L-Glutamate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00026&reactantsName=2-Oxoglutarate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00036&reactantsName=Oxaloacetate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00049&reactantsName=L-Aspartate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
 
-If we inspect these reactions in eQuilibrator, we find that they have Δ\ :sub:`r`\ G'\ :sup:`m` values that are very close to 0 kJ / mol. This makes intuitive sense because both reactions involve the transfer of a group (an amine) from one molecule to the same position on another molecule (both the substrate and product are amino acids). In other words, these reactions are not intrinsically thermodynamically driven in either direction. Rather, it is the extremely high concentration of glutamate [2]_  that drives these reactions forward (in the direction of making various amino acids). Try setting the glutamate concentration to 50 mM using eQuilibrator to see what happens to the Δ\ :sub:`r`\ G' of these transamination reactions. 
+If we inspect these reactions in eQuilibrator, we find that they have Δ\ :sub:`r`\ G'\ :sup:`m` values that are very close to 0 kJ / mol. This makes intuitive sense because both reactions involve the transfer of a group (an amine) from one molecule to the same position on another molecule (both the substrate and product are amino acids). In other words, these reactions are not intrinsically thermodynamically driven in either direction. Rather, it is the extremely high concentration of glutamate [#tra2]_  that drives these reactions forward (in the direction of making various amino acids). Try setting the glutamate concentration to 50 mM using eQuilibrator to see what happens to the Δ\ :sub:`r`\ G' of these transamination reactions. 
 
-.. [1] Exercise for the reader: explain why this reaction is a reduction reaction, i.e. why it requires electrons from NADPH? 
+.. [#tra1] Exercise for the reader: explain why this reaction is a reduction reaction, i.e. why it requires electrons from NADPH? 
 
-.. [2] `Upwards of 50 mM in many cell types <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_
+.. [#tra2] `Upwards of 50 mM in many cell types <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_
 

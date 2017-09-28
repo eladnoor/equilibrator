@@ -1,5 +1,6 @@
+-------------------------------------
 Metabolism of Alkanes and Fatty Acids
-==========================================================
+-------------------------------------
 
 Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the `terrible Deep Water Horizon oil spill <http://aem.asm.org/content/77/22/7962.short>`_ (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).
 
@@ -20,13 +21,13 @@ Oil is made up of many kinds of reduced carbon molecules (carbons with many elec
 Producing acetyl-CoA has several advantages. First, the CoA provides a “handle” by which enzymes can recognize the molecule (Bar-Even et al., 2011). It is simpler for an enzyme to recognize and bind a ~750 Dalton molecule (CoA) containing multiple elements, aromatic rings, phosphates, etc. than it is to recognize a 60 Dalton molecule (acetate) containing only two carbons, two oxygens and 4 hydrogens. Second, as we saw above, the thioester linkage is a high energy bond: a bond whose hydrolysis releases substantial energy. Finally, acetyl-CoA is a very central molecule in metabolism - it can be used for many different purposes ranging from energy production to biosynthesis of lipids and sterols for membranes. 
 
 Example of Octane Breakdown
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: _static/_images/accoa.png
    :alt: Acetyl-CoA
    :align: center
 
-   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a `thioester linkage <thioester.html>`_.
+   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a :ref:`thioester linkage <cr-thioester>`.
 
 
 .. figure:: _static/_images/thioacetate.png
@@ -59,7 +60,7 @@ You can use eQuilibrator to automatically redox balance the reaction using NAD+ 
 Now that we’ve handled elemental and electron balance we need to think about energy. We might expect this pathway to be intrinsically downhill because it involves the oxidation of carbons (like in glycolysis) but there are two uphill components of the pathway: the formation of two thioester bonds and the reduction NAD+ to make NADH. Together this produces a positive Δ\ :sub:`r`\ G'\ :sup:`m`  ≈ 140 kJ/mol, not a small barrier to breaking down alkanes!
 
 Energy Balance in Octane Breakdown
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 How does biology overcome this barrier in order to produce NADH and ultimately ATP? Using a classic biological pattern - expending some energy up front in order to conserve more energy later. To understand how this works, it’s useful to think about the pathway in three parts: the oxidation of the octane to octanoic acid (octane with a terminal carboxyl group), the attachment of CoA to form octanoyl-CoA and finally removal of a two carbon unit forming acetyl-CoA (2 carbons) hexanoyl-CoA (6 carbons). 
 
@@ -77,7 +78,7 @@ Although we assumed that NAD+ was the electron acceptor in our analysis above, y
 
 with a Δ\ :sub:`r`\ G'\ :sup:`m` around -390 kJ/mol. So in this case the pathway is made favorable by directly donating ⅔ of the electrons to oxygen and forgoing ATP that would otherwise be generated from NADH through respiration. 
 
-The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed `above <thioester.html>`_) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
+The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed :ref:`above <cr-thioester>`) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
 
 |atp_hydrolysis_amp|_
 
@@ -112,7 +113,7 @@ The way that animal mitochondria “square this circle” is that FAD is not the
 and setting the potential of the extra electrons to 0 mV (which is the default). This gives a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -10 kJ/mol, finally feasible! This example highlights a number of interesting facets of metabolism. As above (in step 1), some energy is diverted to making step 3 favorable by using higher potential electron acceptors for crucial steps - in this case using FAD-bound ETF as the acceptor. Secondly, flavin-based electron acceptors like FAD (flavin-adenine dinucleotide) are typically very oxygen sensitive and often tightly-bound to proteins. This can prevent direct interaction with O\ :sub:`2` (which could spontaneously oxidize them) and can also alter their reduction potential from the free (not protein-bound) form, as we saw in the case of ETF.
 
 Fatty Acid Metabolism
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: _static/_images/palmitate.png
    :alt: Palmitic Acid
@@ -122,11 +123,11 @@ Fatty Acid Metabolism
 
 Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to one or more fatty acid tails via an ester linkage. Fatty acids like the palmitic acid shown above are simply alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 of the previous section is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how lipid and fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid. 
 
-This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the `TCA cycle <tca.html>`_ to produce ATP and enable the production of important amino acids for the production of proteins.
+This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [#fam1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the :ref:`tca <cr-tca>` to produce ATP and enable the production of important amino acids for the production of proteins.
 
 .. todo:: figure of beta-oxidation pathway?
 
-.. [1] It's interesting and instructive to consider how fatty acids with an odd number of carbons are metabolized. How would you tackle that problem?
+.. [#fam1] It's interesting and instructive to consider how fatty acids with an odd number of carbons are metabolized. How would you tackle that problem?
 
 
 

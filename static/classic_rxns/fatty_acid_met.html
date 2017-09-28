@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Metabolism of Alkanes and Fatty Acids &mdash; eQuilibrator Classic Reactions 0.1 beta documentation</title>
+  <title>Metabolism of Alkanes and Fatty Acids &mdash; eQuilibrator 0.2 beta documentation</title>
   
 
   
@@ -37,9 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="eQuilibrator Classic Reactions 0.1 beta documentation" href="index.html"/>
-        <link rel="next" title="The TCA Cycle" href="tca.html"/>
-        <link rel="prev" title="Transamination for Making Amino Acids" href="transamination.html"/>
+    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="index.html"/>
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -70,7 +68,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> eQuilibrator Classic Reactions
+            <a href="index.html" class="icon icon-home"> eQuilibrator
           
 
           
@@ -83,7 +81,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -108,25 +106,11 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="atp.html">Energy Currency and ATP Hydrolysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="thioester.html">Thioester Bonds are Energetic Too</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glucose_ox.html">The Oxidation of Glucose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="co2_red.html">Plants Make Glucose from CO<sub>2</sub></a></li>
-<li class="toctree-l1"><a class="reference internal" href="glycolysis.html">Glycolysis and Fermentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="respiration.html">Respiration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transamination.html">Transamination for Making Amino Acids</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Metabolism of Alkanes and Fatty Acids</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#example-of-octane-breakdown">Example of Octane Breakdown</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#energy-balance-in-octane-breakdown">Energy Balance in Octane Breakdown</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fatty-acid-metabolism">Fatty Acid Metabolism</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tca.html">The TCA Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classic_reactions.html">eQuilibrator Classic Reactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cite.html">Relevant publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="new_in_2.0.html">What’s new in eQuilibrator 2.1?</a></li>
 </ul>
 
@@ -142,7 +126,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">eQuilibrator Classic Reactions</a>
+          <a href="index.html">eQuilibrator</a>
         
       </nav>
 
@@ -194,23 +178,23 @@
   <div class="section" id="metabolism-of-alkanes-and-fatty-acids">
 <h1>Metabolism of Alkanes and Fatty Acids<a class="headerlink" href="#metabolism-of-alkanes-and-fatty-acids" title="Permalink to this headline">¶</a></h1>
 <p>Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the <a class="reference external" href="http://aem.asm.org/content/77/22/7962.short">terrible Deep Water Horizon oil spill</a> (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).</p>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id2">
 <img alt="Octane" src="_images/octane.png" />
 <p class="caption"><span class="caption-text">Octane (C<sub>8</sub>H<sub>18</sub>) is an alkane and a major component of automotive fuel.</span></p>
 </div>
 <p>Oil is made up of many kinds of reduced carbon molecules (carbons with many electrons), including alkane chain hydrocarbons - typically chains of 10-30 carbons bonded to hydrogen. Bacteria break down hydrocarbons in an iterative fashion - they remove units of two carbons at a time. These two carbon units come in the form of <a class="reference external" href="http://equilibrator.weizmann.ac.il/compound?compoundId=C00024">acetyl-CoA</a>, a two-carbon acetyl group with a <a class="reference external" href="http://equilibrator.weizmann.ac.il/compound?compoundId=C00010">coenzyme A</a> molecule attached by a thioester linkage. At first blush it seems odd to attach large molecule like CoA to acetate. CoA has 21 carbons - why add all that mass to metabolize only two carbons?</p>
-<div class="figure align-center" id="id4">
+<div class="figure align-center" id="id3">
 <img alt="Coenzyme A" src="_images/CoA.png" />
 <p class="caption"><span class="caption-text">Coenzyme A in all of its 767 Daltons of glory.</span></p>
 </div>
 <p>Producing acetyl-CoA has several advantages. First, the CoA provides a “handle” by which enzymes can recognize the molecule (Bar-Even et al., 2011). It is simpler for an enzyme to recognize and bind a ~750 Dalton molecule (CoA) containing multiple elements, aromatic rings, phosphates, etc. than it is to recognize a 60 Dalton molecule (acetate) containing only two carbons, two oxygens and 4 hydrogens. Second, as we saw above, the thioester linkage is a high energy bond: a bond whose hydrolysis releases substantial energy. Finally, acetyl-CoA is a very central molecule in metabolism - it can be used for many different purposes ranging from energy production to biosynthesis of lipids and sterols for membranes.</p>
 <div class="section" id="example-of-octane-breakdown">
 <h2>Example of Octane Breakdown<a class="headerlink" href="#example-of-octane-breakdown" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id4">
 <img alt="Acetyl-CoA" src="_images/accoa.png" />
-<p class="caption"><span class="caption-text">Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the “business end” of acetyl-CoA where acetate is bound to CoA by a <a class="reference external" href="thioester.html">thioester linkage</a>.</span></p>
+<p class="caption"><span class="caption-text">Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the “business end” of acetyl-CoA where acetate is bound to CoA by a <a class="reference internal" href="classic_reactions.html#cr-thioester"><span class="std std-ref">thioester linkage</span></a>.</span></p>
 </div>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id5">
 <img alt="Thioacetate" src="_images/thioacetate.png" />
 <p class="caption"><span class="caption-text">Thioacetate is a simple example of a compound with a thioester bond and easier to look at than acetyl-CoA. Notice that unlike octane, thioacetate (and acetyl-CoA) have carbon-oxygen and carbon-sulfur bonds.</span></p>
 </div>
@@ -236,7 +220,7 @@ You can use eQuilibrator to automatically redox balance the reaction using NAD+ 
 <p>Although we assumed that NAD+ was the electron acceptor in our analysis above, you can see using eQuilibrator that step 1 would be quite unfavorable if all six electrons were donated to 3 NAD+ to form 3 NADH (Δ<sub>r</sub>G’<sup>m</sup> would be +50 kJ / mol). Rather, the natural pathway for step 1 uses O<sub>2</sub> to accept four of the six electrons produced (van Beilen and Funhoff, 2007), giving an extremely favorable net reaction of</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+1+NAD%2B+%2B+Oxygen+%3C%3D%3E+Octanoic+acid+%2B+1+NADH+">Octane + 1 NAD+ + Oxygen ⇌ Octanoic acid + 1 NADH</a></p>
 <p>with a Δ<sub>r</sub>G’<sup>m</sup> around -390 kJ/mol. So in this case the pathway is made favorable by directly donating ⅔ of the electrons to oxygen and forgoing ATP that would otherwise be generated from NADH through respiration.</p>
-<p>The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed <a class="reference external" href="thioester.html">above</a>) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ<sub>r</sub>G’<sup>m</sup> of the double hydrolysis reaction</p>
+<p>The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed <a class="reference internal" href="classic_reactions.html#cr-thioester"><span class="std std-ref">above</span></a>) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ<sub>r</sub>G’<sup>m</sup> of the double hydrolysis reaction</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00002&amp;reactantsCoeff=-1&amp;reactantsName=ATP&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00020&amp;reactantsCoeff=1&amp;reactantsName=AMP&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00009&amp;reactantsCoeff=2&amp;reactantsName=Pi&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00001&amp;reactantsCoeff=-2&amp;reactantsName=H2O&amp;reactantsPhase=liquid&amp;reactantsConcentration=1&amp;ph=7.000000&amp;pmg=14.000000&amp;ionic_strength=0.100000&amp;e_reduction_potential=0.000000&amp;max_priority=0&amp;mode=BA&amp;query=atp%20%3D%20amp%20%2B%202%20pi">ATP + 2 H<sub>2</sub>O ⇌ AMP + 2 Pi</a></p>
 <p>This reaction has a Δ<sub>r</sub>G’<sup>m</sup> around -85 kJ/mol. This number makes sense because it is roughly twice the value we got for hydrolysing one phosphoanhydride bond on ATP, and is more than enough to balance the 50 kJ/mol required to form octanoyl-CoA from octanoic acid and free CoA. As in the case of step 1, cells spend some energy up front (this time in the form of ATP) in order to make alkane metabolism proceed in the direction of degradation and energy conservation (i.e. making more ATP later).</p>
 <p>Finally we consider step 3, the removal of a two-carbon unit from octanoyl-CoA. If we assume that the pathway donates electrons to NAD+</p>
@@ -250,13 +234,13 @@ You can use eQuilibrator to automatically redox balance the reaction using NAD+ 
 </div>
 <div class="section" id="fatty-acid-metabolism">
 <h2>Fatty Acid Metabolism<a class="headerlink" href="#fatty-acid-metabolism" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id7">
+<div class="figure align-center" id="id6">
 <img alt="Palmitic Acid" src="_images/palmitate.png" />
 <p class="caption"><span class="caption-text">Hexadecanoic acid, also known as palmitic acid (C<sub>16</sub>H<sub>32</sub>O<sub>2</sub>), is a fatty acid and a major component of olive oil (about 10%). Fatty acids can be identified as alkane chains with terminal carboxylic acids.</span></p>
 </div>
 <p>Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to one or more fatty acid tails via an ester linkage. Fatty acids like the palmitic acid shown above are simply alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 of the previous section is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how lipid and fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid.</p>
-<p>This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). <a class="footnote-reference" href="#id2" id="id1">[1]</a> In the next section we will discuss how cells metabolize acetyl-CoA through the <a class="reference external" href="tca.html">TCA cycle</a> to produce ATP and enable the production of important amino acids for the production of proteins.</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
+<p>This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). <a class="footnote-reference" href="#fam1" id="id1">[1]</a> In the next section we will discuss how cells metabolize acetyl-CoA through the <a class="reference internal" href="classic_reactions.html#cr-tca"><span class="std std-ref">tca</span></a> to produce ATP and enable the production of important amino acids for the production of proteins.</p>
+<table class="docutils footnote" frame="void" id="fam1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>It’s interesting and instructive to consider how fatty acids with an odd number of carbons are metabolized. How would you tackle that problem?</td></tr>
@@ -272,15 +256,6 @@ You can use eQuilibrator to automatically redox balance the reaction using NAD+ 
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="tca.html" class="btn btn-neutral float-right" title="The TCA Cycle" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="transamination.html" class="btn btn-neutral" title="Transamination for Making Amino Acids" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -309,7 +284,7 @@ You can use eQuilibrator to automatically redox balance the reaction using NAD+ 
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1 beta',
+            VERSION:'0.2 beta',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

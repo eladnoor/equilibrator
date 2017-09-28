@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Glycolysis and Fermentation &mdash; eQuilibrator Classic Reactions 0.1 beta documentation</title>
+  <title>Glycolysis and Fermentation &mdash; eQuilibrator 0.2 beta documentation</title>
   
 
   
@@ -37,9 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="eQuilibrator Classic Reactions 0.1 beta documentation" href="index.html"/>
-        <link rel="next" title="Respiration" href="respiration.html"/>
-        <link rel="prev" title="Plants Make Glucose from CO2" href="co2_red.html"/>
+    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="index.html"/>
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -70,7 +68,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> eQuilibrator Classic Reactions
+            <a href="index.html" class="icon icon-home"> eQuilibrator
           
 
           
@@ -83,7 +81,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -108,26 +106,11 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About Us</a></li>
-<li class="toctree-l1"><a class="reference internal" href="atp.html">Energy Currency and ATP Hydrolysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="thioester.html">Thioester Bonds are Energetic Too</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glucose_ox.html">The Oxidation of Glucose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="co2_red.html">Plants Make Glucose from CO<sub>2</sub></a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Glycolysis and Fermentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#nadh-as-an-electron-carrier">NADH as an Electron Carrier</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ethanol-fermentation">Ethanol Fermentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mixtures-of-fermentation-products">Mixtures of Fermentation Products</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#glycolysis-in-gory-detail">Glycolysis in Gory Detail</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="respiration.html">Respiration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transamination.html">Transamination for Making Amino Acids</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fatty_acid_met.html">Metabolism of Alkanes and Fatty Acids</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tca.html">The TCA Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classic_reactions.html">eQuilibrator Classic Reactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cite.html">Relevant publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="new_in_2.0.html">What’s new in eQuilibrator 2.1?</a></li>
 </ul>
 
@@ -143,7 +126,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">eQuilibrator Classic Reactions</a>
+          <a href="index.html">eQuilibrator</a>
         
       </nav>
 
@@ -194,13 +177,13 @@
             
   <div class="section" id="glycolysis-and-fermentation">
 <h1>Glycolysis and Fermentation<a class="headerlink" href="#glycolysis-and-fermentation" title="Permalink to this headline">¶</a></h1>
-<p>The reason that complete glucose oxidation produces so much energy is that molecular oxygen has a strong “preference” to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP through a process is called oxidative phosphorylation or <a class="reference external" href="respiration.html">respiration</a>. In this process, electrons are withdrawn from glucose in a piecemeal fashion and passed along the <a class="reference external" href="https://en.wikipedia.org/wiki/Electron_transport_chain">electron transport chain</a> which, ultimately donates the electrons to molecular oxygen. At several steps, the movement of electrons is coupled (by the action of proteins) to the production of ATP. In anaerobic conditions, however, oxygen is not available (by definition) and it’s not possible to drive oxidative phosphorylation by donating electrons to O<sub>2</sub>.</p>
+<p>The reason that complete glucose oxidation produces so much energy is that molecular oxygen has a strong “preference” to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP through a process is called oxidative phosphorylation or <a class="reference internal" href="classic_reactions.html#cr-respiration"><span class="std std-ref">respiration</span></a>. In this process, electrons are withdrawn from glucose in a piecemeal fashion and passed along the <a class="reference external" href="https://en.wikipedia.org/wiki/Electron_transport_chain">electron transport chain</a> which, ultimately donates the electrons to molecular oxygen. At several steps, the movement of electrons is coupled (by the action of proteins) to the production of ATP. In anaerobic conditions, however, oxygen is not available (by definition) and it’s not possible to drive oxidative phosphorylation by donating electrons to O<sub>2</sub>.</p>
 <p>The anaerobic breakdown of glucose for energy production is called fermentation. Several approaches to fermenting glucose occur in nature, but we’ll start by discussing a relatively simple one: fermentation of glucose to lactate. Fermentation of glucose begins in the same way that complete oxidation of glucose does: by breaking glucose down into two pyruvate molecules through a process known as glycolysis:</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate">Glucose ⇌ 2 Pyruvate</a></p>
 <p>If you inspect this reaction in eQuilibrator, you’ll notice that it is not “electron-balanced.” That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule. Try counting the electrons in each molecule to verify that this is true; this is a good exercise to remind yourself about chemistry concepts like the <a class="reference external" href="https://en.wikipedia.org/wiki/Oxidation_state">oxidation state</a> of an atom and <a class="reference external" href="https://en.wikipedia.org/wiki/Lewis_structure">Lewis structures</a>. Really, we should write the oxidation of glucose to pyruvate as a “half-reaction”</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate+%2B+4+e-">Glucose ⇌ 2 Pyruvate + 4 e-</a></p>
 <p>In order track the electrons explicitly. These extra four electrons don’t just float around the cell: they are carried by specific compounds called electron carriers. In glycolysis, the electron carrier of choice is nicotinamide adenine dinucleotide (NAD+). To fix the electron imbalance, try clicking on the “Balance with NAD+/NADH” link.</p>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id1">
 <img alt="Reduced Nicotinamide Adenine Dinucleotide (NADH)" src="_images/nadh.png" />
 <p class="caption"><span class="caption-text">Reduced Nicotinamide Adenine Dinucleotide (NADH)</span></p>
 </div>
@@ -212,8 +195,8 @@
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glucose++%2B+2+ADP+%2B+2+Phosphate+%3C%3D%3E+2+Lactate+%2B+2+ATP+%2B+2+H2O">Glucose + 2 ADP + 2 Pi ⇌ 2 Lactate + 2 ATP + 2 H<sub>2</sub>O</a></p>
 <p>This neat biochemical trick enables organisms as varied as <em>E. coli</em> and humans to produce energy from sugars even when oxygen isn’t available.</p>
 <div class="section" id="nadh-as-an-electron-carrier">
-<span id="nadh"></span><h2>NADH as an Electron Carrier<a class="headerlink" href="#nadh-as-an-electron-carrier" title="Permalink to this headline">¶</a></h2>
-<p>Metabolism contains many redox reactions. These reduction and oxidation reactions involve the transfer of electrons between molecules. One classic redox reaction is the lactate dehydrogenase reaction described above.</p>
+<h2>NADH as an Electron Carrier<a class="headerlink" href="#nadh-as-an-electron-carrier" title="Permalink to this headline">¶</a></h2>
+<p id="cr-glycolysis-nadh">Metabolism contains many redox reactions. These reduction and oxidation reactions involve the transfer of electrons between molecules. One classic redox reaction is the lactate dehydrogenase reaction described above.</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=NADH+%2B+Pyruvate+%3C%3D%3E+NAD%2B+%2B+Lactate">NADH + Pyruvate ⇌ NAD+ + Lactate</a></p>
 <p>We can identify that this is a redox reaction from the presence of the two-electron carrier NAD+/NADH. One way to understand the energetics of redox reactions is to split them into “half-reactions.”</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Pyruvate+%3C%3D%3E+Lactate">Pyruvate + 2e- ⇌ Lactate</a> (E’<sup>m</sup> ≈ -190 mV)</p>
@@ -231,7 +214,7 @@ F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 <div class="math">
 \[\Delta_r G'^m \approx -2 \times 96.4 \times 10^{-3} \times (-330 - (-190)) \approx -27 \frac{kJ}{mol}\]</div>
 <p>consistent with our earlier calculation of Δ<sub>r</sub>G<sup>m</sup> using eQuilibrator.</p>
-<p>There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O<sub>2</sub>) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O<sub>2</sub> and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O<sub>2</sub> (<a class="reference external" href="refs.html">Nelson et al., 2008</a>). NAD(P)H is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (<a class="reference external" href="refs.html">Bar-Even et al., 2012</a>).</p>
+<p>There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O<sub>2</sub>) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O<sub>2</sub> and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O<sub>2</sub> (<a class="reference internal" href="classic_reactions.html#refs"><span class="std std-ref">Nelson et al., 2008</span></a>). NAD(P)H is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (<a class="reference internal" href="classic_reactions.html#refs"><span class="std std-ref">Bar-Even et al., 2012</span></a>).</p>
 </div>
 <div class="section" id="ethanol-fermentation">
 <h2>Ethanol Fermentation<a class="headerlink" href="#ethanol-fermentation" title="Permalink to this headline">¶</a></h2>
@@ -270,11 +253,11 @@ F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 <li><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?query=NAD%2B+%2B+Ethanol+%3C%3D%3E+NADH+%2B+Acetaldehyde&amp;ph=7.0&amp;ionic_strength=0.1&amp;reactantsCoeff=-1.0&amp;reactantsId=C00003&amp;reactantsName=NAD%2B&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=1.0&amp;reactantsId=C00004&amp;reactantsName=NADH&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=1.0&amp;reactantsId=C00084&amp;reactantsName=Acetaldehyde&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;reactantsCoeff=-1.0&amp;reactantsId=C00469&amp;reactantsName=Ethanol&amp;reactantsConcentration=1&amp;reactantsConcentrationPrefactor=0.001&amp;reactantsPhase=aqueous&amp;max_priority=0&amp;submit=Reverse">NADH + Acetaldehyde ⇌ NAD+ + Ethanol</a></li>
 </ol>
 <p>Notice that the production of ethanol from pyruvate in these three steps involves the consumption of 2 NADH. So if the cell makes exactly one ethanol molecule for every acetate, then redox balance will be preserved and one extra ATP will be made for every two pyruvates metabolized - a balancing act indeed! Remember that two ATP were made through glycolytic production of pyruvate from glucose, meaning that fermenting glucose to a 1:1:1 mixture of acetate, formate and ethanol produces 3 ATP per glucose total.</p>
-<p>There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (<a class="reference external" href="refs.html">Kim and Gadd, 2008</a>). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on <a class="reference external" href="https://en.wikipedia.org/wiki/Mixed_acid_fermentation">Wikipedia</a> and <a class="reference external" href="https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&amp;object=FERMENTATION-PWY">Biocyc</a>.</p>
+<p>There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (<a class="reference internal" href="classic_reactions.html#refs"><span class="std std-ref">Kim and Gadd, 2008</span></a>). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on <a class="reference external" href="https://en.wikipedia.org/wiki/Mixed_acid_fermentation">Wikipedia</a> and <a class="reference external" href="https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&amp;object=FERMENTATION-PWY">Biocyc</a>.</p>
 </div>
 <div class="section" id="glycolysis-in-gory-detail">
 <h2>Glycolysis in Gory Detail<a class="headerlink" href="#glycolysis-in-gory-detail" title="Permalink to this headline">¶</a></h2>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id2">
 <img alt="D-Glucose" src="_images/glucose.png" />
 <p class="caption"><span class="caption-text">D-Glucose in pyranose ring conformation.</span></p>
 </div>
@@ -284,7 +267,7 @@ F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 “payoff phase” where the initial ATP investment is repaid. The investment phase converts glucose into two trioses (three carbon sugars) called glyceraldehyde.</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=glucose+%3D+2+glyceraldehyde">Glucose ⇌ 2 Glyceraldehyde</a></p>
 <p>If we consider this reaction in eQuilibrator, we can see that it has a Δ<sub>r</sub>G’<sup>m</sup> ≈ 0 kJ / mol. Moreover, in order to make ATP in lower glycolysis (through a process called <a class="reference external" href="https://en.wikipedia.org/wiki/Substrate-level_phosphorylation">substrate level phosphorylation</a>) it is necessary to make phosphorylated trioses - glyceraldehyde 3-phosphate - in upper glycolysis.</p>
-<div class="figure align-center" id="id4">
+<div class="figure align-center" id="id3">
 <img alt="Glyceraldehyde 3-phosphate (g3p)" src="_images/g3p.png" />
 <p class="caption"><span class="caption-text">Glyceraldehyde 3-phosphate</span></p>
 </div>
@@ -297,13 +280,13 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
 \[- 2 \frac{ATP}{glucose} + 2 \frac{g3p}{glucose} \times 2 \frac{ATP}{g3p} = 2 \frac{ATP}{glucose} \text{ net}\]</div>
 <p>This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Overall, this process is quite favorable, having a Δ<sub>r</sub>G’<sup>m</sup> ≈ -63 kJ / mol. However, as you can see in the figure below, glycolysis has 10 reaction steps and each individual reaction step must be favorable in order for the pathway to proceed.</p>
 <blockquote>
-<div><div class="figure align-center" id="id5">
+<div><div class="figure align-center" id="id4">
 <img alt="The Embden-Meyerhoff glycolytic pathway (EMP pathway)" src="_images/glycolysis.svg" /><p class="caption"><span class="caption-text">The Embden-Meyerhoff glycolytic pathway (EMP pathway).</span></p>
 </div>
 </div></blockquote>
 <p>These individual steps along with their enzymatic mechanisms are covered in great detail in <a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK22593/">textbooks</a> and review papers (Bar-Even et al., 2012). We note, however, that some of these individual steps are not very thermodynamically favorable, especially those that are involved in ATP production. For example, the first reaction of the payoff phase adds a phosphate to glyceraldehyde 3-phosphate to produce 1,3-bisphophoglycerate. This phosphate is later transfered to ADP to make ATP and this reaction, catalyzed by the enzyme glyceraldehyde 3-phosphate dehydrogenase (labeled “gap” above), and is quite unfavorable</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate">NAD+ + Pi + D-Glyceraldehyde 3-phosphate ⇌ NADH + Bisphosphoglycerate</a></p>
-<p>with a of Δ<sub>r</sub>G’<sup>m</sup> ≈ +25 kJ/mol. Remembering that <a class="reference external" href="thioester.html">each ~6 kJ/mol demands an order of magnitude concentration difference</a>, we can estimate that making this reaction favorable will require the reaction products to have ~1000-fold lower concentration than substrates.</p>
+<p>with a of Δ<sub>r</sub>G’<sup>m</sup> ≈ +25 kJ/mol. Remembering that <a class="reference internal" href="classic_reactions.html#cr-thioester"><span class="std std-ref">each ~6 kJ/mol demands an order of magnitude concentration difference</span></a>, we can estimate that making this reaction favorable will require the reaction products to have ~1000-fold lower concentration than substrates.</p>
 </div>
 </div>
 
@@ -314,15 +297,6 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="respiration.html" class="btn btn-neutral float-right" title="Respiration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="co2_red.html" class="btn btn-neutral" title="Plants Make Glucose from CO2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -351,7 +325,7 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1 beta',
+            VERSION:'0.2 beta',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -1,3 +1,6 @@
+.. _faq:
+
+==========================================================
 Frequently Asked Questions
 ==========================================================
 
@@ -33,7 +36,7 @@ In general, Δ\ :sub:`r`\ G'\ :sup:`m` is a better reference than Δ\ :sub:`r`\ 
 	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{Q} \\
 	\end{eqnarray}
 
-Where Q is the "reaction quotient" or "mass-action ratio." Read more about these calculations `here <atp.html>`_.
+Where Q is the "reaction quotient" or "mass-action ratio." Read more about these calculations :ref:`here <cr-atp>`.
 
 .. _drg:
 
@@ -71,9 +74,9 @@ Why is Δ\ :sub:`r`\ G "not available?"
 
 There are several reasons that a ΔG value might not be available.
 
-In the case of a reaction, Δ\ :sub:`r`\ G is not available when Δ\ :sub:`f`\ G is missing for one of the reactants. Δ\ :sub:`f`\ G is very difficult to measure experimentally. We use the group contribution method to estimate Δ\ :sub:`f`\ G for compounds that have not been characterized experimentally [2,10]. However, we need certain data about a compound in order to approximate Δ\ :sub:`f`\ G.
+In the case of a reaction, Δ\ :sub:`r`\ G is not available when Δ\ :sub:`f`\ G is missing for one of the reactants. Δ\ :sub:`f`\ G is very difficult to measure experimentally. We use the group contribution method to estimate Δ\ :sub:`f`\ G for compounds that have not been characterized experimentally [#faq2]_ [#faq10]_. However, we need certain data about a compound in order to approximate Δ\ :sub:`f`\ G.
 
-Our list of compounds is taken from the Kyoto Encyclopedia of Genomes and Genes (`KEGG <http://www.kegg.jp/>`_) [5]. Occasionally, KEGG compound entries don't contain an InChI identifier. Without an InChI identifier we cannot compute the structure of the compound and without structural information we can't estimate Δ\ :sub:`f`\ G.
+Our list of compounds is taken from the Kyoto Encyclopedia of Genomes and Genes (`KEGG <http://www.kegg.jp/>`_) [#faq5]_. Occasionally, KEGG compound entries don't contain an InChI identifier. Without an InChI identifier we cannot compute the structure of the compound and without structural information we can't estimate Δ\ :sub:`f`\ G.
 
 In some cases, a compound may contain a chemical group that was not observed in any of the compounds that have experimental Δ\ :sub:`f`\ G measurements. We cannot produce estimates for these compounds as we cannot estimate the contribution of unknown groups. In other cases, our algorithm for analyzing compound structure fails to decompose the compound into groups. If we are unable to decompose the compound then we cannot use the group contribution method. Moreover, we can't estimate Δ\ :sub:`r`\ G for any reaction that contains a compound that we cannot estimate Δ\ :sub:`f`\ G for.
 
@@ -82,7 +85,7 @@ In some cases, a compound may contain a chemical group that was not observed in 
 How do you calculate the uncertainty for each estimation?
 ----------------------------------------------------------
 
-In order to fully understand how to calculate estimation uncertainties, you'll probably need to read our paper on the Component Contribution method [12]. The short answer would be that we ran a cross-validation benchmark using a set of reactions for which the Δ\ :sub:`r`\ G' has been measured. Any reaction that you type in, is decomposed into compounds and these compounds are decomposed into groups. By comparing this decomposition vector with the ones from our database, we can estimate the Δ\ :sub:`r`\ G'. Along the way, we can also evaluate how good our estimation is, by checking how good we were for similar reactions in our benchmark.
+In order to fully understand how to calculate estimation uncertainties, you'll probably need to read our paper on the Component Contribution method [#faq12]_. The short answer would be that we ran a cross-validation benchmark using a set of reactions for which the Δ\ :sub:`r`\ G' has been measured. Any reaction that you type in, is decomposed into compounds and these compounds are decomposed into groups. By comparing this decomposition vector with the ones from our database, we can estimate the Δ\ :sub:`r`\ G'. Along the way, we can also evaluate how good our estimation is, by checking how good we were for similar reactions in our benchmark.
 
 .. _gas:
 
@@ -103,21 +106,21 @@ This will work only for compounds for which the formation energy in gas phase is
 Why can't I change the concentration of H\ :sup:`+` ions?
 ----------------------------------------------------------
 
-eQuilibrator uses the "Alberty method" for biochemical thermodynamics. In the Alberty method, H\ :sup:`+` is defined to have 0 free energy [6,8]. Instead of correcting for H\ :sup:`+` concentration, a pH correction accounts for the abundance of H+. You can use the pH "slider" to see the effect of H\ :sup:`+` concentration on your reaction.
+eQuilibrator uses the "Alberty method" for biochemical thermodynamics. In the Alberty method, H\ :sup:`+` is defined to have 0 free energy [#faq6]_ [#faq8]_. Instead of correcting for H\ :sup:`+` concentration, a pH correction accounts for the abundance of H+. You can use the pH "slider" to see the effect of H\ :sup:`+` concentration on your reaction.
 
 .. _change-conc-water:
 
 Why can't I change the concentration of water?
 ----------------------------------------------------------
 
-Biochemical systems are generally assumed to be aqueous environments [6,8]. Therefore, the concentration of water is fixed.
+Biochemical systems are generally assumed to be aqueous environments [#faq6]_ [#faq8]_. Therefore, the concentration of water is fixed.
 
 .. _change-temp:
 
 Why can't I change the temperature?
 ----------------------------------------------------------
 
-The temperature is fixed at 25 °C (298.15 K) for all ΔG values given. The group contribution method enables us to approximate Δ\ :sub:`f`\ G of compounds at a particular temperature (the temperature at which they were measured) [10]. As the change in free energy is defined as ΔG = ΔH - TΔS and we don't know the value of ΔS in most cases, we cannot predict how changes in temperature will affect Δ\ :sub:`f`\ G.
+The temperature is fixed at 25 °C (298.15 K) for all ΔG values given. The group contribution method enables us to approximate Δ\ :sub:`f`\ G of compounds at a particular temperature (the temperature at which they were measured) [#faq10]_. As the change in free energy is defined as ΔG = ΔH - TΔS and we don't know the value of ΔS in most cases, we cannot predict how changes in temperature will affect Δ\ :sub:`f`\ G.
 
 .. _co2-total:
 
@@ -142,7 +145,7 @@ Several hydrated species form in water through addition or release of protons: c
 
 When only the total concentration is known, it is assumed that there is equilibrium among the four species and one uses CO\ :sub:`2`\ (total) in place of CO\ :sub:`2`\ (aq). If, however, you know or can measure the concentration of CO\ :sub:`2`\ (aq) alone, then it is reasonable to use CO\ :sub:`2`\ (aq) as a reactant. The concentration of CO\ :sub:`2`\ (aq) is usually straightforward to calculate based on Henry’s law dictating, for example, that under standard atmospheric conditions of about 400ppm CO\ :sub:`2`\ (g) the concentration of CO\ :sub:`2`\ (aq) is about 10 uM. The concentrations of bicarbonate and CO\ :sub:`2`\ (total), however, depend strongly on pH. More information is supplied in the figure below and in this link.
 
-The uncatalyzed hydration reaction (CO\ :sub:`2`\ (aq) + H\ :sub:`2`\ O ⇌ H\ :sub:`2`\ CO\ :sub:`3`) takes minutes to equilibrate. In many organisms, however, this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds up the reaction by several orders of magnitude [3]. In cells, therefore, CO\ :sub:`2`\ (aq) is generally considered to be in equilibrium with its hydrated forms (carbonic acid, bicarbonate and carbonate) save in some special cases such as in cyanobacterial carbon concentrating mechanisms where carbonic anhydrase is absent from some parts of the cell.
+The uncatalyzed hydration reaction (CO\ :sub:`2`\ (aq) + H\ :sub:`2`\ O ⇌ H\ :sub:`2`\ CO\ :sub:`3`) takes minutes to equilibrate. In many organisms, however, this reaction is catalyzed by the enzyme carbonic anhydrase, which speeds up the reaction by several orders of magnitude [#faq3]_. In cells, therefore, CO\ :sub:`2`\ (aq) is generally considered to be in equilibrium with its hydrated forms (carbonic acid, bicarbonate and carbonate) save in some special cases such as in cyanobacterial carbon concentrating mechanisms where carbonic anhydrase is absent from some parts of the cell.
 
 We note that anaplerotic reactions use bicarbonate as their substrate whereas decarboxylation reactions release CO\ :sub:`2` but in finding the ΔG' they can be written using either CO\ :sub:`2`\ (aq), HCO\ :sub:`3`\ :sup:`-`\ (aq) or CO\ :sub:`2`\ (total) as long as the concentrations used are accurate. This is true because of the equilibrium among these species.
 
@@ -157,23 +160,23 @@ What are "half-reactions?""
 
 A `half-reaction <http://en.wikipedia.org/wiki/Half-reaction>`_ is the oxidation or reduction component of a `redox reaction <http://en.wikipedia.org/wiki/Redox>`_, without the other component. When you search for such a reaction, eQuilibrator recognizes that the number of electrons is not balanced and automatically switches to 'half-reaction' mode. Without knowing the other half, the change in Gibbs energy is not well defined. The parameter that is used to describe the potential difference (in Volts) between the products and substrates of a half-reaction is called the "`standard redox potential <http://en.wikipedia.org/wiki/Redox_reaction#Standard_electrode_potentials_.28reduction_potentials.29>`_" and is marked by E'°. The redox potential is equal to the voltage at equilibrium under standard conditions of an electrochemical cell in which the cathode reaction is the half-reaction considered and the anode is a standard hydrogen electrode where hydrogen is oxidized: ½ H\ :sub:`2` ⇌ H\ :sup:`+` + e\ :sup:`-`.
 
-Assuming you do want the Gibbs energy of a reaction, you have two options. The first option is to balance the electrons in the half-reaction by supplying the other half. eQuilibrator make this simple providing a link for balancing with the biologically ubiquitous redox donor:acceptor pair `NAD+/NADH <glycolysis.html>`_. Alternatively, you can use the bottom panel of results page to adjust the potential of the electrons in the other half-reaction (i.e. change the value of e- potential in mV). This is useful in cases where eQuilibrator doesn't have a value for the second half-reaction, which is sometimes the case when the donors are complicated or not well-defined. For example, protein-based redox carriers like ferredoxin can vary quite quite a lot in their potential.
+Assuming you do want the Gibbs energy of a reaction, you have two options. The first option is to balance the electrons in the half-reaction by supplying the other half. eQuilibrator make this simple providing a link for balancing with the biologically ubiquitous redox donor:acceptor pair :ref:`NAD+/NADH <cr-glycolysis-nadh>`. Alternatively, you can use the bottom panel of results page to adjust the potential of the electrons in the other half-reaction (i.e. change the value of e- potential in mV). This is useful in cases where eQuilibrator doesn't have a value for the second half-reaction, which is sometimes the case when the donors are complicated or not well-defined. For example, protein-based redox carriers like ferredoxin can vary quite quite a lot in their potential.
 
 .. _iron-redox:
 
 What's so complicated about redox reactions involving iron?
 ----------------------------------------------------------------------------
 
-The reduction or oxidation of the pair Fe(III)/Fe(II) is ubiquitous in biology, for example in the iron-sulfur clusters of ferredoxins. However, the chemical environment of the iron atom can have a large effect on the reduction potential of the Fe(III)/Fe(II) pair with the measured reduction potentials of natural ferredoxins varying by more than 350 mV [4]. That is, variation in the measured reduction potential of ferredoxins equals to reduction potential of NAD/NADH!
+The reduction or oxidation of the pair Fe(III)/Fe(II) is ubiquitous in biology, for example in the iron-sulfur clusters of ferredoxins. However, the chemical environment of the iron atom can have a large effect on the reduction potential of the Fe(III)/Fe(II) pair with the measured reduction potentials of natural ferredoxins varying by more than 350 mV [#faq4]_. That is, variation in the measured reduction potential of ferredoxins equals to reduction potential of NAD/NADH!
 
-Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [9]. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO2>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
+Similarly, in dissimilatory iron reduction the specific chemical form of Fe(III) can drastically affect the reduction potential. For example, a half reaction with a well-characterized crystalline form Goethite has a redox potential of about -300 mV while y-FeOOH, (Lepidocrocite), which can be treated as having the same empirical formula, has a redox potential of about -100 mV at pH 7 [#faq9]_. As a result we strongly suggest that you enter the iron-free half-reaction of interest (e.g. `reduction of pyruvate to acetyl-CoA </search?query=+pyruvate+%2B+CoA+%3D+acetyl-CoA+%2B+CO2>`_) and use the bottom panel to adjust the potential of the electrons in the reaction to match the iron donor-acceptor pair that interests you.
 
 .. _atp-hydrolysis:
 
 Why is the value for ATP hydrolysis different than some textbooks?
 ----------------------------------------------------------------------------
 
-The ΔG'° of the ATP hydrolysis reaction is affected by many factors, notably also by the concentration of free Mg\ :sub:`2`\ :sup:`+`\  ions. The value cited in [1] and used in the original version of eQuilibrator (-36.4 kJ/mol) assumes no magnesium ([Mg\ :sub:`2`\ :sup:`+`\ ] = 0). In the current version of eQuilibrator2.0 we use the component contribution method [12] that uses measurements collected in the NIST thermodynamic database for enzyme-catalyzed reactions [7] that were performed under varying levels of Mg\ :sub:`2`\ :sup:`+`\ . This is also the more relevant situation in vivo. As noted in many studies, when taking into account [Mg\ :sub:`2`\ :sup:`+`\ ], the value changes and is observed to be in the range -26 to -32 kJ/mol depending on the reference. A clear discussion can be found at [8].
+The ΔG'° of the ATP hydrolysis reaction is affected by many factors, notably also by the concentration of free Mg\ :sub:`2`\ :sup:`+`\  ions. The value cited in [#faq1]_ and used in the original version of eQuilibrator (-36.4 kJ/mol) assumes no magnesium ([Mg\ :sub:`2`\ :sup:`+`\ ] = 0). In the current version of eQuilibrator2.0 we use the component contribution method [#faq12]_ that uses measurements collected in the NIST thermodynamic database for enzyme-catalyzed reactions [#faq7]_ that were performed under varying levels of Mg\ :sub:`2`\ :sup:`+`\ . This is also the more relevant situation in vivo. As noted in many studies, when taking into account [Mg\ :sub:`2`\ :sup:`+`\ ], the value changes and is observed to be in the range -26 to -32 kJ/mol depending on the reference. A clear discussion can be found at [#faq8]_.
 
 .. _total-driving-force:
 
@@ -189,7 +192,7 @@ What is the MDF of a pathway?
 
 The MDF of a pathway is a metric of how thermodynamically favorable a pathway can be in physiological conditions. The value of the MDF is smallest -ΔG' obtained by any pathway reaction when metabolite concentrations are chosen to make all pathway reactions as favorable as possible (-ΔG' as positive as possible).
 
-You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_ [13].
+You can read more about the MDF in `this paper <http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003483>`_ [#faq13]_.
 
 .. _contact:
 
@@ -201,17 +204,17 @@ If you have questions about eQuilibrator, please consult the `eQuilibrator Googl
 References
 ----------------------------------------------------------
 
-#. R. Guynn, R.J. Veech, "The equilibrium constants of the adenosine triphosphate hydrolysis and the adenosine triphosphate-citrate lyase reactions", The Journal of Biological Chemistry (1973) 248:6966-6972
-#. M.L. Mavrovouniotis, "Estimation of standard Gibbs energy changes of biotransformations" The Journal of Biological Chemistry (1991) 266(22):14440-14445
-#. A. Radzicka, R. Wolfenden, "A proficient enzyme", Science (1995) 267:90-93
-#. P. J. Stephens, D. R. Jollie, A. Warshel, "Protein Control of Redox Potentials of Iron−Sulfur Proteins" Chem. Rev. (1996) 96:2491–2514
-#. M. Kanehisa, S. Goto, "KEGG: Kyoto Encyclopedia of Genes and Genomes" Nucleic Acids Research (2000) 28(1):27-30
-#. R.A. Alberty, "Thermodynamics of biochemical reactions" (Hoboken N.J.: Wiley-Interscience, 2003)
-#. R.N. Goldberg, Y.B. Tewari, T.N. Bhat, "Thermodynamics of Enzyme-Catalyzed Reactions - a Database for Quantitative Biochemistry", Bioinformatics (2004) 20(16):2874-2877
-#. R.A. Alberty, "Biochemical Thermodynamics" (Hoboken, NJ, USA: John Wiley & Sons, Inc., 2006)
-#. A. Navrotsky, L. Mazeina, J. Majzlan, "Size-Driven Structural And Thermodynamic Complexity In Iron-Oxides" Science (2008) 319:1635–1638
-#. M.D. Jankowski et al., "Group Contribution Method for Thermodynamic Analysis of Complex Metabolic Networks" Biophysical Journal (2008) 95(3):1487-1499
-#. E. Noor, A. Bar-Even, A. Flamholz, Y. Lubling, D. Davidi, R. Milo, "An integrated open framework for thermodynamics of reactions that combines accuracy and coverage" Bioinformatics (2012) 28:2037-2044
-#. E. Noor, H.S. Haraldsdóttir, R. Milo, R.M.T. Fleming, "Consistent Estimation of Gibbs Energy Using Component Contributions" PLoS Comput Biol (2013) 9:e1003098
-#. E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483
+.. [#faq1] R. Guynn, R.J. Veech, "The equilibrium constants of the adenosine triphosphate hydrolysis and the adenosine triphosphate-citrate lyase reactions", The Journal of Biological Chemistry (1973) 248:6966-6972
+.. [#faq2] M.L. Mavrovouniotis, "Estimation of standard Gibbs energy changes of biotransformations" The Journal of Biological Chemistry (1991) 266(22):14440-14445
+.. [#faq3] A. Radzicka, R. Wolfenden, "A proficient enzyme", Science (1995) 267:90-93
+.. [#faq4] P. J. Stephens, D. R. Jollie, A. Warshel, "Protein Control of Redox Potentials of Iron−Sulfur Proteins" Chem. Rev. (1996) 96:2491–2514
+.. [#faq5] M. Kanehisa, S. Goto, "KEGG: Kyoto Encyclopedia of Genes and Genomes" Nucleic Acids Research (2000) 28(1):27-30
+.. [#faq6] R.A. Alberty, "Thermodynamics of biochemical reactions" (Hoboken N.J.: Wiley-Interscience, 2003)
+.. [#faq7] R.N. Goldberg, Y.B. Tewari, T.N. Bhat, "Thermodynamics of Enzyme-Catalyzed Reactions - a Database for Quantitative Biochemistry", Bioinformatics (2004) 20(16):2874-2877
+.. [#faq8] R.A. Alberty, "Biochemical Thermodynamics" (Hoboken, NJ, USA: John Wiley & Sons, Inc., 2006)
+.. [#faq9] A. Navrotsky, L. Mazeina, J. Majzlan, "Size-Driven Structural And Thermodynamic Complexity In Iron-Oxides" Science (2008) 319:1635–1638
+.. [#faq10] M.D. Jankowski et al., "Group Contribution Method for Thermodynamic Analysis of Complex Metabolic Networks" Biophysical Journal (2008) 95(3):1487-1499
+.. [#faq11] E. Noor, A. Bar-Even, A. Flamholz, Y. Lubling, D. Davidi, R. Milo, "An integrated open framework for thermodynamics of reactions that combines accuracy and coverage" Bioinformatics (2012) 28:2037-2044
+.. [#faq12] E. Noor, H.S. Haraldsdóttir, R. Milo, R.M.T. Fleming, "Consistent Estimation of Gibbs Energy Using Component Contributions" PLoS Comput Biol (2013) 9:e1003098
+.. [#faq13] E. Noor, A. Bar-Even, A. Flamholz, E. Reznik, W. Liebermeister, R. Milo, "Pathway thermodynamics highlights kinetic obstacles in central metabolism" PLoS Comput Biol (2014) 10:e1003483
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Energy Currency and ATP Hydrolysis &mdash; eQuilibrator Classic Reactions 0.1 beta documentation</title>
+  <title>Energy Currency and ATP Hydrolysis &mdash; eQuilibrator 0.2 beta documentation</title>
   
 
   
@@ -37,9 +37,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="eQuilibrator Classic Reactions 0.1 beta documentation" href="index.html"/>
-        <link rel="next" title="Thioester Bonds are Energetic Too" href="thioester.html"/>
-        <link rel="prev" title="About Us" href="about.html"/>
+    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="index.html"/>
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -70,7 +68,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> eQuilibrator Classic Reactions
+            <a href="index.html" class="icon icon-home"> eQuilibrator
           
 
           
@@ -83,7 +81,7 @@
             
             
               <div class="version">
-                0.1
+                0.2
               </div>
             
           
@@ -108,20 +106,11 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">About Us</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Energy Currency and ATP Hydrolysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="thioester.html">Thioester Bonds are Energetic Too</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glucose_ox.html">The Oxidation of Glucose</a></li>
-<li class="toctree-l1"><a class="reference internal" href="co2_red.html">Plants Make Glucose from CO<sub>2</sub></a></li>
-<li class="toctree-l1"><a class="reference internal" href="glycolysis.html">Glycolysis and Fermentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="respiration.html">Respiration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transamination.html">Transamination for Making Amino Acids</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fatty_acid_met.html">Metabolism of Alkanes and Fatty Acids</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tca.html">The TCA Cycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classic_reactions.html">eQuilibrator Classic Reactions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cite.html">Relevant publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="refs.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="new_in_2.0.html">What’s new in eQuilibrator 2.1?</a></li>
 </ul>
 
@@ -137,7 +126,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">eQuilibrator Classic Reactions</a>
+          <a href="index.html">eQuilibrator</a>
         
       </nav>
 
@@ -188,66 +177,66 @@
             
   <div class="section" id="energy-currency-and-atp-hydrolysis">
 <h1>Energy Currency and ATP Hydrolysis<a class="headerlink" href="#energy-currency-and-atp-hydrolysis" title="Permalink to this headline">¶</a></h1>
-<div class="figure align-center" id="id13">
+<div class="figure align-center" id="id7">
 <img alt="Adenosine Triphosphate (ATP)" src="_images/atp.png" />
 <p class="caption"><span class="caption-text">Adenosine Triphosphate (ATP)</span></p>
 </div>
 <p>ATP is considered the energy “currency” of the cell. But how much is that currency worth? How much energy is in an ATP hydrolysis reaction? The hydrolysis of one phosphoanhydride bond to form ADP and phosphate</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=ATP+%2B+Water+%3C%3D%3E+ADP+%2B+Phosphate">ATP + H<sub>2</sub>O ⇌ ADP + Pi</a></p>
-<p>has a Δ<sub>r</sub>G’° of about -26 kJ / mol. <a class="footnote-reference" href="#id7" id="id1">[1]</a> That is, if you hydrolyze 1 mol of ATP to ADP in standard conditions, 26 kJ of energy that is usable for work is released. Conversely, it takes 26 kJ of work to form 1 mol of ATP from ADP in standard conditions.</p>
+<p>has a Δ<sub>r</sub>G’° of about -26 kJ / mol. <a class="footnote-reference" href="#atp1" id="id1">[1]</a> That is, if you hydrolyze 1 mol of ATP to ADP in standard conditions, 26 kJ of energy that is usable for work is released. Conversely, it takes 26 kJ of work to form 1 mol of ATP from ADP in standard conditions.</p>
 <p>Keep in mind that Δ<sub>r</sub>G’° is defined in standard conditions (1 molar concentrations) while <a class="reference external" href="http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/">biological concentrations are much closer to 1 millimolar</a> (1 mM). We can calculate the Δ<sub>r</sub>G’ in these conditions using one of the most basic equations of biochemical thermodynamics</p>
 <div class="math">
 \[\begin{split}\begin{eqnarray}
 \Delta_r G' &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{Q} \\
 &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{\left( \frac{[ADP][Pi]}{[ATP][H_2O]} \right)}
 \end{eqnarray}\end{split}\]</div>
-<p>Here Q is the ratio of product concentrations to substrate concentrations for the ATP hydrolysis reaction - concentrations are denoted by square brackets like [ATP]. <a class="footnote-reference" href="#id8" id="id2">[2]</a> Q is called the “reaction quotient” or sometimes the “mass-action ratio” in textbooks. Because biology takes place in aqueous solution, the water concentration [H<sub>2</sub>O] is roughly 55 M. <a class="footnote-reference" href="#id9" id="id3">[3]</a> Typically, however, the “activity” of water is set to 1 molar (<a class="reference external" href="refs.html">Alberty et al. 2011</a>). If we set the other three concentrations to 10<sup>-3</sup> molar we get</p>
+<p>Here Q is the ratio of product concentrations to substrate concentrations for the ATP hydrolysis reaction - concentrations are denoted by square brackets like [ATP]. <a class="footnote-reference" href="#atp2" id="id2">[2]</a> Q is called the “reaction quotient” or sometimes the “mass-action ratio” in textbooks. Because biology takes place in aqueous solution, the water concentration [H<sub>2</sub>O] is roughly 55 M. <a class="footnote-reference" href="#atp3" id="id3">[3]</a> Typically, however, the “activity” of water is set to 1 molar (<a class="reference internal" href="classic_reactions.html#refs"><span class="std std-ref">Alberty et al. 2011</span></a>). If we set the other three concentrations to 10<sup>-3</sup> molar we get</p>
 <div class="math">
 \[\begin{split}\begin{eqnarray}
 \Delta_r G' &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{\left( \frac{10^{-3} M \times 10^{-3} M}{10^{-3} M \times 1 M} \right)} \\
 &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{10^{-3}} \\
 &amp;\approx&amp; \Delta_r G'^{\circ} - 17.1 \frac{kJ}{mol}
 \end{eqnarray}\end{split}\]</div>
-<p>Since R = 8.315 x 10<sup>-3</sup> kJ/mol/K and we assume a temperature of T = 298.15 K (25 °C). <a class="footnote-reference" href="#id10" id="id4">[4]</a> This calculation gives a Δ<sub>r</sub>G’ value around -44 kJ/mol. Try using eQuilibrator to check this value. <a class="footnote-reference" href="#id11" id="id5">[5]</a> We call this value the Δ<sub>r</sub>G’<sup>m</sup> - the Δ<sub>r</sub>G’ value when all reactants have 1 mM concentration (except H<sub>2</sub>O). We will often use this value instead of Δ<sub>r</sub>G’° in this document and on eQuilibrator because 1 mM concentrations are much more representative of small molecule concentrations inside cells than the usual 1 M standard.</p>
+<p>Since R = 8.315 x 10<sup>-3</sup> kJ/mol/K and we assume a temperature of T = 298.15 K (25 °C). <a class="footnote-reference" href="#atp4" id="id4">[4]</a> This calculation gives a Δ<sub>r</sub>G’ value around -44 kJ/mol. Try using eQuilibrator to check this value. <a class="footnote-reference" href="#atp5" id="id5">[5]</a> We call this value the Δ<sub>r</sub>G’<sup>m</sup> - the Δ<sub>r</sub>G’ value when all reactants have 1 mM concentration (except H<sub>2</sub>O). We will often use this value instead of Δ<sub>r</sub>G’° in this document and on eQuilibrator because 1 mM concentrations are much more representative of small molecule concentrations inside cells than the usual 1 M standard.</p>
 <p>By way of comparison, reactions hydrolyzing peptide and C-C bonds are much less exergonic than ATP hydrolysis. For example, consider the hydrolysis of the dipeptide glyclglycine</p>
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glycylglycine+%2B+water+%3D+2+Glycine">Glycylglycine + H<sub>2</sub>O = 2 Glycine</a></p>
 <p>This reaction has Δ<sub>r</sub>G’° ≈ 0 kJ / mol and Δ<sub>r</sub>G’<sup>m</sup> ≈ -16 kJ / mol. Similarly, breaking a C-C bond in a sugar, as in the <a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00111&amp;reactantsCoeff=1&amp;reactantsName=Glycerone%20phosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00118&amp;reactantsCoeff=1&amp;reactantsName=D-Glyceraldehyde%203-phosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00354&amp;reactantsCoeff=-1&amp;reactantsName=D-Fructose-1,6-bisphosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;ph=7.000000&amp;pmg=14.000000&amp;ionic_strength=0.100000&amp;e_reduction_potential=0.000000&amp;max_priority=0&amp;mode=BA&amp;query=D-Fructose-1%2C6-bisphosphate%20%3D%20Glycerone%20phosphate%20%2B%20D-Glyceraldehyde%203-phosphate">fructose bisphosphate aldolase reaction</a>, is intrinsically unfavorable with a Δ<sub>r</sub>G’<sup>m</sup> ≈ +3 kJ / mol.</p>
 <p>We can also convert the energy of ATP hydrolysis into other units, for example units of mechanical force relevant on the molecular scale: piconewton nanometers (pN nm). Looking up the <a class="reference external" href="https://en.wikipedia.org/wiki/KT_(energy)">definitions of these units</a>, we find that 1 pN nm = 10<sup>-24</sup> kJ. Hydrolysing 1 mol of ATP yields ~45 kJ of energy (assuming mM concentrations) and so one ATP hydrolysis yields</p>
 <div class="math">
 \[\frac{45}{N_A} kJ \times 10^{24} \frac{pN \times nm}{kJ}\]</div>
-<p>Where N<sub>A</sub> is Avogadro’s number. Altogether, this gives ~73 pN nm per ATP hydrolysis (<a class="reference external" href="refs.html">Phillips et al., 2009</a>). But how much energy is that? Well, it’s more than enough to <a class="reference external" href="http://bionumbers.hms.harvard.edu/bionumber.aspx?id=103125">compact DNA</a> into a viral capsid, for example. In other words, ATP stores an amount of energy that can be converted into a usable amount of work at the molecular scale. ATP acts as a bridge between the chemical and physical realms - between energy metabolism and the mechanical work of living.</p>
-<p>Moreover, ATP serves a crucial role in metabolism. As we will see throughout this document, cells often want to perform metabolic transformations that are not intrinsically favorable (reactions that are “uphill” energetically). Through evolution and natural selection, cells “learned” how to make these transformations “go” by coupling them to highly favorable reactions like the hydrolysis of ATP. <a class="footnote-reference" href="#id12" id="id6">[6]</a> So remember the energy scale of ATP hydrolysis - Δ<sub>r</sub>G’<sup>m</sup> ≈ 45 kJ/mol - since we will often use that scale to determine how many ATPs will be needed to make some biochemical reaction go in the direction the cell wants it to.</p>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
+<p>Where N<sub>A</sub> is Avogadro’s number. Altogether, this gives ~73 pN nm per ATP hydrolysis (<a class="reference internal" href="classic_reactions.html#refs"><span class="std std-ref">Phillips et al., 2009</span></a>). But how much energy is that? Well, it’s more than enough to <a class="reference external" href="http://bionumbers.hms.harvard.edu/bionumber.aspx?id=103125">compact DNA</a> into a viral capsid, for example. In other words, ATP stores an amount of energy that can be converted into a usable amount of work at the molecular scale. ATP acts as a bridge between the chemical and physical realms - between energy metabolism and the mechanical work of living.</p>
+<p>Moreover, ATP serves a crucial role in metabolism. As we will see throughout this document, cells often want to perform metabolic transformations that are not intrinsically favorable (reactions that are “uphill” energetically). Through evolution and natural selection, cells “learned” how to make these transformations “go” by coupling them to highly favorable reactions like the hydrolysis of ATP. <a class="footnote-reference" href="#atp6" id="id6">[6]</a> So remember the energy scale of ATP hydrolysis - Δ<sub>r</sub>G’<sup>m</sup> ≈ 45 kJ/mol - since we will often use that scale to determine how many ATPs will be needed to make some biochemical reaction go in the direction the cell wants it to.</p>
+<table class="docutils footnote" frame="void" id="atp1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>That’s about 6 kCal / mol for the chemists in the room.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id8" rules="none">
+<table class="docutils footnote" frame="void" id="atp2" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Notice that Q is unitless for this reaction because it has the same number of substrates and products. In fact Q <em>must</em> unitless so that we can take its logarithm.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id9" rules="none">
+<table class="docutils footnote" frame="void" id="atp3" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Try to calculate this from the density of pure water - remember that 1 L of water weighs 1 kg at standard temperature and pressure and H<sub>2</sub>O has a molecular mass of 18 g/mol.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id10" rules="none">
+<table class="docutils footnote" frame="void" id="atp4" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>We assume T = 25 °C = 298.15 K throughout eQuilibrator. We don’t curretly have enough information about the temperature dependence of Δ<sub>r</sub>G’° to remove this assumption.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id11" rules="none">
+<table class="docutils footnote" frame="void" id="atp5" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Hint: click on the ATP hydrolysis reaction above.</td></tr>
 </tbody>
 </table>
-<table class="docutils footnote" frame="void" id="id12" rules="none">
+<table class="docutils footnote" frame="void" id="atp6" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id6">[6]</a></td><td>This coupling between catalysis and ATP hydrolysis can occur in various ways inside protein enzymes. If you want to learn more about how that process works, read about “allostery” in your favorite textbook.</td></tr>
@@ -262,15 +251,6 @@
            </div>
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="thioester.html" class="btn btn-neutral float-right" title="Thioester Bonds are Energetic Too" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="about.html" class="btn btn-neutral" title="About Us" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
@@ -299,7 +279,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1 beta',
+            VERSION:'0.2 beta',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
