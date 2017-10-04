@@ -7,14 +7,15 @@
 eQuilibrator - the biochemical thermodynamics calculator
 ########################################################
 
-`Take me back to eQuilibrator <http://equilibrator.weizmann.ac.il/>`_. 
+`Take me back to eQuilibrator </>`_. 
 
 .. toctree::
    :maxdepth: 3
+   :glob:
    :caption: Contents:
 
    about
-   classic_reactions
+   classic_reactions/index
    faq
    cite
    new_in_2.0

@@ -2,7 +2,7 @@
 Metabolism of Alkanes and Fatty Acids
 -------------------------------------
 
-Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the `terrible Deep Water Horizon oil spill <http://aem.asm.org/content/77/22/7962.short>`_ (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).
+Wherever there is reduced carbon, you are likely to find bacteria that know how to eat it. So it’s not surprising that alkane-metabolizing bacteria were found on beaches affected by the `terrible Deep Water Horizon oil spill <http://aem.asm.org/content/77/22/7962.short>`__ (Kostka et al., 2011). In fact there is a lot of interest in learning how to leverage bacteria to remediate oil spills by using them to break down hydrocarbons (Atlas and Hazen, 2011).
 
 .. figure:: _static/_images/octane.png
    :alt: Octane
@@ -10,7 +10,7 @@ Wherever there is reduced carbon, you are likely to find bacteria that know how 
 
    Octane (C\ :sub:`8`\ H\ :sub:`18`) is an alkane and a major component of automotive fuel.
 
-Oil is made up of many kinds of reduced carbon molecules (carbons with many electrons), including alkane chain hydrocarbons - typically chains of 10-30 carbons bonded to hydrogen. Bacteria break down hydrocarbons in an iterative fashion - they remove units of two carbons at a time. These two carbon units come in the form of `acetyl-CoA <http://equilibrator.weizmann.ac.il/compound?compoundId=C00024>`_, a two-carbon acetyl group with a `coenzyme A <http://equilibrator.weizmann.ac.il/compound?compoundId=C00010>`_ molecule attached by a thioester linkage. At first blush it seems odd to attach large molecule like CoA to acetate. CoA has 21 carbons - why add all that mass to metabolize only two carbons?
+Oil is made up of many kinds of reduced carbon molecules (carbons with many electrons), including alkane chain hydrocarbons - typically chains of 10-30 carbons bonded to hydrogen. Bacteria break down hydrocarbons in an iterative fashion - they remove units of two carbons at a time. These two carbon units come in the form of `acetyl-CoA <http://equilibrator.weizmann.ac.il/compound?compoundId=C00024>`__, a two-carbon acetyl group with a `coenzyme A <http://equilibrator.weizmann.ac.il/compound?compoundId=C00010>`__ molecule attached by a thioester linkage. At first blush it seems odd to attach large molecule like CoA to acetate. CoA has 21 carbons - why add all that mass to metabolize only two carbons?
 
 .. figure:: _static/_images/CoA.png
    :alt: Coenzyme A
@@ -27,7 +27,7 @@ Example of Octane Breakdown
    :alt: Acetyl-CoA
    :align: center
 
-   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a :ref:`thioester linkage <cr-thioester>`.
+   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a `thioester linkage <thioester.html>`_.
 
 
 .. figure:: _static/_images/thioacetate.png
@@ -38,7 +38,7 @@ Example of Octane Breakdown
 
 Returning to the metabolism of alkanes we notice that acetyl-CoA is different from an alkane chain. In alkanes the carbons are all bonded to hydrogens while in the acetyl group of acetyl-CoA there are carbon-oxygen and carbon-sulfur bonds. Forming these bonds requires a number of oxidation steps (removal of electrons - convince yourself that this is true). To see what’s required, let’s use eQuilibrator to consider a net reaction making acetyl-CoA from an example alkane, the 8-carbon chain octane. 
 
-`Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+2+CoA+%3D%3E+Hexanoyl-CoA+%2B+Acetyl-CoA>`_
+`Octane + 2 CoA ⇌ Hexanoyl-CoA + Acetyl-CoA <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+2+CoA+%3D%3E+Hexanoyl-CoA+%2B+Acetyl-CoA>`__
 
 If you load this reaction on eQuilibrator you’ll notice that it is not balanced - it requires a source of oxygen atoms to account for the fact that hexanoyl-CoA and acetyl-CoA are both more oxidized than octane (having c=o and c-s bonds that octane does not). Notice also that we chose to produce hexanoyl-CoA instead of hexane. The biological pathway for alkane degradation does this so that acetyl-CoA units can be removed in an iterative process, two by two carbons.
 
@@ -64,21 +64,21 @@ Energy Balance in Octane Breakdown
 
 How does biology overcome this barrier in order to produce NADH and ultimately ATP? Using a classic biological pattern - expending some energy up front in order to conserve more energy later. To understand how this works, it’s useful to think about the pathway in three parts: the oxidation of the octane to octanoic acid (octane with a terminal carboxyl group), the attachment of CoA to form octanoyl-CoA and finally removal of a two carbon unit forming acetyl-CoA (2 carbons) hexanoyl-CoA (6 carbons). 
 
-#. `Octane + 2 Water ⇌ Octanoic acid + 6 e- <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01387&reactantsCoeff=-1&reactantsName=Octane&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C06423&reactantsCoeff=1&reactantsName=Octanoic%20acid&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-2&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octane%20%3D%20Octanoic%20acid>`_
+#. `Octane + 2 Water ⇌ Octanoic acid + 6 e- <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01387&reactantsCoeff=-1&reactantsName=Octane&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C06423&reactantsCoeff=1&reactantsName=Octanoic%20acid&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-2&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octane%20%3D%20Octanoic%20acid>`__
 
-#. `Octanoic acid + CoA ⇌ Octanoyl-CoA + Water <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C06423&reactantsCoeff=-1&reactantsName=Octanoic%20acid&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C01944&reactantsCoeff=1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoic%20acid%20%2B%20CoA%20%3D%20Octanoyl-CoA>`_
+#. `Octanoic acid + CoA ⇌ Octanoyl-CoA + Water <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C06423&reactantsCoeff=-1&reactantsName=Octanoic%20acid&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C01944&reactantsCoeff=1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoic%20acid%20%2B%20CoA%20%3D%20Octanoyl-CoA>`__
 
-#. `Octanoyl-CoA + CoA + Water ⇌ Acetyl-CoA + Hexanoyl-CoA + 4 e- <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01944&reactantsCoeff=-1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00024&reactantsCoeff=1&reactantsName=Acetyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C05270&reactantsCoeff=1&reactantsName=Hexanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoyl-CoA%20%2B%20CoA%20%3D%20Acetyl-CoA%20%2B%20Hexanoyl-CoA>`_
+#. `Octanoyl-CoA + CoA + Water ⇌ Acetyl-CoA + Hexanoyl-CoA + 4 e- <http://equilibrator.weizmann.ac.il/reaction?reactantsId=C01944&reactantsCoeff=-1&reactantsName=Octanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00010&reactantsCoeff=-1&reactantsName=CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00024&reactantsCoeff=1&reactantsName=Acetyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C05270&reactantsCoeff=1&reactantsName=Hexanoyl-CoA&reactantsPhase=aqueous&reactantsConcentration=0.001&reactantsId=C00001&reactantsCoeff=-1&reactantsName=H2O&reactantsPhase=liquid&reactantsConcentration=1&ph=7.000000&pmg=14.000000&ionic_strength=0.100000&e_reduction_potential=0.000000&max_priority=0&mode=BA&query=Octanoyl-CoA%20%2B%20CoA%20%3D%20Acetyl-CoA%20%2B%20Hexanoyl-CoA>`__
 
 Steps 1 & 3 are redox reactions that require electron acceptors, so their energetics will depend on the particular acceptors used (as we discuss below). Step 2, which produces octanoyl-CoA, is not a redox reaction but is unfavorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` value of about +40 kJ/mol - it makes a thioester bond after all. So to understand this pathway we must understand how it is that each of these steps are made thermodynamically favorable. 
 
 Although we assumed that NAD+ was the electron acceptor in our analysis above, you can see using eQuilibrator that step 1 would be quite unfavorable if all six electrons were donated to 3 NAD+ to form 3 NADH (Δ\ :sub:`r`\ G'\ :sup:`m` would be +50 kJ / mol). Rather, the natural pathway for step 1 uses O\ :sub:`2` to accept four of the six electrons produced (van Beilen and Funhoff, 2007), giving an extremely favorable net reaction of
 
-`Octane + 1 NAD+ + Oxygen ⇌ Octanoic acid + 1 NADH <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+1+NAD%2B+%2B+Oxygen+%3C%3D%3E+Octanoic+acid+%2B+1+NADH+>`_
+`Octane + 1 NAD+ + Oxygen ⇌ Octanoic acid + 1 NADH <http://equilibrator.weizmann.ac.il/search?query=Octane+%2B+1+NAD%2B+%2B+Oxygen+%3C%3D%3E+Octanoic+acid+%2B+1+NADH+>`__
 
 with a Δ\ :sub:`r`\ G'\ :sup:`m` around -390 kJ/mol. So in this case the pathway is made favorable by directly donating ⅔ of the electrons to oxygen and forgoing ATP that would otherwise be generated from NADH through respiration. 
 
-The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed :ref:`above <cr-thioester>`) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
+The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed `above <thioester.html>`_) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
 
 |atp_hydrolysis_amp|_
 
@@ -123,7 +123,7 @@ Fatty Acid Metabolism
 
 Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to one or more fatty acid tails via an ester linkage. Fatty acids like the palmitic acid shown above are simply alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 of the previous section is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how lipid and fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid. 
 
-This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [#fam1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the :ref:`tca <cr-tca>` to produce ATP and enable the production of important amino acids for the production of proteins.
+This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [#fam1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the `tca <tca.html>`_ to produce ATP and enable the production of important amino acids for the production of proteins.
 
 .. todo:: figure of beta-oxidation pathway?
 

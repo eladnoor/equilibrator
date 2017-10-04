@@ -2,7 +2,7 @@
 The TCA Cycle
 -------------
 
-As we've discussed elsewhere (in the sections on :ref:`thioesters <cr-thioester>` and fatty acid metabolism :ref:`fatty acid metabolism <cr-fatty-acid-met>`) acetyl-CoA is a very central molecule in metabolism. 
+As we've discussed elsewhere (in the sections on `thioesters <thioester.html>`_ and fatty acid metabolism `fatty acid metabolism <fatty_acid_met.html>`_) acetyl-CoA is a very central molecule in metabolism. 
 
 .. figure:: _static/_images/accoa.png
    :alt: Acetyl-CoA
@@ -10,7 +10,7 @@ As we've discussed elsewhere (in the sections on :ref:`thioesters <cr-thioester>
 
    Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of sugars, alkanes, fatty acids and some amino acids like leucine. 
 
-Indeed, after glucose is metabolized to pyruvate through :ref:`glycolysis <cr-glycolysis>` acetyl-CoA is made from pyruvate and CoA by a very large enzyme called `the pyruvate dehydrogenase complex <pdb101.rcsb.org/motm/153>`_. 
+Indeed, after glucose is metabolized to pyruvate through `glycolysis <glycolysis.html>`_ acetyl-CoA is made from pyruvate and CoA by a very large enzyme called `the pyruvate dehydrogenase complex <pdb101.rcsb.org/motm/153>`__. 
 
 |pdh|_
 
@@ -39,11 +39,11 @@ The tricarboxylic acid (TCA) cycle oxidizes the acetyl group of acetyl-CoA
 .. |TCA_net_acCoA| replace:: Acetyl-CoA + 3 H\ :sub:`2`\ O ⇌ 2 CO\ :sub:`2` + CoA + 8 e\ :sup:`-` 
 .. _TCA_net_acCoA: http://equilibrator.weizmann.ac.il/search?query=Acetyl-CoA+%2B+3+H2O+%E2%87%8C+2+CO2+%2B+CoA+%2B+8+e-
 
-We can see that the net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and 8 electrons. In the TCA cycle, electrons are mostly donated to NAD\ :sup:`+` to form :ref:`NADH <cr-glycolysis-nadh>`. These electrons are subsequently donated to O\ :sub:`2` in a manner that is coupled to the formation of ATP via the :ref:`respiratory electron transport chain <cr-respiration-etc>`.
+We can see that the net effect of the TCA cycle is to decarboxylate acetyl-CoA twice to make  CO\ :sub:`2` and 8 electrons. In the TCA cycle, electrons are mostly donated to NAD\ :sup:`+` to form `NADH <cr-glycolysis-nadh>`_. These electrons are subsequently donated to O\ :sub:`2` in a manner that is coupled to the formation of ATP via the `respiratory electron transport chain <cr-respiration-etc>`_.
 
-You might think that the oxidation of acetyl-CoA would proceed directly. However, the direct decarboxylation of acetate would give CO\ :sub:`2` and CH\ :sub:`4` (methane) a reduced (electron-rich) one-carbon molecule that is very stable gas that is quite complex to metabolize (:ref:`Lehninger Principles of Biochemistry, 2008 <refs>`). In fact, methanotrophs (organisms that consume methane) use very complex and sensitive enzymes to do so. The direct decarboxylation of acetyl-CoA poses similar problems. Biology solves this problem by using "scaffold" molecules - the acetyl group is first attached to another metabolite and only then does metabolism proceed by decarboxylation and oxidation. These scaffolds aid by "holding onto" the acetyl group and by providing a chemical environment that increases its reactivity (making it more straightforward to metabolize, :ref:`Lehninger Principles of Biochemistry, 2008 <refs>`).
+You might think that the oxidation of acetyl-CoA would proceed directly. However, the direct decarboxylation of acetate would give CO\ :sub:`2` and CH\ :sub:`4` (methane) a reduced (electron-rich) one-carbon molecule that is very stable gas that is quite complex to metabolize (`Lehninger Principles of Biochemistry, 2008 <refs.html>`_). In fact, methanotrophs (organisms that consume methane) use very complex and sensitive enzymes to do so. The direct decarboxylation of acetyl-CoA poses similar problems. Biology solves this problem by using "scaffold" molecules - the acetyl group is first attached to another metabolite and only then does metabolism proceed by decarboxylation and oxidation. These scaffolds aid by "holding onto" the acetyl group and by providing a chemical environment that increases its reactivity (making it more straightforward to metabolize, `Lehninger Principles of Biochemistry, 2008 <refs.html>`_).
 
-We will approach the scaffold-based metabolism of acetyl-CoA through a sort of back door by reminding ourselves about :ref:`transamination <cr-transamination>`. Remember that many amino acids are made by transamination of an appropriate alpha-keto acid acceptor. For example, glutamate can be made transaminating a five carbon dicarboxylic acid called α-ketoglutarate (also known as 2-oxoglutarate). 
+We will approach the scaffold-based metabolism of acetyl-CoA through a sort of back door by reminding ourselves about `transamination <transamination.html>`_. Remember that many amino acids are made by transamination of an appropriate alpha-keto acid acceptor. For example, glutamate can be made transaminating a five carbon dicarboxylic acid called α-ketoglutarate (also known as 2-oxoglutarate). 
 
 .. figure:: _static/_images/alphaketoglutarate.png
    :alt: α-ketoglutaric acid or 2-oxoglutarate
@@ -51,7 +51,7 @@ We will approach the scaffold-based metabolism of acetyl-CoA through a sort of b
 
    α-ketoglutarate or 2-oxoglutarate is called α-keto acid because it has a carbonyl group (ketone) adjacent to (in the α position relative to) a terminal carboxylic acid.
 
-Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (:ref:`Lehninger Principles of Biochemistry, 2008 <refs>`). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (:ref:`Lehninger Principles of Biochemistry, 2008 <refs>`).
+Glutamate is a proteogenic amino acid in its own right, but also a precursor for the synthesis of several amino acids including glutamine, proline and arginine (`Lehninger Principles of Biochemistry, 2008 <refs.html>`_). Similarly, aspartate can be made by transamination of a four carbon dicarboxylic acid called oxaloacetate. Aspartate is a precursor for the production of asparagine, lysine, arginine, methionine, threonine and isoleucine (`Lehninger Principles of Biochemistry, 2008 <refs.html>`_).
 
 .. figure:: _static/_images/oxaloacetate.png
    :alt: Oxaloacetate
@@ -103,7 +103,7 @@ As we said, α-ketoglutarate (α-KG for short) contains 5 carbon atoms and oxalo
 .. |AKG_2_OAA_NADH| replace:: α-ketoglutarate + CoA + NAD\ :sup:`+` ⇌ succinyl-CoA + CO\ :sub:`2` + NADH
 .. _AKG_2_OAA_NADH: http://equilibrator.weizmann.ac.il/search?query=alpha-ketoglutarate+%2B+CoA+%2B+NAD%2B+%E2%87%8C+succinyl-CoA+%2B+CO2+%2B+NADH
 
-The thioester on succinyl-CoA is :ref:`approximately energetically equivalent to ATP <cr-thioester>`, which explains how the next reaction step manages to make ATP while hydrolysing the thioester. [#tca1]_
+The thioester on succinyl-CoA is `approximately energetically equivalent to ATP <thioester.html>`_, which explains how the next reaction step manages to make ATP while hydrolysing the thioester. [#tca1]_
 
 |ScCoA_synth|_
 
@@ -124,7 +124,7 @@ The above reaction is actually a three-step process catalyzed by three different
 .. |AKG_2_OAA_NET| replace:: α-ketoglutarate + 2 H\ :sub:`2`\ O + 2 NAD\ :sup:`+` + FAD ⇌ oxaloacetate + CO\ :sub:`2` + 2 NADH + FADH\ :sub:`2`
 .. _AKG_2_OAA_NET: http://equilibrator.weizmann.ac.il/search?query=alpha-ketoglutarate+%2B+2+H2O+%2B+2+NAD%2B+%2B+FAD+%E2%87%8C+oxaloacetate+%2B+CO2+%2B+2+NADH+%2B+FADH2
 
-and a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0. As discussed above, this almost infeasible Δ\ :sub:`r`\ G'\ :sup:`m` can be remedied by setting the NAD\ :sup:`+` and NADH concentrations to more physiologically relevant values. For example, `measurements in E. coli <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_ give [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ\ :sub:`r`\ G' in eQuilibrator - does this help resolve the problem?
+and a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0. As discussed above, this almost infeasible Δ\ :sub:`r`\ G'\ :sup:`m` can be remedied by setting the NAD\ :sup:`+` and NADH concentrations to more physiologically relevant values. For example, `measurements in E. coli <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`__ give [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM. Try using these values to calculate Δ\ :sub:`r`\ G' in eQuilibrator - does this help resolve the problem?
 
 Oxaloacetate back to α-Ketoglutarate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -155,7 +155,7 @@ The citrate synthase reaction is quite favorable (Δ\ :sub:`r`\ G'\ :sup:`m` ≈
 
 From this we learn that the formation of a thioester on acetyl-CoA in the pyruvate dehydrogenase reaction above essentially "carries forward" the energy output oxidative decarboxylation into the citrate synthase step. Yet another example of an intrinsically unfavorable chemical reaction that biology enables through clever energetic activation.
 
-Since we added two carbons from acetyl-CoA to oxaloacetate to form citrate, citrate must have 6 carbons. This means that it must be decarboxylated one time to form α-ketoglutarate. Due to the mechanism of enzymes carrying out oxidative decarboxylation, `citrate must be isomerized to isocitrate <https://www.ncbi.nlm.nih.gov/books/NBK22427/>`_. It can then undergo oxidative decarboxylation 
+Since we added two carbons from acetyl-CoA to oxaloacetate to form citrate, citrate must have 6 carbons. This means that it must be decarboxylated one time to form α-ketoglutarate. Due to the mechanism of enzymes carrying out oxidative decarboxylation, `citrate must be isomerized to isocitrate <https://www.ncbi.nlm.nih.gov/books/NBK22427/>`__. It can then undergo oxidative decarboxylation 
 
 |iso_dehy|_
 
@@ -192,7 +192,7 @@ Anaplerotic Reactions
 .. todo::
     need a diagram here.
 
-Cells sidestep this problem by continually replenishing TCA cycle intermediates through "`anaplerotic reactions <https://en.wikipedia.org/wiki/Anaplerotic_reactions>`_" from the `Greek meaning <https://en.wiktionary.org/wiki/anaplerotic>`_ "filling up" or "replenishing" reactions. Several of these reactions are illustrated in the TCA cycle figure above. For example, the pyruvate carboxylase reaction
+Cells sidestep this problem by continually replenishing TCA cycle intermediates through "`anaplerotic reactions <https://en.wikipedia.org/wiki/Anaplerotic_reactions>`__" from the `Greek meaning <https://en.wiktionary.org/wiki/anaplerotic>`__ "filling up" or "replenishing" reactions. Several of these reactions are illustrated in the TCA cycle figure above. For example, the pyruvate carboxylase reaction
 
 |pyr_carboxylase|_
 
@@ -206,18 +206,18 @@ replenishes oxaloacetate from pyruvate. Notice that this actually replenishes al
 pH Dependence
 ^^^^^^^^^^^^^
 
-The TCA cycle reaction that makes oxaloacetate is called `malate dehydrogenase <http://pdb101.rcsb.org/motm/154>`_ because, well, it dehydrogenates malate
+The TCA cycle reaction that makes oxaloacetate is called `malate dehydrogenase <http://pdb101.rcsb.org/motm/154>`__ because, well, it dehydrogenates malate
 
 |malate_dehy|_
 
 .. |malate_dehy| replace:: malate + NAD\ :sup:`+` ⇌ oxaloacetate + NADH
 .. _malate_dehy: http://equilibrator.weizmann.ac.il/search?query=malate+%2B+NAD%2B+%E2%87%8C+oxaloacetate+%2B+NADH
 
-this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, `malate <https://en.wikipedia.org/wiki/Malic_acid>`_ and `oxaloacetate <https://en.wikipedia.org/wiki/Oxaloacetic_acid>`_ have different pKas on their two carboxylic acid groups, meaning that Δ\ :sub:`r`\ G' of the malate dehydrogenase reaction will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ\ :sub:`r`\ G' and Δ\ :sub:`r`\ G'° depend on the pH. 
+this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, `malate <https://en.wikipedia.org/wiki/Malic_acid>`__ and `oxaloacetate <https://en.wikipedia.org/wiki/Oxaloacetic_acid>`__ have different pKas on their two carboxylic acid groups, meaning that Δ\ :sub:`r`\ G' of the malate dehydrogenase reaction will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ\ :sub:`r`\ G' and Δ\ :sub:`r`\ G'° depend on the pH. 
 
 The pKa of an acid is the pH at which that acidic group is 50% protonated (also 50% deprotonated). Overall, the pKas associated with oxaloacetate (pKa = 2.2, 3.9) are lower than those associated with malate (pKa = 3.4, 5.2). This means that as the pH goes down from 7 (i.e. becomes more acidic) and approaches the higher pKa of malate, malate reaches a pH where it has multiple populated protonation states but oxaloacetate does not. [#tca4]_ As a result of this effect, we find that lowering the pH (making the environment more acidic) makes the Δ\ :sub:`r`\ G' more positive, favoring the reverse reaction even more. 
 
-Some organisms maintain a pH of 6 in their cytosol (:ref:`Noor et. al, 2014 <refs>`). In these conditions Δ\ :sub:`r`\ G'° = +36 kJ/mol. What would it take to make this reaction flow in the direction of oxaloacetate (i.e. make the Δ\ :sub:`r`\ G' negative) if we assume [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08? We know that 
+Some organisms maintain a pH of 6 in their cytosol (`Noor et. al, 2014 <refs.html>`_). In these conditions Δ\ :sub:`r`\ G'° = +36 kJ/mol. What would it take to make this reaction flow in the direction of oxaloacetate (i.e. make the Δ\ :sub:`r`\ G' negative) if we assume [NAD\ :sup:`+`] ≈ 3 mM and [NADH] ≈ 0.08? We know that 
 
 .. math::
 	\begin{eqnarray}
@@ -237,8 +237,8 @@ Since R = 8.315 x 10\ :sup:`-3` kJ/mol/K and we assume a temperature of T = 298.
 	54000 \times [oxaloacetate] &<& [malate]
 	\end{eqnarray}
 
-In other words, we need at least ≈54000 times more malate than oxaloacetate to make this reaction flow towards oxaloacetate spontaneously. A 5x10\ :sup:`4`\ -fold difference is `biologically plausibile <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`_, but we must remember that the previous reaction in the TCA cycle, the one that makes malate, must also be thermodynamically feasible for the TCA cycle to work. Forcing a very high malate concentration will strongly constrain the operation of the TCA cycle! 
+In other words, we need at least ≈54000 times more malate than oxaloacetate to make this reaction flow towards oxaloacetate spontaneously. A 5x10\ :sup:`4`\ -fold difference is `biologically plausibile <http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/>`__, but we must remember that the previous reaction in the TCA cycle, the one that makes malate, must also be thermodynamically feasible for the TCA cycle to work. Forcing a very high malate concentration will strongly constrain the operation of the TCA cycle! 
 
-One solution employed by some organisms is to use a different, higher potential `quinone <https://en.wikipedia.org/wiki/Coenzyme_Q10>`_ electron carrier (:ref:`Noor et. al, 2014 <refs>`). This has the effect of increasing the intrinsic favorability of the reaction so that such extreme malate concentrations are not required. Since the quinone has a higher potential, however, less energy is released and less ATP can be formed when electrons carried by the quinone are ultimately donated to O\ :sub:`2`. 
+One solution employed by some organisms is to use a different, higher potential `quinone <https://en.wikipedia.org/wiki/Coenzyme_Q10>`__ electron carrier (`Noor et. al, 2014 <refs.html>`_). This has the effect of increasing the intrinsic favorability of the reaction so that such extreme malate concentrations are not required. Since the quinone has a higher potential, however, less energy is released and less ATP can be formed when electrons carried by the quinone are ultimately donated to O\ :sub:`2`. 
 
 .. [#tca4] Remember that the pH is a log base 10 scale, meaning that the 1.3 pH point difference between the higher pKa of malate and that of oxaloacetate indicates a very large difference more than 10-fold difference in the abundance of protonated carboxylic acid at pH 5.2. 
