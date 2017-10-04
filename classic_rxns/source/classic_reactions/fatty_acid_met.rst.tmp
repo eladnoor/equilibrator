@@ -27,7 +27,7 @@ Example of Octane Breakdown
    :alt: Acetyl-CoA
    :align: center
 
-   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a :ref:`thioester linkage <cr-thioester>`.
+   Acetyl-CoA is a very central molecule in metabolism and is produced during the metabolism of alkanes and fatty acid. Since Coenzyme A is 767 Da and acetate is 60 Da, it can be hard to see the "business end" of acetyl-CoA where acetate is bound to CoA by a `thioester linkage <thioester.html>`.
 
 
 .. figure:: _static/_images/thioacetate.png
@@ -78,7 +78,7 @@ Although we assumed that NAD+ was the electron acceptor in our analysis above, y
 
 with a Δ\ :sub:`r`\ G'\ :sup:`m` around -390 kJ/mol. So in this case the pathway is made favorable by directly donating ⅔ of the electrons to oxygen and forgoing ATP that would otherwise be generated from NADH through respiration. 
 
-The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed :ref:`above <cr-thioester>`) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
+The biological activation of step 2 - producing octanoyl-CoA - uses a trick that is similar in spirit but different in implementation. Here the carboxylic acid of octanoyl-CoA is activated by the addition of adenosine monophosphate (AMP) from ATP to make octanoyl-AMP and a pyrophosphate (PPi) that is immediately hydrolysed to two Pi molecules. The phosphate linkage is then exchanged with a thioester (as discussed `above <thioester.html>`) to make octanoyl-AMP. While octanoyl-AMP is not in the eQuilibrator database, we can examine the energy balance of step 2 by calculating the Δ\ :sub:`r`\ G'\ :sup:`m` of the double hydrolysis reaction
 
 |atp_hydrolysis_amp|_
 
@@ -123,7 +123,7 @@ Fatty Acid Metabolism
 
 Lipids in biological membranes are very much like alkane chains - they are composed of a hydrophilic headgroup (e.g. a phosphate in a phospholipid) linked to one or more fatty acid tails via an ester linkage. Fatty acids like the palmitic acid shown above are simply alkane chains with a terminal carboxylic acid - the octanoic acid produced in step 1 of the previous section is an 8-carbon fatty acid, for example. Once we see this similarity, it is immediately obvious how lipid and fatty acid metabolism can proceed. First, the headgroup is removed via a hydrolysis reaction, producing the fatty acid. Then a CoA can be attached and the fatty-acyl CoA can enter the same “two-by-two” pathway that is used to metabolize alkanes. This pathway is called “beta-oxidation” because it is oxidative and because it breaks the bond that is beta of (two away from) the terminal carboxylic acid. 
 
-This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [#fam1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the :ref:`tca <cr-tca>` to produce ATP and enable the production of important amino acids for the production of proteins.
+This pathway ultimately produces n/2 acetyl-CoA molecules from an n-carbon lipid (i.e. 8 acetyl-CoA molecules from the 16-carbon palmitic acid shown above). [#fam1]_ In the next section we will discuss how cells metabolize acetyl-CoA through the `tca <tca.html>` to produce ATP and enable the production of important amino acids for the production of proteins.
 
 .. todo:: figure of beta-oxidation pathway?
 

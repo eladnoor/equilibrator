@@ -36,7 +36,7 @@ In general, Δ\ :sub:`r`\ G'\ :sup:`m` is a better reference than Δ\ :sub:`r`\ 
 	\Delta_r G' &=& \Delta_r G'^{\circ} + RT \ln{Q} \\
 	\end{eqnarray}
 
-Where Q is the "reaction quotient" or "mass-action ratio." Read more about these calculations :ref:`here <cr-atp>`.
+Where Q is the "reaction quotient" or "mass-action ratio." Read more about these calculations `here <classic_reactions/atp.html>`_.
 
 .. _drg:
 

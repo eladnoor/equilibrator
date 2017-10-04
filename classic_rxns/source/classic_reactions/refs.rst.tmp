@@ -1,5 +1,6 @@
+----------
 References 
-==========================================================
+----------
 
 #. Nelson, D. L., Lehninger, A. L., and Cox, M. M. (2008). Lehninger Principles of Biochemistry, Macmillan.
 

@@ -1,15 +1,16 @@
+---------------------------
 Glycolysis and Fermentation
-==========================================================
+---------------------------
 
 The reason that complete glucose oxidation produces so much energy is that molecular oxygen has a strong "preference" to accept electrons (very high reduction potential). This preference of electrons to flow to oxygen is so powerful that it can be used to drive the formation of several molecules of ATP through a process is called oxidative phosphorylation or `respiration <respiration.html>`_. In this process, electrons are withdrawn from glucose in a piecemeal fashion and passed along the `electron transport chain <https://en.wikipedia.org/wiki/Electron_transport_chain>`_ which, ultimately donates the electrons to molecular oxygen. At several steps, the movement of electrons is coupled (by the action of proteins) to the production of ATP. In anaerobic conditions, however, oxygen is not available (by definition) and it's not possible to drive oxidative phosphorylation by donating electrons to O\ :sub:`2`.
 
 The anaerobic breakdown of glucose for energy production is called fermentation. Several approaches to fermenting glucose occur in nature, but we'll start by discussing a relatively simple one: fermentation of glucose to lactate. Fermentation of glucose begins in the same way that complete oxidation of glucose does: by breaking glucose down into two pyruvate molecules through a process known as glycolysis:
 
-`Glucose ⇌ 2 Pyruvate <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate>`_
+`Glucose ⇌ 2 Pyruvate <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate>`__
 
 If you inspect this reaction in eQuilibrator, you'll notice that it is not "electron-balanced." That is, there are 4 fewer electrons in two pyruvate molecules than there are in one glucose molecule. Try counting the electrons in each molecule to verify that this is true; this is a good exercise to remind yourself about chemistry concepts like the `oxidation state <https://en.wikipedia.org/wiki/Oxidation_state>`_ of an atom and `Lewis structures <https://en.wikipedia.org/wiki/Lewis_structure>`_. Really, we should write the oxidation of glucose to pyruvate as a “half-reaction” 
 
-`Glucose ⇌ 2 Pyruvate + 4 e- <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate+%2B+4+e->`_
+`Glucose ⇌ 2 Pyruvate + 4 e- <http://equilibrator.weizmann.ac.il/search?query=Glucose+%3D%3E+2+Pyruvate+%2B+4+e->`__
 
 In order track the electrons explicitly. These extra four electrons don't just float around the cell: they are carried by specific compounds called electron carriers. In glycolysis, the electron carrier of choice is nicotinamide adenine dinucleotide (NAD+). To fix the electron imbalance, try clicking on the "Balance with NAD+/NADH" link. 
 
@@ -39,20 +40,20 @@ Since lactate build-up is problematic (in much the same way that NADH build up i
 
 This neat biochemical trick enables organisms as varied as *E. coli* and humans to produce energy from sugars even when oxygen isn't available.
 
-.. _nadh:
 
 NADH as an Electron Carrier
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. _cr-glycolysis-nadh:
 
 Metabolism contains many redox reactions. These reduction and oxidation reactions involve the transfer of electrons between molecules. One classic redox reaction is the lactate dehydrogenase reaction described above. 
 
-`NADH + Pyruvate ⇌ NAD+ + Lactate <http://equilibrator.weizmann.ac.il/search?query=NADH+%2B+Pyruvate+%3C%3D%3E+NAD%2B+%2B+Lactate>`_
+`NADH + Pyruvate ⇌ NAD+ + Lactate <http://equilibrator.weizmann.ac.il/search?query=NADH+%2B+Pyruvate+%3C%3D%3E+NAD%2B+%2B+Lactate>`__
 
 We can identify that this is a redox reaction from the presence of the two-electron carrier NAD+/NADH. One way to understand the energetics of redox reactions is to split them into “half-reactions.”
 
-`Pyruvate + 2e- ⇌ Lactate <http://equilibrator.weizmann.ac.il/search?query=Pyruvate+%3C%3D%3E+Lactate>`_ (E'\ :sup:`m` ≈ -190 mV)
+`Pyruvate + 2e- ⇌ Lactate <http://equilibrator.weizmann.ac.il/search?query=Pyruvate+%3C%3D%3E+Lactate>`__ (E'\ :sup:`m` ≈ -190 mV)
 
-`NADH ⇌ NAD+ + 2e- <http://equilibrator.weizmann.ac.il/search?query=NADH+%3C%3D%3E+NAD%2B>`_ (E'\ :sup:`m` ≈ -330 mV)
+`NADH ⇌ NAD+ + 2e- <http://equilibrator.weizmann.ac.il/search?query=NADH+%3C%3D%3E+NAD%2B>`__ (E'\ :sup:`m` ≈ -330 mV)
 
 If we add these two half-reactions together we see that the electrons cancel out: the two half-cells together produce a balanced chemical reaction. 
 
@@ -80,7 +81,7 @@ There are many common biological electron carriers aside from NADH and its close
 .. todo:: links for the redox carriers.
 
 Ethanol Fermentation
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^
 
 Fermentation isn’t limited to making lactate - cells can produce anything that is “redox neutral” relative to their growth substrate (i.e. has the same total number of electrons as glucose). So long as the product has the same number of electrons as the substrate, the process doesn’t force accumulation of reduced electron carriers like NADH and is called fermentation. Ethanol is a famous and important fermentation product of glucose - one that is imbibed and used as a fuel additive worldwide. 
 
@@ -108,7 +109,7 @@ As with lactate, we see that production of ethanol from two pyruvate molecules p
 Indeed, production of ethanol and CO\ :sub:`2` from pyruvate is quite favorable (Δ\ :sub:`r`\ G'm = -114 kJ / mol) which helps explain why yeast are so content to make large quantities of ethanol for our enjoyment. 
 
 Mixtures of Fermentation Products
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Bacteria produce many different kinds of fermentation products. The only requirement is that the products of a fermentation pathway contain the same number of electrons as the substrates. Indeed, as we saw with ethanol fermentation, it’s possible to make multiple fermentation products (ethanol + CO\ :sub:`2`) so long as redox balance is preserved.
 
@@ -142,11 +143,11 @@ We see that it has a Δ\ :sub:`r`\ G'\ :sup:`m` around -100 kJ/mol, more than su
 
 So how does *E. coli* get an extra ATP out of this transformation from pyruvate to acetate, ethanol and formate? To see how, consider the conversion of pyruvate to acetate, which takes place in the following 3 steps 
 
-#. `CoA + Pyruvate ⇌ Acetyl-CoA + Formate <http://equilibrator.weizmann.ac.il/reaction?query=Acetyl-CoA+%2B+Formate+%3C%3D%3E+CoA+%2B+Pyruvate&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00022&reactantsName=Pyruvate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00058&reactantsName=Formate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
+#. `CoA + Pyruvate ⇌ Acetyl-CoA + Formate <http://equilibrator.weizmann.ac.il/reaction?query=Acetyl-CoA+%2B+Formate+%3C%3D%3E+CoA+%2B+Pyruvate&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00022&reactantsName=Pyruvate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00058&reactantsName=Formate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`__
 
-#. `Acetyl-CoA + Pi ⇌ Acetyl-Phosphate + CoA <http://equilibrator.weizmann.ac.il/search?query=Acetyl-CoA+%2B+Pi+%3C%3D%3E+Acetyl-Phosphate+%2B+CoA>`_
+#. `Acetyl-CoA + Pi ⇌ Acetyl-Phosphate + CoA <http://equilibrator.weizmann.ac.il/search?query=Acetyl-CoA+%2B+Pi+%3C%3D%3E+Acetyl-Phosphate+%2B+CoA>`__
 
-#. `ADP + Acetyl phosphate ⇌ ATP + Acetate <http://equilibrator.weizmann.ac.il/reaction?query=ATP+%2B+Acetate+%3C%3D%3E+ADP+%2B+Acetyl+phosphate&ph=7.0&ionic_strength=0.1&reactantsCoeff=-1.0&reactantsId=C00002&reactantsName=ATP&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00008&reactantsName=ADP&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00033&reactantsName=Acetate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00227&reactantsName=Acetyl+phosphate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
+#. `ADP + Acetyl phosphate ⇌ ATP + Acetate <http://equilibrator.weizmann.ac.il/reaction?query=ATP+%2B+Acetate+%3C%3D%3E+ADP+%2B+Acetyl+phosphate&ph=7.0&ionic_strength=0.1&reactantsCoeff=-1.0&reactantsId=C00002&reactantsName=ATP&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00008&reactantsName=ADP&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00033&reactantsName=Acetate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00227&reactantsName=Acetyl+phosphate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`__
 
 Acetate is formed via the intermediate of acetyl-CoA, which allows for the production of ATP (as discussed above). Notice, however, that this 3-step pathway is redox neutral - it does not consume any of the NADH that would have been produced in glycolysis to make pyruvate. So *E. coli* can’t ferment glucose entirely to acetate and formate because that would not be a redox neutral transformation, as you can see by balancing the net reaction on eQuilibrator.
 
@@ -157,21 +158,21 @@ Acetate is formed via the intermediate of acetyl-CoA, which allows for the produ
 
 Producing one ethanol for every acetate ensures that the overall fermentation pathway is redox balanced. This can be seen by considering how ethanol is made from pyruvate in this case 
 
-#. `CoA + Pyruvate ⇌ Acetyl-CoA + Formate <http://equilibrator.weizmann.ac.il/reaction?query=Acetyl-CoA+%2B+Formate+%3C%3D%3E+CoA+%2B+Pyruvate&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00022&reactantsName=Pyruvate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00058&reactantsName=Formate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
+#. `CoA + Pyruvate ⇌ Acetyl-CoA + Formate <http://equilibrator.weizmann.ac.il/reaction?query=Acetyl-CoA+%2B+Formate+%3C%3D%3E+CoA+%2B+Pyruvate&ph=7.0&ionic_strength=0.1&reactantsCoeff=1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00022&reactantsName=Pyruvate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00058&reactantsName=Formate&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`__
 
-#. `NADH + Acetyl-CoA ⇌ NAD+ + CoA + Acetaldehyde <http://equilibrator.weizmann.ac.il/reaction?query=NAD%2B+%2B+CoA+%2B+Acetaldehyde+%3C%3D%3E+NADH+%2B+Acetyl-CoA&ph=7.0&ionic_strength=0.1&reactantsCoeff=-1.0&reactantsId=C00003&reactantsName=NAD%2B&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00004&reactantsName=NADH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00084&reactantsName=Acetaldehyde&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
+#. `NADH + Acetyl-CoA ⇌ NAD+ + CoA + Acetaldehyde <http://equilibrator.weizmann.ac.il/reaction?query=NAD%2B+%2B+CoA+%2B+Acetaldehyde+%3C%3D%3E+NADH+%2B+Acetyl-CoA&ph=7.0&ionic_strength=0.1&reactantsCoeff=-1.0&reactantsId=C00003&reactantsName=NAD%2B&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00004&reactantsName=NADH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00010&reactantsName=CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00024&reactantsName=Acetyl-CoA&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00084&reactantsName=Acetaldehyde&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`__
 
-#. `NADH + Acetaldehyde ⇌ NAD+ + Ethanol <http://equilibrator.weizmann.ac.il/reaction?query=NAD%2B+%2B+Ethanol+%3C%3D%3E+NADH+%2B+Acetaldehyde&ph=7.0&ionic_strength=0.1&reactantsCoeff=-1.0&reactantsId=C00003&reactantsName=NAD%2B&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00004&reactantsName=NADH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00084&reactantsName=Acetaldehyde&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00469&reactantsName=Ethanol&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`_
+#. `NADH + Acetaldehyde ⇌ NAD+ + Ethanol <http://equilibrator.weizmann.ac.il/reaction?query=NAD%2B+%2B+Ethanol+%3C%3D%3E+NADH+%2B+Acetaldehyde&ph=7.0&ionic_strength=0.1&reactantsCoeff=-1.0&reactantsId=C00003&reactantsName=NAD%2B&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00004&reactantsName=NADH&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=1.0&reactantsId=C00084&reactantsName=Acetaldehyde&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&reactantsCoeff=-1.0&reactantsId=C00469&reactantsName=Ethanol&reactantsConcentration=1&reactantsConcentrationPrefactor=0.001&reactantsPhase=aqueous&max_priority=0&submit=Reverse>`__
 
 Notice that the production of ethanol from pyruvate in these three steps involves the consumption of 2 NADH. So if the cell makes exactly one ethanol molecule for every acetate, then redox balance will be preserved and one extra ATP will be made for every two pyruvates metabolized - a balancing act indeed! Remember that two ATP were made through glycolytic production of pyruvate from glucose, meaning that fermenting glucose to a 1:1:1 mixture of acetate, formate and ethanol produces 3 ATP per glucose total.
 
-There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (`Kim and Gadd, 2008 <refs.html>`_). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on `Wikipedia <https://en.wikipedia.org/wiki/Mixed_acid_fermentation>`_ and `Biocyc <https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=FERMENTATION-PWY>`_. 
+There are several other pathways of this sort that produce a defined mixture of fermentation products that are collectively redox neutral compared to glucose. The pathways are termed “mixed acid fermentation pathways” because they usually produce a mixture of acids (`Kim and Gadd, 2008 <refs.html>`_). But this name can be confusing, as in the case of 1:1:1 production of acetate, ethanol and formate because not all of the products are acids (e.g. ethanol is an alcohol). You can learn more about the variety of mixed fermentation pathways on `Wikipedia <https://en.wikipedia.org/wiki/Mixed_acid_fermentation>`_ and `Biocyc <https://biocyc.org/META/NEW-IMAGE?type=PATHWAY&object=FERMENTATION-PWY>`__. 
 
 .. todo::
     mixed acid fermentation figure.
 
 Glycolysis in Gory Detail
-----------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: _static/_images/glucose.png
    :alt: D-Glucose
@@ -189,7 +190,7 @@ As discussed above, glycolysis is the process by which glucose is partially oxid
 Glycolysis is `often presented <https://www.ncbi.nlm.nih.gov/books/NBK22593/>`_ as having two phases, upper glycolysis and lower glycolysis. Upper glycolysis is considered an "investment phase" where ATP is expended to set up the reactions of lower glycolysis, the 
 "payoff phase" where the initial ATP investment is repaid. The investment phase converts glucose into two trioses (three carbon sugars) called glyceraldehyde.
 
-`Glucose ⇌ 2 Glyceraldehyde <http://equilibrator.weizmann.ac.il/search?query=glucose+%3D+2+glyceraldehyde>`_
+`Glucose ⇌ 2 Glyceraldehyde <http://equilibrator.weizmann.ac.il/search?query=glucose+%3D+2+glyceraldehyde>`__
 
 If we consider this reaction in eQuilibrator, we can see that it has a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ 0 kJ / mol. Moreover, in order to make ATP in lower glycolysis (through a process called `substrate level phosphorylation <https://en.wikipedia.org/wiki/Substrate-level_phosphorylation>`_) it is necessary to make phosphorylated trioses - glyceraldehyde 3-phosphate - in upper glycolysis.
 
@@ -199,7 +200,7 @@ If we consider this reaction in eQuilibrator, we can see that it has a Δ\ :sub:
 
    Glyceraldehyde 3-phosphate
 
-`Glucose + 2 ATP ⇌ 2 Glyceraldehyde 3-phosphate + 2 ADP <http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+ATP+%3D+2+Glyceraldehyde+3-phosphate+%2B+2+ADP>`_
+`Glucose + 2 ATP ⇌ 2 Glyceraldehyde 3-phosphate + 2 ADP <http://equilibrator.weizmann.ac.il/search?query=Glucose+%2B+2+ATP+%3D+2+Glyceraldehyde+3-phosphate+%2B+2+ADP>`__
 
 Being "activated" by ATP hydrolysis, this net reaction is quite favorable with a Δ\ :sub:`r`\ G'\ :sup:`m` ≈ -24 kJ / mol, which helps enable cells to process glucose quickly through upper glycolysis. Once glyceraldehyde 3-phosphate is produced it can enter the "payoff phase" of lower glycolysis, which produces pyruvate and ATP:
 
@@ -224,6 +225,6 @@ This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Ove
 
 These individual steps along with their enzymatic mechanisms are covered in great detail in `textbooks <https://www.ncbi.nlm.nih.gov/books/NBK22593/>`_ and review papers (Bar-Even et al., 2012). We note, however, that some of these individual steps are not very thermodynamically favorable, especially those that are involved in ATP production. For example, the first reaction of the payoff phase adds a phosphate to glyceraldehyde 3-phosphate to produce 1,3-bisphophoglycerate. This phosphate is later transfered to ADP to make ATP and this reaction, catalyzed by the enzyme glyceraldehyde 3-phosphate dehydrogenase (labeled "gap" above), and is quite unfavorable 
 
-`NAD+ + Pi + D-Glyceraldehyde 3-phosphate ⇌ NADH + Bisphosphoglycerate <http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate>`_
+`NAD+ + Pi + D-Glyceraldehyde 3-phosphate ⇌ NADH + Bisphosphoglycerate <http://equilibrator.weizmann.ac.il/search?query=NAD%2B+%2B+Pi+%2B+D-Glyceraldehyde+3-phosphate+%3C%3D%3E+NADH+%2B+Bisphosphoglycerate>`__
 
 with a of Δ\ :sub:`r`\ G'\ :sup:`m` ≈ +25 kJ/mol. Remembering that `each ~6 kJ/mol demands an order of magnitude concentration difference <thioester.html>`_, we can estimate that making this reaction favorable will require the reaction products to have ~1000-fold lower concentration than substrates. 

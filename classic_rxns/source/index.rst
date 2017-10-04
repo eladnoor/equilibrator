@@ -11,10 +11,11 @@ eQuilibrator - the biochemical thermodynamics calculator
 
 .. toctree::
    :maxdepth: 3
+   :glob:
    :caption: Contents:
 
    about
-   classic_reactions
+   classic_reactions/index
    faq
    cite
    new_in_2.0
