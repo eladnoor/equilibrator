@@ -45,7 +45,7 @@ Python PyPI:
 # Install binary dependencies on Ubuntu
 ```
 sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
-sudo apt install solr-common libglpk-dev glpk-utils
+sudo apt install apache2 solr-common libglpk-dev glpk-utils
 ```
 
 # Install missing Python dependencies from PyPI
@@ -61,15 +61,15 @@ mysql> GRANT ALL PRIVILEGES ON *.* TO '<MYSQLUSR>'@'localhost';
 mysql> CREATE DATABASE <MYSQLDB>;
 mysql> exit;
 ```
+* Replace the appropriate database name (`<MYSQLDB>`), username (`<MYSQLUSR>`) 
+  and password (`<MYSQLPWD>`) in settings.py.
 
 # Configure Solr
 ```
 sudo cp solr/schema.xml /etc/solr/conf/
-sudo /etc/init.d/tomcat7 restart
+sudo /etc/init.d/tomcat8 restart
 ```
-
-* Replace the appropriate database name (`<MYSQLDB>`), username (`<MYSQLUSR>`) 
-  and password (`<MYSQLPWD>`) in settings.py.
+* Make sure solr is running by going to http://127.0.0.1:8983/solr/
 * Run `python manage.py migrate --run-syncdb` to build database schema.
 * Run `python db_load_from_sqldump.py` to load the data into the database.
 * (optional) instead of `db_load_from_sqldump`, you can use `db_load_from_raw_files`
