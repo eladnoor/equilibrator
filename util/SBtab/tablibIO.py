@@ -6,11 +6,10 @@ import tablib
 import tablib.core
 import csv
 import os
-import tablib.packages.odf.opendocument as opendocument
-from tablib.packages.odf.table import Table, TableRow, TableColumn, TableCell
-from tablib.packages.odf.text import P
+from tablib.formats import ods
+from tablib.formats._ods import opendocument
+from tablib.formats._xls import xlrd
 from util.SBtab import misc
-import tablib.packages.xlrd as xlrd
 
 
 def sheets(self):  # Added to excess sheets of Databook
@@ -74,8 +73,10 @@ def importBook(fpath):
         return loadODS(fpath, True, False)  # Second flag is for set import only
     elif file_mimetype == 'application/vnd.ms-excel' or file_mimetype == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
         return loadXLS(fpath, True, False)
+    elif file_mimetype == 'text/tab-separated-values':
+        return loadTSV(fpath, True)
     else:
-        raise TypeError("%s is not in a supported format" % fpath)
+        raise TypeError("%s is not in a supported format: %s" % (fpath, file_mimetype))
 
 
 def loadCSV(fpath, headers):
@@ -214,16 +215,16 @@ def loadODS(fpath, headers, set_only):
         def __init__(self, file):
             self.doc = opendocument.load(file)
             self.SHEETS = {}
-            for sheet in self.doc.spreadsheet.getElementsByType(Table):
+            for sheet in self.doc.spreadsheet.getElementsByType(ods.table.Table):
                 self.readSheet(sheet)
 
         # reads a sheet in the sheet dictionary, storing each sheet as an array
         # (rows) of arrays (columns)
         def readSheet(self, sheet):
             name = sheet.getAttribute("name")
-            rows = sheet.getElementsByType(TableRow)
+            rows = sheet.getElementsByType(ods.table.TableRow)
             arrRows = []
-            cols = sheet.getElementsByType(TableColumn)
+            cols = sheet.getElementsByType(ods.table.TableColumn)
             try:
                 longestRow = int(max([col.getAttribute("numbercolumnsrepeated") for col in cols]))
             except:
@@ -232,7 +233,7 @@ def loadODS(fpath, headers, set_only):
             for row in rows:
                 row_comment = ""
                 arrCells = []
-                cells = row.getElementsByType(TableCell)
+                cells = row.getElementsByType(ods.table.TableCell)
 
                 # for each cell
                 # get longestRow to not fill empty rows with blanks, shortens runtime
@@ -242,14 +243,14 @@ def loadODS(fpath, headers, set_only):
                     if(not repeat):
                         repeat = 1
 
-                    ps = cell.getElementsByType(P)
+                    ps = cell.getElementsByType(ods.table.P)
                     textContent = ""
 
                     # for each text node
                     for p in ps:
                         for n in p.childNodes:
                             if (n.nodeType == 3):
-                                textContent = textContent + unicode(n.data)
+                                textContent = textContent + str(n.data, 'utf-8')
 
                     if(textContent):
                         if(textContent[0] != "#"):  # ignore comments cells
@@ -308,7 +309,7 @@ def loadODS(fpath, headers, set_only):
 
 def writeCSV(data, fpath):
     outputfile = open(fpath + '.csv', 'wb')
-    print 'c'
+    print('c')
     try:
         outputfile.write(data.csv)
         outputfile.close()
@@ -320,8 +321,7 @@ def writeCSV(data, fpath):
             outputfile.close()
 
 def writeTSV(data, fpath):
-    outputfile = open(fpath + '.tsv', 'wb')
-    print 't'
+    outputfile = open(fpath + '.tsv', 'w')
     try:
         outputfile.write(data.tsv)
         outputfile.close()

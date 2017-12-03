@@ -222,7 +222,7 @@ def LoadKeggCompoundNames(kegg_names_filename=COMPOUND_NAME_FILE,
         else:
             raise ValueError('Unknown command: %s' % command)
 
-    for compound_id, names in sorted(cid2names.iteritems()):
+    for compound_id, names in sorted(cid2names.items()):
         names = map(apps.get_model('gibbs.CommonName').GetOrCreate,
                     names + [compound_id])
 

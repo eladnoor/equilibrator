@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 import logging
-import settings
+from equilibrator import settings
 import time
 import datetime
 import numpy

@@ -11,7 +11,7 @@ from optparse import OptionParser
 django_utils.SetupDjango()
 
 from gibbs import models
-from gibbs import constants
+from util import constants
 
 # Column names
 KEGG_ID = '!Identifiers:kegg.compound'

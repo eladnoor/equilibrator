@@ -10,7 +10,7 @@ from django.http import Http404
 from django.db import models
 from django.utils.text import slugify
 from django.apps import apps
-from .. import constants
+from util import constants
 from .. import formula_parser
 from .. import conditions
 from util.thumbnail import InChI2Thumbnail
@@ -142,7 +142,8 @@ class Specie(models.Model):
     formation_energy = models.FloatField()
 
     # The source of this value.
-    formation_energy_source = models.ForeignKey(ValueSource, null=True)
+    formation_energy_source = models.ForeignKey(ValueSource,
+                                                on_delete=models.CASCADE)
 
     # The phase (s, l, g, or aq)
     phase = models.CharField(max_length=10,
@@ -205,7 +206,8 @@ class SpeciesGroup(models.Model):
     priority = models.IntegerField()
 
     # The source of these values.
-    formation_energy_source = models.ForeignKey(ValueSource)
+    formation_energy_source = models.ForeignKey(ValueSource,
+                                                on_delete=models.CASCADE)
 
     def __init__(self, *args, **kwargs):
         super(SpeciesGroup, self).__init__(*args, **kwargs)
@@ -275,7 +277,7 @@ class SpeciesGroup(models.Model):
             # Use the fact that we take a log later to offset all values by a
             # constant (the minimum value).
             total = scaled_transforms[0]
-            for i in xrange(1, len(scaled_transforms)):
+            for i in range(1, len(scaled_transforms)):
                 total = numpy.logaddexp(total, scaled_transforms[i])
             dg0_prime = -constants.RT * total
         else:
@@ -315,7 +317,8 @@ class Compound(models.Model):
     inchi = models.CharField(max_length=2048, null=True)
 
     # The main name of the compound.
-    name = models.ForeignKey(CommonName, related_name='primary_name_of')
+    name = models.ForeignKey(CommonName, on_delete=models.CASCADE,
+                             related_name='primary_name_of')
 
     # A list of common names of the compound, used for searching.
     common_names = models.ManyToManyField(CommonName)
@@ -419,7 +422,7 @@ class Compound(models.Model):
         Slug will also never begin with a number to avoid
         confusing the reaction parser.
         """
-        slug = 'C_%s' % slugify(unicode(self.name))
+        slug = 'C_%s' % slugify(str(self.name))
         return slug.replace('-', '_')
 
     def DeltaG0Prime(self, aq_params,
@@ -678,8 +681,8 @@ class Compound(models.Model):
         """Return a single string identifier of this Compound."""
         names = self.all_common_names
         if names:
-            return unicode(names[0])
-        return unicode(self.formula)
+            return str(names[0])
+        return str(self.formula)
 
     @staticmethod
     def GetCompoundsByKeggId(kegg_ids):
@@ -699,7 +702,7 @@ class Compound(models.Model):
 class Reactant(models.Model):
     """A compound and its coefficient."""
     # The compound.
-    compound = models.ForeignKey(Compound)
+    compound = models.ForeignKey(Compound, on_delete=models.CASCADE)
 
     # The coeff.
     coeff = models.FloatField(default=1.0)

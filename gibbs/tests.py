@@ -1,16 +1,47 @@
-#!/usr/bin/python
+from django.test import TestCase
 
-import itertools, json
 import unittest
-import util.django_utils
+import json
+import itertools
+from gibbs import models_test
+from gibbs import reaction_test
+from gibbs import formula_parser
 from gibbs.reaction import Reaction
-
-# NOTE(flamholz): This is crappy. We're using the real database for
-# a unit test. I wish I knew of a better way.
-
 from gibbs import models
+from gibbs import reaction
 
-
+# Create your tests here.
+def gibbs_test():
+    test_modules = (models_test,
+                    reaction_test)
+    
+    modules_str = ', '.join(m.__name__ for m in test_modules)
+    print('Running test suites from modules %s' % modules_str)
+    
+    suites = [m.Suite() for m in test_modules]
+    alltests = unittest.TestSuite(suites)
+    
+    runner = unittest.TextTestRunner()
+    runner.run(alltests)
+    
+class FormulaParserTest(unittest.TestCase):
+    
+    def testGetAtomBag(self):
+        # (formula, bag)
+        test_data = ((None, None),
+                     ('C12H22O11', {'C': 12, 'H': 22, 'O': 11}),
+                     ('C10H16N5O12P3S', {'C': 10, 'H': 16, 'N': 5,
+                                         'O': 12, 'P': 3, 'S': 1}),
+                     ('C10R11H16N5O12P3S', {'C': 10, 'H': 16, 'O': 12, 'N': 5, 'P': 3, 'S': 1, 'R': 11}),
+                     ('C14H20O4(C5H8)n', {'H': 820, 'C': 514, 'O': 4}),
+                     ('C34H32FeN4O4', {'H': 32, 'C': 34, 'Fe': 1, 'O': 4, 'N': 4}))
+        
+        parser = formula_parser.FormulaParser()
+        for formula, expected_bag in test_data:
+            #parser.GetAtomBag(formula)
+            self.assertEqual(expected_bag, parser.GetAtomBag(formula))
+  
+ 
 class SpeciesFormationEnergyTest(unittest.TestCase):
     """Tests for SpeciesFormationEnergy"""
         
@@ -208,16 +239,31 @@ class ReactionTest(unittest.TestCase):
                 }
             """)
         rxn = Reaction.FromJson(parsed_json)
-        print str(rxn)
+        print(str(rxn))
 
+class CompoundWithCoeffTest(unittest.TestCase):
+    
+    def setUp(self):
+        self.compound = models.Compound(kegg_id='fake compound',
+                                        formula='C10H16N5O12P3S')
+    
+    def testMinus(self):
+        c_w_coeff = reaction.CompoundWithCoeff(coeff=4, compound=self.compound,
+                                               name='foo')
+        minus_c = c_w_coeff.Minus()
+        self.assertEquals(-4, minus_c.coeff)
+        
+    def testMicromolarConcentration(self):
+        c_w_coeff = reaction.CompoundWithCoeff(coeff=4, compound=self.compound,
+                                               name='foo', concentration=0.5)
+        self.assertAlmostEqual(5e5, c_w_coeff.micromolar_concentration, 3)
 
 def Suite():
     suites = (unittest.makeSuite(SpeciesFormationEnergyTest, 'test'),
               unittest.makeSuite(CompoundTest, 'test'),
               unittest.makeSuite(StoredReactionTest, 'test'),
-              unittest.makeSuite(ReactionTest, 'test'))
+              unittest.makeSuite(ReactionTest, 'test'),
+              unittest.makeSuite(FormulaParserTest, 'test'),
+              unittest.makeSuite(CompoundWithCoeffTest, 'test')
+              )
     return unittest.TestSuite(suites)
-    
-
-if __name__ == '__main__':
-    unittest.main()

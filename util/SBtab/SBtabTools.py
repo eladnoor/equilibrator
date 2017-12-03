@@ -8,11 +8,9 @@ They can be used to create SBtab objects, by merging strings or read files, resp
 
 import tablib
 import copy
-import os.path
-
 from util.SBtab import SBtab
 from util.SBtab import tablibIO
-
+import os.path
 
 def oneOrMany(spreadsheet_file):
     '''
@@ -52,10 +50,9 @@ def oneOrMany(spreadsheet_file):
     # Return list of tablib objects
     return sbtabs
 
-
 def openSBtab(filepath):
     '''
-    Opens SBtab from file path.
+    Opens SBtab from file. 
 
     Parameters
     ----------
@@ -93,11 +90,9 @@ def openMultipleSBtabFromFile(f):
     '''
     Opens one or more SBtabTables from a file-like object.
     Assumes tab-separated.
-
     Parameters
     ----------
     f : file-like object.
-
     Returns
     ----------
     A list of SBtabTable objects.
@@ -110,8 +105,7 @@ def openMultipleSBtabFromFile(f):
 def createDataset(header_row, columns, value_rows, filename):
     '''
     Creates an SBtab object by merging strings or list of strings.
-    Takes a header row, main column row, and the value rows as lists of
-    strings and returns an SBtab object.
+    Takes a header row, main column row, and the value rows as lists of strings and returns an SBtab object.
 
     Parameters
     ----------

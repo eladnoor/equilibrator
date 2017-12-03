@@ -9,9 +9,9 @@ import json
 from scipy.sparse import csr_matrix
 from django.db import models
 from django.apps import apps
+from util import constants
 from .. import conditions
-from .. import constants
-from compound import CommonName, CompoundWithCoeff
+from .compound import CommonName, CompoundWithCoeff
 
 
 class Preprocessing(object):
@@ -92,7 +92,7 @@ class Preprocessing(object):
         """String representation."""
         left = []
         right = []
-        for kegg_id, coeff in sorted(d.iteritems()):
+        for kegg_id, coeff in sorted(d.items()):
             _s = Preprocessing.WriteCompoundAndCoeff(kegg_id, -coeff)
             if coeff < 0:
                 left.append(_s)
@@ -107,9 +107,9 @@ class Preprocessing(object):
         weights = weights_rc + weights_gc
 
         res = []
-        for j in xrange(Preprocessing.S.shape[1]):
+        for j in range(Preprocessing.S.shape[1]):
             d = {Preprocessing.cids[i]: Preprocessing.S[i, j]
-                 for i in xrange(Preprocessing.Nc)
+                 for i in range(Preprocessing.Nc)
                  if Preprocessing.S[i, j] != 0}
             r_string = Preprocessing.DictToReactionString(d)
             res.append({'w': weights[0, j],
@@ -197,7 +197,7 @@ class Reaction(models.Model):
         # to all reactants.
         priorities = [c.compound.GetSpeciesGroupPriorities()
                       for c in self.reactants]
-        priorities = filter(lambda l: len(l) > 0, priorities)
+        priorities = list(filter(lambda l: len(l) > 0, priorities))
 
         # Someone is missing data!
         if priorities == []:
@@ -379,7 +379,7 @@ class Reaction(models.Model):
         concentrations = list(form.cleaned_reactantsConcentration)
 
         compound_list = []
-        for i in xrange(n_react):
+        for i in range(n_react):
             d = {'coeff': coeffs[i], 'kegg_id': kegg_ids[i], 'name': names[i]}
             if phases != []:
                 d['phase'] = phases[i]
@@ -415,7 +415,7 @@ class Reaction(models.Model):
         if fetch_db_names:
             for d in compound_list:
                 d['name'] = d['compound'].FirstName()
-        reactants = map(CompoundWithCoeff.FromDict, compound_list)
+        reactants = list(map(CompoundWithCoeff.FromDict, compound_list))
         return Reaction(reactants, aq_params=aq_params)
 
     @staticmethod
@@ -435,7 +435,7 @@ class Reaction(models.Model):
                 logging.warning('Failed to fetch atom bag for %s', c.formula)
                 raise ReactantFormulaMissingError(c)
 
-            for atomic_number, atom_count in atom_bag.iteritems():
+            for atomic_number, atom_count in atom_bag.items():
                 new_diff = atom_diff.get(atomic_number, 0) - coeff * atom_count
                 atom_diff[atomic_number] = new_diff
 
@@ -500,7 +500,7 @@ class Reaction(models.Model):
         if query is not None:
             for arrow in constants.POSSIBLE_REACTION_ARROWS:
                 tmp_query = query.replace(arrow, '=>')
-            params.append('query=%s' % urllib.quote(tmp_query))
+            params.append('query=%s' % urllib.parse.quote(tmp_query))
 
         return params
 
@@ -872,7 +872,7 @@ class Reaction(models.Model):
                 self.reactants[first_i].coeff += c.coeff
                 c.coeff = 0
 
-        self.reactants = filter(lambda x: x.coeff != 0, self.reactants)
+        self.reactants = list(filter(lambda x: x.coeff != 0, self.reactants))
 
         # always make sure that H2O is the last reactant (so that it will
         # appear last in the chemical formula)
@@ -888,8 +888,8 @@ class Reaction(models.Model):
             Since we use Bob Alberty's framework for biochemical reactions,
             there is no meaning for having H+ in a reaction.
         """
-        self.reactants = filter(lambda c: c.compound.kegg_id not in
-                                ['C00080', 'C05359'], self.reactants)
+        self.reactants = list(filter(lambda c: c.compound.kegg_id not in
+                                     ['C00080', 'C05359'], self.reactants))
 
     def TryBalanceWithWater(self):
         """Try to balance the reaction with water.
@@ -1148,7 +1148,7 @@ class Reaction(models.Model):
         except ReactantFormulaMissingError:
             return None
         diff.pop('H', 0)
-        extras = filter(lambda t: t[1] > 0, diff.iteritems())
+        extras = list(filter(lambda t: t[1] > 0, diff.items()))
         if not extras:
             return None
 
@@ -1161,7 +1161,7 @@ class Reaction(models.Model):
         except ReactantFormulaMissingError:
             return None
         diff.pop('H', 0)
-        short = filter(lambda t: t[1] < 0, diff.iteritems())
+        short = list(filter(lambda t: t[1] < 0, diff.items()))
         if not short:
             return None
 
@@ -1431,7 +1431,7 @@ class Enzyme(models.Model):
 
     def __unicode__(self):
         """Return a single string identifier of this enzyme."""
-        return unicode(self.FirstName())
+        return str(self.FirstName())
 
     all_common_names = property(lambda self: self.common_names.all())
     all_cofactors = property(lambda self: self.cofactors.all())

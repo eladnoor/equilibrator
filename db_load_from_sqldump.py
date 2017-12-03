@@ -1,22 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import os
 import logging
-import settings
+from equilibrator.settings import DATABASES
 import time
 import datetime
 import numpy
-import django
-import util.django_utils # keep this here, it initializes the DJANGO_SETTINGS_MODULE
 from django.core.management import execute_from_command_line
 
-
 def main():
-    django.setup()
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
+    #django.setup()
     logging.info('> Flushing SQL data')
     execute_from_command_line(['', 'reset_db', '--noinput'])
 
     logging.info('> Loading data from sqldump into MySQL')
-    db_user, db_name, db_pass = map(settings.DATABASES['default'].get, ['USER', 'NAME', 'PASSWORD'])
+    db_user, db_name, db_pass = map(DATABASES['default'].get, ['USER', 'NAME', 'PASSWORD'])
     os.environ['MYSQL_PWD'] = db_pass
     cmd = "gunzip -c data/sqldump.txt.gz | mysql -u %s %s" % (db_user, db_name)
     os.system(cmd)

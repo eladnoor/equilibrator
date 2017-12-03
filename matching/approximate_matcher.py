@@ -1,9 +1,6 @@
 import logging
-import matcher
-try:
-    from nltk.metrics import edit_distance
-except ImportError:
-    from Levenshtein import distance as edit_distance
+from matching import matcher
+from nltk.metrics import edit_distance
 from haystack.query import SearchQuerySet
 
 
@@ -41,7 +38,7 @@ class HaystackApproxMatcher(matcher.Matcher):
         # the query into ngrams and search for those ngrams.
         # Sorting is later taken care of by _GetScore.
         res = []
-        for i in xrange(len(query) - 3):
+        for i in range(len(query) - 3):
             ngram = query[i:i+4]
             auto_res = SearchQuerySet().autocomplete(
                 title_autocomplete=ngram)[:self._max_results]

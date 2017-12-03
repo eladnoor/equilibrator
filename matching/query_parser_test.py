@@ -51,7 +51,7 @@ class TestReactionParser(unittest.TestCase):
                             msg='%s is not a reaction query' % query)
     
     def testParseReactions(self):
-        for reaction_str, expected_results in self.parsable_reactions.iteritems():
+        for reaction_str, expected_results in self.parsable_reactions.items():
             self.assertTrue(self._parser.IsReactionQuery(reaction_str))
             parsed = self._parser.ParseReactionQuery(reaction_str)
             self.assertEquals(expected_results, parsed)

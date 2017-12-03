@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 SBtab
 =====
@@ -14,14 +12,12 @@ Attention: Only 'tsv', 'csv', 'tab' and 'xls' are supported.
 
 See specification for further information.
 """
-
+#!/usr/bin/env python
 import re
 import copy
 import tablib
-
 from util.SBtab import tablibIO
 from util.SBtab import misc
-
 
 tables_without_name = []
 
@@ -43,7 +39,7 @@ class SBtabTable():
     '''
     def __init__(self, table, filename):
         '''
-        Creates SBtab Python object from tablib object.
+        Creates SBtab Python object from tablib object.<
 
         Parameters
         ----------
@@ -54,15 +50,20 @@ class SBtabTable():
         '''
         # Needed to be able to adress it from outside of the class for writing and reading
         self.filename = filename
+        self.table = table
 
         #check if ascii stuff is violated
-        try:
-            self.table = self.checkAscii(table)
-        except:
-            raise SBtabError('This is not a valid SBtab file. Try to check your file with the SBtab validator or read the SBtab specification.')
+        if filename is not None:
+            try:
+                self.table = self.checkAscii(self.table)
+            except:
+                raise SBtabError('This is not a valid SBtab file. '
+                                 'Try to check your file with the SBtab '
+                                 'validator or read the SBtab specification.')
 
         # Delete tablib header to avoid complications
-        if self.table.headers: self.table.headers = None
+        if self.table.headers:
+            self.table.headers = None
 
         # Create all necessary variables
         self.initializeTable()
@@ -77,7 +78,8 @@ class SBtabTable():
         self.header_row = self._getHeaderRow()
 
         # Read the table information from header row
-        (self.table_type, self.table_name, self.table_document, self.table_version, self.unique_key) = self.getTableInformation()
+        (self.table_type, self.table_name, self.table_document,
+         self.table_version, self.unique_key) = self.getTableInformation()
         
         # Read the columns of the table
         (self.columns, self.columns_dict, inserted_column, self.delimiter) = self.getColumns()
@@ -108,7 +110,8 @@ class SBtabTable():
                     new_row.append('Ascii violation error! Please check input file!')
             new_table.append('\t'.join(new_row))
 
-        tablibtable = tablibIO.importSetNew('\n'.join(new_table),self.filename+'.csv')
+        tablibtable = tablibIO.importSetNew('\n'.join(new_table),
+                                            self.filename + '.csv')
 
         return tablibtable
 
@@ -124,7 +127,7 @@ class SBtabTable():
                     header_row = row
                     break
                 elif str(entry).startswith('"!!'):
-                    rm1 = row.replace('""','#')
+                    #rm1 = row.replace('""','#')
                     rm2 = row.remove('"')
                     header_row = rm2.replace('#','"')
                     break
@@ -214,10 +217,9 @@ class SBtabTable():
         '''
         # Save list of main columns
         for row in self.table:
-            first_entry = str(row[0])
-            if first_entry.startswith('!') and not first_entry.startswith('!!'):
-                for entry in row:
-                    delimiter = misc.getDelimiter(row)
+            for entry in row:
+                if str(row[0]).startswith('!') and not str(row[0]).startswith('!!'):
+                    delimiter    = misc.getDelimiter(row)
                     column_names = list(row)
                     break
 
@@ -301,12 +303,12 @@ class SBtabTable():
         ----------
         row : str
             Name of the entry in the first column.
-        column : str
+        column_name : str
             Name of the column (without '!')
         new : str
             New entry.
         '''
-        col = self.columns_dict['!' + column]
+        col = self.columns_dict['!' + column_name]
         for r in self.value_rows:
             if r[0] == name:
                 r[col] = new
@@ -591,6 +593,19 @@ class SBtabTable():
 
     def toDataFrame(self):
         import pandas as pd
-        column_names = map(lambda s: s[1:], self.columns)
+        column_names = list(map(lambda s: s[1:], self.columns))
         df = pd.DataFrame(data=self.getRows(), columns=column_names)
         return df
+    
+    @staticmethod
+    def fromDataFrame(df, document_name, table_type, table_name,
+                      document, unit, sbtab_version='1.0'):
+        table = tablib.Dataset()
+        header = "!!SBtab DocumentName='%s' TableType='%s' TableName='%s' Document='%s' Unit='%s' SBtabVersion='%s'" % \
+            (document_name, table_type, table_name, document, unit, sbtab_version)
+        table.rpush([header] + [''] * (df.shape[1]-1))
+        table.rpush(list(map(lambda s: '!' + s, df.columns)))
+        for i, row in df.iterrows():
+            table.append(row.tolist())
+        return SBtabTable(table, None)
+        

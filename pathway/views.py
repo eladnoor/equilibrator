@@ -1,13 +1,13 @@
-import logging
 import io
+import logging
 import os
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.template.context_processors import csrf
-from gibbs import constants, pathway_result_page
-from gibbs.forms import AnalyzePathwayModelForm, BuildPathwayModelForm
-from pathways import ParsedPathway, PathwayParseError
-
+from .forms import AnalyzePathwayModelForm, BuildPathwayModelForm
+from util import constants
+from . import pathway_result_page
+from . import ParsedPathway, PathwayParseError
 
 def DefinePathwayPage(request):
     """Renders the landing page."""
@@ -24,7 +24,7 @@ def PathwayResultPage(request):
         return HttpResponseBadRequest('Invalid pathway form.')
 
     try:
-        f_data = unicode(request.FILES['pathway_file'].read())
+        f_data = str(request.FILES['pathway_file'].read())
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
         reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs(sio)
         pp = ParsedPathway.from_full_sbtab(
@@ -67,7 +67,7 @@ def BuildPathwayModel(request):
             fname_base, aq_params.pH, aq_params.ionic_strength)
         logging.info(output_fname)
 
-        f_data = unicode(f.read())
+        f_data = str(f.read())
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
         pp = ParsedPathway.from_csv_file(
             sio, bounds=bounds, aq_params=aq_params)

@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
 from gibbs.conditions import AqueousParams
-from pathways.bounds import Bounds
-from pathways.concs import ConcentrationConverter
+from .bounds import Bounds
+from .concs import ConcentrationConverter
 from util.SBtab import SBtabTools
-from os import path
+import os
 
-RELPATH = path.dirname(path.realpath(__file__))
-COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
+from equilibrator.settings import BASE_DIR
+COFACTORS_FNAME = os.path.join(BASE_DIR, 'pathway/data/cofactors.csv')
 
 
 def make_aq_params(form):

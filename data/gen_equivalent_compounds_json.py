@@ -27,7 +27,7 @@ def main():
     seen_compounds = set()
     reduced_classes = []
     
-    for key, eq_class in equivalence_classes.iteritems():
+    for key, eq_class in equivalence_classes.items():
         if key in seen_compounds:
             continue
         

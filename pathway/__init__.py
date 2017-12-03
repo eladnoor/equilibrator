@@ -2,26 +2,25 @@ import csv
 import logging
 import numpy
 import seaborn
-import StringIO
+from io import StringIO
 
 from django.utils.text import slugify
-from gibbs import constants
+from util import constants
 from gibbs import service_config
 from gibbs.conditions import AqueousParams
 from django.apps import apps
 from matplotlib import pyplot as plt
 from scipy import linalg
-from os import path
-from pathways.bounds import Bounds
-from pathways.concs import ConcentrationConverter
-from pathways.thermo_models import PathwayThermoModel
+import os
+from pathway.bounds import Bounds
+from pathway.concs import ConcentrationConverter
+from pathway.thermo_models import PathwayThermoModel
 
+from equilibrator.settings import BASE_DIR
 
-RELPATH = path.dirname(path.realpath(__file__))
-COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
+COFACTORS_FNAME = os.path.join(BASE_DIR, 'pathway/data/cofactors.csv')
 DEFAULT_BOUNDS = Bounds.from_csv_filename(
     COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
-DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 
 
 class PathwayParseError(Exception):
@@ -229,7 +228,7 @@ class ParsedPathway(object):
 
     def print_reactions(self):
         for f, r in zip(self.fluxes, self.reactions):
-            print '%sx %s' % (f, r)
+            print('%sx %s' % (f, r))
 
     @classmethod
     def from_full_sbtab(self, reaction_sbtab, flux_sbtab,
@@ -279,7 +278,7 @@ class ParsedPathway(object):
         # grab rows containing keqs.
         keqs = keqs_df[keqs_df['QuantityType'] == 'equilibrium constant']
         reaction_keqs = dict(zip(keqs['Reaction'], keqs['Value']))
-        dgs = [-DEFAULT_RT * numpy.log(float(reaction_keqs[rid]))
+        dgs = [-constants.RT * numpy.log(float(reaction_keqs[rid]))
                for rid in reaction_ids]
 
         # Manually set the delta G values on the reaction objects
@@ -322,7 +321,7 @@ class ParsedPathway(object):
             kegg_id = rxn.stored_reaction_id
             rxn_id = kegg_id
             if rxn.catalyzing_enzymes:
-                enz = unicode(rxn.catalyzing_enzymes[0])
+                enz = str(rxn.catalyzing_enzymes[0])
                 enz_slug = slugify(enz)[:10]
                 enz_slug = enz_slug.replace('-', '_')
                 rxn_id = '%s_%s' % (enz_slug, kegg_id)
@@ -368,7 +367,7 @@ class ParsedPathway(object):
         writer.writeheader()
         for i, (rxn_id, rxn, dg) in enumerate(zip(rxn_ids, self.reactions, self.dG0_r_prime)):
             keq_id = 'kEQ_R%d' % i
-            keq = numpy.exp(-dg / DEFAULT_RT)
+            keq = numpy.exp(-dg / constants.RT)
             d = {'!QuantityType': 'equilibrium constant',
                  '!Reaction': rxn_id,
                  '!Value': keq,
@@ -386,7 +385,7 @@ class ParsedPathway(object):
 
         writer = csv.DictWriter(sio, conc_cols, dialect='excel-tab')
         writer.writeheader()
-        for cid, compound in self.compounds_by_kegg_id.iteritems():
+        for cid, compound in self.compounds_by_kegg_id.items():
             d = {'!QuantityType': 'concentration',
                  '!Compound': str(compound.name_slug),
                  '!Compound:Identifiers:kegg.compound': cid,
