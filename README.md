@@ -42,18 +42,22 @@ Python PyPI:
 - Solr (3.6.2)
 - xlrd (1.0.0)
 
-# Install binary dependencies on Ubuntu
+# How to set up your own eQuilibrator web server
+These instructions were tested only on Ubuntu 16.04.1 LTS (64-bit), other GNU/Linux
+distributions might require some adjustment.
+
+## Install binary dependencies on Ubuntu
 ```
 sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
-sudo apt install apache2 solr-common libglpk-dev glpk-utils
+sudo apt install apache2 libapache2-mod-wsgi links solr-common libglpk-dev glpk-utils
 ```
 
-# Install missing Python dependencies from PyPI
+## Install missing Python dependencies from PyPI
 ```
 sudo pip install -r requirements.txt
 ```
 
-# Create MySQL database and user for Django
+## Create MySQL database and user for Django
 ```
 sudo mysql --user=root mysql -p
 mysql> CREATE USER '<MYSQLUSR>'@'localhost' IDENTIFIED BY '<MYSQLPWD>';
@@ -64,10 +68,10 @@ mysql> exit;
 * Replace the appropriate database name (`<MYSQLDB>`), username (`<MYSQLUSR>`) 
   and password (`<MYSQLPWD>`) in settings.py.
 
-# Configure Solr
+## Configure Solr
 ```
 sudo cp solr/schema.xml /etc/solr/conf/
-sudo /etc/init.d/tomcat8 restart
+sudo /etc/init.d/tomcat7 restart
 ```
 * Make sure solr is running by going to http://127.0.0.1:8983/solr/
 * Run `python manage.py migrate --run-syncdb` to build database schema.
@@ -75,20 +79,10 @@ sudo /etc/init.d/tomcat8 restart
 * (optional) instead of `db_load_from_sqldump`, you can use `db_load_from_raw_files`
   which will take much longer (2 hours).
 
-# Running the Development Server on a Remote Host
-
-```
-sudo python manage.py runserver 0.0.0.0:80
-```
-
-Will run the development server on port 80 and allow external IPs to access the server. This is very
-useful for debugging differences between your local and remote environments.
-
-# Setting up Apache + Django eQuilibrator
+## Setting up Apache + Django
 
 * For running eQuilibrator on a web server that can be accessed safely from the internet.
 ```
-sudo apt install apache2 libapache2-mod-wsgi links
 git clone https://github.com/eladnoor/equilibrator.git
 cd equilibrator
 chmod 666 gibbs.log
