@@ -7,14 +7,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import Http404
 from django.apps import apps
-from equilibrator.settings import STATICFILES_DIRS
+from equilibrator.settings import STATIC_ROOT
 from gibbs.forms import CompoundForm, EnzymeForm, SearchForm, \
                         SuggestForm
 from gibbs.forms import ReactionForm, ReactionGraphForm
 from gibbs import conditions, service_config
 from util import django_utils, constants
 
-NO_STRUCTURE_THUMBNAIL = os.path.join(STATICFILES_DIRS[0], 'images',
+NO_STRUCTURE_THUMBNAIL = os.path.join(STATIC_ROOT, 'images',
                                       'structure_not_available.png')
 
 def index(request):
@@ -104,7 +104,7 @@ def SuggestJson(request):
     if query:
         matcher = service_config.Get().search_matcher
         matches = matcher.Match(query)
-        suggestions = [{'value': str(m.key), 'data': {'cat': m.key.TypeStr()}}
+        suggestions = [{'value': m.key.name, 'data': {'cat': m.key.TypeStr()}}
                        for m in matches]
     output = {'query': query,
               'suggestions': suggestions}
@@ -122,12 +122,7 @@ def CompoundImage(request):
     if not compounds:
         return HttpResponseBadRequest('No such compound.')
     compound = compounds[0]
-    if not compound.thumbnail or compound.thumbnail == 'error':
-        logging.info('No structure available for %s' % compound)
-        image_data = open(NO_STRUCTURE_THUMBNAIL, 'r').read()
-
-    else:
-        image_data = base64.decodestring(compound.thumbnail)
+    image_data = base64.b64decode(compound.thumbnail)
     return HttpResponse(image_data, content_type='image/png')
 
 

@@ -1,18 +1,15 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import logging
 import time
 import datetime
 import sys
 import numpy
-import util.django_utils # keep this here, it initializes the DJANGO_SETTINGS_MODULE
 from util import database_io
 from django.db import transaction
 from distutils.util import strtobool
-import django
 from django.core.management import execute_from_command_line
 
 def main(draw_thumb=False, export_csv=False):
-    django.setup()
     logging.info('> Flushing SQL data')
     execute_from_command_line(['', 'flush', '--noinput'])
 
@@ -54,8 +51,11 @@ def main(draw_thumb=False, export_csv=False):
         logging.info('> Exporting database to JSON and CSV files')
         database_io.export_database()
 
-    logging.info('> Rebuilding Solr index')
-    execute_from_command_line(['', 'rebuild_index', '--noinput'])
+    logging.info('> Clearing Solr index\n')
+    execute_from_command_line(['', 'clear_index', '--noinput'])
+
+    logging.info('> Building Solr index\n')
+    execute_from_command_line(['', 'update_index'])
 
 def user_yes_no_query(question, default=False):
     if default:

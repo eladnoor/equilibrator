@@ -4,13 +4,13 @@ import csv
 import sys
 import json
 import logging
-
-from util import django_utils
+import django
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'equilibrator.settings'
+django.setup()
+from django.apps import apps
 from optparse import OptionParser
-
-django_utils.SetupDjango()
-
-from gibbs import models
+from gibbs.conditions import AqueousParams
 from util import constants
 
 # Column names
@@ -21,9 +21,7 @@ SOURCE = '!Source'
 FORMATION = '!FormationEnergy'
 ROW_ORDER = [NAME, KEGG_ID, INCHI, FORMATION, SOURCE]
 
-
-def GenFormationEnergyData(pH=constants.DEFAULT_PH,
-                          ionic_strength=constants.DEFAULT_IONIC_STRENGTH):
+def GenFormationEnergyData(aq_params):
     """Returns a list of dictionaries of compound formation energies.
     
     TODO(flamholz): return data from multiple sources per compound when possible.
@@ -33,8 +31,8 @@ def GenFormationEnergyData(pH=constants.DEFAULT_PH,
         ionic_strength: the ionic strength.
     """
     dicts = []
-    for compound in models.Compound.objects.all():
-        dG = compound.DeltaG0Prime(pH=pH, ionic_strength=ionic_strength)
+    for compound in apps.get_model('gibbs.Compound').objects.all():
+        dG = compound.DeltaG0Prime(aq_params=aq_params)
         if dG:
             dG = round(dG, 3)
         
@@ -52,7 +50,6 @@ def GenFormationEnergyData(pH=constants.DEFAULT_PH,
         dicts.append(d)
     return dicts
 
-
 def MakeOpts():
     """Returns an OptionParser object with all the default options."""
     opt_parser = OptionParser()
@@ -66,7 +63,6 @@ def MakeOpts():
                           help="The name of the file to write csv output to.")
     return opt_parser
 
-
 def WriteHeader(dict_writer, row_order=ROW_ORDER):
     """writeheader() is new in Python 2.7"""
     if hasattr(dict_writer, 'writeheader'):
@@ -74,20 +70,20 @@ def WriteHeader(dict_writer, row_order=ROW_ORDER):
     else:
         dict_writer.writer.writerow(ROW_ORDER)
 
-
 def main():
     options, _ = MakeOpts().parse_args(sys.argv)
-    print 'Using pH = %.2f and ionic strength = %.3f' % (options.pH,
-                                                         options.ionic_strength)
+    print('Using pH = %.2f and ionic strength = %.3f' % (options.pH,
+                                                         options.ionic_strength))
     output_name = '%s_pH%.2f_is%.3f' % (options.output_name, options.pH,
-                                    options.ionic_strength)
+                                        options.ionic_strength)
     output_tsv_name = output_name + '.tsv'
     output_json_name = output_name + '.json'
-    print 'Will write tsv output to %s' % output_tsv_name
-    print 'Will write json output to %s' % output_json_name
+    print('Will write tsv output to %s' % output_tsv_name)
+    print('Will write json output to %s' % output_json_name)
 
-    dicts = GenFormationEnergyData(pH=options.pH,
-                                   ionic_strength=options.ionic_strength)
+    aq_params = AqueousParams(pH=options.pH,
+                              ionic_strength=options.ionic_strength)
+    dicts = GenFormationEnergyData(aq_params)
     sorted_data = sorted(dicts, key=lambda x: (x[KEGG_ID], x[SOURCE]))
     csv_file = open(output_tsv_name, 'w')
     writer = csv.DictWriter(csv_file, ROW_ORDER, dialect=csv.excel_tab)
@@ -98,11 +94,9 @@ def main():
     json_file = open(output_json_name, 'w')
     json.dump(sorted_data, json_file, sort_keys=True, indent=4)
     json_file.close()
-    
-    print 'Done.'
+    print('Done.')
             
-
 if __name__ == '__main__':
     main()
-                
-                
+
+

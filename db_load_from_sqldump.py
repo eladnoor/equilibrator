@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 import os
 import logging
-from equilibrator.settings import DATABASES
 import time
 import datetime
 import numpy
+from equilibrator.settings import DATABASES
 from django.core.management import execute_from_command_line
 
 def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
-    #django.setup()
+    logging.getLogger().setLevel(logging.INFO)
     logging.info('> Flushing SQL data')
-    execute_from_command_line(['', 'reset_db', '--noinput'])
+    execute_from_command_line(['', 'flush', '--noinput'])
 
     logging.info('> Loading data from sqldump into MySQL')
     db_user, db_name, db_pass = map(DATABASES['default'].get, ['USER', 'NAME', 'PASSWORD'])
@@ -19,8 +19,11 @@ def main():
     cmd = "gunzip -c data/sqldump.txt.gz | mysql -u %s %s" % (db_user, db_name)
     os.system(cmd)
 
-    logging.info('> Rebuilding Solr index\n')
-    execute_from_command_line(['', 'rebuild_index', '--noinput'])
+    logging.info('> Clearing Solr index\n')
+    execute_from_command_line(['', 'clear_index', '--noinput'])
+
+    logging.info('> Building Solr index\n')
+    execute_from_command_line(['', 'update_index'])
 
 if __name__ == '__main__':
     logging.info('Welcome to the sql_load script')

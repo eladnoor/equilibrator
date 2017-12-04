@@ -1054,6 +1054,8 @@ class Reaction(models.Model):
         """
         dg0_prime = self.DeltaG0Prime()
         correction = self._GetConcentrationCorrectionMilliMolar()
+        if dg0_prime is None:
+            return None
         return dg0_prime + correction
 
     def DeltaGPrime(self):
@@ -1064,6 +1066,8 @@ class Reaction(models.Model):
         """
         dg0_prime = self.DeltaG0Prime()
         correction = self._GetConcentrationCorrection()
+        if dg0_prime is None:
+            return None
         return dg0_prime + correction
 
     def HalfReactionDeltaGPrime(self):

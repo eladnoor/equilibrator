@@ -652,6 +652,9 @@ class Compound(models.Model):
             return None
         else:
             return json.loads(self.group_vector)
+        
+    def _GetAllCommonNames(self):
+        return map(lambda x: x.name, self.common_names.all())
 
     _species_group = property(GetSpeciesGroupToUse)
     first_name = property(FirstName)
@@ -660,7 +663,7 @@ class Compound(models.Model):
     link = property(GetLink)
     kegg_link = property(GetKeggLink)
     small_image_url = property(GetSmallImageUrl)
-    all_common_names = property(lambda self: self.common_names.all())
+    all_common_names = property(_GetAllCommonNames)
     all_species = property(GetSpecies)
     all_species_groups = property(GetSpeciesGroups)
     has_species_groups = property(HasSpeciesGroups)

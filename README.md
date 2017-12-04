@@ -18,29 +18,27 @@ to develop and set up on that operating system. Setup instructions
 below are really only for Ubuntu users.
 
 # Dependencies
-- python 2.7
+- python 3.5+
 - mysql-server (5.7.16)
-- python-glpk
-- glpk-tools
+- glpk-utils (4.63)
+- libglpk-dev (4.63)
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
 Python PyPI:
-- Django (1.10.4)
-- django-extensions (1.7.5)
-- django-haystack (2.5.1)
-- glpk (0.4.52)
-- matplotlib (1.5.3)
-- MySQL-python (1.2.5)
-- nltk (3.2.1)
-- numpy (1.11.3)
-- pandas (0.19.1)
-- pip (9.0.1)
-- PuLP (1.6.1)
-- pyparsing (2.1.10)
-- scipy (0.18.1)
-- seaborn (0.7.1)
-- tablib (0.11.3)
-- Solr (3.6.2)
-- xlrd (1.0.0)
+- Django (2.0)
+- django-extensions (1.9.7)
+- django-haystack (2.6.1)
+- matplotlib (2.1.0)
+- mysqlclient (1.3.12)
+- nltk (3.2.5)
+- numpy (1.13.3)
+- pandas (0.21.0)
+- pulp (1.6.8)
+- pyparsing (2.2.0)
+- scipy (1.0.0)
+- seaborn (0.8.1)
+- tablib (0.12.1)
+- solr (0.4)
+- xlrd (1.1.0)
 
 # Install binary dependencies on Ubuntu
 ```
@@ -67,9 +65,9 @@ mysql> exit;
 # Configure Solr
 ```
 sudo cp solr/schema.xml /etc/solr/conf/
-sudo /etc/init.d/tomcat8 restart
+sudo /etc/init.d/tomcat7 restart
 ```
-* Make sure solr is running by going to http://127.0.0.1:8983/solr/
+* Make sure solr is running by going to http://127.0.0.1:8080/solr/
 * Run `python manage.py migrate --run-syncdb` to build database schema.
 * Run `python db_load_from_sqldump.py` to load the data into the database.
 * (optional) instead of `db_load_from_sqldump`, you can use `db_load_from_raw_files`
@@ -91,7 +89,9 @@ useful for debugging differences between your local and remote environments.
 sudo apt install apache2 libapache2-mod-wsgi links
 git clone https://github.com/eladnoor/equilibrator.git
 cd equilibrator
+touch gibbs.log
 chmod 666 gibbs.log
+sudo python3 manage.py collectstatic
 sudo cp ~/equilibrator/apache/default.conf /etc/apache2/sites-available/000-default.conf
 sudo a2enmod wsgi
 sudo apache2ctl restart

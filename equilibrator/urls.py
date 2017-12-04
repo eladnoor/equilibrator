@@ -33,4 +33,4 @@ urlpatterns = [
     path(r'suggest', views.SuggestJson),
     path('pathway/', include('pathway.urls')),
     path(r'robots\.txt', TemplateView.as_view(template_name='robots.txt')),
-]
+] 

@@ -29,7 +29,7 @@ SECRET_KEY = '74z!c1lqiq%_j(s$1fvl)ovnc07x-1v&%km%$$u=b(4plv(u$+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 ADMINS = (
     ('Avi Flamholz', 'flamholz@gmail.com'),
@@ -102,7 +102,7 @@ DATABASES = {
 HAYSTACK_CONNECTIONS = {
     'default': {
                 'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-                'URL': 'http://127.0.0.1:8983/solr/django_10',
+                'URL': 'http://127.0.0.1:8080/solr',
                 },
 }
 
@@ -144,26 +144,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_ROOT = '/var/www/html/equilibrator/static'
 
 MEDIA_URL = 'http://127.0.0.1:8000/media/'
 
-LOGGING_CONFIG = None
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': '/path/to/django/debug.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
