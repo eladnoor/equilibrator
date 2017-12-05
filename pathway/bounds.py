@@ -167,6 +167,8 @@ class Bounds(BaseBounds):
         return bounds
 
     def _check_bounds(self):
+        if self.default_lb is None or self.default_ub is None:
+            return
         if self.default_lb > self.default_ub:
             msg = (
                 'Default lower bound %.2g > default upper bound %.2g' %

@@ -78,7 +78,7 @@
                 </tr>
             {% for cdata in mdf_result.compound_data %}
                 <tr>
-                    <td><a href='{{cdata.link_url}}'>{{cdata.compound}}</a></td>
+                    <td><a href='{{cdata.link_url}}'>{{cdata.compound_name}}</a></td>
                     <td>{{cdata.html_concentration|safe}}</td>
                     <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_lb|safe}}</td>
                     <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_ub|safe}}</td>

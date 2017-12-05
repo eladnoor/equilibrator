@@ -24,7 +24,7 @@ def PathwayResultPage(request):
         return HttpResponseBadRequest('Invalid pathway form.')
 
     try:
-        f_data = str(request.FILES['pathway_file'].read())
+        f_data = str(request.FILES['pathway_file'].read(), encoding="ascii")
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
         reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs(sio)
         pp = ParsedPathway.from_full_sbtab(

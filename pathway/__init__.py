@@ -430,6 +430,10 @@ class CompoundMDFData(object):
         self.lb, self.ub = concentration_bounds
 
     @property
+    def compound_name(self):
+        return self.compound.name.name
+
+    @property
     def link_url(self):
         return '/compound?compoundId=%s' % self.compound.kegg_id
 
@@ -501,7 +505,7 @@ class PathwayMDFData(object):
     def conc_plot_svg(self):
         ys = numpy.arange(0, len(self.compound_data))
         concs = numpy.array([c.concentration for c in self.compound_data])
-        cnames = [str(c.compound) for c in self.compound_data]
+        cnames = [str(c.compound_name) for c in self.compound_data]
         default_lb = self.model.concentration_bounds.default_lb
         default_ub = self.model.concentration_bounds.default_ub
 
@@ -535,7 +539,7 @@ class PathwayMDFData(object):
 
         plt.xticks(family='sans-serif', figure=conc_figure)
         plt.yticks(ys, cnames, family='sans-serif',
-            fontsize=6, figure=conc_figure)
+            fontsize=8, figure=conc_figure)
         plt.xlabel('Concentration (M)', family='sans-serif',
             figure=conc_figure)
         plt.xscale('log')
@@ -543,7 +547,7 @@ class PathwayMDFData(object):
         plt.xlim(1e-7, 1.5e2)
         plt.ylim(-1.5, len(self.compound_data) + 0.5)
 
-        svg_data = StringIO.StringIO()
+        svg_data = StringIO()
         conc_figure.savefig(svg_data, format='svg')
         return svg_data.getvalue()
 
@@ -570,6 +574,6 @@ class PathwayMDFData(object):
         plt.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)", family='sans-serif')
         plt.legend(loc=3)
 
-        svg_data = StringIO.StringIO()
+        svg_data = StringIO()
         mdf_fig.savefig(svg_data, format='svg')
         return svg_data.getvalue()

@@ -2,8 +2,8 @@ import logging
 import numpy
 import pulp
 
-from matching import query_parser
 from util import constants
+from pathway import bounds
 
 DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 
@@ -93,7 +93,8 @@ class PathwayThermoModel(object):
         self.fluxes = numpy.matrix(self.fluxes)
         assert self.fluxes.shape[1] == self.Nr, 'Fluxes required for all reactions'
 
-        self.I_dir = numpy.matrix(numpy.diag(map(numpy.sign, self.fluxes.flat)))
+        _I_dir = list(map(numpy.sign, self.fluxes.flat))
+        self.I_dir = numpy.matrix(numpy.diag(_I_dir))
         self.Nr_active = int(sum(self.fluxes.T != 0))
 
         self.cids = cids
@@ -329,6 +330,10 @@ class PathwayThermoModel(object):
         Returns:
             A 2 (optimal dGfs, optimal concentrations, optimal mdf).
         """
+        
+        def get_pulp_result_as_matrix(x):
+            return numpy.matrix(list(map(pulp.value, x))).T
+        
         lp_primal, primal_obj, y, l, B = self._MakeMDFProblem()
         lp_primal.solve(self.pulp_solver)
 
@@ -337,11 +342,11 @@ class PathwayThermoModel(object):
             raise pulp.solvers.PulpSolverError(
                 "Cannot solve MDF primal optimization problem")
 
-        y = numpy.matrix(map(pulp.value, y)).T
-        l = numpy.matrix(map(pulp.value, l)).T
+        y = get_pulp_result_as_matrix(y)
+        l = get_pulp_result_as_matrix(l)
         mdf = pulp.value(B)
         conc = numpy.exp(l)
-        dG0_r_prime = self.dG0_r_prime + numpy.dot(self.dG0_r_std, y)
+        #dG0_r_prime = self.dG0_r_prime + numpy.dot(self.dG0_r_std, y)
 
         lp_dual, dual_obj, w, g, z, u = self._MakeMDFProblemDual()
         lp_dual.solve(self.pulp_solver)
@@ -354,11 +359,11 @@ class PathwayThermoModel(object):
             raise pulp.solvers.PulpSolverError("Primal != Dual (%.5f != %.5f)"
             % (primal_obj, dual_obj))
 
-        w = map(pulp.value, w)
-        z = map(pulp.value, z)
-        u = map(pulp.value, u)
-        reaction_prices = numpy.matrix(w).T
-        compound_prices = numpy.matrix(z).T - numpy.matrix(u).T
+        w = get_pulp_result_as_matrix(w)
+        z = get_pulp_result_as_matrix(z)
+        u = get_pulp_result_as_matrix(u)
+        reaction_prices = w
+        compound_prices = z - u
 
         ret = MDFResult(self, mdf, conc, y, reaction_prices, compound_prices)
 
