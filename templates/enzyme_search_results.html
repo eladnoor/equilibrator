@@ -6,7 +6,7 @@
         <table class="enzymeInfo">
             <tr class="infoTableHeader">
                 <th colspan="100%">
-                    <a href="{{ result.value.link }}">{{ result.key.name }}</a> (EC {{ result.value.ec }})
+                    <a href="{{ result.value.link }}">{{ result.key }}</a> (EC {{ result.value.ec }})
                 </th>
             </tr>
             {% for reaction in result.value.all_reactions|slice:":3" %}

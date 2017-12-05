@@ -104,8 +104,7 @@ def SuggestJson(request):
     if query:
         matcher = service_config.Get().search_matcher
         matches = matcher.Match(query)
-        suggestions = [{'value': m.key.name, 'data': {'cat': m.key.TypeStr()}}
-                       for m in matches]
+        suggestions = [m.ToDictForJSON() for m in matches]
     output = {'query': query,
               'suggestions': suggestions}
     json_data = json.dumps(output)

@@ -1,14 +1,9 @@
-import itertools
 import logging
 from haystack.query import SearchQuerySet
 from django.apps import apps
 
 
-class Error(Exception):
-    pass
-
-
-class IllegalQueryError(Error):
+class IllegalQueryError(Exception):
     pass
 
 
@@ -57,6 +52,9 @@ class Match(object):
         elif self.IsEnzyme():
             return self.value.ec
         return None
+
+    def ToDictForJSON(self):
+        return {'value': self.key, 'data': {'cat': self.TypeStr()}}
 
 
 class Matcher(object):
@@ -129,11 +127,13 @@ class Matcher(object):
         Returns:
             A list of CommonName objects matching the query.
         """
-        try:
-            res = SearchQuerySet().filter(text__exact=query).best_match()
-            return [res.object]
-        except Exception as e:
-            logging.debug('Query "%s" failed: %s', query, str(e))
+        res = SearchQuerySet().filter(text__exact=query)
+        if len(res) > 0:
+            res_best = res.best_match()
+            logging.debug('Exact match for "%s" found', query)
+            return [res_best.object]
+        else:
+            logging.debug('No exact match for "%s"', query)
             return []
 
     def _MakeMatchObjects(self, common_names):
@@ -148,11 +148,11 @@ class Matcher(object):
         matches = []
         for name in common_names:
             for compound in name.compound_set.all():
-                matches.append(Match(name, compound, 0.0))
+                matches.append(Match(name.name, compound, 0.0))
 
             if self._match_enzymes:
                 for enzyme in name.enzyme_set.all():
-                    matches.append(Match(name, enzyme, 0.0))
+                    matches.append(Match(name.name, enzyme, 0.0))
 
         return matches
 
@@ -186,26 +186,26 @@ class Matcher(object):
         Args:
             matches: an unfiltered list of match objects.
         """
+        
         # Filter matches without data or beneath the score limit.
         filtered = filter(
             lambda match: (match.score >= self._min_score and match.value),
             matches)
 
-        # Take only unique matches.
-        filtered_matches = []
-        for _, g in itertools.groupby(filtered, key=lambda match: match.Key()):
-            # Keep the unique match with the top score.
-            max_match = None
-            for match in g:
-                if not max_match or max_match.score < match.score:
-                    max_match = match
-            filtered_matches.append(max_match)
-
-        return filtered_matches
+        # For every unique key, keep only the match with the highest score.
+        # We do this by first sorting by the scores, and then throwing away
+        # duplicates in order.
+        filtered_matches = {}
+        for m in sorted(filtered, key=lambda m: m.score, reverse=True):
+            if m.Key() in filtered_matches:
+                continue
+            filtered_matches[m.Key()] = m
+        return list(filtered_matches.values())
 
     def _SortAndClip(self, matches):
         matches.sort(key=lambda m: m.score, reverse=True)
-        return matches[:self._max_results]
+        matches = matches[:self._max_results]
+        return matches        
 
     def Match(self, query):
         """Find matches for the query in the library.
@@ -221,12 +221,13 @@ class Matcher(object):
             raise IllegalQueryError('%s is not a valid query' % query)
 
         processed_query = self._PreprocessQuery(query)
-        logging.debug('Query = %s' % processed_query)
+        logging.debug('Query = %s', processed_query)
         name_matches = self._FindNameMatches(processed_query)
-        logging.debug('Found %d name matches' % len(name_matches))
+        logging.debug('%d matches found before filtering', len(name_matches))
 
         matches = self._MakeMatchObjects(name_matches)
         self._ScoreMatches(processed_query, matches)
+        
         matches = self._FilterMatches(matches)
-        logging.debug('Found %d matches' % len(matches))
+        logging.debug('%d matches remained after filtering', len(matches))
         return self._SortAndClip(matches)
