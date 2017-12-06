@@ -42,8 +42,7 @@ Python PyPI:
 
 # Install binary dependencies on Ubuntu
 ```
-sudo apt install mysql-server libmysqlclient-dev python3-pip python3-dev 
-sudo apt install apache2 libapache2-mod-wsgi-py3 solr-common libglpk-dev glpk-utils
+sudo apt install mysql-server libmysqlclient-dev python3-pip python3-dev solr-common libglpk-dev glpk-utils
 ```
 
 # Install missing Python dependencies from PyPI
@@ -84,15 +83,18 @@ useful for debugging differences between your local and remote environments.
 
 # Setting up Apache + Django eQuilibrator
 
-* For running eQuilibrator on a web server that can be accessed safely from the internet.
+For running eQuilibrator on a web server that can be accessed safely from the internet.
+Open the file equilibrator/settings.py for editing:
+* add the IP of the server to the ALLOWED_HOSTS
+* change DEBUG to False
+* run the following from the command line:
 ```
-sudo apt install apache2 libapache2-mod-wsgi links
+sudo apt install apache2 libapache2-mod-wsgi-py3 links
 git clone https://github.com/eladnoor/equilibrator.git
 cd equilibrator
-touch gibbs.log
-chmod 666 gibbs.log
 sudo python3 manage.py collectstatic
-sudo cp ~/equilibrator/apache/default.conf /etc/apache2/sites-available/000-default.conf
+sudo cp apache/default.conf /etc/apache2/sites-available/000-default.conf
 sudo a2enmod wsgi
 sudo apache2ctl restart
 ```
+
