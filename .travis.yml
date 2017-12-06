@@ -5,7 +5,7 @@ branches:
     - django2
 before_install:
 - sudo apt-get update -qq
-- sudo apt-get install -qq mysql-server libmysqlclient-dev python-pip python-dev libglpk-dev glpk-utils
+- sudo apt-get install -qq mysql-server libmysqlclient-dev glpk-utils
 language: python
 python:
 - 3.4
