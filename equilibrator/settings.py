@@ -29,7 +29,7 @@ SECRET_KEY = '74z!c1lqiq%_j(s$1fvl)ovnc07x-1v&%km%$$u=b(4plv(u$+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver']
 
 ADMINS = (
     ('Avi Flamholz', 'flamholz@gmail.com'),

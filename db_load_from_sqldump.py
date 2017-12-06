@@ -5,10 +5,13 @@ import time
 import datetime
 import numpy
 from equilibrator.settings import DATABASES
+import django
 from django.core.management import execute_from_command_line
 
 def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
+    django.setup()
+
     logging.getLogger().setLevel(logging.INFO)
     logging.info('> Flushing SQL data')
     execute_from_command_line(['', 'flush', '--noinput'])

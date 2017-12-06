@@ -3,13 +3,18 @@ import logging
 import time
 import datetime
 import sys
+import os
 import numpy
 from util import database_io
+import django
 from django.db import transaction
 from distutils.util import strtobool
 from django.core.management import execute_from_command_line
 
 def main(draw_thumb=False, export_csv=False):
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
+    django.setup()
+
     logging.info('> Flushing SQL data')
     execute_from_command_line(['', 'flush', '--noinput'])
 

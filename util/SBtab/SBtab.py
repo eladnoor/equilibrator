@@ -105,7 +105,6 @@ class SBtabTable():
             new_row = []
             for i,entry in enumerate(row):
                 try:
-                    print(entry)
                     new_row.append(str(entry).strip())
                 except:
                     new_row.append('Ascii violation error! Please check input file!')

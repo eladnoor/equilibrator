@@ -10,7 +10,7 @@ http://equilibrator.weizmann.ac.il/
 If you are looking for the back-end library used to estimate standard Gibbs free energies
 [DOI: 10.1371/journal.pcbi.1003098](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003098),
 you can find it in the following GitHub repository:
-[Component Contribution](https://github.com/eladnoor/component-contribution)
+[Component Contribution](https://github.com/eladnoor/equilibrator-api)
 
 eQuilibrator is written in Python using the Django framework.
 It was developed primarily on Ubuntu 16.04 64-bit and is easiest
@@ -42,8 +42,8 @@ Python PyPI:
 
 # Install binary dependencies on Ubuntu
 ```
-sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
-sudo apt install apache2 solr-common libglpk-dev glpk-utils
+sudo apt install mysql-server libmysqlclient-dev python3-pip python3-dev 
+sudo apt install apache2 libapache2-mod-wsgi-py3 solr-common libglpk-dev glpk-utils
 ```
 
 # Install missing Python dependencies from PyPI
@@ -76,10 +76,10 @@ sudo /etc/init.d/tomcat7 restart
 # Running the Development Server on a Remote Host
 
 ```
-sudo python manage.py runserver 0.0.0.0:80
+sudo python manage.py runserver 0.0.0.0:8000
 ```
 
-Will run the development server on port 80 and allow external IPs to access the server. This is very
+Will run the development server on port 8000 and allow external IPs to access the server. This is very
 useful for debugging differences between your local and remote environments.
 
 # Setting up Apache + Django eQuilibrator
