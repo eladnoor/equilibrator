@@ -8,7 +8,7 @@ before_install:
 - sudo apt-get install -qq mysql-server libmysqlclient-dev python-pip python-dev libglpk-dev glpk-utils
 language: python
 python:
-- 3.6
+- 3.4
 install:
 - pip install -r requirements.txt
 script: python -m unittest discover tests
