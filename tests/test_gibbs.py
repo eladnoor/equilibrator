@@ -8,14 +8,17 @@ from unittest import TestCase, main
 from django.test import Client
 import django
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
+
 class GibbsTester(TestCase):
 
-    def __init__(self, *args, **kwargs):
-        super(GibbsTester, self).__init__(*args, **kwargs)
+    def setUp(self):
         logging.getLogger().setLevel(logging.WARNING)
-        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
         django.setup()
         self.client = Client()
+
+    def tearDown(self):
+        pass
 
     def test_get_atom_bag(self):
         from gibbs import formula_parser
