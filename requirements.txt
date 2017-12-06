@@ -14,4 +14,3 @@ seaborn==0.8.1
 solr==0.4
 tablib==0.12.1
 xlrd==1.1.0
-
