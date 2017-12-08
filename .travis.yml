@@ -4,7 +4,7 @@ services:
   - mysql
 before_install:
 - sudo apt-get update -qq
-- sudo apt-get install -qq glpk-utils
+- sudo apt-get install -qq glpk-utils solr-common tomcat8
 - mysql -e 'CREATE DATABASE milolab_eqbtr;'
 - mysql -e 'CREATE USER "milolab_eqbtr"@"127.0.0.1" IDENTIFIED BY "password";'
 - mysql -e 'GRANT ALL PRIVILEGES ON *.* TO "milolab_eqbtr"@"127.0.0.1";'
