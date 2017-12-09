@@ -1,18 +1,20 @@
 # Config file for automatic testing at travis-ci.com
 #sudo: false  # http://docs.travis-ci.com/user/migrating-from-legacy/
-services:
-  - mysql
-before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq glpk-utils solr-common tomcat7
+os: linux
+dist: trusty
 language: python
-python:
-- 3.6
+python: 3.6
+services:
+- mysql
+addons:
+  apt:
+    packages:
+    - glpk-utils
 install:
 - pip install -r requirements.txt
 before_script:
 - mysql -u travis -e 'CREATE DATABASE milolab_eqbtr;'
 - mysql -u travis -e 'CREATE USER "milolab_eqbtr"@"127.0.0.1" IDENTIFIED BY "password";'
-- mysql -u travis -e 'GRANT ALL PRIVILEGES ON *.* TO "milolab_eqbtr"@"127.0.0.1";'
+- mysql -u root -e 'GRANT ALL PRIVILEGES ON milolab_eqbtr.* TO "milolab_eqbtr"@"127.0.0.1";'
 - python db_load_from_sqldump.py
 script: python -m unittest discover tests
