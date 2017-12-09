@@ -4,7 +4,7 @@ import logging
 import time
 import datetime
 import numpy
-from equilibrator.settings import DATABASES
+from equilibrator.settings import DATABASES, USE_SOLR
 import django
 from django.core.management import execute_from_command_line
 
@@ -22,11 +22,12 @@ def main():
     cmd = "gunzip -c data/sqldump.txt.gz | mysql -u %s %s" % (db_user, db_name)
     os.system(cmd)
 
-    logging.info('> Clearing Solr index\n')
-    execute_from_command_line(['', 'clear_index', '--noinput'])
-
-    logging.info('> Building Solr index\n')
-    execute_from_command_line(['', 'update_index'])
+    if USE_SOLR:
+        logging.info('> Clearing Solr index\n')
+        execute_from_command_line(['', 'clear_index', '--noinput'])
+    
+        logging.info('> Building Solr index\n')
+        execute_from_command_line(['', 'update_index'])
 
 if __name__ == '__main__':
     logging.info('Welcome to the sql_load script')

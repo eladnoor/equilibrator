@@ -19,7 +19,6 @@ matplotlib.use('Agg')
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -99,12 +98,23 @@ DATABASES = {
 }
 
 # Haystack related settings - for search/autocomplete.
-HAYSTACK_CONNECTIONS = {
-    'default': {
-                'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-                'URL': 'http://127.0.0.1:8080/solr',
-                },
-}
+# We shift to SimpleEngine temporarily in order to get the Travis CI
+# automatic testing working. In production, we will use Solr since it 
+# is much faster.
+USE_SOLR = False
+if USE_SOLR:
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+                    'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+                    'URL': 'http://127.0.0.1:8080/solr',
+                    },
+    }
+else:
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+                    'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+                    },
+    }    
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

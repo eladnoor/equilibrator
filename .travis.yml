@@ -8,4 +8,5 @@ python:
 - 3.6
 install:
 - pip install -r requirements.txt
+- python db_load_from_sqldump.py
 script: python -m unittest discover tests
