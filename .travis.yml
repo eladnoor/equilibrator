@@ -5,13 +5,14 @@ services:
 before_install:
 - sudo apt-get update -qq
 - sudo apt-get install -qq glpk-utils solr-common tomcat7
-- mysql -e 'CREATE DATABASE milolab_eqbtr;'
-- mysql -e 'CREATE USER "milolab_eqbtr"@"127.0.0.1" IDENTIFIED BY "password";'
-- mysql -e 'GRANT ALL PRIVILEGES ON *.* TO "milolab_eqbtr"@"127.0.0.1";'
 language: python
 python:
 - 3.6
 install:
 - pip install -r requirements.txt
+before_script:
+- mysql -u travis -e 'CREATE DATABASE milolab_eqbtr;'
+- mysql -u travis -e 'CREATE USER "milolab_eqbtr"@"127.0.0.1" IDENTIFIED BY "password";'
+- mysql -u travis -e 'GRANT ALL PRIVILEGES ON *.* TO "milolab_eqbtr"@"127.0.0.1";'
 - python db_load_from_sqldump.py
 script: python -m unittest discover tests
