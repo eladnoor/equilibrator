@@ -90,8 +90,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'milolab_eqbtr',
-        'USER': 'milolab_eqbtr',
-        'PASSWORD': 'password',
+        'USER': 'travis',
+        'PASSWORD': '',
         'HOST': '',
         'PORT': '',
     }
