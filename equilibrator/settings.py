@@ -90,31 +90,40 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'milolab_eqbtr',
-        'USER': 'travis',
-        'PASSWORD': '',
+        'USER': 'milolab_eqbtr',
+        'PASSWORD': 'password',
         'HOST': '',
         'PORT': '',
     }
 }
 
+if os.environ.get('TRAVIS', False):
+    HAYSTACK_BACKEND = 'simple'
+    DATABASES['default']['USER'] = 'travis'
+    DATABASES['default']['PASSWORD'] = ''
+else:
+    HAYSTACK_BACKEND = 'solr'
+
 # Haystack related settings - for search/autocomplete.
 # We shift to SimpleEngine temporarily in order to get the Travis CI
 # automatic testing working. In production, we will use Solr since it 
 # is much faster.
-USE_SOLR = False
-if USE_SOLR:
+    
+if HAYSTACK_BACKEND == 'solr':
     HAYSTACK_CONNECTIONS = {
         'default': {
                     'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
                     'URL': 'http://127.0.0.1:8080/solr',
                     },
     }
-else:
+elif HAYSTACK_BACKEND == 'simple':
     HAYSTACK_CONNECTIONS = {
         'default': {
                     'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
                     },
-    }    
+    }
+else:
+    raise ValueError('Use either solr or simple as HAYSTACK_BACKEND')
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

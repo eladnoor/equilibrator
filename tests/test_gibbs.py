@@ -9,7 +9,7 @@ from django.test import Client
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
-from equilibrator.settings import USE_SOLR
+from equilibrator.settings import HAYSTACK_BACKEND
 
 class GibbsTester(TestCase):
 
@@ -266,7 +266,9 @@ class GibbsTester(TestCase):
         self.assertIn('dATP', matches)
         self.assertIn('ATPA', matches)
         
-        if USE_SOLR:
+        if HAYSTACK_BACKEND == 'solr':
+            # the search doesn't work very well with "simple" and these
+            # results are not in the matched list.
             self.assertIn('BzATP', matches)
 
             # match the enzyme result

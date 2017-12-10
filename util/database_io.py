@@ -4,7 +4,8 @@ import gzip
 import os
 import csv
 from django.apps import apps
-from gibbs import constants, conditions
+from gibbs import conditions
+from util import constants
 
 DEFAULT_CITATION_DATA_FILENAME = 'data/citation_data.json'
 COMPOUND_NAME_FILE = 'data/kegg_compound_names.tsv'
@@ -23,7 +24,6 @@ DOWNLOADS_JSON_FNAME = 'static/downloads/kegg_compounds.json.gz'
 # Cache compounds so we can look them up faster.
 COMPOUNDS_CACHE = {}
 CITATIONS_CACHE = {}
-
 
 def CheckData():
     json.load(open(DEFAULT_CITATION_DATA_FILENAME))
@@ -48,7 +48,7 @@ def LoadCitationData(json_filename=DEFAULT_CITATION_DATA_FILENAME):
             source, created = values_source_model.objects.get_or_create(
                     name=name, data=data)
             source.save()
-        except Exception, e:
+        except Exception as e:
             logging.error('Error parsing reference %s', cd)
             logging.error(e)
             continue
@@ -108,7 +108,7 @@ def GetSource(source_string):
         source = source_model.objects.get(name__iexact=lsource)
         CITATIONS_CACHE[lsource] = source
         return source
-    except Exception, e:
+    except Exception as e:
         logging.warning('Failed to find source "%s"', source_string)
         logging.error(e)
         logging.fatal('Bailing!')
@@ -272,7 +272,7 @@ def LoadFormationEnergies(energy_json_filenane=CC_FILENAME, priority=1):
 
             compound.save()
 
-        except Exception, e:
+        except Exception as e:
             logging.error(e)
             logging.info('Last compound ID was %s' % compound_id)
             continue
@@ -292,7 +292,7 @@ def LoadAlbertyEnergies(alberty_json_filenane=ALBERTY_FILENAME, priority=2):
             AddPmapToCompound(cd, compound, priority=priority)
             compound.save()
 
-        except Exception, e:
+        except Exception as e:
             logging.error(e)
             continue
 
@@ -319,7 +319,7 @@ def LoadKeggReactions(cid_replace, reactions_json_filename=REACTION_FILE):
             rxn = apps.get_model('gibbs.StoredReaction').FromJson(rd)
             rxn.GenerateHash()
             rxn.save()
-        except Exception, e:
+        except Exception as e:
             logging.warning('Missing data for reaction %s', rid)
             logging.warning(e)
             continue
@@ -354,7 +354,7 @@ def LoadKeggEnzymes(enzymes_json_filename=ENZYME_FILE):
             map(enz.reactions.add, reactions)
             enz.save()
 
-        except Exception, e:
+        except Exception as e:
             logging.warning('Missing data for ec %s', ec)
             logging.warning(e)
             continue
@@ -403,7 +403,7 @@ def LoadAdditionalCompoundData(json_filename=DEFAULT_ADDITIONAL_DATA_FILENAME):
                     AddPmapToCompound(pmap, compound, priority=priority)
 
             compound.save()
-        except Exception, e:
+        except Exception as e:
             logging.error('Error parsing cid %s', cid)
             logging.error(e)
             continue
@@ -478,7 +478,7 @@ def export_reactions(priority, name, ionic_strength, pMg, pH_list):
                 dG0_prime = rxn.DeltaG0Prime()
                 dG0_prime = round(dG0_prime, 1)
                 comment = None
-            except Exception:
+            except Exception as e:
                 logging.warning(str(e))
                 dG0_prime = None
                 comment = rxn.NoDeltaGExplanation()
