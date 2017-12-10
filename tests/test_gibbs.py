@@ -9,6 +9,7 @@ from django.test import Client
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
+from equilibrator.settings import USE_SOLR
 
 class GibbsTester(TestCase):
 
@@ -264,14 +265,16 @@ class GibbsTester(TestCase):
         self.assertIn('ATP', matches)
         self.assertIn('dATP', matches)
         self.assertIn('ATPA', matches)
-        self.assertIn('BzATP', matches)
+        
+        if USE_SOLR:
+            self.assertIn('BzATP', matches)
 
-        # match the enzyme result
-        matches = re.findall('<tr class="infoTableHeader">\s+<th colspan="100%">\s+<a href="[^"]+">([\w\-]+)</a>',
-                             html)
-        self.assertIn('AtPAO3', matches)
-        self.assertIn('AtPAO3', matches)
-        self.assertIn('ATPase', matches)
+            # match the enzyme result
+            matches = re.findall('<tr class="infoTableHeader">\s+<th colspan="100%">\s+<a href="[^"]+">([\w\-]+)</a>',
+                                 html)
+            self.assertIn('AtPAO3', matches)
+            self.assertIn('AtPAO3', matches)
+            self.assertIn('ATPase', matches)
 
 
 if __name__ == "__main__":

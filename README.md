@@ -50,27 +50,17 @@ sudo apt install mysql-server libmysqlclient-dev python3-pip python3-dev solr-co
 sudo pip install -r requirements.txt
 ```
 
-# Create MySQL database and user for Django
-```
-sudo mysql --user=root mysql -p
-mysql> CREATE USER '<MYSQLUSR>'@'localhost' IDENTIFIED BY '<MYSQLPWD>';
-mysql> GRANT ALL PRIVILEGES ON *.* TO '<MYSQLUSR>'@'localhost';
-mysql> CREATE DATABASE <MYSQLDB>;
-mysql> exit;
-```
-* Replace the appropriate database name (`<MYSQLDB>`), username (`<MYSQLUSR>`) 
-  and password (`<MYSQLPWD>`) in settings.py.
-
 # Configure Solr
 ```
 sudo cp solr/schema.xml /etc/solr/conf/
 sudo /etc/init.d/tomcat7 restart
 ```
 * Make sure solr is running by going to http://127.0.0.1:8080/solr/
-* Run `python manage.py migrate --run-syncdb` to build database schema.
-* Run `python db_load_from_sqldump.py` to load the data into the database.
-* (optional) instead of `db_load_from_sqldump`, you can use `db_load_from_raw_files`
-  which will take much longer (2 hours).
+
+# Create MySQL database and synchronize the data
+```
+python init_db.py
+```
 
 # Running the Development Server on a Remote Host
 
