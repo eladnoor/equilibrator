@@ -14,5 +14,7 @@ install:
 - pip install -r requirements.txt
 before_script:
 - mysql -u travis -e 'CREATE DATABASE milolab_eqbtr;'
+- python manage.py makemigrations
+- python manage.py migrate
 - python db_load_from_sqldump.py
 script: python -m unittest discover tests
