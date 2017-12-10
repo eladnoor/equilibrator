@@ -14,9 +14,6 @@ def main():
 
     logging.getLogger().setLevel(logging.INFO)
 
-    logging.info('> Creating Tables in MySQL database')
-    execute_from_command_line(['', 'sync_db', '--noinput'])
-    
     logging.info('> Flushing MySQL data')
     execute_from_command_line(['', 'flush', '--noinput'])
 
