@@ -12,7 +12,11 @@ from django.core.management import execute_from_command_line
 
 def main():
     django.setup()
-    logging.info('> Flushing SQL data')
+    
+    logging.info('> Creating Tables in MySQL database')
+    execute_from_command_line(['', 'sync_db', '--noinput'])
+
+    logging.info('> Flushing MySQL data')
     execute_from_command_line(['', 'reset_db', '--noinput'])
 
     logging.info('> Loading data from sqldump into MySQL')
