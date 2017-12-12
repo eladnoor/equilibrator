@@ -4,6 +4,8 @@ os: linux
 dist: trusty
 language: python
 python: 3.6
+ notifications:
+    slack: equilibrator:INK15q5gkY2tZMLBLhRZoFfG
 services:
 - mysql
 addons:
