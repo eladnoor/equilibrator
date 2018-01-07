@@ -17,13 +17,15 @@ It was developed primarily on Ubuntu 16.04 64-bit and is easiest
 to develop and set up on that operating system. Setup instructions
 below are really only for Ubuntu users.
 
-# Dependencies
+# Ubuntu dependencies (apt):
 - python 3.5+
-- mysql-server (5.7.16)
+- mysql-server (5.7.20)
+- libmysqlclient-dev (5.7.20)
 - glpk-utils (4.63)
 - libglpk-dev (4.63)
+- solr-tomcat (3.6.2)
 - (optional) Indigo Toolkit (https://github.com/ggasoftware/indigo)
-Python PyPI:
+# Python PyPI dependencies (pip):
 - Django (2.0)
 - django-extensions (1.9.7)
 - django-haystack (2.6.1)
@@ -40,12 +42,12 @@ Python PyPI:
 - solr (0.4)
 - xlrd (1.1.0)
 
-# Install binary dependencies on Ubuntu
+# Install Ubuntu dependencies
 ```
-sudo apt install mysql-server libmysqlclient-dev python3-pip python3-dev solr-common libglpk-dev glpk-utils
+sudo apt install mysql-server libmysqlclient-dev python3-pip python3-dev solr-tomcat libglpk-dev glpk-utils
 ```
 
-# Install missing Python dependencies from PyPI
+# Install Python dependencies
 ```
 sudo pip install -r requirements.txt
 ```
@@ -53,7 +55,7 @@ sudo pip install -r requirements.txt
 # Configure Solr
 ```
 sudo cp solr/schema.xml /etc/solr/conf/
-sudo /etc/init.d/tomcat7 restart
+sudo /etc/init.d/tomcat8 restart
 ```
 * Make sure solr is running by going to http://127.0.0.1:8080/solr/
 

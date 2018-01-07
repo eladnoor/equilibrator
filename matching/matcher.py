@@ -128,10 +128,10 @@ class Matcher(object):
             A list of CommonName objects matching the query.
         """
         res = SearchQuerySet().filter(text__exact=query)
-        if len(res) > 0:
-            res_best = res.best_match()
-            logging.debug('Exact match for "%s" found', query)
-            return [res_best.object]
+        if res.count() > 0:
+            logging.debug('%s exact matches for "%s" found',
+                          res.count(), query)
+            return [m.object for m in res]
         else:
             logging.debug('No exact match for "%s"', query)
             return []
