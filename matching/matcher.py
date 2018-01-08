@@ -129,11 +129,11 @@ class Matcher(object):
         Returns:
             A list of CommonName objects matching the query.
         """
-        try:
-            res = SearchQuerySet().filter(text__exact=query).best_match()
-            return [res.object]
-        except Exception as e:
-            logging.debug('Query "%s" failed: %s', query, str(e))
+        res = SearchQuerySet().filter(text__exact=query)
+        if res.count() > 0:
+            return [m.object for m in res]
+        else:
+            logging.debug('No exact match for "%s"', query)
             return []
 
     def _MakeMatchObjects(self, common_names):
