@@ -91,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'milolab_eqbtr',
         'USER': 'milolab_eqbtr',
-        'PASSWORD': 'password',
+        'PASSWORD': 'password', # make sure to change this to something secure on a production server
         'HOST': '',
         'PORT': '',
     }
