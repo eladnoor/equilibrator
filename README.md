@@ -49,7 +49,7 @@ distributions might require some adjustment.
 ## Install binary dependencies on Ubuntu
 ```
 sudo apt install mysql-server libmysqlclient-dev python-pip python-dev 
-sudo apt install apache2 libapache2-mod-wsgi links solr-common libglpk-dev glpk-utils
+sudo apt install apache2 libapache2-mod-wsgi-py3 links solr-common libglpk-dev glpk-utils
 ```
 
 ## Install missing Python dependencies from PyPI
