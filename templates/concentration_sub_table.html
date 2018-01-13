@@ -3,9 +3,9 @@
     <p>
     <a href="#" title="Open concentration panel" onclick="toggle_visibility('hideConc');toggle_visibility('showConc');">
     {% if not reaction.is_balanced or reaction.is_electron_balanced %}
-    <img src="{% static "images/conc_open.svg" %}" height="32" width="32"/></a>
+    <img src={% static "images/conc_open.svg" %} height="32" width="32"/></a>
     {% else %}
-    <img src="{% static "images/red_open.svg" height="32" width="32"/></a>
+    <img src={% static "images/red_open.svg" %} height="32" width="32"/></a>
     {% endif %}
     </p>
 </div>
@@ -13,9 +13,9 @@
     <p>
     <a href="#" title="Close concentration panel" onclick="toggle_visibility('showConc');toggle_visibility('hideConc');">
     {% if not reaction.is_balanced or reaction.is_electron_balanced %}
-    <img src="{% static "images/conc_open.svg" %}" height="32" width="32"/></a>
+    <img src={% static "images/conc_open.svg" %} height="32" width="32"/></a>
     {% else %}
-    <img src="{% static "images/red_open.svg" height="32" width="32"/></a>
+    <img src={% static "images/red_open.svg" %} height="32" width="32"/></a>
     {% endif %}
     </p>
 
