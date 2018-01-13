@@ -112,7 +112,7 @@ class ValueSource(models.Model):
 
     def GetCitation(self):
         if not self.title:
-            return None
+            return ''
         if self.url is not None:
             return '%s. <a href="%s"><strong>%s</strong></a>. <i>%s</i>' % \
                 (self.author, self.url, self.title, self.journal)
