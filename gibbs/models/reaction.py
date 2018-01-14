@@ -418,8 +418,8 @@ class Reaction(models.Model):
         atom_diff = {}
         for compound_w_coeff in collection:
             c = compound_w_coeff.compound
-            coeff = compound_w_coeff.coeff
-
+            coeff = float(compound_w_coeff.coeff)
+            
             atom_bag = c.GetAtomBag()
             if not atom_bag:
                 logging.warning('Failed to fetch atom bag for %s', c.formula)
@@ -428,6 +428,9 @@ class Reaction(models.Model):
             for atomic_number, atom_count in atom_bag.items():
                 new_diff = atom_diff.get(atomic_number, 0) - coeff * atom_count
                 atom_diff[atomic_number] = new_diff
+
+        # ignore the differences if they are very close to 0
+        atom_diff = {k: v for k, v in atom_diff.items() if abs(v) > 1e-6}
 
         return atom_diff
 
@@ -451,7 +454,11 @@ class Reaction(models.Model):
 
             electron_diff += coeff * electrons
 
-        return electron_diff
+        # ignore the differences if they are very close to 0
+        if abs(electron_diff) > 1e-6:
+            return electron_diff
+        else:
+            return 0
 
     def _GetAtomDiff(self):
         """Returns the net atom counts from this reaction."""

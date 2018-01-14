@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import query_parser
+from matching import query_parser
 import unittest
 
 
@@ -39,7 +39,12 @@ class TestReactionParser(unittest.TestCase):
         # Unicode arrow thingy
         u'Oxaloacetate + Acetyl-CoA + H2O → Citrate + CoA-SH':
         query_parser.ParsedReactionQuery([(1, 'Oxaloacetate'), (1, 'Acetyl-CoA'), (1, 'H2O')],
-                                         [(1, 'Citrate'), (1, 'CoA-SH')])
+                                         [(1, 'Citrate'), (1, 'CoA-SH')]),
+        
+        # Stoichiometric coefficients with decimal fractions
+        u'0.8 Glucose <=> 1.6 Ethanol + 1.6 CO2':
+        query_parser.ParsedReactionQuery([(0.8, 'Glucose')],
+                                         [(1.6, 'Ethanol'), (1.6, 'CO2')]),
         }
     
     def setUp(self):
@@ -54,7 +59,7 @@ class TestReactionParser(unittest.TestCase):
         for reaction_str, expected_results in self.parsable_reactions.items():
             self.assertTrue(self._parser.IsReactionQuery(reaction_str))
             parsed = self._parser.ParseReactionQuery(reaction_str)
-            self.assertEquals(expected_results, parsed)
+            self.assertEqual(expected_results, parsed)
                 
 
 if __name__ == '__main__':

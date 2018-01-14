@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
 import os
-import query_parser
-import reaction_test_pb2
+from matching import query_parser, reaction_test_pb2
 import unittest
 from google.protobuf import text_format
 from util import django_utils
@@ -36,24 +35,24 @@ class TestReactionParser(unittest.TestCase):
         num_errors = 0
         for expected_compound, actual_compound in zip(expected_compounds, actual_compounds):
             if not actual_compound.ParsedDataEqual(expected_compound):
-                print 'Expected to parse as "%d %s"' % (expected_compound.parsed_coeff,
-                                                        expected_compound.parsed_name)
-                print 'Actually parsed as "%d %s"' % (actual_compound.parsed_coeff,
-                                                      actual_compound.parsed_name)
+                print('Expected to parse as "%d %s"' % (expected_compound.parsed_coeff,
+                                                        expected_compound.parsed_name))
+                print('Actually parsed as "%d %s"' % (actual_compound.parsed_coeff,
+                                                      actual_compound.parsed_name))
                 num_errors += 1
                 continue
             
             if len(actual_compound.matches) < len(expected_compound.match_names):
-                print 'Expected', len(expected_compound.match_names), 'matches for',
-                print expected_compound.parsed_name, 'found', len(actual_compound.matches)
+                print('Expected', len(expected_compound.match_names), 'matches for', 
+                      expected_compound.parsed_name, 'found', len(actual_compound.matches))
                 num_errors += 1
                 continue
                                                 
             for j, match_name in enumerate(expected_compound.match_names):
                 actual_name = str(actual_compound.matches[j].key)
                 if match_name != actual_name:
-                    print 'Expected name %s does not match actual name %s' % (match_name,
-                                                                              actual_name)
+                    print('Expected name %s does not match actual name %s' % (match_name,
+                                                                              actual_name))
                     num_errors += 1
                     continue
         
@@ -68,44 +67,44 @@ class TestReactionParser(unittest.TestCase):
         
         
         for i, rxn in enumerate(rxns.reactions):
-            print 'Running test reaction', i
-            print 'query: ', rxn.query
+            print('Running test reaction', i)
+            print('query: ', rxn.query)
             
             if not self._parser.IsReactionQuery(rxn.query):
-                print 'Did not recognize query as reaction query.'
+                print('Did not recognize query as reaction query.')
                 num_reactions_with_errors += 1
                 continue
             
             parsed = self._parser.ParseReactionQuery(rxn.query)
             matches = self._matcher.MatchReaction(parsed)
             if not matches:
-                print 'Failed to parse query.'
+                print('Failed to parse query.')
                 num_reactions_with_errors += 1
                 continue
                         
             if len(rxn.substrates) != len(matches.substrates):
-                print 'Reactant list lengths are mismatched.'
+                print('Reactant list lengths are mismatched.')
                 num_reactions_with_errors += 1
                 continue
             
             if len(rxn.products) != len(matches.products):
-                print 'Product list lengths are mismatched.'
+                print('Product list lengths are mismatched.')
                 num_reactions_with_errors += 1
                 continue
             
             num_reactant_errors = self._CheckReactionSide(rxn.substrates, matches.substrates)
             num_product_errors = self._CheckReactionSide(rxn.products, matches.products)
             if num_reactant_errors:
-                print 'Found', num_reactant_errors, 'errors in the reactants list.'
+                print('Found', num_reactant_errors, 'errors in the reactants list.')
                 num_reactions_with_errors += 1
             
             if num_product_errors:
-                print 'Found', num_product_errors, 'errors in the products list.'
+                print('Found', num_product_errors, 'errors in the products list.')
                 num_reactions_with_errors += 1
         
         error_percent = 100.0 * float(num_reactions_with_errors) / float(num_reactions)
-        print 'Tested', num_reactions, 'reactions'
-        print '%d (%f%%) had errors' % (num_reactions_with_errors, error_percent)
+        print('Tested', num_reactions, 'reactions')
+        print('%d (%f%%) had errors' % (num_reactions_with_errors, error_percent))
 
             
    

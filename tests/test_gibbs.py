@@ -132,7 +132,7 @@ class GibbsTester(TestCase):
         """
         def reactant_list_to_hash(reactants):
             sparse = {r.compound.kegg_id : r.coeff for r in reactants}
-            return StoredReaction.HashableReactionString(sparse)
+            return StoredReaction.HashReaction(sparse)
         
         from gibbs.models.compound import Compound, Reactant
         from gibbs.models.reaction import StoredReaction
