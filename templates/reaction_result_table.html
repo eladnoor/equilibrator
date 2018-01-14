@@ -76,7 +76,7 @@
             <td><strong>Catalyzed by</strong></td>
             <td colspan="100%">
             {% for enzyme in reaction.catalyzing_enzymes|slice:":3" %}
-                <div><a href="{{ enzyme.link }}">{{ enzyme }}</a>&nbsp;&nbsp;[EC {{ enzyme.ec }}]</div>
+                <div><a href="{{ enzyme.link }}">{{ enzyme.first_name.name }}</a>&nbsp;&nbsp;[EC {{ enzyme.ec }}]</div>
             {% endfor %}
             </td>
         </tr>

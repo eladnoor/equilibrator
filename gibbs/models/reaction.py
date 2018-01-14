@@ -239,26 +239,23 @@ class Reaction(models.Model):
         return sparse
 
     @staticmethod
-    def _GetStoredHashString(s):
-        return apps.get_model('gibbs.StoredReaction').HashableReactionString(s)
-
-    def GetHashableReactionString(self):
-        return Reaction._GetStoredHashString(self.GetSparseRepresentation())
+    def _GetHash(s):
+        return apps.get_model('gibbs.StoredReaction').HashReaction(s)
 
     def GetHash(self):
-        return Reaction._GetStoredHashString(self.GetSparseRepresentation())
+        return Reaction._GetHash(self.GetSparseRepresentation())
 
     def GetSpecialReactionWarning(self):
 
         def GetLearnMoreLink(faq_mark):
             return '</br><a href="/static/classic_rxns/faq.html#%s">Learn more &raquo;</a>' % faq_mark
 
-        my_hash = self.GetHashableReactionString()
+        my_hash = self.GetHash()
 
         atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
         co2_sparse = {'C00011': -1, 'C00001': -1, 'C01353': 1}
-        atp_hash = Reaction._GetStoredHashString(atp_sparse)
-        co2_hash = Reaction._GetStoredHashString(co2_sparse)
+        atp_hash = Reaction._GetHash(atp_sparse)
+        co2_hash = Reaction._GetHash(co2_sparse)
 
         if my_hash == atp_hash:
             return ("The &Delta;G' of ATP hydrolysis is highly affected " +
@@ -295,19 +292,12 @@ class Reaction(models.Model):
         """
         logging.debug('looking for stored reactions matching this one')
         my_hash = self.GetHash()
-        my_string = self.GetHashableReactionString()
 
         matching_stored_reactions = apps.get_model(
             'gibbs.StoredReaction').objects.select_related().filter(
             reaction_hash=my_hash)
         logging.debug('my hash = %s (%d matches)' %
                       (my_hash, len(matching_stored_reactions)))
-
-        matching_stored_reactions = \
-            [m for m in matching_stored_reactions if
-             m.GetHashableReactionString() == my_string]
-        logging.debug('my hashable string = %s (%d matches)' %
-                      (my_string, len(matching_stored_reactions)))
 
         return matching_stored_reactions
 
@@ -324,11 +314,11 @@ class Reaction(models.Model):
         """
         if self._catalyzing_enzymes is None:
             logging.debug('looking for enzymes catalyzing this reaction')
-            self._catalyzing_enzymes = []
+            self._catalyzing_enzymes = set()
             for stored_reaction in self._GetAllStoredReactions():
                 enzymes = stored_reaction.enzyme_set.all()
-                self._catalyzing_enzymes.extend(enzymes)
-        return self._catalyzing_enzymes
+                self._catalyzing_enzymes.update(enzymes)
+        return list(self._catalyzing_enzymes)
 
     def ToJson(self):
         """
@@ -1315,7 +1305,7 @@ class StoredReaction(models.Model):
         return "%s = %s" % (' + '.join(left), ' + '.join(right))
 
     @staticmethod
-    def HashableReactionString(sparse):
+    def _HashableReactionString(sparse):
         """Return a hashable string for a biochemical reaction.
 
         The string fully identifies the biochemical reaction up to
@@ -1336,28 +1326,27 @@ class StoredReaction(models.Model):
         if sparse[kegg_id_list[0]] == 0:
             raise Exception('One of the stoichiometric coefficients is 0')
         norm_factor = 1.0 / sparse[kegg_id_list[0]]
-        return ' + '.join(['%g %s' % (norm_factor*sparse[kegg_id], kegg_id)
-                           for kegg_id in kegg_id_list])
+        s = ' + '.join(['%g %s' % (norm_factor*sparse[kegg_id], kegg_id)
+                        for kegg_id in kegg_id_list])
+        return s.encode('latin-1')
 
     @staticmethod
     def HashReaction(sparse):
         md5 = hashlib.md5()
-        md5.update(StoredReaction.HashableReactionString(sparse))
+        md5.update(StoredReaction._HashableReactionString(sparse))
         return md5.hexdigest()
 
     @staticmethod
     def GetAtpHydrolysisHash():
-        atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
-        return StoredReaction.HashableReactionString(atp_sparse)
+        atp_sparse = {'C00002': -1, 'C00001': -1,
+                      'C00008': 1, 'C00009': 1}
+        return StoredReaction.HashReaction(atp_sparse)
 
     @staticmethod
     def GetCO2HydrationHash():
-        co2_sparse = {'C00011': -1, 'C00001': -1, 'C00288': 1}
-        return StoredReaction.HashableReactionString(co2_sparse)
-
-    def GetHashableReactionString(self):
-        return StoredReaction.HashableReactionString(
-            self.GetSparseRepresentation())
+        co2_sparse = {'C00011': -1, 'C00001': -1,
+                      'C00288': 1}
+        return StoredReaction.HashReaction(co2_sparse)
 
     def GetHash(self):
         return StoredReaction.HashReaction(self.GetSparseRepresentation())
@@ -1426,8 +1415,14 @@ class Enzyme(models.Model):
             % self.ec
 
     def AllReactions(self):
-        """Returns all the reactions."""
-        return self.reactions.all()
+        """Returns all the reactions (unique by the 'hash')."""
+        rxns = []
+        hashes = set()
+        for r in self.reactions.all():
+            if r.GetHash() not in hashes:
+                rxns.append(r)
+                hashes.add(r.GetHash())
+        return rxns
 
     def FirstName(self):
         """The first name in the list of names."""

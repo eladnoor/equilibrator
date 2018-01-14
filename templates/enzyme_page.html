@@ -5,7 +5,7 @@
 	<div class="centerize">
 
 		<div class="enzyme">
-			{{ enzyme }}
+			{{ enzyme.first_name.name }}
 			{% if is_superuser %}
 				<a class="adminLink" href="/admin/gibbs/enzyme/{{ enzyme.pk }}">Edit in admin</a>
 			{% endif %}
