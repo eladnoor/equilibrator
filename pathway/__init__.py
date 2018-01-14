@@ -311,7 +311,7 @@ class ParsedPathway(object):
         reaction_header = generic_header_fmt % ('Reaction', 'Reaction', 'Pathway Model')
         reaction_cols = ['!ID', '!ReactionFormula', '!Identifiers:kegg.reaction']
 
-        sio = StringIO.StringIO()
+        sio = StringIO()
         sio.writelines([reaction_header + '\n'])
         writer = csv.DictWriter(sio, reaction_cols, dialect='excel-tab')
         writer.writeheader()
