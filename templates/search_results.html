@@ -2,7 +2,8 @@
     {% include "header.html" %}
 {% endwith %}
 
-    <div id="searchResults">
+    {% if compound_results or enzyme_results %}
+    <div class="searchResults" id="searchResults">
         {% if enzymes_first %}
         {% include "enzyme_search_results.html" %}
         {% include "compound_search_results.html" %}
@@ -10,15 +11,14 @@
           {% include "compound_search_results.html" %}
           {% include "enzyme_search_results.html" %}
         {% endif %}
-        
-        {% if not compound_results and not enzyme_results %}
-            <div class="centerize">
-                <div class="warning">
-                    No results. <a href="/">Try again?</a>
-                </div>
-            </div>
-        {% endif %}
     </div>
+    {% else %}
+    <div class="centerize">
+        <div class="warning">
+            No results. <a href="/">Try again?</a>
+        </div>
+    </div>
+    {% endif %}
 
     {% include "footer.html" %}
     
