@@ -1,6 +1,7 @@
 import logging
 from haystack.query import SearchQuerySet
 from django.apps import apps
+from nltk.metrics import edit_distance
 
 
 class IllegalQueryError(Exception):
@@ -166,9 +167,11 @@ class Matcher(object):
         Returns:
             A score between 0.0 and 1.0.
         """
-        query_len = float(len(query))
-        candidate_len = float(len(str(match.key)))
-        return (query_len / candidate_len)
+        str_query = str(query).lower()
+        str_candidate = str(match.key).lower()
+        dist = float(edit_distance(str_query, str_candidate))
+        max_len = float(max(len(str_query), len(str_candidate)))
+        return (max_len - dist) / max_len
 
     def _ScoreMatches(self, query, matches):
         """Set the match scores for all matches.
@@ -203,9 +206,13 @@ class Matcher(object):
         return list(filtered_matches.values())
 
     def _SortAndClip(self, matches):
-        matches.sort(key=lambda m: m.score, reverse=True)
+        """
+            Sort matches, first sort by descending score value,
+            then secondary sort by ascending KEGG ID
+        """
+        matches.sort(key=lambda m: (-m.score, m.Key()), reverse=False)
         matches = matches[:self._max_results]
-        return matches        
+        return matches
 
     def Match(self, query):
         """Find matches for the query in the library.
@@ -230,4 +237,6 @@ class Matcher(object):
         
         matches = self._FilterMatches(matches)
         logging.debug('%d matches remained after filtering', len(matches))
-        return self._SortAndClip(matches)
+
+        matches = self._SortAndClip(matches)
+        return matches

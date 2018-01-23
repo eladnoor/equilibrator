@@ -1,6 +1,5 @@
 import logging
 from matching import matcher
-from nltk.metrics import edit_distance
 from haystack.query import SearchQuerySet
 
 
@@ -14,14 +13,6 @@ class HaystackApproxMatcher(matcher.Matcher):
         We then let the parent class logic dedup those and they are ranked
         according to their edit-distance to the query, as per _GetScore below.
     """
-
-    def _GetScore(self, query, match):
-        """Custom edit-distance based scoring."""
-        str_query = str(query).lower()
-        str_candidate = str(match.key).lower()
-        dist = float(edit_distance(str_query, str_candidate))
-        max_len = float(max(len(str_query), len(str_candidate)))
-        return (max_len - dist) / max_len
 
     def _FindNameMatches(self, query):
         """Override database search."""
@@ -67,6 +58,7 @@ class CascadingMatcher(matcher.Matcher):
     def Match(self, query):
         """Override base matching implementation."""
         matches = self._exact_matcher.Match(query)
+
         # In some cases it's advantageous to return exact matches immediately,
         # for example in matching a reaction.
         if matches and self._return_fast:
