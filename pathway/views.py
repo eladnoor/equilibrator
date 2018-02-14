@@ -1,7 +1,6 @@
 import io
 import logging
 import os
-import pulp
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.template.context_processors import csrf
@@ -83,10 +82,8 @@ def BuildPathwayModel(request):
             fname_base, aq_params.pH, aq_params.ionic_strength)
         logging.info(output_fname)
 
-        f_data = str(f.read())
-        sio = io.StringIO(f_data, newline=None)  # universal newline mode
         pp = ParsedPathway.from_csv_file(
-            sio, bounds=bounds, aq_params=aq_params)
+            f, bounds=bounds, aq_params=aq_params)
     except PathwayParseError as ppe:
         logging.error(ppe)
         return HttpResponseBadRequest(ppe)

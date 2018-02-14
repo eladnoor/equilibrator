@@ -2,11 +2,8 @@ import logging
 import numpy
 import pulp
 
-from util import constants
+from util.constants import RT
 from pathway import bounds
-
-DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
-
 
 class MDFResult(object):
 
@@ -114,10 +111,10 @@ class PathwayThermoModel(object):
             dG_r_prime = self.dG0_r_prime.copy()
             for r in range(self.Nr):
                 reactants = list(self.S[:, r].nonzero()[0].flat)
-                dG_r_prime[0, r] += DEFAULT_RT * log_conc[reactants, 0].T * self.S[reactants, r]
+                dG_r_prime[0, r] += RT * log_conc[reactants, 0].T * self.S[reactants, r]
             return dG_r_prime
         else:
-            return self.dG0_r_prime + DEFAULT_RT * self.S.T * log_conc
+            return self.dG0_r_prime + RT * self.S.T * log_conc
 
     def GetPhysiologicalConcentrations(self, bounds=None):
         conc = numpy.matrix(numpy.ones((self.Nc, 1))) * self.DEFAULT_PHYSIOLOGICAL_CONC
@@ -155,7 +152,7 @@ class PathwayThermoModel(object):
 
         # driving force
         A11 = self.I_dir[inds] * self.dG0_r_std
-        A12 = self.I_dir[inds] * self.S.T * DEFAULT_RT
+        A12 = self.I_dir[inds] * self.S.T * RT
         A13 = numpy.ones((len(inds), 1))
 
         # covariance var ub and lb

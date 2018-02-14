@@ -12,6 +12,7 @@ from django.apps import apps
 from matplotlib import pyplot as plt
 from scipy import linalg
 import os
+import pandas as pd
 from pathway.bounds import Bounds
 from pathway.concs import ConcentrationConverter
 from pathway.thermo_models import PathwayThermoModel
@@ -128,37 +129,46 @@ class ParsedPathway(object):
         query_parser = service_config.Get().query_parser
         aq_params = aq_params or AqueousParams()
 
+        reaction_df = pd.read_csv(f,
+                                  dtype={'ReactionFormula':str, 'Flux':float})
+        
+        if len(reaction_df.columns) != 2:
+            raise InvalidReactionFormula(
+                "Input CSV file must have exactly 2 columns")
+        if reaction_df.columns[0] != 'ReactionFormula':
+            raise InvalidReactionFormula(
+                "First column in CSV file must be 'ReactionFormula'")
+        if reaction_df.columns[1] != 'Flux':
+            raise InvalidReactionFormula(
+                "Second column in CSV file must be 'Flux'")
+        
+        fluxes = reaction_df.Flux.fillna(0.0).tolist()
+        
         reactions = []
-        fluxes = []
-
-        for row in csv.DictReader(f):
-            rxn_formula = row.get('ReactionFormula')
-            if not rxn_formula:
+        for formula in reaction_df.ReactionFormula:
+            if not formula:
                 raise InvalidReactionFormula('Found empty ReactionFormula')
 
-            flux = float(row.get('Flux', 0.0))
-            logging.debug('formula = %f x (%s)', flux, rxn_formula)
+            logging.debug('formula = %f x (%s)', formula)
 
-            # TODO raise errors in this case.
-            if not query_parser.IsReactionQuery(rxn_formula):
-                raise InvalidReactionFormula("Failed to parse '%s'", rxn_formula)
+            if not query_parser.IsReactionQuery(formula):
+                raise InvalidReactionFormula("Failed to parse '%s'", formula)
 
-            parsed = query_parser.ParseReactionQuery(rxn_formula)
+            parsed = query_parser.ParseReactionQuery(formula)
 
             matches = rxn_matcher.MatchReaction(parsed)
             best_match = matches.GetBestMatch()
-            rxn = apps.get_model('gibbs.reaction').FromIds(best_match, fetch_db_names=True)
+            rxn = apps.get_model('gibbs.reaction').FromIds(
+                best_match, fetch_db_names=True)
 
-            # TODO raise errors in this case.
             if not rxn.IsBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not balanced" % rxn_formula)
+                    "ReactionFormula '%s' is not balanced" % formula)
             if not rxn.IsElectronBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not redox balanced" % rxn_formula)
+                    "ReactionFormula '%s' is not redox balanced" % formula)
 
             reactions.append(rxn)
-            fluxes.append(flux)
 
         dgs = [r.DeltaG0Prime(aq_params) for r in reactions]
         return ParsedPathway(
