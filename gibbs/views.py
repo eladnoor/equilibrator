@@ -22,7 +22,7 @@ def index(request):
 
 def DownloadPage(request):
     """Renders the download page."""
-    ph_values = map(lambda x: '%.1f' % x, constants.PH_RANGE_VALUES)
+    ph_values = list(map(lambda x: '%.1f' % x, constants.PH_RANGE_VALUES))
     return render(request, 'download.html', {'ph_values': ph_values})
 
 def RefsPage(request):
