@@ -47,7 +47,7 @@
         
                 <ul>
                     {% for ph in ph_values %}
-                    <li>pH = {{ ph }} : <a href="{{ STATIC_PREFIX }}downloads/kegg_compounds_Alberty_ph{{ ph }}.csv.gz" %}">Download</a></li>
+                    <li>pH = {{ ph }} : <a href={% static "downloads/kegg_compounds_Alberty_ph" %}{{ ph }}.csv.gz>Download</a></li>
                     {% endfor %}
                 </ul>
         
