@@ -10,7 +10,7 @@ http://equilibrator.weizmann.ac.il/
 If you are looking for the back-end library used to estimate standard Gibbs free energies
 [DOI: 10.1371/journal.pcbi.1003098](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1003098),
 you can find it in the following GitHub repository:
-[Component Contribution](https://github.com/eladnoor/equilibrator-api)
+[eQuilibrator API](https://github.com/eladnoor/equilibrator-api)
 
 eQuilibrator is written in Python using the Django framework.
 It was developed primarily on Ubuntu 16.04 64-bit and is easiest
@@ -55,7 +55,7 @@ sudo pip install -r requirements.txt
 # Configure Solr
 ```
 sudo cp solr/schema.xml /etc/solr/conf/
-sudo /etc/init.d/tomcat8 restart
+sudo /etc/init.d/tomcat7 restart
 ```
 * Make sure solr is running by going to http://127.0.0.1:8080/solr/
 
@@ -70,13 +70,14 @@ python init_db.py
 sudo python manage.py runserver 0.0.0.0:8000
 ```
 
-Will run the development server on port 8000 and allow external IPs to access the server. This is very
-useful for debugging differences between your local and remote environments.
+Will run the development server on port 8000 and allow external IPs to access
+the server. This is very useful for debugging differences between your local
+and remote environments.
 
 # Setting up Apache + Django eQuilibrator
 
-For running eQuilibrator on a web server that can be accessed safely from the internet.
-Open the file equilibrator/settings.py for editing:
+For running eQuilibrator on a web server that can be accessed safely from the
+internet. Open the file equilibrator/settings.py for editing:
 * add the IP of the server to the ALLOWED_HOSTS
 * change DEBUG to False
 * run the following from the command line:
@@ -89,4 +90,3 @@ sudo cp apache/default.conf /etc/apache2/sites-available/000-default.conf
 sudo a2enmod wsgi
 sudo apache2ctl restart
 ```
-
