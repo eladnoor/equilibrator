@@ -1,16 +1,28 @@
+  {% load static %}
   {% if compound_results %}
     <div class="resultsSection">
     <div class="title">Compounds</div>
     {% for result in compound_results|slice:":5" %}
     <a href="{{ result.value.link }}" class="searchResult clearfix">
     	<table class="compoundInfo">
+        <colgroup>
+            <col style="text-align:left" />
+            <col style="text-align:left" />
+            <col style="text-align:center" />
+        </colgroup>
         <tr class="infoTableHeader">
             <th colspan="100%">{{ result.key }}</th>
         </tr>
         <tr>
-            <td class="column1">Formula</td>
+            <td class="column1" >Formula</td>
             <td class="column2">{{ result.value.html_formula|safe }}</td>
-            <td class="column3" rowspan="3"><img src="{{ result.value.small_image_url }}" height="100px" /></td>
+            <td class="column3" rowspan="3">
+                {% if result.value.thumbnail and result.value.thumbnail != "error" %}
+                <img src="{{ result.value.small_image_url }}" style="height:100px"/></td>
+                {% else %}
+                <img src="{% static "images/structure_not_available.svg" %}" style="height:100px"/></td>
+                {% endif %}
+            </td>
         	</tr>
         	<tr>
         		<td class="column1">Common names</td>

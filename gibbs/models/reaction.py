@@ -9,9 +9,9 @@ import json
 from scipy.sparse import csr_matrix
 from django.db import models
 from django.apps import apps
+from util import constants
 from .. import conditions
-from .. import constants
-from compound import CommonName, CompoundWithCoeff
+from .compound import CommonName, CompoundWithCoeff
 
 
 class Preprocessing(object):
@@ -92,7 +92,7 @@ class Preprocessing(object):
         """String representation."""
         left = []
         right = []
-        for kegg_id, coeff in sorted(d.iteritems()):
+        for kegg_id, coeff in sorted(d.items()):
             _s = Preprocessing.WriteCompoundAndCoeff(kegg_id, -coeff)
             if coeff < 0:
                 left.append(_s)
@@ -107,9 +107,9 @@ class Preprocessing(object):
         weights = weights_rc + weights_gc
 
         res = []
-        for j in xrange(Preprocessing.S.shape[1]):
+        for j in range(Preprocessing.S.shape[1]):
             d = {Preprocessing.cids[i]: Preprocessing.S[i, j]
-                 for i in xrange(Preprocessing.Nc)
+                 for i in range(Preprocessing.Nc)
                  if Preprocessing.S[i, j] != 0}
             r_string = Preprocessing.DictToReactionString(d)
             res.append({'w': weights[0, j],
@@ -197,7 +197,7 @@ class Reaction(models.Model):
         # to all reactants.
         priorities = [c.compound.GetSpeciesGroupPriorities()
                       for c in self.reactants]
-        priorities = filter(lambda l: len(l) > 0, priorities)
+        priorities = list(filter(lambda l: len(l) > 0, priorities))
 
         # Someone is missing data!
         if priorities == []:
@@ -239,26 +239,23 @@ class Reaction(models.Model):
         return sparse
 
     @staticmethod
-    def _GetStoredHashString(s):
-        return apps.get_model('gibbs.StoredReaction').HashableReactionString(s)
-
-    def GetHashableReactionString(self):
-        return Reaction._GetStoredHashString(self.GetSparseRepresentation())
+    def _GetHash(s):
+        return apps.get_model('gibbs.StoredReaction').HashReaction(s)
 
     def GetHash(self):
-        return Reaction._GetStoredHashString(self.GetSparseRepresentation())
+        return Reaction._GetHash(self.GetSparseRepresentation())
 
     def GetSpecialReactionWarning(self):
 
         def GetLearnMoreLink(faq_mark):
             return '</br><a href="/static/classic_rxns/faq.html#%s">Learn more &raquo;</a>' % faq_mark
 
-        my_hash = self.GetHashableReactionString()
+        my_hash = self.GetHash()
 
         atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
         co2_sparse = {'C00011': -1, 'C00001': -1, 'C01353': 1}
-        atp_hash = Reaction._GetStoredHashString(atp_sparse)
-        co2_hash = Reaction._GetStoredHashString(co2_sparse)
+        atp_hash = Reaction._GetHash(atp_sparse)
+        co2_hash = Reaction._GetHash(co2_sparse)
 
         if my_hash == atp_hash:
             return ("The &Delta;G' of ATP hydrolysis is highly affected " +
@@ -295,19 +292,12 @@ class Reaction(models.Model):
         """
         logging.debug('looking for stored reactions matching this one')
         my_hash = self.GetHash()
-        my_string = self.GetHashableReactionString()
 
         matching_stored_reactions = apps.get_model(
             'gibbs.StoredReaction').objects.select_related().filter(
             reaction_hash=my_hash)
         logging.debug('my hash = %s (%d matches)' %
                       (my_hash, len(matching_stored_reactions)))
-
-        matching_stored_reactions = \
-            [m for m in matching_stored_reactions if
-             m.GetHashableReactionString() == my_string]
-        logging.debug('my hashable string = %s (%d matches)' %
-                      (my_string, len(matching_stored_reactions)))
 
         return matching_stored_reactions
 
@@ -324,11 +314,11 @@ class Reaction(models.Model):
         """
         if self._catalyzing_enzymes is None:
             logging.debug('looking for enzymes catalyzing this reaction')
-            self._catalyzing_enzymes = []
+            self._catalyzing_enzymes = set()
             for stored_reaction in self._GetAllStoredReactions():
                 enzymes = stored_reaction.enzyme_set.all()
-                self._catalyzing_enzymes.extend(enzymes)
-        return self._catalyzing_enzymes
+                self._catalyzing_enzymes.update(enzymes)
+        return list(self._catalyzing_enzymes)
 
     def ToJson(self):
         """
@@ -379,7 +369,7 @@ class Reaction(models.Model):
         concentrations = list(form.cleaned_reactantsConcentration)
 
         compound_list = []
-        for i in xrange(n_react):
+        for i in range(n_react):
             d = {'coeff': coeffs[i], 'kegg_id': kegg_ids[i], 'name': names[i]}
             if phases != []:
                 d['phase'] = phases[i]
@@ -415,7 +405,7 @@ class Reaction(models.Model):
         if fetch_db_names:
             for d in compound_list:
                 d['name'] = d['compound'].FirstName()
-        reactants = map(CompoundWithCoeff.FromDict, compound_list)
+        reactants = list(map(CompoundWithCoeff.FromDict, compound_list))
         return Reaction(reactants, aq_params=aq_params)
 
     @staticmethod
@@ -428,16 +418,19 @@ class Reaction(models.Model):
         atom_diff = {}
         for compound_w_coeff in collection:
             c = compound_w_coeff.compound
-            coeff = compound_w_coeff.coeff
-
+            coeff = float(compound_w_coeff.coeff)
+            
             atom_bag = c.GetAtomBag()
             if not atom_bag:
                 logging.warning('Failed to fetch atom bag for %s', c.formula)
                 raise ReactantFormulaMissingError(c)
 
-            for atomic_number, atom_count in atom_bag.iteritems():
+            for atomic_number, atom_count in atom_bag.items():
                 new_diff = atom_diff.get(atomic_number, 0) - coeff * atom_count
                 atom_diff[atomic_number] = new_diff
+
+        # ignore the differences if they are very close to 0
+        atom_diff = {k: v for k, v in atom_diff.items() if abs(v) > 1e-6}
 
         return atom_diff
 
@@ -461,7 +454,11 @@ class Reaction(models.Model):
 
             electron_diff += coeff * electrons
 
-        return electron_diff
+        # ignore the differences if they are very close to 0
+        if abs(electron_diff) > 1e-6:
+            return electron_diff
+        else:
+            return 0
 
     def _GetAtomDiff(self):
         """Returns the net atom counts from this reaction."""
@@ -500,7 +497,7 @@ class Reaction(models.Model):
         if query is not None:
             for arrow in constants.POSSIBLE_REACTION_ARROWS:
                 tmp_query = query.replace(arrow, '=>')
-            params.append('query=%s' % urllib.quote(tmp_query))
+            params.append('query=%s' % urllib.parse.quote(tmp_query))
 
         return params
 
@@ -872,7 +869,7 @@ class Reaction(models.Model):
                 self.reactants[first_i].coeff += c.coeff
                 c.coeff = 0
 
-        self.reactants = filter(lambda x: x.coeff != 0, self.reactants)
+        self.reactants = list(filter(lambda x: x.coeff != 0, self.reactants))
 
         # always make sure that H2O is the last reactant (so that it will
         # appear last in the chemical formula)
@@ -888,8 +885,8 @@ class Reaction(models.Model):
             Since we use Bob Alberty's framework for biochemical reactions,
             there is no meaning for having H+ in a reaction.
         """
-        self.reactants = filter(lambda c: c.compound.kegg_id not in
-                                ['C00080', 'C05359'], self.reactants)
+        self.reactants = list(filter(lambda c: c.compound.kegg_id not in
+                                     ['C00080', 'C05359'], self.reactants))
 
     def TryBalanceWithWater(self):
         """Try to balance the reaction with water.
@@ -1054,6 +1051,8 @@ class Reaction(models.Model):
         """
         dg0_prime = self.DeltaG0Prime()
         correction = self._GetConcentrationCorrectionMilliMolar()
+        if dg0_prime is None:
+            return None
         return dg0_prime + correction
 
     def DeltaGPrime(self):
@@ -1064,6 +1063,8 @@ class Reaction(models.Model):
         """
         dg0_prime = self.DeltaG0Prime()
         correction = self._GetConcentrationCorrection()
+        if dg0_prime is None:
+            return None
         return dg0_prime + correction
 
     def HalfReactionDeltaGPrime(self):
@@ -1148,7 +1149,7 @@ class Reaction(models.Model):
         except ReactantFormulaMissingError:
             return None
         diff.pop('H', 0)
-        extras = filter(lambda t: t[1] > 0, diff.iteritems())
+        extras = list(filter(lambda t: t[1] > 0, diff.items()))
         if not extras:
             return None
 
@@ -1161,7 +1162,7 @@ class Reaction(models.Model):
         except ReactantFormulaMissingError:
             return None
         diff.pop('H', 0)
-        short = filter(lambda t: t[1] < 0, diff.iteritems())
+        short = list(filter(lambda t: t[1] < 0, diff.items()))
         if not short:
             return None
 
@@ -1311,7 +1312,7 @@ class StoredReaction(models.Model):
         return "%s = %s" % (' + '.join(left), ' + '.join(right))
 
     @staticmethod
-    def HashableReactionString(sparse):
+    def _HashableReactionString(sparse):
         """Return a hashable string for a biochemical reaction.
 
         The string fully identifies the biochemical reaction up to
@@ -1332,28 +1333,27 @@ class StoredReaction(models.Model):
         if sparse[kegg_id_list[0]] == 0:
             raise Exception('One of the stoichiometric coefficients is 0')
         norm_factor = 1.0 / sparse[kegg_id_list[0]]
-        return ' + '.join(['%g %s' % (norm_factor*sparse[kegg_id], kegg_id)
-                           for kegg_id in kegg_id_list])
+        s = ' + '.join(['%g %s' % (norm_factor*sparse[kegg_id], kegg_id)
+                        for kegg_id in kegg_id_list])
+        return s.encode('latin-1')
 
     @staticmethod
     def HashReaction(sparse):
         md5 = hashlib.md5()
-        md5.update(StoredReaction.HashableReactionString(sparse))
+        md5.update(StoredReaction._HashableReactionString(sparse))
         return md5.hexdigest()
 
     @staticmethod
     def GetAtpHydrolysisHash():
-        atp_sparse = {'C00002': -1, 'C00001': -1, 'C00008': 1, 'C00009': 1}
-        return StoredReaction.HashableReactionString(atp_sparse)
+        atp_sparse = {'C00002': -1, 'C00001': -1,
+                      'C00008': 1, 'C00009': 1}
+        return StoredReaction.HashReaction(atp_sparse)
 
     @staticmethod
     def GetCO2HydrationHash():
-        co2_sparse = {'C00011': -1, 'C00001': -1, 'C00288': 1}
-        return StoredReaction.HashableReactionString(co2_sparse)
-
-    def GetHashableReactionString(self):
-        return StoredReaction.HashableReactionString(
-            self.GetSparseRepresentation())
+        co2_sparse = {'C00011': -1, 'C00001': -1,
+                      'C00288': 1}
+        return StoredReaction.HashReaction(co2_sparse)
 
     def GetHash(self):
         return StoredReaction.HashReaction(self.GetSparseRepresentation())
@@ -1422,8 +1422,14 @@ class Enzyme(models.Model):
             % self.ec
 
     def AllReactions(self):
-        """Returns all the reactions."""
-        return self.reactions.all()
+        """Returns all the reactions (unique by the 'hash')."""
+        rxns = []
+        hashes = set()
+        for r in self.reactions.all():
+            if r.GetHash() not in hashes:
+                rxns.append(r)
+                hashes.add(r.GetHash())
+        return rxns
 
     def FirstName(self):
         """The first name in the list of names."""
@@ -1431,7 +1437,7 @@ class Enzyme(models.Model):
 
     def __unicode__(self):
         """Return a single string identifier of this enzyme."""
-        return unicode(self.FirstName())
+        return str(self.FirstName())
 
     all_common_names = property(lambda self: self.common_names.all())
     all_cofactors = property(lambda self: self.cofactors.all())

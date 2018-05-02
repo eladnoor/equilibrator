@@ -2,11 +2,8 @@ import logging
 import numpy
 import pulp
 
-from matching import query_parser
-from gibbs import constants
-
-DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
-
+from util.constants import RT
+from pathway import bounds
 
 class MDFResult(object):
 
@@ -93,7 +90,8 @@ class PathwayThermoModel(object):
         self.fluxes = numpy.matrix(self.fluxes)
         assert self.fluxes.shape[1] == self.Nr, 'Fluxes required for all reactions'
 
-        self.I_dir = numpy.matrix(numpy.diag(map(numpy.sign, self.fluxes.flat)))
+        _I_dir = list(map(numpy.sign, self.fluxes.flat))
+        self.I_dir = numpy.matrix(numpy.diag(_I_dir))
         self.Nr_active = int(sum(self.fluxes.T != 0))
 
         self.cids = cids
@@ -111,12 +109,12 @@ class PathwayThermoModel(object):
         log_conc = numpy.log(concentrations)
         if numpy.isnan(self.dG0_r_prime).any():
             dG_r_prime = self.dG0_r_prime.copy()
-            for r in xrange(self.Nr):
+            for r in range(self.Nr):
                 reactants = list(self.S[:, r].nonzero()[0].flat)
-                dG_r_prime[0, r] += DEFAULT_RT * log_conc[reactants, 0].T * self.S[reactants, r]
+                dG_r_prime[0, r] += RT * log_conc[reactants, 0].T * self.S[reactants, r]
             return dG_r_prime
         else:
-            return self.dG0_r_prime + DEFAULT_RT * self.S.T * log_conc
+            return self.dG0_r_prime + RT * self.S.T * log_conc
 
     def GetPhysiologicalConcentrations(self, bounds=None):
         conc = numpy.matrix(numpy.ones((self.Nc, 1))) * self.DEFAULT_PHYSIOLOGICAL_CONC
@@ -154,7 +152,7 @@ class PathwayThermoModel(object):
 
         # driving force
         A11 = self.I_dir[inds] * self.dG0_r_std
-        A12 = self.I_dir[inds] * self.S.T * DEFAULT_RT
+        A12 = self.I_dir[inds] * self.S.T * RT
         A13 = numpy.ones((len(inds), 1))
 
         # covariance var ub and lb
@@ -203,12 +201,12 @@ class PathwayThermoModel(object):
         A, b, c = self._MakeDrivingForceConstraints(ln_conc_lb, ln_conc_ub)
 
         # the dG'0 covariance eigenvariables
-        y = pulp.LpVariable.dicts("y", ["%d" % i for i in xrange(self.Nr)])
-        y = [y["%d" % i] for i in xrange(self.Nr)]
+        y = pulp.LpVariable.dicts("y", ["%d" % i for i in range(self.Nr)])
+        y = [y["%d" % i] for i in range(self.Nr)]
 
         # ln-concentration variables
-        l = pulp.LpVariable.dicts("l", ["%d" % i for i in xrange(self.Nc)])
-        l = [l["%d" % i] for i in xrange(self.Nc)]
+        l = pulp.LpVariable.dicts("l", ["%d" % i for i in range(self.Nc)])
+        l = [l["%d" % i] for i in range(self.Nc)]
 
         return A, b, c, y, l
 
@@ -220,24 +218,24 @@ class PathwayThermoModel(object):
         A, b, c = self._MakeDrivingForceConstraints(ln_conc_lb, ln_conc_ub)
 
         w = pulp.LpVariable.dicts("w",
-                                  ["%d" % i for i in xrange(self.Nr_active)],
+                                  ["%d" % i for i in range(self.Nr_active)],
                                   lowBound=0)
-        w = [w["%d" % i] for i in xrange(self.Nr_active)]
+        w = [w["%d" % i] for i in range(self.Nr_active)]
 
         g = pulp.LpVariable.dicts("g",
-                                  ["%d" % i for i in xrange(2*self.Nr)],
+                                  ["%d" % i for i in range(2*self.Nr)],
                                   lowBound=0)
-        g = [g["%d" % i] for i in xrange(2*self.Nr)]
+        g = [g["%d" % i] for i in range(2*self.Nr)]
 
         z = pulp.LpVariable.dicts("z",
-                                  ["%d" % i for i in xrange(self.Nc)],
+                                  ["%d" % i for i in range(self.Nc)],
                                   lowBound=0)
-        z = [z["%d" % i] for i in xrange(self.Nc)]
+        z = [z["%d" % i] for i in range(self.Nc)]
 
         u = pulp.LpVariable.dicts("u",
-                                  ["%d" % i for i in xrange(self.Nc)],
+                                  ["%d" % i for i in range(self.Nc)],
                                   lowBound=0)
-        u = [u["%d" % i] for i in xrange(self.Nc)]
+        u = [u["%d" % i] for i in range(self.Nc)]
 
         return A, b, c, w, g, z, u
 
@@ -249,14 +247,14 @@ class PathwayThermoModel(object):
         x = y + l + [min_driving_force]
         lp = pulp.LpProblem("MDF", objective)
 
-        for j in xrange(3*self.Nr + 2 * self.Nc):
-            row = [A[j, i] * x[i] for i in xrange(self.Nr + self.Nc + 1)]
+        for j in range(3*self.Nr + 2 * self.Nc):
+            row = [A[j, i] * x[i] for i in range(self.Nr + self.Nc + 1)]
             lp += (pulp.lpSum(row) <= b[j, 0]), "energy_%02d" % j
 
         total_g = pulp.LpVariable("g_tot")
         total_g0 = float(self.fluxes * self.dG0_r_prime)
         total_reaction = self.S * self.fluxes.T
-        row = [total_reaction[i, 0] * x[i] for i in xrange(self.Nc)]
+        row = [total_reaction[i, 0] * x[i] for i in range(self.Nc)]
         lp += (total_g == total_g0 + pulp.lpSum(row)), "Total G"
 
         lp.setObjective(total_g)
@@ -277,17 +275,17 @@ class PathwayThermoModel(object):
         x = y + l + [B]
         lp = pulp.LpProblem("MDF_PRIMAL", pulp.LpMaximize)
 
-        cnstr_names = ["driving_force_%02d" % j for j in xrange(self.Nr_active)] + \
-                      ["covariance_var_ub_%02d" % j for j in xrange(self.Nr)] + \
-                      ["covariance_var_lb_%02d" % j for j in xrange(self.Nr)] + \
-                      ["log_conc_ub_%02d" % j for j in xrange(self.Nc)] + \
-                      ["log_conc_lb_%02d" % j for j in xrange(self.Nc)]
+        cnstr_names = ["driving_force_%02d" % j for j in range(self.Nr_active)] + \
+                      ["covariance_var_ub_%02d" % j for j in range(self.Nr)] + \
+                      ["covariance_var_lb_%02d" % j for j in range(self.Nr)] + \
+                      ["log_conc_ub_%02d" % j for j in range(self.Nc)] + \
+                      ["log_conc_lb_%02d" % j for j in range(self.Nc)]
 
-        for j in xrange(A.shape[0]):
-            row = [A[j, i] * x[i] for i in xrange(A.shape[1])]
+        for j in range(A.shape[0]):
+            row = [A[j, i] * x[i] for i in range(A.shape[1])]
             lp += (pulp.lpSum(row) <= b[j, 0]), cnstr_names[j]
 
-        objective = pulp.lpSum([c[i] * x[i] for i in xrange(A.shape[1])])
+        objective = pulp.lpSum([c[i] * x[i] for i in range(A.shape[1])])
         lp.setObjective(objective)
 
         return lp, objective, y, l, B
@@ -305,15 +303,15 @@ class PathwayThermoModel(object):
         x = w + g + z + u
         lp = pulp.LpProblem("MDF_DUAL", pulp.LpMinimize)
 
-        cnstr_names = ["y_%02d" % j for j in xrange(self.Nr)] + \
-                      ["l_%02d" % j for j in xrange(self.Nc)] + \
+        cnstr_names = ["y_%02d" % j for j in range(self.Nr)] + \
+                      ["l_%02d" % j for j in range(self.Nc)] + \
                       ["MDF"]
 
-        for i in xrange(A.shape[1]):
-            row = [A[j, i] * x[j] for j in xrange(A.shape[0])]
+        for i in range(A.shape[1]):
+            row = [A[j, i] * x[j] for j in range(A.shape[0])]
             lp += (pulp.lpSum(row) == c[i, 0]), cnstr_names[i]
 
-        objective = pulp.lpSum([b[i] * x[i] for i in xrange(A.shape[0])])
+        objective = pulp.lpSum([b[i] * x[i] for i in range(A.shape[0])])
         lp.setObjective(objective)
 
         return lp, objective, w, g, z, u
@@ -329,6 +327,10 @@ class PathwayThermoModel(object):
         Returns:
             A 2 (optimal dGfs, optimal concentrations, optimal mdf).
         """
+        
+        def get_pulp_result_as_matrix(x):
+            return numpy.matrix(list(map(pulp.value, x))).T
+        
         lp_primal, primal_obj, y, l, B = self._MakeMDFProblem()
         lp_primal.solve(self.pulp_solver)
 
@@ -337,11 +339,11 @@ class PathwayThermoModel(object):
             raise pulp.solvers.PulpSolverError(
                 "Cannot solve MDF primal optimization problem")
 
-        y = numpy.matrix(map(pulp.value, y)).T
-        l = numpy.matrix(map(pulp.value, l)).T
+        y = get_pulp_result_as_matrix(y)
+        l = get_pulp_result_as_matrix(l)
         mdf = pulp.value(B)
         conc = numpy.exp(l)
-        dG0_r_prime = self.dG0_r_prime + numpy.dot(self.dG0_r_std, y)
+        #dG0_r_prime = self.dG0_r_prime + numpy.dot(self.dG0_r_std, y)
 
         lp_dual, dual_obj, w, g, z, u = self._MakeMDFProblemDual()
         lp_dual.solve(self.pulp_solver)
@@ -354,11 +356,11 @@ class PathwayThermoModel(object):
             raise pulp.solvers.PulpSolverError("Primal != Dual (%.5f != %.5f)"
             % (primal_obj, dual_obj))
 
-        w = map(pulp.value, w)
-        z = map(pulp.value, z)
-        u = map(pulp.value, u)
-        reaction_prices = numpy.matrix(w).T
-        compound_prices = numpy.matrix(z).T - numpy.matrix(u).T
+        w = get_pulp_result_as_matrix(w)
+        z = get_pulp_result_as_matrix(z)
+        u = get_pulp_result_as_matrix(u)
+        reaction_prices = w
+        compound_prices = z - u
 
         ret = MDFResult(self, mdf, conc, y, reaction_prices, compound_prices)
 

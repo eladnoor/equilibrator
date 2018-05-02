@@ -1,6 +1,6 @@
 import logging, re
 
-from gibbs import constants
+from util import constants
 from django.apps import apps
 
 

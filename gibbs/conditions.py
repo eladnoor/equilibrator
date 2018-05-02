@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-from gibbs import constants
+from util import constants
 import numpy
 
 

@@ -1,3 +1,4 @@
+{% load static %}
 <table class="results">
 	<tr class="infoTableHeader">
 		<th colspan="100%">General Properties</td>		
@@ -19,8 +20,12 @@
 		<td colspan="100%">{{ compound.mass|floatformat:2 }} [Da]</td>
 	</tr>
 	<tr>
-		<td width="25%"><b>Structure</b></td>
-		<td colspan="100%"><img src="{{ compound.small_image_url }}" /></td>
+        <td width="25%"><b>Structure</b></td>
+        {% if compound.thumbnail and compound.thumbnail != "error" %}
+        <td colspan="100%"><img src="{{ compound.small_image_url }}" /></td>
+        {% else %}
+        <td colspan="100%"><img src="{% static "images/structure_not_available.svg" %}" style="width:250px;height:200px"/></td>
+        {% endif %}
 	</tr>
 	{% if compound.kegg_link %}
 	<tr>	
@@ -35,7 +40,7 @@
 		<a href="{{compound.details_link}}">More info &raquo;</a>
 		{% endif %}
 		</td>
-	{% endif %}
+    {% endif %}
     {% if compound.has_species_groups %}
         {% include "compound_species_table.html" %}
     {% endif %}

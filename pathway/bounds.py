@@ -5,7 +5,7 @@ import csv
 import numpy
 
 from copy import deepcopy
-from pathways.concs import ConcentrationConverter
+from pathway.concs import ConcentrationConverter
 
 
 class InvalidBounds(Exception):
@@ -167,6 +167,8 @@ class Bounds(BaseBounds):
         return bounds
 
     def _check_bounds(self):
+        if self.default_lb is None or self.default_ub is None:
+            return
         if self.default_lb > self.default_ub:
             msg = (
                 'Default lower bound %.2g > default upper bound %.2g' %
@@ -176,6 +178,8 @@ class Bounds(BaseBounds):
         for cid in self.upper_bounds:
             lb = self.lower_bounds[cid]
             ub = self.upper_bounds[cid]
+            if lb is None or ub is None:
+                continue
             if lb > ub:
                 msg = (
                     'Invalid bounds for %s: lower bound %f > upper bound %f' %

@@ -1,14 +1,19 @@
 # Config file for automatic testing at travis-ci.com
 #sudo: false  # http://docs.travis-ci.com/user/migrating-from-legacy/
-branches:
-  only:
-    - django2
-before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq mysql-server libmysqlclient-dev glpk-utils
+os: linux
+dist: trusty
 language: python
-python:
-- 3.4
+python: 3.6
+notifications:
+  slack: equilibrator:INK15q5gkY2tZMLBLhRZoFfG
+services:
+- mysql
+addons:
+  apt:
+    packages:
+    - glpk-utils
 install:
 - pip install -r requirements.txt
+before_script:
+- python init_db.py
 script: python -m unittest discover tests

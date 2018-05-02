@@ -1,5 +1,5 @@
 body {
-    font-family: arial;
+    font-family: "Roboto", "Trebuchet MS", arial, sans-serif;
     margin: 0;
     padding: 0;
 }
@@ -22,6 +22,31 @@ body {
 }
 
 .centerize {
+    margin: 5px auto 5px auto;
+    width: 800px;
+    text-align: center;
+}
+
+.info {
+    margin: 5px auto 5px auto;
+    width: 800px;
+    text-align: left;
+}
+
+.info .title {
+    margin: 0 auto 15px auto;
+    text-align: left;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.info .subtitle {
+    margin: 0 auto 15px auto;
+    text-align: left;
+    font-size: 20px;
+}
+
+.searchResults {
     margin: 5px 40px 5px 40px;
     width: 800px;
     text-align: center;
@@ -55,7 +80,7 @@ a {
     align: center;
 }
 
-.title {
+.welcome .title {
     font-size: 40px;
     font-weight: bold;
     margin: 0 auto 45px auto;
@@ -85,7 +110,7 @@ a {
 }
 
 .welcome #queryField {
-    width: 600px;
+    width: 500px;
     font-size: 20px;
     height: 40px;
 }

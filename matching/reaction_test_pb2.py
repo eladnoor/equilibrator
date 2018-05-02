@@ -10,7 +10,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='reaction_test.proto',
   package='matching',
-  serialized_pb='\n\x13reaction_test.proto\x12\x08matching\"M\n\x08\x43ompound\x12\x13\n\x0bparsed_name\x18\x01 \x02(\t\x12\x17\n\x0cparsed_coeff\x18\x02 \x01(\x05:\x01\x31\x12\x13\n\x0bmatch_names\x18\x03 \x03(\t\"j\n\x0cTestReaction\x12\r\n\x05query\x18\x01 \x02(\t\x12%\n\treactants\x18\x02 \x03(\x0b\x32\x12.matching.Compound\x12$\n\x08products\x18\x03 \x03(\x0b\x32\x12.matching.Compound\":\n\rTestReactions\x12)\n\treactions\x18\x01 \x03(\x0b\x32\x16.matching.TestReaction')
+  serialized_pb=b'\n\x13reaction_test.proto\x12\x08matching\"M\n\x08\x43ompound\x12\x13\n\x0bparsed_name\x18\x01 \x02(\t\x12\x17\n\x0cparsed_coeff\x18\x02 \x01(\x05:\x01\x31\x12\x13\n\x0bmatch_names\x18\x03 \x03(\t\"j\n\x0cTestReaction\x12\r\n\x05query\x18\x01 \x02(\t\x12%\n\treactants\x18\x02 \x03(\x0b\x32\x12.matching.Compound\x12$\n\x08products\x18\x03 \x03(\x0b\x32\x12.matching.Compound\":\n\rTestReactions\x12)\n\treactions\x18\x01 \x03(\x0b\x32\x16.matching.TestReaction')
 
 
 
@@ -25,7 +25,7 @@ _COMPOUND = descriptor.Descriptor(
     descriptor.FieldDescriptor(
       name='parsed_name', full_name='matching.Compound.parsed_name', index=0,
       number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -67,7 +67,7 @@ _TESTREACTION = descriptor.Descriptor(
     descriptor.FieldDescriptor(
       name='query', full_name='matching.TestReaction.query', index=0,
       number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),

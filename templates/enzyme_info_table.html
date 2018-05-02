@@ -6,7 +6,7 @@
         <td width="150px"><b>Common names</b></td>
         <td>
             {% for name in enzyme.all_common_names %}
-            <div class="commonName">{{ name }}</div>
+            <div class="commonName">{{ name.name }}</div>
             {% endfor %}
         </td>
     </tr>

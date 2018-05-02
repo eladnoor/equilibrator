@@ -2,26 +2,26 @@ import csv
 import logging
 import numpy
 import seaborn
-import StringIO
+from io import StringIO
 
 from django.utils.text import slugify
-from gibbs import constants
+from util import constants
 from gibbs import service_config
 from gibbs.conditions import AqueousParams
 from django.apps import apps
 from matplotlib import pyplot as plt
 from scipy import linalg
-from os import path
-from pathways.bounds import Bounds
-from pathways.concs import ConcentrationConverter
-from pathways.thermo_models import PathwayThermoModel
+import os
+import pandas as pd
+from pathway.bounds import Bounds
+from pathway.concs import ConcentrationConverter
+from pathway.thermo_models import PathwayThermoModel
 
+from equilibrator.settings import BASE_DIR
 
-RELPATH = path.dirname(path.realpath(__file__))
-COFACTORS_FNAME = path.join(RELPATH, '../pathways/data/cofactors.csv')
+COFACTORS_FNAME = os.path.join(BASE_DIR, 'pathway/data/cofactors.csv')
 DEFAULT_BOUNDS = Bounds.from_csv_filename(
     COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
-DEFAULT_RT = constants.R * constants.DEFAULT_TEMP
 
 
 class PathwayParseError(Exception):
@@ -129,37 +129,46 @@ class ParsedPathway(object):
         query_parser = service_config.Get().query_parser
         aq_params = aq_params or AqueousParams()
 
+        reaction_df = pd.read_csv(f,
+                                  dtype={'ReactionFormula':str, 'Flux':float})
+        
+        if len(reaction_df.columns) != 2:
+            raise InvalidReactionFormula(
+                "Input CSV file must have exactly 2 columns")
+        if reaction_df.columns[0] != 'ReactionFormula':
+            raise InvalidReactionFormula(
+                "First column in CSV file must be 'ReactionFormula'")
+        if reaction_df.columns[1] != 'Flux':
+            raise InvalidReactionFormula(
+                "Second column in CSV file must be 'Flux'")
+        
+        fluxes = reaction_df.Flux.fillna(0.0).tolist()
+        
         reactions = []
-        fluxes = []
-
-        for row in csv.DictReader(f):
-            rxn_formula = row.get('ReactionFormula')
-            if not rxn_formula:
+        for formula in reaction_df.ReactionFormula:
+            if not formula:
                 raise InvalidReactionFormula('Found empty ReactionFormula')
 
-            flux = float(row.get('Flux', 0.0))
-            logging.debug('formula = %f x (%s)', flux, rxn_formula)
+            logging.debug('formula = %f x (%s)', formula)
 
-            # TODO raise errors in this case.
-            if not query_parser.IsReactionQuery(rxn_formula):
-                raise InvalidReactionFormula("Failed to parse '%s'", rxn_formula)
+            if not query_parser.IsReactionQuery(formula):
+                raise InvalidReactionFormula("Failed to parse '%s'", formula)
 
-            parsed = query_parser.ParseReactionQuery(rxn_formula)
+            parsed = query_parser.ParseReactionQuery(formula)
 
             matches = rxn_matcher.MatchReaction(parsed)
             best_match = matches.GetBestMatch()
-            rxn = apps.get_model('gibbs.reaction').FromIds(best_match, fetch_db_names=True)
+            rxn = apps.get_model('gibbs.reaction').FromIds(
+                best_match, fetch_db_names=True)
 
-            # TODO raise errors in this case.
             if not rxn.IsBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not balanced" % rxn_formula)
+                    "ReactionFormula '%s' is not balanced" % formula)
             if not rxn.IsElectronBalanced():
                 raise UnbalancedReaction(
-                    "ReactionFormula '%s' is not redox balanced" % rxn_formula)
+                    "ReactionFormula '%s' is not redox balanced" % formula)
 
             reactions.append(rxn)
-            fluxes.append(flux)
 
         dgs = [r.DeltaG0Prime(aq_params) for r in reactions]
         return ParsedPathway(
@@ -229,7 +238,7 @@ class ParsedPathway(object):
 
     def print_reactions(self):
         for f, r in zip(self.fluxes, self.reactions):
-            print '%sx %s' % (f, r)
+            print('%sx %s' % (f, r))
 
     @classmethod
     def from_full_sbtab(self, reaction_sbtab, flux_sbtab,
@@ -279,7 +288,7 @@ class ParsedPathway(object):
         # grab rows containing keqs.
         keqs = keqs_df[keqs_df['QuantityType'] == 'equilibrium constant']
         reaction_keqs = dict(zip(keqs['Reaction'], keqs['Value']))
-        dgs = [-DEFAULT_RT * numpy.log(float(reaction_keqs[rid]))
+        dgs = [-constants.RT * numpy.log(float(reaction_keqs[rid]))
                for rid in reaction_ids]
 
         # Manually set the delta G values on the reaction objects
@@ -312,7 +321,7 @@ class ParsedPathway(object):
         reaction_header = generic_header_fmt % ('Reaction', 'Reaction', 'Pathway Model')
         reaction_cols = ['!ID', '!ReactionFormula', '!Identifiers:kegg.reaction']
 
-        sio = StringIO.StringIO()
+        sio = StringIO()
         sio.writelines([reaction_header + '\n'])
         writer = csv.DictWriter(sio, reaction_cols, dialect='excel-tab')
         writer.writeheader()
@@ -322,7 +331,7 @@ class ParsedPathway(object):
             kegg_id = rxn.stored_reaction_id
             rxn_id = kegg_id
             if rxn.catalyzing_enzymes:
-                enz = unicode(rxn.catalyzing_enzymes[0])
+                enz = str(rxn.catalyzing_enzymes[0])
                 enz_slug = slugify(enz)[:10]
                 enz_slug = enz_slug.replace('-', '_')
                 rxn_id = '%s_%s' % (enz_slug, kegg_id)
@@ -368,7 +377,7 @@ class ParsedPathway(object):
         writer.writeheader()
         for i, (rxn_id, rxn, dg) in enumerate(zip(rxn_ids, self.reactions, self.dG0_r_prime)):
             keq_id = 'kEQ_R%d' % i
-            keq = numpy.exp(-dg / DEFAULT_RT)
+            keq = numpy.exp(-dg / constants.RT)
             d = {'!QuantityType': 'equilibrium constant',
                  '!Reaction': rxn_id,
                  '!Value': keq,
@@ -386,7 +395,7 @@ class ParsedPathway(object):
 
         writer = csv.DictWriter(sio, conc_cols, dialect='excel-tab')
         writer.writeheader()
-        for cid, compound in self.compounds_by_kegg_id.iteritems():
+        for cid, compound in self.compounds_by_kegg_id.items():
             d = {'!QuantityType': 'concentration',
                  '!Compound': str(compound.name_slug),
                  '!Compound:Identifiers:kegg.compound': cid,
@@ -429,6 +438,10 @@ class CompoundMDFData(object):
         self.concentration = concentration
         self.shadow_price = shadow_price
         self.lb, self.ub = concentration_bounds
+
+    @property
+    def compound_name(self):
+        return self.compound.name.name
 
     @property
     def link_url(self):
@@ -502,7 +515,7 @@ class PathwayMDFData(object):
     def conc_plot_svg(self):
         ys = numpy.arange(0, len(self.compound_data))
         concs = numpy.array([c.concentration for c in self.compound_data])
-        cnames = [str(c.compound) for c in self.compound_data]
+        cnames = [str(c.compound_name) for c in self.compound_data]
         default_lb = self.model.concentration_bounds.default_lb
         default_ub = self.model.concentration_bounds.default_ub
 
@@ -536,7 +549,7 @@ class PathwayMDFData(object):
 
         plt.xticks(family='sans-serif', figure=conc_figure)
         plt.yticks(ys, cnames, family='sans-serif',
-            fontsize=6, figure=conc_figure)
+            fontsize=8, figure=conc_figure)
         plt.xlabel('Concentration (M)', family='sans-serif',
             figure=conc_figure)
         plt.xscale('log')
@@ -544,7 +557,7 @@ class PathwayMDFData(object):
         plt.xlim(1e-7, 1.5e2)
         plt.ylim(-1.5, len(self.compound_data) + 0.5)
 
-        svg_data = StringIO.StringIO()
+        svg_data = StringIO()
         conc_figure.savefig(svg_data, format='svg')
         return svg_data.getvalue()
 
@@ -571,6 +584,6 @@ class PathwayMDFData(object):
         plt.ylabel("Cumulative $\Delta_r G'$ (kJ/mol)", family='sans-serif')
         plt.legend(loc=3)
 
-        svg_data = StringIO.StringIO()
+        svg_data = StringIO()
         mdf_fig.savefig(svg_data, format='svg')
         return svg_data.getvalue()

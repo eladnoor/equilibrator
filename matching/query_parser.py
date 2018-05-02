@@ -5,7 +5,7 @@ import pyparsing
 import re
 import numpy
 
-from gibbs import constants
+from util import constants
 
 
 class ParseError(Exception):
@@ -136,7 +136,7 @@ class QueryParser(object):
             logging.debug('substrates = %s' % str(substrates))
             logging.debug('products = %s' % str(products))
             return ParsedReactionQuery(substrates, products)
-        except pyparsing.ParseException, msg:
+        except pyparsing.ParseException as msg:
             logging.error('Failed to parse query %s', query)
             raise ParseError(msg)
         
