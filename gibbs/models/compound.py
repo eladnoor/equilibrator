@@ -422,7 +422,7 @@ class Compound(models.Model):
         Slug will also never begin with a number to avoid
         confusing the reaction parser.
         """
-        slug = 'C_%s' % slugify(str(self.name))
+        slug = 'C_%s' % slugify(str(self.FirstName()))
         return slug.replace('-', '_')
 
     def DeltaG0Prime(self, aq_params,
