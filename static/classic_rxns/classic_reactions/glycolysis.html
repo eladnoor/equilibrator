@@ -25,22 +25,13 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="../index.html"/>
-        <link rel="up" title="eQuilibrator Classic Reactions" href="index.html"/>
-        <link rel="next" title="Respiration" href="respiration.html"/>
-        <link rel="prev" title="Plants Make Glucose from CO2" href="co2_red.html"/>
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Respiration" href="respiration.html" />
+    <link rel="prev" title="Plants Make Glucose from CO2" href="co2_red.html" />
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -59,7 +50,7 @@
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -76,7 +67,7 @@
 
           
             
-            <img src="../_static/equilibrator_logo_80px.png" class="logo" />
+            <img src="../_static/equilibrator_logo_80px.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -144,7 +135,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">eQuilibrator</a>
@@ -152,9 +143,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -228,13 +220,13 @@
 <p>The energetics of these half-reactions can be characterized by a number called the “reduction potential,” given above as E’<sup>m</sup>. What do these reduction potentials mean? The -190 mV E’<sup>m</sup> given for converting pyruvate to lactate represents the amount of energy that each electron needs to carry in order to convert pyruvate into lactate assuming, as above, 1 mM concentrations for pyruvate and lactate (denoted by the m superscript). Here, for example, we have to donate 2 e- to pyruvate to form lactate and each electron must carry roughly -190 mV of potential.</p>
 <p>The reduction potential is a relative value - in order to know whether the pyruvate/lactate half-reaction will be favorable, we need to know where electrons came from. We can tell that NADH is a suitable donor for this reaction because the electrons in NADH have a potential of -330 mV. Electrons flow towards more positive potentials, and so we can tell that donating electrons from NADH to pyruvate to form NAD+ and lactate will be favorable - each electron gains about 140 mV of potential.</p>
 <p>We can convert these mV values into more familiar kJ/mol using the <a class="reference external" href="https://en.wikipedia.org/wiki/Nernst_equation">Nernst equation</a></p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{eqnarray}
 \Delta_r G' &amp;=&amp; -n F \Delta E \\
 F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 \end{eqnarray}\end{split}\]</div>
 <p>where n is the number of electrons transferred and F is the Faraday constant. Notice the minus sign in the Nernst equation - a favorable redox reaction has a positive ΔE and a negative Δ<sub>r</sub>G’. Reducing pyruvate using NADH (i.e. donating electrons from NADH to pyruvate) will therefore have a</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\Delta_r G'^m \approx -2 \times 96.4 \times 10^{-3} \times (-330 - (-190)) \approx -27 \frac{kJ}{mol}\]</div>
 <p>consistent with our earlier calculation of Δ<sub>r</sub>G<sup>m</sup> using eQuilibrator.</p>
 <p>There are many common biological electron carriers aside from NADH and its close cousin NADPH. These include ferredoxin, glutathione, quinones and various flavins. But NAD(P)H is the most common biological electron carrier for a number of reasons. Most importantly, molecular oxygen (O<sub>2</sub>) is abundant in our atmosphere and has a very high reduction potential (Nelson et al., 2008). Many biological electron carriers can spontaneously donate electrons to O<sub>2</sub> and so must be “protected” from oxygen in various ways (e.g. by being buried deep inside proteins). As compared to other biological electron carriers, NAD(P)H is relatively insensitive to O<sub>2</sub> (<a class="reference external" href="refs.html">Nelson et al., 2008</a>). NAD(P)H is also a two electron carrier, which is suited to many metabolic reactions where electrons are often transferred in pairs. Finally, the reduction potential of NAD(P)H around -320 mV is well-suited to many common biological transformations, which mainly alter the “redox state” (number of electrons) associated with carbon atoms (<a class="reference external" href="refs.html">Bar-Even et al., 2012</a>).</p>
@@ -299,7 +291,7 @@ F &amp;\approx&amp; 96.4 \times 10^3 \frac{kJ}{mV \times mol}
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=DL-Glyceraldehyde+3-phosphate+%2B+2+ADP+%2B+Pi+%2B+NAD%2B+%3C%3D%3E+Pyruvate+%2B+2+ATP+%2B+NADH+%2B+H2O">Glyceraldehyde 3-phosphate + 2 ADP + Pi + NAD+ ⇌ Pyruvate + 2 ATP + NADH + H<sub>2</sub>O</a></p>
 <p>Because the oxidation of sugars (like glucose and glyceraldehyde)
 by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impressively, lower glycolysis manages to make 2 ATP for every glyceraldehyde 3-phosphate molecule that it oxidizes to pyruvate. We can calculate the ATP yield of the overall pathway as follows: 2 ATP were invested for each glucose molecule, which was converted into 2 glyceraldehyde 3-phosphate, each of which yield 2 ATP from lower glycolysis:</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[- 2 \frac{ATP}{glucose} + 2 \frac{g3p}{glucose} \times 2 \frac{ATP}{g3p} = 2 \frac{ATP}{glucose} \text{ net}\]</div>
 <p>This gives a net ATP yield of 2 ATP per glucose produced through glycolysis. Overall, this process is quite favorable, having a Δ<sub>r</sub>G’<sup>m</sup> ≈ -63 kJ / mol. However, as you can see in the figure below, glycolysis has 10 reaction steps and each individual reaction step must be favorable in order for the pathway to proceed.</p>
 <blockquote>
@@ -315,9 +307,7 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -339,7 +329,7 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -358,6 +348,7 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.2 beta',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -376,14 +367,11 @@ by NAD+ is favorable, this process can be coupled to the synthesis of ATP. Impre
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

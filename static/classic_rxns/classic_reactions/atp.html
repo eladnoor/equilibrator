@@ -25,22 +25,13 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="../index.html"/>
-        <link rel="up" title="eQuilibrator Classic Reactions" href="index.html"/>
-        <link rel="next" title="Thioester Bonds are Energetic Too" href="thioester.html"/>
-        <link rel="prev" title="eQuilibrator Classic Reactions" href="index.html"/>
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Thioester Bonds are Energetic Too" href="thioester.html" />
+    <link rel="prev" title="eQuilibrator Classic Reactions" href="index.html" />
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -59,7 +50,7 @@
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -76,7 +67,7 @@
 
           
             
-            <img src="../_static/equilibrator_logo_80px.png" class="logo" />
+            <img src="../_static/equilibrator_logo_80px.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -138,7 +129,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">eQuilibrator</a>
@@ -146,9 +137,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -202,13 +194,13 @@
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=ATP+%2B+Water+%3C%3D%3E+ADP+%2B+Phosphate">ATP + H<sub>2</sub>O ⇌ ADP + Pi</a></p>
 <p>has a Δ<sub>r</sub>G’° of about -26 kJ / mol. <a class="footnote-reference" href="#atp1" id="id1">[1]</a> That is, if you hydrolyze 1 mol of ATP to ADP in standard conditions, 26 kJ of energy that is usable for work is released. Conversely, it takes 26 kJ of work to form 1 mol of ATP from ADP in standard conditions.</p>
 <p>Keep in mind that Δ<sub>r</sub>G’° is defined in standard conditions (1 molar concentrations) while <a class="reference external" href="http://book.bionumbers.org/what-are-the-concentrations-of-free-metabolites-in-cells/">biological concentrations are much closer to 1 millimolar</a> (1 mM). We can calculate the Δ<sub>r</sub>G’ in these conditions using one of the most basic equations of biochemical thermodynamics</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{eqnarray}
 \Delta_r G' &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{Q} \\
 &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{\left( \frac{[ADP][Pi]}{[ATP][H_2O]} \right)}
 \end{eqnarray}\end{split}\]</div>
 <p>Here Q is the ratio of product concentrations to substrate concentrations for the ATP hydrolysis reaction - concentrations are denoted by square brackets like [ATP]. <a class="footnote-reference" href="#atp2" id="id2">[2]</a> Q is called the “reaction quotient” or sometimes the “mass-action ratio” in textbooks. Because biology takes place in aqueous solution, the water concentration [H<sub>2</sub>O] is roughly 55 M. <a class="footnote-reference" href="#atp3" id="id3">[3]</a> Typically, however, the “activity” of water is set to 1 molar (<a class="reference external" href="refs.html">Alberty et al. 2011</a>). If we set the other three concentrations to 10<sup>-3</sup> molar we get</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{eqnarray}
 \Delta_r G' &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{\left( \frac{10^{-3} M \times 10^{-3} M}{10^{-3} M \times 1 M} \right)} \\
 &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{10^{-3}} \\
@@ -219,7 +211,7 @@
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/search?query=Glycylglycine+%2B+water+%3D+2+Glycine">Glycylglycine + H<sub>2</sub>O = 2 Glycine</a></p>
 <p>This reaction has Δ<sub>r</sub>G’° ≈ 0 kJ / mol and Δ<sub>r</sub>G’<sup>m</sup> ≈ -16 kJ / mol. Similarly, breaking a C-C bond in a sugar, as in the <a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00111&amp;reactantsCoeff=1&amp;reactantsName=Glycerone%20phosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00118&amp;reactantsCoeff=1&amp;reactantsName=D-Glyceraldehyde%203-phosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00354&amp;reactantsCoeff=-1&amp;reactantsName=D-Fructose-1,6-bisphosphate&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;ph=7.000000&amp;pmg=14.000000&amp;ionic_strength=0.100000&amp;e_reduction_potential=0.000000&amp;max_priority=0&amp;mode=BA&amp;query=D-Fructose-1%2C6-bisphosphate%20%3D%20Glycerone%20phosphate%20%2B%20D-Glyceraldehyde%203-phosphate">fructose bisphosphate aldolase reaction</a>, is intrinsically unfavorable with a Δ<sub>r</sub>G’<sup>m</sup> ≈ +3 kJ / mol.</p>
 <p>We can also convert the energy of ATP hydrolysis into other units, for example units of mechanical force relevant on the molecular scale: piconewton nanometers (pN nm). Looking up the <a class="reference external" href="https://en.wikipedia.org/wiki/KT_(energy)">definitions of these units</a>, we find that 1 pN nm = 10<sup>-24</sup> kJ. Hydrolysing 1 mol of ATP yields ~45 kJ of energy (assuming mM concentrations) and so one ATP hydrolysis yields</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\frac{45}{N_A} kJ \times 10^{24} \frac{pN \times nm}{kJ}\]</div>
 <p>Where N<sub>A</sub> is Avogadro’s number. Altogether, this gives ~73 pN nm per ATP hydrolysis (<a class="reference external" href="refs.html">Phillips et al., 2009</a>). But how much energy is that? Well, it’s more than enough to <a class="reference external" href="http://bionumbers.hms.harvard.edu/bionumber.aspx?id=103125">compact DNA</a> into a viral capsid, for example. In other words, ATP stores an amount of energy that can be converted into a usable amount of work at the molecular scale. ATP acts as a bridge between the chemical and physical realms - between energy metabolism and the mechanical work of living.</p>
 <p>Moreover, ATP serves a crucial role in metabolism. As we will see throughout this document, cells often want to perform metabolic transformations that are not intrinsically favorable (reactions that are “uphill” energetically). Through evolution and natural selection, cells “learned” how to make these transformations “go” by coupling them to highly favorable reactions like the hydrolysis of ATP. <a class="footnote-reference" href="#atp6" id="id6">[6]</a> So remember the energy scale of ATP hydrolysis - Δ<sub>r</sub>G’<sup>m</sup> ≈ 45 kJ/mol - since we will often use that scale to determine how many ATPs will be needed to make some biochemical reaction go in the direction the cell wants it to.</p>
@@ -263,9 +255,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -287,7 +277,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -306,6 +296,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.2 beta',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -324,14 +315,11 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

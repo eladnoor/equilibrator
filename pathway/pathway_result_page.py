@@ -29,7 +29,17 @@ def make_bounds(form):
     return bounds
 
 
-def read_sbtabs(f):
+def read_sbtabs_mdf(f):
+    """Return reactions, fluxes, keqs, bounds."""
+    sbtabs = SBtabTools.openMultipleSBtabFromFile(f)
+    tdict = dict([(t.getTableInformation()[1].upper(), t) for t in sbtabs])
+    expected_tnames = ['REACTION', 'RELATIVEFLUX', 'REACTIONCONSTANT',
+                       'CONCENTRATIONCONSTRAINT']
+    assert set(expected_tnames).issubset(tdict.keys())
+
+    return [tdict[n] for n in expected_tnames]
+
+def read_sbtabs_ecm(f):
     """Return reactions, fluxes, keqs, bounds."""
     sbtabs = SBtabTools.openMultipleSBtabFromFile(f)
     tdict = dict([(t.getTableInformation()[1].upper(), t) for t in sbtabs])

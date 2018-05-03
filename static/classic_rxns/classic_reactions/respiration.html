@@ -25,22 +25,13 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="../index.html"/>
-        <link rel="up" title="eQuilibrator Classic Reactions" href="index.html"/>
-        <link rel="next" title="Transamination for Making Amino Acids" href="transamination.html"/>
-        <link rel="prev" title="Glycolysis and Fermentation" href="glycolysis.html"/>
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transamination for Making Amino Acids" href="transamination.html" />
+    <link rel="prev" title="Glycolysis and Fermentation" href="glycolysis.html" />
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -59,7 +50,7 @@
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -76,7 +67,7 @@
 
           
             
-            <img src="../_static/equilibrator_logo_80px.png" class="logo" />
+            <img src="../_static/equilibrator_logo_80px.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -141,7 +132,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">eQuilibrator</a>
@@ -149,9 +140,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -231,10 +223,10 @@
 <p><a class="reference external" href="http://equilibrator.weizmann.ac.il/reaction?reactantsId=C00031&amp;reactantsCoeff=-1&amp;reactantsName=Glucose&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00011&amp;reactantsCoeff=6&amp;reactantsName=CO2&amp;reactantsPhase=aqueous&amp;reactantsConcentration=0.001&amp;reactantsId=C00001&amp;reactantsCoeff=-6&amp;reactantsName=H2O&amp;reactantsPhase=liquid&amp;reactantsConcentration=1&amp;ph=7.000000&amp;pmg=14.000000&amp;ionic_strength=0.100000&amp;e_reduction_potential=0.000000&amp;max_priority=0&amp;mode=BA&amp;query=glucose%20%3D%3E%206co2">Glucose + 6 H <sub>2</sub> O ⇌ 6 CO<sub>2</sub> + 24 e-</a></p>
 <p>This half-reaction has a per-electron potential E’<sup>m</sup> of about -400 millivolts (mV). Since this value is much more negative than the values for O<sub>2</sub>, nitrate or nitrite, we know that withdrawing electrons from glucose and donating them to these molecules will be favorable - remember that electrons tend to flow towards more positive reduction potential.</p>
 <p>We can convert these mV values into more familiar kJ/mol using the Nernst equation Δ<sub>r</sub>G’ = -nFΔE’, where n is the number of electrons transferred and F is the Faraday constant (96.4x10<sup>3</sup> kJ/mV/mol). Donating all 24 electrons from glucose to O<sub>2</sub> should release <a class="footnote-reference" href="#res3" id="id4">[3]</a></p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\Delta_r G'^m \approx 24 \times 96.4 \times 10^{-3} \times (-400 - 800) \approx -2800 \frac{kJ}{mol}\]</div>
 <p>Respiring using nitrate or nitrite as the electron acceptor will release less energy because they have lower (less positive) reduction potentials. If we use 400 mV as a representative value for these two acceptors, then</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\Delta_r G'^m \approx 24 \times 96.4 \times 10^{-3} \times (-400 - 400) \approx -1850 \frac{kJ}{mol}\]</div>
 <p>So it’s not surprising that <em>E. coli</em> prefers to use O<sub>2</sub> as a terminal electron acceptor over nitrate and nitrite - respiring glucose using oxygen releases 1000 kJ/mol more energy! That’s more than 20 ATPs worth of energy! In fact, the presence of O<sub>2</sub> represses all of <em>E. coli</em>’s alternative respiratory pathways.</p>
 <p>An exercise for the reader: try using eQuilibrator to combine the glucose/CO<sub>2</sub> half-reactions with the electron acceptor half-reactions (O<sub>2</sub>, nitrate and nitrite) to calculate the stoichiometries of these alternate respiratory pathways.</p>
@@ -249,9 +241,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -273,7 +263,7 @@
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -292,6 +282,7 @@
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.2 beta',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -310,14 +301,11 @@
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

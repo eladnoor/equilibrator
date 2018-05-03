@@ -19,20 +19,33 @@ def DefinePathwayPage(request):
 def PathwayResultPage(request):
     """Renders a page for a particular reaction."""
     form = AnalyzePathwayModelForm(request.POST, request.FILES)
+    
     if not form.is_valid():
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
     try:
-        f_data = str(request.FILES['pathway_file'].read(), encoding="ascii")
-        sio = io.StringIO(f_data, newline=None)  # universal newline mode
-        reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs(sio)
-        pp = ParsedPathway.from_full_sbtab(
-            reactions, fluxes, bounds, keqs)
-        logging.info('Parsed pathway.')
-    except PathwayParseError as ppe:
-        logging.error(ppe)
-        return HttpResponseBadRequest(ppe.message)
+        optimization_method = form.cleaned_data['optimization_method']
+        assert optimization_method in ['MDF', 'ECM']
+    
+        try:
+            f_data = str(request.FILES['pathway_file'].read(), encoding="ascii")
+            sio = io.StringIO(f_data, newline=None)  # universal newline mode
+            if optimization_method == 'MDF':
+                reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs_mdf(sio)
+                pp = ParsedPathway.from_full_sbtab(
+                    reactions, fluxes, bounds, keqs)
+            elif optimization_method == 'ECM':
+                reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs_ecm(sio)
+                pp = ParsedPathway.from_full_sbtab(
+                    reactions, fluxes, bounds, keqs)
+            
+            logging.info('Parsed pathway.')
+
+        except PathwayParseError as ppe:
+            logging.error(ppe)
+            return HttpResponseBadRequest(ppe.message)
+    
     except Exception as e:
         logging.error(e)
         template_data = {'pathway': None,

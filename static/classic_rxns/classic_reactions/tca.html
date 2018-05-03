@@ -25,22 +25,13 @@
   
 
   
-  
     <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="author" title="About these documents"
-              href="../about.html"/>
-        <link rel="index" title="Index"
-              href="../genindex.html"/>
-        <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="eQuilibrator 0.2 beta documentation" href="../index.html"/>
-        <link rel="up" title="eQuilibrator Classic Reactions" href="index.html"/>
-        <link rel="next" title="References" href="refs.html"/>
-        <link rel="prev" title="Metabolism of Alkanes and Fatty Acids" href="fatty_acid_met.html"/>
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="../about.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="References" href="refs.html" />
+    <link rel="prev" title="Metabolism of Alkanes and Fatty Acids" href="fatty_acid_met.html" />
  
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -59,7 +50,7 @@
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -76,7 +67,7 @@
 
           
             
-            <img src="../_static/equilibrator_logo_80px.png" class="logo" />
+            <img src="../_static/equilibrator_logo_80px.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -148,7 +139,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">eQuilibrator</a>
@@ -156,9 +147,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -312,7 +304,7 @@
 <p>this reaction is problematic for two reasons. First of all, it is not very favorable, having a Δ<sub>r</sub>G’<sup>m</sup> ≈ +30 kJ/mol at pH 7. Using more plausible concentrations for [NAD<sup>+</sup>] ≈ 3 mM and [NADH] ≈ 0.08 mM helps but not enough to make the forward direction favorable (try this for yourself). Moreover, <a class="reference external" href="https://en.wikipedia.org/wiki/Malic_acid">malate</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Oxaloacetic_acid">oxaloacetate</a> have different pKas on their two carboxylic acid groups, meaning that Δ<sub>r</sub>G’ of the malate dehydrogenase reaction will depend on the pH. Try using the pH slider and pH graphing utility on eQuilibrator to see how Δ<sub>r</sub>G’ and Δ<sub>r</sub>G’° depend on the pH.</p>
 <p>The pKa of an acid is the pH at which that acidic group is 50% protonated (also 50% deprotonated). Overall, the pKas associated with oxaloacetate (pKa = 2.2, 3.9) are lower than those associated with malate (pKa = 3.4, 5.2). This means that as the pH goes down from 7 (i.e. becomes more acidic) and approaches the higher pKa of malate, malate reaches a pH where it has multiple populated protonation states but oxaloacetate does not. <a class="footnote-reference" href="#tca4" id="id7">[4]</a> As a result of this effect, we find that lowering the pH (making the environment more acidic) makes the Δ<sub>r</sub>G’ more positive, favoring the reverse reaction even more.</p>
 <p>Some organisms maintain a pH of 6 in their cytosol (<a class="reference external" href="refs.html">Noor et. al, 2014</a>). In these conditions Δ<sub>r</sub>G’° = +36 kJ/mol. What would it take to make this reaction flow in the direction of oxaloacetate (i.e. make the Δ<sub>r</sub>G’ negative) if we assume [NAD<sup>+</sup>] ≈ 3 mM and [NADH] ≈ 0.08? We know that</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{eqnarray}
 \Delta_r G' &amp;=&amp; \Delta_r G'^{\circ} + RT \ln{Q} \\
 &amp;=&amp; 36 \frac{kJ}{mol} + RT \ln{\left( \frac{[NADH][oxaloacetate]}{[NAD^+][malate]} \right)} \\
@@ -320,7 +312,7 @@
 &amp;=&amp; 36 \frac{kJ}{mol} + RT \left( \ln{\left( \frac{0.08 mM}{3 mM} \right)} + \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} \right) \\
 \end{eqnarray}\end{split}\]</div>
 <p>Since R = 8.315 x 10<sup>-3</sup> kJ/mol/K and we assume a temperature of T = 298.15 K, RT ln(0.08/3) ≈ -9 kJ/mol. Therefore, in order for Δ<sub>r</sub>G’ &lt; 0 we need</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[\begin{split}\begin{eqnarray}
 RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &amp;&lt;&amp; -27 \frac{kJ}{mol} \\
 \frac{[oxaloacetate]}{[malate]} &amp;&lt;&amp; \exp{\left( \frac{-27 \frac{kJ}{mol}}{RT} \right)} \\
@@ -340,9 +332,7 @@ RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &amp;&lt;&amp; -27 \frac{
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -364,7 +354,7 @@ RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &amp;&lt;&amp; -27 \frac{
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -383,6 +373,7 @@ RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &amp;&lt;&amp; -27 \frac{
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
             VERSION:'0.2 beta',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -401,14 +392,11 @@ RT  \ln{\left(\frac{[oxaloacetate]}{[malate]} \right)} &amp;&lt;&amp; -27 \frac{
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>
