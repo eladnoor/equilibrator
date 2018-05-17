@@ -29,6 +29,7 @@
                     <tr class='infoTableHeader'>
                         <th colspan="100%">Pathway Analysis Results</th>
                     </tr>
+                {% if path_data.is_mdf %}
                 <tr>
                     <td width="20%"><strong>Net Reaction</strong></td>
                     <td><a href='{{pathway.net_reaction.link_url}}'>{{pathway.net_reaction}}</a></td>
@@ -42,14 +43,19 @@
                     <td width="20%"><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'><strong>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></strong></a></td>
                     <td>{{pathway.net_reaction.dgm_prime|floatformat}} kJ/mol</td>
                 </tr>
-                {% if mdf_result %}
                 <tr>
                     <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#total-driving-force target='_blank'>Driving Force</a></strong></td>
-                    <td>{{mdf_result.min_total_driving_force|floatformat}} &le; -&Delta;<sub><i>r</i></sub>G'</strong> &le; {{mdf_result.max_total_driving_force|floatformat}} kJ/mol</td>
+                    <td>{{path_data.min_total_driving_force|floatformat}} &le; -&Delta;<sub><i>r</i></sub>G'</strong> &le; {{path_data.max_total_driving_force|floatformat}} kJ/mol</td>
                 </tr>
                 <tr>
                     <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#mdf target='_blank'>MDF</a></strong></td>
-                    <td>{{mdf_result.mdf|floatformat}} kJ/mol</td>
+                    <td>{{path_data.score|floatformat}} kJ/mol</td>
+                </tr>
+                {% endif %}
+                {% if path_data.is_ecm %}
+                <tr>
+                    <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#ecm target='_blank'>Total Cost</a></strong></td>
+                    <td>{{path_data.score|floatformat}} μM</td>
                 </tr>
                 {% endif %}
             </table>
@@ -60,21 +66,31 @@
                         <th colspan="100%">Reaction Data</th>
                     </tr>
                     <tr>
-                        <th> </th>
+                        <th width="10%">Flux</th>
                         <th>Reaction</th>
-                        <th><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a></th>
-                        <th>&Delta;<sub><i>r</i></sub>G'</th>
-                        <th>Shadow Price</th>
+                        {% if path_data.is_mdf %}
+                            <th><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a></th>
+                            <th>&Delta;<sub><i>r</i></sub>G'</th>
+                            <th>Shadow Price</th>
+                        {% endif %}
+                        {% if path_data.is_ecm %}
+                            <th width="15%">Enz. Conc.</th>
+                        {% endif %}
                     </tr>
-                {% for rxn in mdf_result.reaction_data %}
-                    <tr>
-                        <td>{{rxn.flux|floatformat}}x</td>
-                        <td><a href='{{rxn.reaction.link_url}}'>{{rxn.reaction}}</a></td>
-                        <td>{{rxn.dGm_prime|floatformat}}</td>
-                        <td>{{rxn.dGr|floatformat}}</td>
-                        <td {% if rxn.shadow_price != 0 %}class='italic'{% endif %}>{{rxn.shadow_price|floatformat}}</td>
-                    </tr>
-                {% endfor %}
+                    {% for rxn in path_data.reaction_data %}
+                        <tr>
+                            <td>{{rxn.flux|floatformat:"3"}}</td>
+                            <td><a href='{{rxn.reaction.link_url}}'>{{rxn.reaction}}</a></td>
+                            {% if path_data.is_mdf %}
+                                <td>{{rxn.dGm_prime|floatformat}}</td>
+                                <td>{{rxn.dGr|floatformat}}</td>
+                                <td {% if rxn.shadow_price != 0 %}class='italic'{% endif %}>{{rxn.shadow_price|floatformat}}</td>
+                            {% endif %}
+                            {% if path_data.is_ecm %}
+                                <td>{{rxn.html_enzyme_concentration|safe}}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
                 </table>
     
                 <table class='results'>
@@ -83,28 +99,35 @@
                     </tr>
                     <tr>
                         <th>Compound</th>
-                        <th>Concentration</th>
-                        <th>Min</th>
-                        <th>Max</th>
-                        <th>Shadow Price</th>
+                        <th width="15%">Concentration</th>
+                        <th width="15%">Min</th>
+                        <th width="15%">Max</th>
+                        {% if path_data.is_mdf %}
+                            <th>Shadow Price</th>
+                        {% endif %}
                     </tr>
-                {% for cdata in mdf_result.compound_data %}
-                    <tr>
-                        <td><a href='{{cdata.link_url}}'>{{cdata.compound_name}}</a></td>
-                        <td>{{cdata.html_concentration|safe}}</td>
-                        <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_lb|safe}}</td>
-                        <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_ub|safe}}</td>
-                        <td {% if cdata.shadow_price != 0 %}class='italic'{% endif %}>{{cdata.shadow_price|floatformat}}</td>
-                    </tr>
+                {% for cdata in path_data.compound_data %}
+                    {% if not cdata.is_water %}
+                        <tr>
+                            <td><a href='{{cdata.link_url}}'>{{cdata.compound_name}}</a></td>
+                            <td>{{cdata.html_concentration|safe}}</td>
+                            <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_lb|safe}}</td>
+                            <td {% if cdata.bounds_equal %}class='italic'{% endif %}>{{cdata.html_ub|safe}}</td>
+                            {% if path_data.is_mdf %}
+                                <td {% if cdata.shadow_price != 0 %}class='italic'{% endif %}>{{cdata.shadow_price|floatformat}}</td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
                 {% endfor %}
                 </table>
-    
-                <div id='plotMDF' align='center'>
-                    {{mdf_result.mdf_plot_svg|safe}}
+
+                <div id='plotPathwayAnalysisReactions' align='center'>
+                    {{path_data.reaction_plot_svg|safe}}
                 </div>
-                <div id='plotMDFConcs' align='center'>
-                    {{mdf_result.conc_plot_svg|safe}}
+                <div id='plotPathwayAnalysisMetabolites' align='center'>
+                    {{path_data.metabolite_plot_svg|safe}}
                 </div>
+                
             {% endif %}
         </div>
         {% endif %}

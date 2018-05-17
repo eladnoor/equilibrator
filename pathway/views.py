@@ -7,7 +7,7 @@ from django.template.context_processors import csrf
 from .forms import AnalyzePathwayModelForm, BuildPathwayModelForm
 from util import constants
 from . import pathway_result_page
-from . import ParsedPathway, PathwayParseError
+from . import MaxMinDrivingForce, EnzymeCostMinimization, PathwayParseError
 
 def DefinePathwayPage(request):
     """Renders the landing page."""
@@ -24,55 +24,44 @@ def PathwayResultPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
-    try:
-        optimization_method = form.cleaned_data['optimization_method']
-        assert optimization_method in ['MDF', 'ECM']
+    #try:
+    optimization_method = form.cleaned_data['optimization_method']
+    assert optimization_method in ['MDF', 'ECM']
+
+    pp = None
     
-        try:
-            f_data = str(request.FILES['pathway_file'].read(), encoding="ascii")
-            sio = io.StringIO(f_data, newline=None)  # universal newline mode
-            if optimization_method == 'MDF':
-                reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs_mdf(sio)
-                pp = ParsedPathway.from_full_sbtab(
-                    reactions, fluxes, bounds, keqs)
-            elif optimization_method == 'ECM':
-                reactions, fluxes, keqs, bounds = pathway_result_page.read_sbtabs_ecm(sio)
-                pp = ParsedPathway.from_full_sbtab(
-                    reactions, fluxes, bounds, keqs)
-            
-            logging.info('Parsed pathway.')
-
-        except PathwayParseError as ppe:
-            logging.error(ppe)
-            return HttpResponseBadRequest(ppe.message)
-    
-    except Exception as e:
-        logging.error(e)
-        template_data = {'pathway': None,
-                         'mdf_result': None,
-                         'error_message': str(e)}
-        return render(request, 'pathway_result_page.html', template_data)
-
-    if len(pp.reactions) == 0:
-        logging.error('Pathway contains no reactions')
-        template_data = {'pathway': pp,
-                         'mdf_result': None,
-                         'error_message': 'Empty pathway'}
-        return render(request, 'pathway_result_page.html', template_data)
-
     try:
+        f_data = str(request.FILES['pathway_file'].read(), encoding="ascii")
+        sio = io.StringIO(f_data, newline=None)  # universal newline mode
+        if optimization_method == 'MDF':
+            pp = MaxMinDrivingForce.from_sbtab_file(sio)
+        elif optimization_method == 'ECM':
+            pp = EnzymeCostMinimization.from_sbtab_file(sio)
+        else:
+            raise PathwayParseError('unknown optimization method: ' +
+                                    optimization_method)
+
+        logging.info('Parsed pathway.')
+
+        if pp.is_empty():
+            raise Exception('Empty pathway')
+
         # calculate the MDF with the specified bounds. Render template.
-        mdf_result = pp.calc_mdf()
+        path_data = pp.analyze()
+        logging.info('Analyzed pathway.')
         template_data = {'pathway': pp,
-                         'mdf_result': mdf_result}
-        logging.info('Calculated MDF %s', mdf_result.mdf)
+                         'path_data': path_data}
+        logging.info('Calculated %s score: %s' %
+                     (optimization_method, path_data.score))
         return render(request, 'pathway_result_page.html', template_data)
-    except Exception as e:
+    
+    except IOError as e:
         logging.error(e)
         template_data = {'pathway': pp,
                          'mdf_result': None,
                          'error_message': str(e)}
         return render(request, 'pathway_result_page.html', template_data)
+   
 
 def BuildPathwayModel(request):
     """Renders a page for a particular reaction."""
@@ -95,7 +84,7 @@ def BuildPathwayModel(request):
             fname_base, aq_params.pH, aq_params.ionic_strength)
         logging.info(output_fname)
 
-        pp = ParsedPathway.from_csv_file(
+        pp = MaxMinDrivingForce.from_csv_file(
             f, bounds=bounds, aq_params=aq_params)
     except PathwayParseError as ppe:
         logging.error(ppe)
