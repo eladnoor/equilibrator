@@ -6,8 +6,8 @@ from unittest import TestCase, main
 from equilibrator import settings
 import re
 import logging
-from util.SBtab import SBtabTools
-import pathway
+from util.SBtab.SBtabDict import SBtabDict
+from pathway import MaxMinDrivingForce
 from pathway.bounds import Bounds
 from pathway.concs import ConcentrationConverter, NoSuchUnits
 
@@ -26,24 +26,30 @@ class PathwayTester(TestCase):
         self.client = Client()
 
     def test_csv_file(self):
-        with open(self.csv_fname, 'r') as f:
-            path = pathway.ParsedPathway.from_csv_file(f)
+        with open(self.csv_fname, 'r') as fp:
+            path = MaxMinDrivingForce.from_csv_file(fp)
         
-        mdf_res = path.calc_mdf()
-        self.assertAlmostEqual(mdf_res.mdf, 2.626, 2)
+        mdf_res = path.analyze()
+        self.assertAlmostEqual(mdf_res.score, 2.626, 2)
 
     def test_sbtab_file(self):
-        rxns, fluxes, keqs, bounds = SBtabTools.openMultipleSBtab(self.sbtab_fname)
-        bs = Bounds.from_sbtab(bounds)
-        for key in bs.lower_bounds:
-            lb = bs.GetLowerBound(key)
-            ub = bs.GetUpperBound(key)
-            msg = 'bounds for %s lb = %.2g, ub = %.2g' % (key, lb, ub)
-            self.assertLessEqual(lb, ub, msg=msg)
+        with open(self.sbtab_fname, 'r') as fp:
+            sbtabs = SBtabDict.FromSBtabFile(fp)
+            
+            self.assertSetEqual(set(MaxMinDrivingForce.EXPECTED_TNAMES),
+                                set(sbtabs.keys()))
+            
+            bs = Bounds.from_sbtab(sbtabs['ConcentrationConstraint'])
+            for key in bs.lower_bounds:
+                lb = bs.GetLowerBound(key)
+                ub = bs.GetUpperBound(key)
+                msg = 'bounds for %s lb = %.2g, ub = %.2g' % (key, lb, ub)
+                self.assertLessEqual(lb, ub, msg=msg)
 
-        path = pathway.ParsedPathway.from_full_sbtab(rxns, fluxes, bounds, keqs)
-        mdf_res = path.calc_mdf()
-        self.assertAlmostEqual(mdf_res.mdf, 1.69, 2)
+            path = MaxMinDrivingForce.from_sbtabs(sbtabs)
+            mdf_res = path.analyze()
+        
+        self.assertAlmostEqual(mdf_res.score, 1.69, 2)
 
     def test_unit_string(self):
         test_data = [(1.0, 'M', 1.0),
@@ -80,9 +86,10 @@ class PathwayTester(TestCase):
             self.assertEqual(expected_out, out)
 
     def test_web_server(self):
-        with open(self.sbtab_fname, 'r') as f:
+        with open(self.sbtab_fname, 'r') as fp:
             response = self.client.post('/pathway/results',
-                                        {'pathway_file': f})
+                                        {'pathway_file': fp,
+                                         'optimization_method': 'MDF'})
         self.assertEqual(response.status_code, 200)
         
         # check that the MDF value is correct

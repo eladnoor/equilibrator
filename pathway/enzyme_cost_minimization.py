@@ -4,14 +4,10 @@ from io import StringIO
 from matplotlib import pyplot as plt
 import seaborn as sns
 import numpy as np
-from . import ParsedPathway, PathwayAnalysisData, ReactionData, CompoundData
-from gibbs.conditions import AqueousParams
-
-sys.path.append(path.expanduser('~/git/enzyme-cost'))
-from ecm import ECMmodel
+from . import ParsedPathway, PathwayAnalysisData
 
 class EnzymeCostMinimization(ParsedPathway):
-    
+
     EXPECTED_TNAMES = ['Reaction', 'Compound', 'Parameter', 'Flux',
                        'ConcentrationConstraint']
 
@@ -31,6 +27,9 @@ class EnzymeCostMinimization(ParsedPathway):
     @classmethod
     def from_sbtabs(cls, sbtabs):
         """Returns an initialized ParsedPathway."""
+        sys.path.append(path.expanduser('~/git/enzyme-cost'))
+        from ecm import ECMmodel
+
         reactions, fluxes, bounds = \
             ParsedPathway.get_data_from_sbtabs(sbtabs)
         
