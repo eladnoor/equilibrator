@@ -1,4 +1,6 @@
 from django import forms
+ANALYSIS_CHOICES = (('MDF', 'Max-min Driving Force'),
+                    ('ECM', 'Enzyme Cost Minimization'))
 
 class BuildPathwayModelForm(forms.Form):
     pathway_file = forms.FileField(required=True)
@@ -7,11 +9,12 @@ class BuildPathwayModelForm(forms.Form):
     pH = forms.FloatField(required=False)
     ionic_strength = forms.FloatField(required=False)
     conc_units = forms.CharField(required=True)
+    optimization_method = forms.ChoiceField(choices=ANALYSIS_CHOICES,
+                                            required=True,
+                                            label='optimization_method',
+                                            widget=forms.RadioSelect())
 
 class AnalyzePathwayModelForm(forms.Form):
-    ANALYSIS_CHOICES = (('MDF', 'Max-min Driving Force'),
-                        ('ECM', 'Enzyme Cost Minimization'))
-
     pathway_file = forms.FileField(required=True)
     optimization_method = forms.ChoiceField(choices=ANALYSIS_CHOICES,
                                             required=True,

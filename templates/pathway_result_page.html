@@ -121,12 +121,16 @@
                 {% endfor %}
                 </table>
 
-                <div id='plotPathwayAnalysisReactions' align='center'>
-                    {{path_data.reaction_plot_svg|safe}}
-                </div>
-                <div id='plotPathwayAnalysisMetabolites' align='center'>
-                    {{path_data.metabolite_plot_svg|safe}}
-                </div>
+                <p>
+                    <div id='plotPathwayAnalysisReactions' align='center'>
+                        {{path_data.reaction_plot_svg|safe}}
+                    </div>
+                </p>
+                <p>
+                    <div id='plotPathwayAnalysisMetabolites' align='center'>
+                        {{path_data.metabolite_plot_svg|safe}}
+                    </div>
+                </p>
                 
             {% endif %}
         </div>

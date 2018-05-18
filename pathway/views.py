@@ -24,24 +24,23 @@ def PathwayResultPage(request):
         logging.error(form.errors)
         return HttpResponseBadRequest('Invalid pathway form.')
 
-    #try:
-    optimization_method = form.cleaned_data['optimization_method']
-    assert optimization_method in ['MDF', 'ECM']
-
     pp = None
-    
     try:
+        optimization_method = form.cleaned_data['optimization_method']
+        assert optimization_method in ['MDF', 'ECM']
+    
         f_data = str(request.FILES['pathway_file'].read(), encoding="ascii")
         sio = io.StringIO(f_data, newline=None)  # universal newline mode
         if optimization_method == 'MDF':
             pp = MaxMinDrivingForce.from_sbtab_file(sio)
-        elif optimization_method == 'ECM':
-            pp = EnzymeCostMinimization.from_sbtab_file(sio)
         else:
-            raise PathwayParseError('unknown optimization method: ' +
-                                    optimization_method)
+            pp = EnzymeCostMinimization.from_sbtab_file(sio)
 
         logging.info('Parsed pathway.')
+        
+        if not pp.validate_dGs():
+            raise Exception('Supplied reaction dG values are inconsistent '
+                            'with the stoichiometric matrix.')
 
         if pp.is_empty():
             raise Exception('Empty pathway')
@@ -73,19 +72,25 @@ def BuildPathwayModel(request):
     try:
         bounds = pathway_result_page.make_bounds(form)
         aq_params = pathway_result_page.make_aq_params(form)
+        optimization_method = form.cleaned_data['optimization_method']
+        assert optimization_method in ['MDF', 'ECM']
     except Exception as e:
         logging.error(e)
         return HttpResponseBadRequest(e)
 
     try:
-        f = request.FILES['pathway_file']
-        fname_base, ext = os.path.splitext(f.name)
-        output_fname = '%s_pH%.2f_I%.2f.tsv' % (
-            fname_base, aq_params.pH, aq_params.ionic_strength)
+        fp = request.FILES['pathway_file']
+        fname_base, ext = os.path.splitext(fp.name)
+        output_fname = '%s_pH%.2f_I%.2f_%s.tsv' % (
+            fname_base, aq_params.pH, aq_params.ionic_strength, optimization_method)
         logging.info(output_fname)
 
-        pp = MaxMinDrivingForce.from_csv_file(
-            f, bounds=bounds, aq_params=aq_params)
+        if optimization_method == 'MDF':
+            pp = MaxMinDrivingForce.from_csv(
+                fp, bounds=bounds, aq_params=aq_params)
+        else:
+            pp = EnzymeCostMinimization.from_csv(
+                fp, bounds=bounds, aq_params=aq_params)
     except PathwayParseError as ppe:
         logging.error(ppe)
         return HttpResponseBadRequest(ppe)
@@ -93,6 +98,6 @@ def BuildPathwayModel(request):
     response = HttpResponse(content_type='text/tab-separated-values')
     response['Content-Disposition'] = 'attachment; filename="%s"' % \
         output_fname
-    response.write(pp.to_full_sbtab())
+    response.write(pp.to_sbtab())
 
     return response

@@ -1,35 +1,35 @@
 !!SBtab TableName='Reaction' TableType='Reaction' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
-!ID	!ReactionFormula	!Identifiers:kegg.reaction	!IsReversible	!Gene	!NameForPlots		
-PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	RPTSsy	True	PTS	pts		
-PGI_R02740	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate	R02740	True	PGI	pgi		
-PFK_R04779	ATP + D_Fructose_6_phosphate <=> ADP + D_Fructose_1_6_bisphosphate	R04779	True	PFK	pfk		
-ALD_R01070	D_Fructose_1_6_bisphosphate <=> Glycerone_phosphate + D_Glyceraldehyde_3_phosphate	R01070	True	FBA	fba		
-TIM_R01015	Glycerone_phosphate <=> D_Glyceraldehyde_3_phosphate	R01015	True	TPI	tim		
-GAP_R01061	Orthophosphate + NADplus + D_Glyceraldehyde_3_phosphate <=> NADH + 3_Phospho_D_glyceroyl_phosphate	R01061	True	GAP	gap		
-PGK_R01512	ADP + 3_Phospho_D_glyceroyl_phosphate <=> ATP + 3_Phospho_D_glycerate	R01512	True	PGK	pgk		
-PGM_R01518	3_Phospho_D_glycerate <=> 2_Phospho_D_glycerate	R01518	True	GPM	gpm		
-PGH_R00658	2_Phospho_D_glycerate <=> Phosphoenolpyruvate + H2O	R00658	True	ENO	eno		
-PYK_R00200	ADP + Phosphoenolpyruvate <=> Pyruvate + ATP	R00200	True	PYK	pyk		
-PDH_R00209	Pyruvate + NADplus + CoA <=> Acetyl_CoA + NADH + CO2	R00209	True	PDH	pdh		
-ZWF_R00835	NADPplus + D_Glucose_6_phosphate <=> NADPH + D_Glucono_1_5_lactone_6_phosphate	R00835	True	ZWF	zwf		
-GLH_R02035	D_Glucono_1_5_lactone_6_phosphate + H2O <=> 6_Phospho_D_gluconate	R02035	True	PGL	pgl		
-PGD_R01528	6_Phospho_D_gluconate + NADPplus <=> NADPH + D_Ribulose_5_phosphate + CO2	R01528	True	GND	gnd		
-RPI_R01056	D_Ribulose_5_phosphate <=> D_Ribose_5_phosphate	R01056	True	RPI	rpi		
-RPE_R01529	D_Ribulose_5_phosphate <=> D_Xylulose_5_phosphate	R01529	True	RPE	rpe		
-TXT_R01641	D_Xylulose_5_phosphate + D_Ribose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate	R01641	True	TKT1	tkt1		
-TAL_R08575	D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate <=> D_Erythrose_4_phosphate + D_Fructose_6_phosphate	R08575	True	TAL	tal		
-TXT_R01067	D_Erythrose_4_phosphate + D_Xylulose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + D_Fructose_6_phosphate	R01067	True	TKT2	tkt2		
-FBP_R00762	D_Fructose_1_6_bisphosphate + H2O <=> Orthophosphate + D_Fructose_6_phosphate	R00762	True	FBP	fbp		
-CSN_R00351	Acetyl_CoA + Oxaloacetate + H2O <=> CoA + Citrate	R00351	True	CSN	cs		
-ACN_R01325	Citrate <=> cis_Aconitate + H2O	R01325	True	ACN1	acn1		
-ACN_R01900	cis_Aconitate + H2O <=> Isocitrate	R01900	True	ACN2	acn2		
-ICD_R00709	NADplus + Isocitrate <=> NADH + 2_Oxoglutarate + CO2	R00709	True	ICD	icd		
-KGD_R08549	NADplus + 2_Oxoglutarate + CoA <=> NADH + CO2 + Succinyl_CoA	R08549	True	KGD	kgd		
-SCS_R00405	Orthophosphate + ADP + Succinyl_CoA <=> ATP + CoA + Succinate	R00405	True	SCS	suc		
-SDH_R02164	Ubiquinone + Succinate <=> Fumarate + Ubiquinol	R02164	True	SDH	sdh		
-FUM_R01082	Fumarate + H2O <=> S_Malate	R01082	True	FUM	fum		
-MDH_R00342	S_Malate + NADplus <=> NADH + Oxaloacetate	R00342	True	MDH	mdh		
-PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate + H2O	R00345	True	PPC	ppc		
+!ID	!ReactionFormula	!Identifiers:kegg.reaction	!NameForPlots				
+PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	RPTSsy	pts				
+PGI_R02740	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate	R02740	pgi				
+PFK_R04779	ATP + D_Fructose_6_phosphate <=> ADP + D_Fructose_1_6_bisphosphate	R04779	pfk				
+ALD_R01070	D_Fructose_1_6_bisphosphate <=> Glycerone_phosphate + D_Glyceraldehyde_3_phosphate	R01070	fba				
+TIM_R01015	Glycerone_phosphate <=> D_Glyceraldehyde_3_phosphate	R01015	tim				
+GAP_R01061	Orthophosphate + NADplus + D_Glyceraldehyde_3_phosphate <=> NADH + 3_Phospho_D_glyceroyl_phosphate	R01061	gap				
+PGK_R01512	ADP + 3_Phospho_D_glyceroyl_phosphate <=> ATP + 3_Phospho_D_glycerate	R01512	pgk				
+PGM_R01518	3_Phospho_D_glycerate <=> 2_Phospho_D_glycerate	R01518	gpm				
+PGH_R00658	2_Phospho_D_glycerate <=> Phosphoenolpyruvate + H2O	R00658	eno				
+PYK_R00200	ADP + Phosphoenolpyruvate <=> Pyruvate + ATP	R00200	pyk				
+PDH_R00209	Pyruvate + NADplus + CoA <=> Acetyl_CoA + NADH + CO2	R00209	pdh				
+ZWF_R00835	NADPplus + D_Glucose_6_phosphate <=> NADPH + D_Glucono_1_5_lactone_6_phosphate	R00835	zwf				
+GLH_R02035	D_Glucono_1_5_lactone_6_phosphate + H2O <=> 6_Phospho_D_gluconate	R02035	pgl				
+PGD_R01528	6_Phospho_D_gluconate + NADPplus <=> NADPH + D_Ribulose_5_phosphate + CO2	R01528	gnd				
+RPI_R01056	D_Ribulose_5_phosphate <=> D_Ribose_5_phosphate	R01056	rpi				
+RPE_R01529	D_Ribulose_5_phosphate <=> D_Xylulose_5_phosphate	R01529	rpe				
+TXT_R01641	D_Xylulose_5_phosphate + D_Ribose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate	R01641	tkt1				
+TAL_R08575	D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate <=> D_Erythrose_4_phosphate + D_Fructose_6_phosphate	R08575	tal				
+TXT_R01067	D_Erythrose_4_phosphate + D_Xylulose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + D_Fructose_6_phosphate	R01067	tkt2				
+FBP_R00762	D_Fructose_1_6_bisphosphate + H2O <=> Orthophosphate + D_Fructose_6_phosphate	R00762	fbp				
+CSN_R00351	Acetyl_CoA + Oxaloacetate + H2O <=> CoA + Citrate	R00351	cs				
+ACN_R01325	Citrate <=> cis_Aconitate + H2O	R01325	acn1				
+ACN_R01900	cis_Aconitate + H2O <=> Isocitrate	R01900	acn2				
+ICD_R00709	NADplus + Isocitrate <=> NADH + 2_Oxoglutarate + CO2	R00709	icd				
+KGD_R08549	NADplus + 2_Oxoglutarate + CoA <=> NADH + CO2 + Succinyl_CoA	R08549	kgd				
+SCS_R00405	Orthophosphate + ADP + Succinyl_CoA <=> ATP + CoA + Succinate	R00405	suc				
+SDH_R02164	Ubiquinone + Succinate <=> Fumarate + Ubiquinol	R02164	sdh				
+FUM_R01082	Fumarate + H2O <=> S_Malate	R01082	fum				
+MDH_R00342	S_Malate + NADplus <=> NADH + Oxaloacetate	R00342	mdh				
+PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate + H2O	R00345	ppc				
 %							
 !!SBtab TableName='Compound' TableType='Compound' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
 !ID	!Name	!Identifiers:kegg.compound	!IsConstant	!NameForPlots			
