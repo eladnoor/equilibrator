@@ -48,19 +48,15 @@ class MaxMinDrivingForce(ParsedPathway):
         
         sio = StringIO()
         
-        # ReactionConstant table
-        keq_header = self.SBTAB_GENERIC_HEADER % ('Parameter', 'Quantity')
+        # Parameter table
+        keq_header = self.create_sbtab_header('Parameter', 'Quantity',
+            pH='%.2f' % self.aq_params.pH, 
+            IonicStrength='%.2f' % self.aq_params.ionic_strength,
+            IonicStrengthUnit='M')
+
         keq_cols = ['!QuantityType', '!Reaction', '!Compound', '!Value',
                     '!Unit', '!Reaction:Identifiers:kegg.reaction',
                     '!Compound:Identifiers:kegg.compound', '!ID']
-        if self.aq_params:
-            # Write pH and ionic strength in header
-            aq_params_header = (
-                "pH='%.2f' 'IonicStrength='%.2f' IonicStrengthUnit='M'")
-
-            aq_params_header = aq_params_header % (
-                self.aq_params.pH, self.aq_params.ionic_strength)
-            keq_header = '%s %s' % (keq_header, aq_params_header)
         sio.writelines(['%\n', keq_header + '\n'])
 
         writer = csv.DictWriter(sio, keq_cols, dialect='excel-tab')
@@ -123,10 +119,10 @@ class PathwayMDFData(PathwayAnalysisData):
             mdf_fig, ax = plt.subplots(1, 1, figsize=(8, 6))
             ax.plot(cumulative_dgms,
                     label='Characteristic physiological 1 mM concentrations',
-                    color='blue')
+                    color='dodgerblue')
             ax.plot(cumulative_dgs,
                     label='MDF-optimized concentrations',
-                    color='green')
+                    color='tomato')
     
             ax.set_xticks(xticks)
             ax.set_xticklabels(xticklabels, rotation=45, ha='right')

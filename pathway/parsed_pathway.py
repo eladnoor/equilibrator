@@ -1,4 +1,4 @@
-from util.SBtab.SBtabDict import SBtabDict
+from util.SBtab.SBtabDict import SBtabDict, SBtabError
 import numpy as np
 import seaborn as sns
 from matplotlib import pyplot as plt
@@ -49,6 +49,16 @@ class ParsedPathway(object):
     COFACTORS_FNAME = path.join(BASE_DIR, 'pathway/data/cofactors.csv')
     DEFAULT_BOUNDS = Bounds.from_csv_filename(
         COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
+    
+    @staticmethod
+    def create_sbtab_header(tablename, tabletype, **kwargs):
+        s = "!!SBtab TableName='%s' TableType='%s'" % (tablename, tabletype)
+        s += " Document='Pathway Model' SBtabVersion='1.0'"
+        for name, value in kwargs.items():
+            s += " %s='%s'" % (name, value)
+        s += "\n"
+        return s
+            
     SBTAB_GENERIC_HEADER = \
         "!!SBtab TableName='%s' TableType='%s' Document='Pathway Model' SBtabVersion='1.0'"
     
@@ -221,17 +231,18 @@ class ParsedPathway(object):
         # read the general aqueous parameters from the ReactionConstant
         # table header
         parameter_sbtab = sbtabs['Parameter']
-        pH, ionic_strength, ionic_strength_units = \
-            map(parameter_sbtab.getCustomTableInformation,
-                ['pH', 'IonicStrength', 'IonicStrengthUnit'])
         aq_params = AqueousParams()  # Default values
-        if pH:
+        try:
+            pH, ionic_strength, ionic_strength_units = \
+                map(parameter_sbtab.getCustomTableInformation,
+                    ['pH', 'IonicStrength', 'IonicStrengthUnit'])
             aq_params.pH = float(pH)
-        if ionic_strength:
             c = float(ionic_strength)
             c = ConcentrationConverter.to_molar_string(c, ionic_strength_units)
             aq_params.ionic_strength = c
-
+        except SBtabError:
+            logging.debug('pH or I unspecified in SBtab, using default values')
+        
         # get the equilibrium constants from the Parameters table
         keqs_df = parameter_sbtab.toDataFrame()
         keqs = keqs_df[keqs_df.QuantityType == 'equilibrium constant'].set_index('Reaction')
@@ -354,36 +365,40 @@ class ParsedPathway(object):
             by the inherited classes at the beginning of to_sbtab()
         """
         # Reaction table
-        reaction_header = self.SBTAB_GENERIC_HEADER % ('Reaction', 'Reaction')
-        reaction_cols = ['!ID', '!ReactionFormula', '!Identifiers:kegg.reaction']
+        reaction_header = self.create_sbtab_header('Reaction', 'Reaction')
+        reaction_cols = ['!ID', '!Name', '!ReactionFormula', '!Identifiers:kegg.reaction']
 
         sio = StringIO()
-        sio.writelines([reaction_header + '\n'])
+        sio.write(reaction_header)
         writer = csv.DictWriter(sio, reaction_cols, dialect='excel-tab')
         writer.writeheader()
 
         for rxn_id, rxn in zip(self.reaction_ids, self.reactions):
             d = {'!ID': rxn_id,
+                 '!Name': rxn_id,
                  '!ReactionFormula': rxn.GetSlugQueryString(),
                  '!Identifiers:kegg.reaction': rxn.stored_reaction_id}
             writer.writerow(d)
-
+        sio.write('%\n')
+        
         # Compound table
-        compound_header = self.SBTAB_GENERIC_HEADER % ('Compound', 'Compound')
-        compound_cols = ['!ID', '!Name', '!Identifiers:kegg.compound']
-        sio.writelines(['%\n', compound_header + '\n'])
+        compound_header = self.create_sbtab_header('Compound', 'Compound')
+        compound_cols = ['!ID', '!Name', '!Identifiers:kegg.compound', '!IsConstant']
+        sio.write(compound_header)
         writer = csv.DictWriter(sio, compound_cols, dialect='excel-tab')
         writer.writeheader()
         for cid, compound in self.compounds_by_kegg_id.items():
             d = {'!ID': compound.name_slug,
                  '!Name': compound.name.name,
-                 '!Identifiers:kegg.compound': cid}
+                 '!Identifiers:kegg.compound': cid,
+                 '!IsConstant': 'False'}
             writer.writerow(d)
+        sio.write('%\n')
 
         # Flux table
-        flux_header = self.SBTAB_GENERIC_HEADER % ('Flux', 'Quantity')
+        flux_header = self.create_sbtab_header('Flux', 'Quantity', Unit='mM/s')
         flux_cols = ['!QuantityType', '!Reaction', '!Reaction:Identifiers:kegg.reaction', '!Value']
-        sio.writelines(['%\n', flux_header + '\n'])
+        sio.write(flux_header)
         writer = csv.DictWriter(sio, flux_cols, dialect='excel-tab')
         writer.writeheader()
 
@@ -393,14 +408,15 @@ class ParsedPathway(object):
                  '!Reaction:Identifiers:kegg.reaction': rxn.stored_reaction_id,
                  '!Value': flux}
             writer.writerow(d)
+        sio.write('%\n')
 
         # ConcentrationConstraint table
-        conc_header = self.SBTAB_GENERIC_HEADER % ('ConcentrationConstraint', 'Quantity')
-        conc_header += " Unit='M'"
+        conc_header = self.create_sbtab_header('ConcentrationConstraint',
+                                               'Quantity', Unit='M')
         conc_cols = ['!QuantityType', '!Compound',
                      '!Compound:Identifiers:kegg.compound',
                      '!Concentration:Min', '!Concentration:Max']
-        sio.writelines(['%\n', conc_header + '\n'])
+        sio.write(conc_header)
 
         writer = csv.DictWriter(sio, conc_cols, dialect='excel-tab')
         writer.writeheader()
@@ -411,6 +427,7 @@ class ParsedPathway(object):
                  '!Concentration:Min': self.bounds.GetLowerBound(cid),
                  '!Concentration:Max': self.bounds.GetUpperBound(cid)}
             writer.writerow(d)
+        sio.write('%\n')
 
         return sio.getvalue()
     

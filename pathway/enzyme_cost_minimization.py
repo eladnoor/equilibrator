@@ -4,9 +4,10 @@ from io import StringIO
 from matplotlib import pyplot as plt
 import seaborn as sns
 import numpy as np
-from . import ParsedPathway, PathwayAnalysisData
+from . import ParsedPathway, PathwayAnalysisData, PathwayParseError
 import csv
 from util import constants
+import logging
 
 class EnzymeCostMinimization(ParsedPathway):
 
@@ -24,9 +25,17 @@ class EnzymeCostMinimization(ParsedPathway):
         """Returns an initialized ParsedPathway."""
         reactions, fluxes, bounds, aq_params = ParsedPathway._from_sbtab(sbtabs)
         
-        sys.path.append(path.expanduser('~/git/enzyme-cost'))
-        from ecm import ECMmodel
-        ecm = ECMmodel(sbtabs)
+        # TODO: write a much more detailed model validation function which
+        # raises clear exceptions if some data or table is missing!
+        
+        try:
+            sys.path.append(path.expanduser('~/git/enzyme-cost'))
+            from ecm import ECMmodel
+            ecm = ECMmodel(sbtabs)
+        except Exception as e:
+            logging.error(str(e))
+            raise PathwayParseError('Failed to load the ECM model')
+        
         pp = EnzymeCostMinimization(reactions, fluxes, ecm, bounds, aq_params)
         return pp
 
@@ -68,8 +77,10 @@ class EnzymeCostMinimization(ParsedPathway):
 
         writer = csv.DictWriter(sio, keq_cols, dialect='excel-tab')
         writer.writeheader()
+
+        # equilibrium constants        
         for rxn_id, rxn in zip(self.reaction_ids, self.reactions):
-            keq_id = 'kEQ_%s' % rxn_id
+            param_id = 'kEQ_%s' % rxn_id
             keq = np.exp(-rxn.dg0_r_prime / constants.RT)
             d = {'!QuantityType': 'equilibrium constant',
                  '!Reaction': rxn_id,
@@ -78,9 +89,63 @@ class EnzymeCostMinimization(ParsedPathway):
                  '!Unit': 'dimensionless',
                  '!Reaction:Identifiers:kegg.reaction': rxn.stored_reaction_id,
                  '!Compound:Identifiers:kegg.compound': None,
-                 '!ID': keq_id}
+                 '!ID': param_id}
+            writer.writerow(d)
+            
+        # add default values for the 3 types catalytic rate constants
+        qtype_list = [('catalytic rate constant geometric mean', 'kC'),
+                      ('substrate catalytic rate constant', 'kcrf'),
+                      ('product catalytic rate constant', 'kcrr')]
+        
+        for qtype, id_prefix in qtype_list:
+            for rxn_id, rxn in zip(self.reaction_ids, self.reactions):
+                param_id = '%s_%s' % (id_prefix, rxn_id)
+                d = {'!QuantityType': qtype,
+                     '!Reaction': rxn_id,
+                     '!Compound': None,
+                     '!Value': 100.0,
+                     '!Unit': '1/s',
+                     '!Reaction:Identifiers:kegg.reaction': rxn.stored_reaction_id,
+                     '!Compound:Identifiers:kegg.compound': None,
+                     '!ID': param_id}
+                writer.writerow(d)
+
+        for rxn_id, rxn in zip(self.reaction_ids, self.reactions):
+            for cpd in map(lambda c: c.compound, rxn.substrates + rxn.products):
+                param_id = 'kM_%s_%s' % (rxn_id, cpd.name_slug)
+                d = {'!QuantityType': 'Michaelis constant',
+                     '!Reaction': rxn_id,
+                     '!Compound': cpd.name_slug,
+                     '!Value': 1.0,
+                     '!Unit': 'mM',
+                     '!Reaction:Identifiers:kegg.reaction': rxn.stored_reaction_id,
+                     '!Compound:Identifiers:kegg.compound': cpd.kegg_id,
+                     '!ID': param_id}
+                writer.writerow(d)                
+            
+        # protein molecular mass            
+        for rxn_id, rxn in zip(self.reaction_ids, self.reactions):
+            d = {'!QuantityType': 'protein molecular mass',
+                 '!Reaction': rxn_id,
+                 '!Compound': None,
+                 '!Value': 10000,
+                 '!Unit': 'Da',
+                 '!Reaction:Identifiers:kegg.reaction': rxn.stored_reaction_id,
+                 '!Compound:Identifiers:kegg.compound': None,
+                 '!ID': None}
             writer.writerow(d)
         
+        # compound moleulcar mass
+        for cpd in self.compounds:
+            d = {'!QuantityType': 'molecular mass',
+                 '!Reaction': None,
+                 '!Compound': cpd.name_slug,
+                 '!Value': '%.1f' % cpd.mass,
+                 '!Unit': 'Da',
+                 '!Reaction:Identifiers:kegg.reaction': None,
+                 '!Compound:Identifiers:kegg.compound': cpd.kegg_id,
+                 '!ID': None}
+            writer.writerow(d)        
         return s + sio.getvalue()
 
 class PathwayECMData(PathwayAnalysisData):
@@ -112,10 +177,12 @@ class PathwayECMData(PathwayAnalysisData):
 
     @property
     def reaction_plot_svg(self):
-        fig, ax = plt.subplots(figsize=(8, 8))
-        sns.set_style('darkgrid')
-        self.ecm.PlotEnzymeDemandBreakdown(self.lnC, ax, plot_measured=False)
-
-        svg_data = StringIO()
-        fig.savefig(svg_data, format='svg')
-        return svg_data.getvalue()
+        with sns.axes_style('darkgrid'):
+            fig, ax = plt.subplots(figsize=(8, 6))
+            ax.grid(color='grey', linestyle='--', linewidth=1, alpha=0.2)
+            self.ecm.PlotEnzymeDemandBreakdown(self.lnC, ax, plot_measured=False)
+            fig.tight_layout()
+            
+            svg_data = StringIO()
+            fig.savefig(svg_data, format='svg')
+            return svg_data.getvalue()

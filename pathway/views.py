@@ -54,7 +54,7 @@ def PathwayResultPage(request):
                      (optimization_method, path_data.score))
         return render(request, 'pathway_result_page.html', template_data)
     
-    except IOError as e:
+    except Exception as e:
         logging.error(e)
         template_data = {'pathway': pp,
                          'mdf_result': None,
