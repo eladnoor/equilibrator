@@ -10,9 +10,6 @@ from util import constants
 
 class EnzymeCostMinimization(ParsedPathway):
 
-    EXPECTED_TNAMES = ['Reaction', 'Compound', 'Parameter', 'Flux',
-                       'ConcentrationConstraint']
-
     def __init__(self, reactions, fluxes, ecm, bounds=None, aq_params=None):
         super(EnzymeCostMinimization, self).__init__(reactions, fluxes,
              bounds, aq_params)

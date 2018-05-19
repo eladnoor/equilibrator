@@ -42,12 +42,10 @@ def HtmlConcentration(conc):
     return '%.1f M' % conc
 
 
-# TODO - implement all the functions common to MDF and ECM here, such as
-# reading the reaction list, storing the dG'0 values, the pH and ionic strength,
-# concentration bounds, etc.
 class ParsedPathway(object):
     
-    EXPECTED_TNAMES = []
+    EXPECTED_TNAMES = set(['Reaction', 'Compound', 'Parameter', 'Flux',
+                           'ConcentrationConstraint'])
     COFACTORS_FNAME = path.join(BASE_DIR, 'pathway/data/cofactors.csv')
     DEFAULT_BOUNDS = Bounds.from_csv_filename(
         COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
@@ -113,14 +111,19 @@ class ParsedPathway(object):
         projected = null_proj * self.dG0_r_primes
         return np.all(projected < 1e-8)
 
-    @classmethod
-    def from_sbtab_file(cls, f):
-        sbtabs = SBtabDict.FromSBtabFile(f)
-        if not set(cls.EXPECTED_TNAMES).issubset(sbtabs.keys()):
+    @staticmethod
+    def validate_sbtab(sbtab):
+        missing = ParsedPathway.EXPECTED_TNAMES.difference(sbtab.keys())
+        if missing:
             raise PathwayParseError('Make sure the pathway model SBtab file '
-                                    'contains all necessary tables: ' + 
-                                    ', '.join(cls.EXPECTED_TNAMES))
-        return cls.from_sbtab(sbtabs)
+                                    'contains these tables: ' + 
+                                    ', '.join(missing))
+        
+    @classmethod
+    def from_sbtab_file(cls, fp):
+        sbtab = SBtabDict.FromSBtabFile(fp)
+        cls.validate_sbtab(sbtab)
+        return cls.from_sbtab(sbtab)
 
     def is_empty(self):
         return len(self.reactions) == 0

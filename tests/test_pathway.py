@@ -7,7 +7,7 @@ from equilibrator import settings
 import re
 import logging
 from util.SBtab.SBtabDict import SBtabDict
-from pathway import MaxMinDrivingForce
+from pathway import MaxMinDrivingForce, ParsedPathway
 from pathway.bounds import Bounds
 from pathway.concs import ConcentrationConverter, NoSuchUnits
 
@@ -27,7 +27,7 @@ class PathwayTester(TestCase):
 
     def test_csv_file(self):
         with open(self.csv_fname, 'r') as fp:
-            path = MaxMinDrivingForce.from_csv_file(fp)
+            path = MaxMinDrivingForce.from_csv(fp)
         
         mdf_res = path.analyze()
         self.assertAlmostEqual(mdf_res.score, 2.626, 2)
@@ -36,7 +36,7 @@ class PathwayTester(TestCase):
         with open(self.sbtab_fname, 'r') as fp:
             sbtabs = SBtabDict.FromSBtabFile(fp)
             
-            self.assertSetEqual(set(MaxMinDrivingForce.EXPECTED_TNAMES),
+            self.assertSetEqual(set(ParsedPathway.EXPECTED_TNAMES),
                                 set(sbtabs.keys()))
             
             bs = Bounds.from_sbtab(sbtabs['ConcentrationConstraint'])
@@ -46,7 +46,7 @@ class PathwayTester(TestCase):
                 msg = 'bounds for %s lb = %.2g, ub = %.2g' % (key, lb, ub)
                 self.assertLessEqual(lb, ub, msg=msg)
 
-            path = MaxMinDrivingForce.from_sbtabs(sbtabs)
+            path = MaxMinDrivingForce.from_sbtab(sbtabs)
             mdf_res = path.analyze()
         
         self.assertAlmostEqual(mdf_res.score, 1.69, 2)

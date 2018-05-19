@@ -13,8 +13,6 @@ class MaxMinDrivingForce(ParsedPathway):
     Designed for checking input prior to converting to a stoichiometric model.
     """
 
-    EXPECTED_TNAMES = ['Reaction', 'Compound', 'Flux', 'Parameter', 'ConcentrationConstraint']
-
     def analyze(self):
         model = PathwayThermoModel(self.S.T, self.fluxes, self.dG0_r_primes,
                                    self.compound_kegg_ids,
