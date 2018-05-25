@@ -1,78 +1,78 @@
 !!SBtab TableName='Reaction' TableType='Reaction' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
-!ID	!ReactionFormula	!Identifiers:kegg.reaction	!NameForPlots				
-PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	RPTSsy	pts				
-PGI_R02740	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate	R02740	pgi				
-PFK_R04779	ATP + D_Fructose_6_phosphate <=> ADP + D_Fructose_1_6_bisphosphate	R04779	pfk				
-ALD_R01070	D_Fructose_1_6_bisphosphate <=> Glycerone_phosphate + D_Glyceraldehyde_3_phosphate	R01070	fba				
-TIM_R01015	Glycerone_phosphate <=> D_Glyceraldehyde_3_phosphate	R01015	tim				
-GAP_R01061	Orthophosphate + NADplus + D_Glyceraldehyde_3_phosphate <=> NADH + 3_Phospho_D_glyceroyl_phosphate	R01061	gap				
-PGK_R01512	ADP + 3_Phospho_D_glyceroyl_phosphate <=> ATP + 3_Phospho_D_glycerate	R01512	pgk				
-PGM_R01518	3_Phospho_D_glycerate <=> 2_Phospho_D_glycerate	R01518	gpm				
-PGH_R00658	2_Phospho_D_glycerate <=> Phosphoenolpyruvate + H2O	R00658	eno				
-PYK_R00200	ADP + Phosphoenolpyruvate <=> Pyruvate + ATP	R00200	pyk				
-PDH_R00209	Pyruvate + NADplus + CoA <=> Acetyl_CoA + NADH + CO2	R00209	pdh				
-ZWF_R00835	NADPplus + D_Glucose_6_phosphate <=> NADPH + D_Glucono_1_5_lactone_6_phosphate	R00835	zwf				
-GLH_R02035	D_Glucono_1_5_lactone_6_phosphate + H2O <=> 6_Phospho_D_gluconate	R02035	pgl				
-PGD_R01528	6_Phospho_D_gluconate + NADPplus <=> NADPH + D_Ribulose_5_phosphate + CO2	R01528	gnd				
-RPI_R01056	D_Ribulose_5_phosphate <=> D_Ribose_5_phosphate	R01056	rpi				
-RPE_R01529	D_Ribulose_5_phosphate <=> D_Xylulose_5_phosphate	R01529	rpe				
-TXT_R01641	D_Xylulose_5_phosphate + D_Ribose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate	R01641	tkt1				
-TAL_R08575	D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate <=> D_Erythrose_4_phosphate + D_Fructose_6_phosphate	R08575	tal				
-TXT_R01067	D_Erythrose_4_phosphate + D_Xylulose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + D_Fructose_6_phosphate	R01067	tkt2				
-FBP_R00762	D_Fructose_1_6_bisphosphate + H2O <=> Orthophosphate + D_Fructose_6_phosphate	R00762	fbp				
-CSN_R00351	Acetyl_CoA + Oxaloacetate + H2O <=> CoA + Citrate	R00351	cs				
-ACN_R01325	Citrate <=> cis_Aconitate + H2O	R01325	acn1				
-ACN_R01900	cis_Aconitate + H2O <=> Isocitrate	R01900	acn2				
-ICD_R00709	NADplus + Isocitrate <=> NADH + 2_Oxoglutarate + CO2	R00709	icd				
-KGD_R08549	NADplus + 2_Oxoglutarate + CoA <=> NADH + CO2 + Succinyl_CoA	R08549	kgd				
-SCS_R00405	Orthophosphate + ADP + Succinyl_CoA <=> ATP + CoA + Succinate	R00405	suc				
-SDH_R02164	Ubiquinone + Succinate <=> Fumarate + Ubiquinol	R02164	sdh				
-FUM_R01082	Fumarate + H2O <=> S_Malate	R01082	fum				
-MDH_R00342	S_Malate + NADplus <=> NADH + Oxaloacetate	R00342	mdh				
-PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate + H2O	R00345	ppc				
+!ID	!ReactionFormula	!Identifiers:kegg.reaction					
+PTS_RPTSsy	D_Glucose + Phosphoenolpyruvate <=> Pyruvate + D_Glucose_6_phosphate	RPTSsy					
+PGI_R02740	D_Glucose_6_phosphate <=> D_Fructose_6_phosphate	R02740					
+PFK_R04779	ATP + D_Fructose_6_phosphate <=> ADP + D_Fructose_1_6_bisphosphate	R04779					
+ALD_R01070	D_Fructose_1_6_bisphosphate <=> Glycerone_phosphate + D_Glyceraldehyde_3_phosphate	R01070					
+TIM_R01015	Glycerone_phosphate <=> D_Glyceraldehyde_3_phosphate	R01015					
+GAP_R01061	Orthophosphate + NADplus + D_Glyceraldehyde_3_phosphate <=> NADH + 3_Phospho_D_glyceroyl_phosphate	R01061					
+PGK_R01512	ADP + 3_Phospho_D_glyceroyl_phosphate <=> ATP + 3_Phospho_D_glycerate	R01512					
+PGM_R01518	3_Phospho_D_glycerate <=> 2_Phospho_D_glycerate	R01518					
+PGH_R00658	2_Phospho_D_glycerate <=> Phosphoenolpyruvate + H2O	R00658					
+PYK_R00200	ADP + Phosphoenolpyruvate <=> Pyruvate + ATP	R00200					
+PDH_R00209	Pyruvate + NADplus + CoA <=> Acetyl_CoA + NADH + CO2	R00209					
+ZWF_R00835	NADPplus + D_Glucose_6_phosphate <=> NADPH + D_Glucono_1_5_lactone_6_phosphate	R00835					
+GLH_R02035	D_Glucono_1_5_lactone_6_phosphate + H2O <=> 6_Phospho_D_gluconate	R02035					
+PGD_R01528	6_Phospho_D_gluconate + NADPplus <=> NADPH + D_Ribulose_5_phosphate + CO2	R01528					
+RPI_R01056	D_Ribulose_5_phosphate <=> D_Ribose_5_phosphate	R01056					
+RPE_R01529	D_Ribulose_5_phosphate <=> D_Xylulose_5_phosphate	R01529					
+TXT_R01641	D_Xylulose_5_phosphate + D_Ribose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate	R01641					
+TAL_R08575	D_Glyceraldehyde_3_phosphate + Sedoheptulose_7_phosphate <=> D_Erythrose_4_phosphate + D_Fructose_6_phosphate	R08575					
+TXT_R01067	D_Erythrose_4_phosphate + D_Xylulose_5_phosphate <=> D_Glyceraldehyde_3_phosphate + D_Fructose_6_phosphate	R01067					
+FBP_R00762	D_Fructose_1_6_bisphosphate + H2O <=> Orthophosphate + D_Fructose_6_phosphate	R00762					
+CSN_R00351	Acetyl_CoA + Oxaloacetate + H2O <=> CoA + Citrate	R00351					
+ACN_R01325	Citrate <=> cis_Aconitate + H2O	R01325					
+ACN_R01900	cis_Aconitate + H2O <=> Isocitrate	R01900					
+ICD_R00709	NADplus + Isocitrate <=> NADH + 2_Oxoglutarate + CO2	R00709					
+KGD_R08549	NADplus + 2_Oxoglutarate + CoA <=> NADH + CO2 + Succinyl_CoA	R08549					
+SCS_R00405	Orthophosphate + ADP + Succinyl_CoA <=> ATP + CoA + Succinate	R00405					
+SDH_R02164	Ubiquinone + Succinate <=> Fumarate + Ubiquinol	R02164					
+FUM_R01082	Fumarate + H2O <=> S_Malate	R01082					
+MDH_R00342	S_Malate + NADplus <=> NADH + Oxaloacetate	R00342					
+PPC_R00345	Orthophosphate + Oxaloacetate <=> CO2 + Phosphoenolpyruvate + H2O	R00345					
 %							
 !!SBtab TableName='Compound' TableType='Compound' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
-!ID	!Name	!Identifiers:kegg.compound	!IsConstant	!NameForPlots			
-S_Malate	(S)-Malate	C00149	False	mal			
-Acetyl_CoA	Acetyl-CoA	C00024	False	acecoa			
-Fumarate	Fumarate	C00122	False	fum			
-cis_Aconitate	cis-Aconitate	C00417	False	aco			
-6_Phospho_D_gluconate	6-Phospho-D-gluconate	C00345	False	6pg			
-Orthophosphate	Orthophosphate	C00009	True	pi			
-Pyruvate	Pyruvate	C00022	False	pyr			
-NADPplus	NADP+	C00006	True	nadp			
-NADPH	NADPH	C00005	True	nadph			
-NADH	NADH	C00004	True	nadh			
-NADplus	NAD+	C00003	True	nad			
-ATP	ATP	C00002	True	atp			
-H2O	H2O	C00001	True	h2o			
-2_Oxoglutarate	2-Oxoglutarate	C00026	False	2kg			
-Oxaloacetate	Oxaloacetate	C00036	True	oxa			
-Ubiquinone	Ubiquinone	C00399	True	uql			
-D_Erythrose_4_phosphate	D-Erythrose 4-phosphate	C00279	False	e4p			
-Ubiquinol	Ubiquinol	C00390	True	uqn			
-ADP	ADP	C00008	True	adp			
-Isocitrate	Isocitrate	C00311	False	icit			
-D_Ribulose_5_phosphate	D-Ribulose 5-phosphate	C00199	False	ru5p			
-D_Xylulose_5_phosphate	D-Xylulose 5-phosphate	C00231	False	x5p			
-D_Glucose_6_phosphate	D-Glucose 6-phosphate	C00092	True	g6p			
-3_Phospho_D_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate	C00236	False	bpg			
-CoA	CoA	C00010	False	coa			
-CO2	CO2	C00011	True	co2			
-D_Ribose_5_phosphate	D-Ribose 5-phosphate	C00117	False	r5p			
-Glycerone_phosphate	Glycerone phosphate	C00111	False	dhap			
-D_Glucose	D-Glucose	C00031	True	glc			
-D_Fructose_1_6_bisphosphate	D-Fructose 1,6-bisphosphate	C00354	True	fbp			
-D_Glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate	C00118	True	g3p			
-Phosphoenolpyruvate	Phosphoenolpyruvate	C00074	True	pep			
-Citrate	Citrate	C00158	False	cit			
-Succinyl_CoA	Succinyl-CoA	C00091	False	succoa			
-3_Phospho_D_glycerate	3-Phospho-D-glycerate	C00197	False	3pg			
-D_Glucono_1_5_lactone_6_phosphate	D-Glucono-1,5-lactone 6-phosphate	C01236	False	gluc6p			
-D_Fructose_6_phosphate	D-Fructose 6-phosphate	C00085	True	f6p			
-2_Phospho_D_glycerate	2-Phospho-D-glycerate	C00631	False	2pg			
-Succinate	Succinate	C00042	False	suc			
-Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate	C05382	False	s7p			
+!ID	!Name	!Identifiers:kegg.compound	!IsConstant				
+S_Malate	(S)-Malate	C00149	False				
+Acetyl_CoA	Acetyl-CoA	C00024	False				
+Fumarate	Fumarate	C00122	False				
+cis_Aconitate	cis-Aconitate	C00417	False				
+6_Phospho_D_gluconate	6-Phospho-D-gluconate	C00345	False				
+Orthophosphate	Orthophosphate	C00009	True				
+Pyruvate	Pyruvate	C00022	False				
+NADPplus	NADP+	C00006	True				
+NADPH	NADPH	C00005	True				
+NADH	NADH	C00004	True				
+NADplus	NAD+	C00003	True				
+ATP	ATP	C00002	True				
+H2O	H2O	C00001	True				
+2_Oxoglutarate	2-Oxoglutarate	C00026	False				
+Oxaloacetate	Oxaloacetate	C00036	True				
+Ubiquinone	Ubiquinone	C00399	True				
+D_Erythrose_4_phosphate	D-Erythrose 4-phosphate	C00279	False				
+Ubiquinol	Ubiquinol	C00390	True				
+ADP	ADP	C00008	True				
+Isocitrate	Isocitrate	C00311	False				
+D_Ribulose_5_phosphate	D-Ribulose 5-phosphate	C00199	False				
+D_Xylulose_5_phosphate	D-Xylulose 5-phosphate	C00231	False				
+D_Glucose_6_phosphate	D-Glucose 6-phosphate	C00092	True				
+3_Phospho_D_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate	C00236	False				
+CoA	CoA	C00010	False				
+CO2	CO2	C00011	True				
+D_Ribose_5_phosphate	D-Ribose 5-phosphate	C00117	False				
+Glycerone_phosphate	Glycerone phosphate	C00111	False				
+D_Glucose	D-Glucose	C00031	True				
+D_Fructose_1_6_bisphosphate	D-Fructose 1,6-bisphosphate	C00354	True				
+D_Glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate	C00118	True				
+Phosphoenolpyruvate	Phosphoenolpyruvate	C00074	True				
+Citrate	Citrate	C00158	False				
+Succinyl_CoA	Succinyl-CoA	C00091	False				
+3_Phospho_D_glycerate	3-Phospho-D-glycerate	C00197	False				
+D_Glucono_1_5_lactone_6_phosphate	D-Glucono-1,5-lactone 6-phosphate	C01236	False				
+D_Fructose_6_phosphate	D-Fructose 6-phosphate	C00085	True				
+2_Phospho_D_glycerate	2-Phospho-D-glycerate	C00631	False				
+Succinate	Succinate	C00042	False				
+Sedoheptulose_7_phosphate	Sedoheptulose 7-phosphate	C05382	False				
 %							
 !!SBtab TableName='Parameter' TableType='Quantity' Document='E. coli central carbon metabolism - balanced parameters' SBtabVersion='1.0'							
 !QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
@@ -408,44 +408,44 @@ flux	MDH_R00342	R00342	0.0602
 flux	PPC_R00345	R00345	-0.2114				
 %							
 !!SBtab DocumentName='E. coli central carbon metabolism - balanced parameters' TableName='ConcentrationConstraint' TableType='Quantity' Unit='mM' SBtabVersion='1.0'							
-!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max	!NameForPlots		
-concentration	S_Malate	C00149	0.001	10	mal		
-concentration	Acetyl_CoA	C00024	0.001	10	acecoa		
-concentration	Fumarate	C00122	0.001	10	fum		
-concentration	cis_Aconitate	C00417	0.001	10	aco		
-concentration	6_Phospho_D_gluconate	C00345	0.001	10	6pg		
-concentration	Orthophosphate	C00009	10	10	pi		
-concentration	Pyruvate	C00022	0.001	10	pyr		
-concentration	NADPplus	C00006	0.1	0.1	nadp		
-concentration	NADPH	C00005	0.11389157	0.11389157	nadph		
-concentration	NADH	C00004	0.02741513	0.02741513	nadh		
-concentration	NADplus	C00003	1	1	nad		
-concentration	ATP	C00002	3.4491395	3.4491395	atp		
-concentration	2_Oxoglutarate	C00026	0.001	10	2kg		
-concentration	Oxaloacetate	C00036	0.001	10	oxa		
-concentration	Ubiquinone	C00399	0.1	0.1	uql		
-concentration	D_Erythrose_4_phosphate	C00279	0.001	10	e4p		
-concentration	Ubiquinol	C00390	0.1	0.1	uqn		
-concentration	ADP	C00008	0.60461237	0.60461237	adp		
-concentration	Isocitrate	C00311	0.001	10	icit		
-concentration	D_Ribulose_5_phosphate	C00199	0.001	10	ru5p		
-concentration	D_Xylulose_5_phosphate	C00231	0.001	10	x5p		
-concentration	D_Glucose_6_phosphate	C00092	0.001	10	g6p		
-concentration	3_Phospho_D_glyceroyl_phosphate	C00236	0.001	10	bpg		
-concentration	CoA	C00010	1	1	coa		
-concentration	CO2	C00011	0.01	0.01	co2		
-concentration	D_Ribose_5_phosphate	C00117	0.001	10	r5p		
-concentration	Glycerone_phosphate	C00111	0.001	10	dhap		
-concentration	D_Glucose	C00031	12	12	glc		
-concentration	D_Fructose_1_6_bisphosphate	C00354	0.001	10	fbp		
-concentration	D_Glyceraldehyde_3_phosphate	C00118	0.001	10	g3p		
-concentration	Phosphoenolpyruvate	C00074	0.001	10	pep		
-concentration	Citrate	C00158	0.001	10	cit		
-concentration	Succinyl_CoA	C00091	0.001	10	succoa		
-concentration	3_Phospho_D_glycerate	C00197	0.001	10	3pg		
-concentration	D_Glucono_1_5_lactone_6_phosphate	C01236	0.001	10	gluc6p		
-concentration	D_Fructose_6_phosphate	C00085	0.001	10	f6p		
-concentration	2_Phospho_D_glycerate	C00631	0.001	10	2pg		
-concentration	Succinate	C00042	0.001	10	suc		
-concentration	Sedoheptulose_7_phosphate	C05382	0.001	10	s7p		
-concentration	H2O	C00001	1	1	h2o		
+!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max			
+concentration	S_Malate	C00149	0.001	10			
+concentration	Acetyl_CoA	C00024	0.001	10			
+concentration	Fumarate	C00122	0.001	10			
+concentration	cis_Aconitate	C00417	0.001	10			
+concentration	6_Phospho_D_gluconate	C00345	0.001	10			
+concentration	Orthophosphate	C00009	10	10			
+concentration	Pyruvate	C00022	0.001	10			
+concentration	NADPplus	C00006	0.1	0.1			
+concentration	NADPH	C00005	0.11389157	0.11389157			
+concentration	NADH	C00004	0.02741513	0.02741513			
+concentration	NADplus	C00003	1	1			
+concentration	ATP	C00002	3.4491395	3.4491395			
+concentration	2_Oxoglutarate	C00026	0.001	10			
+concentration	Oxaloacetate	C00036	0.001	10			
+concentration	Ubiquinone	C00399	0.1	0.1			
+concentration	D_Erythrose_4_phosphate	C00279	0.001	10			
+concentration	Ubiquinol	C00390	0.1	0.1			
+concentration	ADP	C00008	0.60461237	0.60461237			
+concentration	Isocitrate	C00311	0.001	10			
+concentration	D_Ribulose_5_phosphate	C00199	0.001	10			
+concentration	D_Xylulose_5_phosphate	C00231	0.001	10			
+concentration	D_Glucose_6_phosphate	C00092	0.001	10			
+concentration	3_Phospho_D_glyceroyl_phosphate	C00236	0.001	10			
+concentration	CoA	C00010	1	1			
+concentration	CO2	C00011	0.01	0.01			
+concentration	D_Ribose_5_phosphate	C00117	0.001	10			
+concentration	Glycerone_phosphate	C00111	0.001	10			
+concentration	D_Glucose	C00031	12	12			
+concentration	D_Fructose_1_6_bisphosphate	C00354	0.001	10			
+concentration	D_Glyceraldehyde_3_phosphate	C00118	0.001	10			
+concentration	Phosphoenolpyruvate	C00074	0.001	10			
+concentration	Citrate	C00158	0.001	10			
+concentration	Succinyl_CoA	C00091	0.001	10			
+concentration	3_Phospho_D_glycerate	C00197	0.001	10			
+concentration	D_Glucono_1_5_lactone_6_phosphate	C01236	0.001	10			
+concentration	D_Fructose_6_phosphate	C00085	0.001	10			
+concentration	2_Phospho_D_glycerate	C00631	0.001	10			
+concentration	Succinate	C00042	0.001	10			
+concentration	Sedoheptulose_7_phosphate	C05382	0.001	10			
+concentration	H2O	C00001	1	1			

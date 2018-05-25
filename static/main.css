@@ -71,6 +71,11 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    color: #DAB5F7;
+    text-decoration: none;
+}
+
 .logo {
     margin: 20px 0px 40px 0px;
 }

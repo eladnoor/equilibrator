@@ -35,6 +35,8 @@ class ViolatesFirstLaw(PathwayParseError):
     pass
 
 def HtmlConcentration(conc):
+    if conc <= 9.999e-7:
+        return '%.1f nM' % (1e9*conc)
     if conc <= 9.999e-4:
         return '%.1f &mu;M' % (1e6*conc)
     if conc <= 0.9999:
@@ -43,6 +45,16 @@ def HtmlConcentration(conc):
 
 
 class ParsedPathway(object):
+
+    sns.color_palette('muted', n_colors=3)
+    COLOR_FIXED_CONCENTRATION = sns.color_palette('muted')[1]
+    COLOR_VARIABLE_CONCENTRATION = sns.color_palette('muted')[0]
+    COLOR_BOTTLENECK_CONCENTRATION = sns.color_palette('muted')[2]
+    COLOR_GENERAL_CONCENTRATION = sns.color_palette('muted')[1]
+    COLOR_GRID = '#999999'
+    COLOR_DELTA_G_M = '#999999'
+    COLOR_DELTA_G_MDF = sns.color_palette('muted')[0]
+    COLOR_BOTTLENECK_REACTIONS = sns.color_palette('muted')[2]
     
     EXPECTED_TNAMES = set(['Reaction', 'Compound', 'Parameter', 'Flux',
                            'ConcentrationConstraint'])
@@ -62,7 +74,8 @@ class ParsedPathway(object):
     SBTAB_GENERIC_HEADER = \
         "!!SBtab TableName='%s' TableType='%s' Document='Pathway Model' SBtabVersion='1.0'"
     
-    def __init__(self, reactions, fluxes, bounds=None, aq_params=None):
+    def __init__(self, reactions, fluxes, bounds=None, aq_params=None,
+                 reaction_ids=None):
         """Initialize.
 
         Args:
@@ -76,17 +89,20 @@ class ParsedPathway(object):
         assert len(reactions) == len(fluxes)
 
         self._reactions = reactions
-        self.reaction_ids = []
-        for i, rxn in enumerate(self.reactions):
-            kegg_id = rxn.stored_reaction_id
-            if rxn.catalyzing_enzymes:
-                enz = str(rxn.catalyzing_enzymes[0].FirstName().name)
-                enz_slug = slugify(enz)[:10]
-                enz_slug = enz_slug.replace('-', '_')
-                rxn_id = '%s_%s' % (enz_slug, kegg_id)
-            elif not kegg_id:
-                rxn_id = 'RXN%03d' % i
-            self.reaction_ids.append(rxn_id)
+        if reaction_ids is None:
+            self.reaction_ids = []
+            for i, rxn in enumerate(self.reactions):
+                kegg_id = rxn.stored_reaction_id
+                if rxn.catalyzing_enzymes:
+                    enz = str(rxn.catalyzing_enzymes[0].FirstName().name)
+                    enz_slug = slugify(enz)[:10]
+                    enz_slug = enz_slug.replace('-', '_')
+                    rxn_id = '%s_%s' % (enz_slug, kegg_id)
+                elif not kegg_id:
+                    rxn_id = 'RXN%03d' % i
+                self.reaction_ids.append(rxn_id)
+        else:
+            self.reaction_ids = reaction_ids
 
         self.aq_params = AqueousParams()  # Default values
 
@@ -226,8 +242,6 @@ class ParsedPathway(object):
 
         bounds = Bounds.from_sbtab(sbtabs['ConcentrationConstraint'])
         
-        reaction_ids = sbtabs['Reaction'].toDataFrame()['ID']
-
         # read the general aqueous parameters from the ReactionConstant
         # table header
         parameter_sbtab = sbtabs['Parameter']
@@ -253,7 +267,7 @@ class ParsedPathway(object):
         for rxn, dg in zip(reactions, dG0_r_primes):
             rxn.dg0_r_prime = dg
 
-        return reactions, fluxes, bounds, aq_params
+        return reactions, fluxes, bounds, aq_params, reaction_ids
 
     @classmethod
     def from_sbtab(cls, sbtabs):
@@ -438,7 +452,9 @@ class ParsedPathway(object):
     
 class ReactionData(object):
 
-    def __init__(self, reaction, flux, dGr=0, shadow_price=0, enz_conc=0):
+    def __init__(self, reaction, flux, name,
+                 dGr=0, shadow_price=0, enz_conc=0,
+                 min_enz_conc=0, eta_th=0, eta_sat=0):
         """
         Args:
             reaction: kegg reaction object.
@@ -449,9 +465,17 @@ class ReactionData(object):
         """
         self.reaction = reaction
         self.flux = flux
+        self.name = name
         self.dGr = dGr
         self.shadow_price = shadow_price
         self.enz_conc = enz_conc
+        self.min_enz_conc = min_enz_conc
+        self.eta_th = eta_th
+        self.eta_sat = eta_sat
+
+    @property
+    def reaction_formula(self):
+        return self.reaction.GetQueryString()
 
     @property
     def dG0_prime(self):
@@ -464,6 +488,10 @@ class ReactionData(object):
     @property
     def html_enzyme_concentration(self):
         return HtmlConcentration(self.enz_conc)
+    
+    @property
+    def html_enzyme_minimum_conc(self):
+        return HtmlConcentration(self.min_enz_conc)
 
 class CompoundData(object):
     def __init__(self, compound, concentration_bounds,
@@ -509,8 +537,9 @@ class PathwayAnalysisData(object):
         
         rxns = parsed_pathway.reactions
         fluxes = parsed_pathway.fluxes
+        rids = parsed_pathway.reaction_ids
         self.reaction_data = [
-            ReactionData(*t) for t in zip(rxns, fluxes)]
+            ReactionData(*t) for t in zip(rxns, fluxes, rids)]
 
         compounds = parsed_pathway.compounds
         cbounds = map(parsed_pathway.bounds.GetBoundTuple,
@@ -534,6 +563,10 @@ class PathwayAnalysisData(object):
     @property
     def reaction_plot_svg(self):
         pass
+
+    @property
+    def reaction_names(self):
+        return list(map(lambda rxn: rxn.name, self.reaction_data))
 
     @property
     def metabolite_plot_svg(self):
@@ -569,28 +602,33 @@ class PathwayAnalysisData(object):
 
         with sns.axes_style('darkgrid'):
             conc_fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-            ax.grid(color='grey', linestyle='--', linewidth=1, alpha=0.2)
+            ax.grid(color=ParsedPathway.COLOR_GRID, linestyle='--', linewidth=1, alpha=0.2)
 
-            ax.axvspan(1e-8, default_lb, color='y', alpha=0.5)
-            ax.axvspan(default_ub, 1e3, color='y', alpha=0.5)
-            ax.scatter(concs, ys, label='Variable Concentrations')
+            ax.axvspan(1e-8, default_lb, color=ParsedPathway.COLOR_GENERAL_CONCENTRATION, alpha=0.5)
+            ax.axvspan(default_ub, 1e3, color=ParsedPathway.COLOR_GENERAL_CONCENTRATION, alpha=0.5)
+            ax.scatter(concs, ys, 
+                       color=ParsedPathway.COLOR_VARIABLE_CONCENTRATION,
+                       label='Variable concentrations')
             ax.scatter(concs_equal, ys_equal,
-                       color='y', label='Fixed Concentrations')
+                       color=ParsedPathway.COLOR_FIXED_CONCENTRATION,
+                       label='Fixed concentrations')
             
             # Special color for metabolites with nonzero shadow prices.
             nz_shadow = np.where(shadow_prices != 0)
             ys_nz_shadow = ys[nz_shadow]
             concs_nz_shadow = concs[nz_shadow]
             ax.scatter(concs_nz_shadow, ys_nz_shadow,
-                        color='r', label='Variable Concentrations')
+                       color=ParsedPathway.COLOR_BOTTLENECK_CONCENTRATION,
+                       label='Bottleneck concentrations')
     
             ax.set_yticks(ys)
             ax.set_yticklabels(cnames)
             ax.set_xlabel('Concentration (M)')
             ax.set_xscale('log')
-    
+   
             ax.set_xlim(1e-7, 1.0)
             ax.set_ylim(-0.5, Nc - 0.5)
+            ax.legend(loc='best', framealpha=0.5)
             conc_fig.tight_layout()
     
             svg_data = StringIO()

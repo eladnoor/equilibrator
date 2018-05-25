@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+from matplotlib.collections import LineCollection
 import csv
 import seaborn as sns
 from util import constants
@@ -23,9 +24,7 @@ class MaxMinDrivingForce(ParsedPathway):
     @classmethod
     def from_sbtab(cls, sbtabs):
         """Returns an initialized ParsedPathway."""
-        reactions, fluxes, bounds, aq_params = ParsedPathway._from_sbtab(sbtabs)
-        
-        pp = MaxMinDrivingForce(reactions, fluxes, bounds, aq_params)
+        pp = MaxMinDrivingForce(*ParsedPathway._from_sbtab(sbtabs))
         return pp
     
     @classmethod
@@ -114,26 +113,37 @@ class PathwayMDFData(PathwayAnalysisData):
         cumulative_dgms = np.cumsum(dgms)
 
         xticks = np.arange(0, len(cumulative_dgs))-0.5
-        xticklabels = [''] + self.mdf_result.model.rids
+        xticklabels = [''] + self.reaction_names
         with sns.axes_style('darkgrid'):
             mdf_fig, ax = plt.subplots(1, 1, figsize=(8, 6))
+            ax.grid(color=ParsedPathway.COLOR_GRID, linestyle='--',
+                    linewidth=1, alpha=0.2)
             ax.plot(cumulative_dgms,
                     label='Characteristic physiological 1 mM concentrations',
-                    color='dodgerblue')
+                    color=ParsedPathway.COLOR_DELTA_G_M, zorder=1)
             ax.plot(cumulative_dgs,
                     label='MDF-optimized concentrations',
-                    color='tomato')
-    
+                    color=ParsedPathway.COLOR_DELTA_G_MDF, zorder=1)
+
+            bottleneck_idx = [i for i, r in enumerate(self.reaction_data)
+                              if abs(r.shadow_price) != 0]
+            lines = [[(i, cumulative_dgs[i]), (i+1, cumulative_dgs[i+1])]
+                     for i in bottleneck_idx]
+            lines = LineCollection(lines, label='Bottleneck reactions',
+                                   linewidth=2,
+                                   color=ParsedPathway.COLOR_BOTTLENECK_REACTIONS,
+                                   linestyle='-',
+                                   zorder=2, alpha=1)
+            ax.add_collection(lines)
             ax.set_xticks(xticks)
             ax.set_xticklabels(xticklabels, rotation=45, ha='right')
             ax.set_xlim(0, len(cumulative_dgs)-1)
-            ax.grid(color='grey', linestyle='--', linewidth=1, alpha=0.2)
             mdf_fig.tight_layout()
     
             #ax.set_xlabel('After Reaction Step', family='sans-serif')
-            ax.set_xlabel('Reaction Step')
+            ax.set_xlabel('')
             ax.set_ylabel("Cumulative $\Delta_r G'$ (kJ/mol)", family='sans-serif')
-            ax.legend(loc='best')
+            ax.legend(loc='best', framealpha=0.5)
 
             svg_data = StringIO()
             mdf_fig.savefig(svg_data, format='svg')

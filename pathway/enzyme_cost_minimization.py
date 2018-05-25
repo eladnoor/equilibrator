@@ -11,9 +11,9 @@ import logging
 
 class EnzymeCostMinimization(ParsedPathway):
 
-    def __init__(self, reactions, fluxes, ecm, bounds=None, aq_params=None):
+    def __init__(self, reactions, fluxes, ecm, bounds=None, aq_params=None, reaction_ids=None):
         super(EnzymeCostMinimization, self).__init__(reactions, fluxes,
-             bounds, aq_params)
+             bounds, aq_params, reaction_ids)
     
         self.ecm = ecm
 
@@ -23,7 +23,8 @@ class EnzymeCostMinimization(ParsedPathway):
     @classmethod
     def from_sbtab(cls, sbtabs):
         """Returns an initialized ParsedPathway."""
-        reactions, fluxes, bounds, aq_params = ParsedPathway._from_sbtab(sbtabs)
+        reactions, fluxes, bounds, aq_params, reaction_ids = \
+            ParsedPathway._from_sbtab(sbtabs)
         
         # TODO: write a much more detailed model validation function which
         # raises clear exceptions if some data or table is missing!
@@ -36,7 +37,8 @@ class EnzymeCostMinimization(ParsedPathway):
             logging.error(str(e))
             raise PathwayParseError('Failed to load the ECM model')
         
-        pp = EnzymeCostMinimization(reactions, fluxes, ecm, bounds, aq_params)
+        pp = EnzymeCostMinimization(reactions, fluxes, ecm, bounds, aq_params,
+                                    reaction_ids)
         return pp
 
     @classmethod
@@ -155,13 +157,18 @@ class PathwayECMData(PathwayAnalysisData):
         self.ecm = parsed_pathway.ecm
         self.lnC = lnC
 
-        enz_concs = self.ecm.ECF(self.lnC)
-        for i, r in enumerate(self.reaction_data):
-            r.enz_conc = enz_concs[i]
+        for rxn, c in zip(self.reaction_data, self.enzyme_costs):
+            rxn.enz_conc = c
+        
+        enz_cost_brkdwn = self.enzyme_costs_breakdown
+        for i, rxn in enumerate(self.reaction_data):
+            rxn.min_enz_conc = enz_cost_brkdwn[i, 0]
+            rxn.eta_th = 1.0/enz_cost_brkdwn[i, 1]
+            rxn.eta_sat = 1.0/enz_cost_brkdwn[i, 2]
 
         cid2conc = dict(zip(self.ecm.kegg_model.cids, np.exp(self.lnC)))
-        for i, c in enumerate(self.compound_data):
-            c.concentration = cid2conc.get(c.compound.kegg_id, 1)
+        for i, cpd in enumerate(self.compound_data):
+            cpd.concentration = cid2conc.get(cpd.compound.kegg_id, 1)
         
     @property
     def score(self):
@@ -169,7 +176,15 @@ class PathwayECMData(PathwayAnalysisData):
             Return the total enzyme cost in uM
             (convert from M by multiplying by 10^6)
         """
-        return self.ecm.ECF(self.lnC).sum() * 1e6
+        return self.enzyme_costs.sum() * 1e6
+    
+    @property
+    def enzyme_costs(self):
+        return self.ecm.ECF(self.lnC)
+
+    @property
+    def enzyme_costs_breakdown(self):
+        return np.array(self.ecm.ecf.GetEnzymeCostPartitions(self.lnC))
     
     @property
     def is_ecm(self):
@@ -178,11 +193,39 @@ class PathwayECMData(PathwayAnalysisData):
     @property
     def reaction_plot_svg(self):
         with sns.axes_style('darkgrid'):
-            fig, ax = plt.subplots(figsize=(8, 6))
+            fig, ax = plt.subplots(figsize=(8, 8))
             ax.grid(color='grey', linestyle='--', linewidth=1, alpha=0.2)
-            self.ecm.PlotEnzymeDemandBreakdown(self.lnC, ax, plot_measured=False)
+            
+            labels = self.ecm.ecf.ECF_LEVEL_NAMES[0:3]
+            costs = self.enzyme_costs_breakdown[::-1, :] # reverse order of reactions
+            
+            base = min(filter(None, costs[:, 0])) / 2.0
+            idx_zero = (costs[:, 0] == 0)
+            costs[idx_zero, 0] = base
+            costs[idx_zero, 1:] = 1.0
+    
+            lefts = np.hstack([np.ones((costs.shape[0], 1)) * base,
+                                 np.cumprod(costs, 1)])
+            steps = np.diff(lefts)
+    
+            ind = range(costs.shape[0])    # the x locations for the groups
+            height = 0.8
+            ax.set_xscale('log')
+    
+            colors = sns.color_palette('muted', n_colors=6)[3:6]
+    
+            for i, label in enumerate(labels):
+                ax.barh(ind, width=steps[:, i].flat, height=height,
+                        left=lefts[:, i].flat, color=colors[i])
+    
+            ax.set_yticks(ind)
+            ax.set_yticklabels(reversed(self.reaction_names), size='medium')
+            ax.legend(labels, loc='best', framealpha=0.5)
+            ax.set_xlabel('enzyme demand [M]')
+            ax.set_xlim(base, None)
             fig.tight_layout()
             
             svg_data = StringIO()
             fig.savefig(svg_data, format='svg')
             return svg_data.getvalue()
+
