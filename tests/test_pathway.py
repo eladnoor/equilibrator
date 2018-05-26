@@ -50,6 +50,8 @@ class PathwayTester(TestCase):
             mdf_res = path.analyze()
         
         self.assertAlmostEqual(mdf_res.score, 1.69, 2)
+        
+        # TODO: add a test for the ECM analysis
 
     def test_unit_string(self):
         test_data = [(1.0, 'M', 1.0),

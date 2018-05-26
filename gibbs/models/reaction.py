@@ -9,10 +9,11 @@ import json
 from scipy.sparse import csr_matrix
 from django.db import models
 from django.apps import apps
+from django.utils.text import slugify
 from util import constants
 from .. import conditions
 from .compound import CommonName, CompoundWithCoeff
-
+from itertools import count
 
 class Preprocessing(object):
     relpath = os.path.dirname(os.path.realpath(__file__))
@@ -307,6 +308,26 @@ class Reaction(models.Model):
         if not stored_rxns:
             return None
         return stored_rxns[0].kegg_id
+
+    @property
+    def enzyme_slug(self):
+        if self.catalyzing_enzymes:
+            enz = str(self.catalyzing_enzymes[0].FirstName().name)
+            enz_slug = slugify(enz)[:10]
+            enz_slug = enz_slug.replace('-', '_')
+            return enz_slug
+        else:
+            return None
+
+    UNIQUE_REACTION_COUNTER = count()
+    def GenerateUniqueName(self, serial=0):
+        """
+            Generate a relatively short string that can be used as a unique
+            ID in a model.
+        """
+        enz_slug = self.enzyme_slug or "RXN"
+        kegg_id = self.stored_reaction_id or "Q%05d" % next(Reaction.UNIQUE_REACTION_COUNTER)
+        return '%s_%s' % (enz_slug, kegg_id)
 
     def _GetCatalyzingEnzymes(self):
         """

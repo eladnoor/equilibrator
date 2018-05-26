@@ -10,6 +10,10 @@ from util import constants
 import logging
 
 class EnzymeCostMinimization(ParsedPathway):
+    """
+        A class for performing Enzyme Cost Minimization analysis on a given
+        pathway (see https://doi.org/10.1371/journal.pcbi.1005167)
+    """
 
     def __init__(self, reactions, fluxes, ecm, bounds=None, aq_params=None, reaction_ids=None):
         super(EnzymeCostMinimization, self).__init__(reactions, fluxes,
@@ -192,6 +196,15 @@ class PathwayECMData(PathwayAnalysisData):
 
     @property
     def reaction_plot_svg(self):
+        """
+            Produces a horizontal stacked bar plot of the enzyme demands, broken down
+            into 3 parts:
+                - ideal demand (i.e. the minimum amount derived from the flux and kcat)
+                - inverse of thermodynamic efficiency (1 / eta^th)
+                - inverse of saturation efficiency (1 / eta^sat)
+            The values are shown in log-scale, since the total demand is the product
+            of these 3 values.
+        """
         with sns.axes_style('darkgrid'):
             fig, ax = plt.subplots(figsize=(8, 8))
             ax.grid(color='grey', linestyle='--', linewidth=1, alpha=0.2)
@@ -205,7 +218,7 @@ class PathwayECMData(PathwayAnalysisData):
             costs[idx_zero, 1:] = 1.0
     
             lefts = np.hstack([np.ones((costs.shape[0], 1)) * base,
-                                 np.cumprod(costs, 1)])
+                               np.cumprod(costs, 1)])
             steps = np.diff(lefts)
     
             ind = range(costs.shape[0])    # the x locations for the groups

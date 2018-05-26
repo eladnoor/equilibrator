@@ -13,7 +13,6 @@ from equilibrator.settings import BASE_DIR
 from gibbs.conditions import AqueousParams
 import pandas as pd
 import csv
-from django.utils.text import slugify
 from pathway.concs import ConcentrationConverter
 from scipy import linalg
 
@@ -45,8 +44,13 @@ def HtmlConcentration(conc):
 
 
 class ParsedPathway(object):
+    """
+        A class for handling whole pathways, including the stoichiometry,
+        naming conventions, and several standard parameters that are typically
+        used in pathway analysis: concentration bounds, fluxes, aqueous 
+        enviroment parameters, etc.
+    """
 
-    sns.color_palette('muted', n_colors=3)
     COLOR_FIXED_CONCENTRATION = sns.color_palette('muted')[1]
     COLOR_VARIABLE_CONCENTRATION = sns.color_palette('muted')[0]
     COLOR_BOTTLENECK_CONCENTRATION = sns.color_palette('muted')[2]
@@ -85,6 +89,9 @@ class ParsedPathway(object):
                 Uses default bounds if None provided.
             aq_params: specify the pH, ionic strength, etc. at which the
                 dG values are calculated. May be omitted.
+            reaction_ids: optional way to provide names for reactions that 
+                will be used in the report later (otherwise, short names will
+                be generated automatically)
         """
         assert len(reactions) == len(fluxes)
 
@@ -92,15 +99,7 @@ class ParsedPathway(object):
         if reaction_ids is None:
             self.reaction_ids = []
             for i, rxn in enumerate(self.reactions):
-                kegg_id = rxn.stored_reaction_id
-                if rxn.catalyzing_enzymes:
-                    enz = str(rxn.catalyzing_enzymes[0].FirstName().name)
-                    enz_slug = slugify(enz)[:10]
-                    enz_slug = enz_slug.replace('-', '_')
-                    rxn_id = '%s_%s' % (enz_slug, kegg_id)
-                elif not kegg_id:
-                    rxn_id = 'RXN%03d' % i
-                self.reaction_ids.append(rxn_id)
+                self.reaction_ids.append(rxn.GenerateUniqueName(i))
         else:
             self.reaction_ids = reaction_ids
 
@@ -451,6 +450,10 @@ class ParsedPathway(object):
 
     
 class ReactionData(object):
+    """
+        A class for storing reaction-related results from pathway analysis,
+        such as driving force, efficiency, etc.
+    """
 
     def __init__(self, reaction, flux, name,
                  dGr=0, shadow_price=0, enz_conc=0,
@@ -494,6 +497,11 @@ class ReactionData(object):
         return HtmlConcentration(self.min_enz_conc)
 
 class CompoundData(object):
+    """
+        A class for storing compound-related results from pathway analysis,
+        such as concentrations, bounds, etc.
+    """
+
     def __init__(self, compound, concentration_bounds,
                  concentration=0, shadow_price=0, cost=0):
         self.compound = compound
@@ -531,6 +539,10 @@ class CompoundData(object):
         return HtmlConcentration(self.ub)
 
 class PathwayAnalysisData(object):
+    """
+        A class for storing all the results of a pathway analysis.
+        
+    """
     
     def __init__(self, parsed_pathway):
         self.parsed_pathway = parsed_pathway
@@ -570,6 +582,14 @@ class PathwayAnalysisData(object):
 
     @property
     def metabolite_plot_svg(self):
+        """
+            Generate the optimized concentrations graph, where compounds
+            are ordered along the y-axis and their concentration is
+            indicated by a point along the x-axis (in log-scale).
+            The colors indicate whether this metabolite has a fixed
+            concentration (i.e. lower bound = upper bound) and also
+            if it has a non-zero shadow price (only in MDF).
+        """
         default_lb = self.parsed_pathway.bounds.default_lb
         default_ub = self.parsed_pathway.bounds.default_ub
 

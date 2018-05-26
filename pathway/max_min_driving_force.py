@@ -9,9 +9,9 @@ from io import StringIO
 from . import ParsedPathway, PathwayAnalysisData
 
 class MaxMinDrivingForce(ParsedPathway):
-    """A pathway parsed from user input.
-
-    Designed for checking input prior to converting to a stoichiometric model.
+    """
+        A class for performing Max-min Driving Force analysis on a given
+        pathway (see https://doi.org/10.1371/journal.pcbi.1003483)
     """
 
     def analyze(self):
@@ -23,18 +23,22 @@ class MaxMinDrivingForce(ParsedPathway):
 
     @classmethod
     def from_sbtab(cls, sbtabs):
-        """Returns an initialized ParsedPathway."""
+        """
+            Reads the input parameters from an SBtabDict object and 
+            returns an initialized MaxMinDrivingForce object
+        """
         pp = MaxMinDrivingForce(*ParsedPathway._from_sbtab(sbtabs))
         return pp
     
     @classmethod
     def from_csv(cls, fp, bounds=None, aq_params=None):
-        """Returns a pathway parsed from an input file.
+        """
+            Returns a pathway parsed from an input file.
 
-        Caller responsible for closing f.
-
-        Args:
-            f: file-like object containing CSV data describing the pathway.
+            Caller responsible for closing f.
+    
+            Args:
+                f: file-like object containing CSV data describing the pathway.
         """
         reactions, fluxes, bounds, aq_params = \
             super(MaxMinDrivingForce, cls)._from_csv(fp, bounds, aq_params)
@@ -43,6 +47,11 @@ class MaxMinDrivingForce(ParsedPathway):
         return pp
 
     def to_sbtab(self):
+        """
+            Generates a new SBtab file with all the requirements for running
+            MDF. Typically this will be used to convert a CSV file (with
+            only the reaction list) into a full model for MDF analysis.
+        """
         s = self._to_sbtab()
         
         sio = StringIO()
