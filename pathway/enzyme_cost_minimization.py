@@ -4,31 +4,28 @@ from io import StringIO
 from matplotlib import pyplot as plt
 import seaborn as sns
 import numpy as np
-from . import ParsedPathway, PathwayAnalysisData, PathwayParseError
+from . import ParsedPathway, PathwayAnalyzer, PathwayAnalysisData, PathwayParseError
 import csv
 from util import constants
 import logging
 
-class EnzymeCostMinimization(ParsedPathway):
+class EnzymeCostMinimization(PathwayAnalyzer):
     """
         A class for performing Enzyme Cost Minimization analysis on a given
         pathway (see https://doi.org/10.1371/journal.pcbi.1005167)
     """
 
-    def __init__(self, reactions, fluxes, ecm, bounds=None, aq_params=None, reaction_ids=None):
-        super(EnzymeCostMinimization, self).__init__(reactions, fluxes,
-             bounds, aq_params, reaction_ids)
-    
+    def __init__(self, parsed_pathway, ecm):
+        super(EnzymeCostMinimization, self).__init__(parsed_pathway)
         self.ecm = ecm
 
     def analyze(self):
-        return PathwayECMData(self, self.ecm.ECM())
+        return PathwayECMData(self._parsed_pathway, self.ecm, self.ecm.ECM())
     
     @classmethod
     def from_sbtab(cls, sbtabs):
         """Returns an initialized ParsedPathway."""
-        reactions, fluxes, bounds, aq_params, reaction_ids = \
-            ParsedPathway._from_sbtab(sbtabs)
+        parsed_pathway = ParsedPathway.from_sbtab(sbtabs)
         
         # TODO: write a much more detailed model validation function which
         # raises clear exceptions if some data or table is missing!
@@ -41,45 +38,34 @@ class EnzymeCostMinimization(ParsedPathway):
             logging.error(str(e))
             raise PathwayParseError('Failed to load the ECM model')
         
-        pp = EnzymeCostMinimization(reactions, fluxes, ecm, bounds, aq_params,
-                                    reaction_ids)
-        return pp
+        return EnzymeCostMinimization(parsed_pathway, ecm)
 
     @classmethod
     def from_csv(cls, fp, bounds=None, aq_params=None):
-        """Returns a pathway parsed from an input file.
+        """Returns an EnzymeCostMinimization from an input file.
 
         Caller responsible for closing f.
 
         Args:
             f: file-like object containing CSV data describing the pathway.
         """
-        reactions, fluxes, bounds, aq_params = \
-            super(EnzymeCostMinimization, cls)._from_csv(fp, bounds, aq_params)
-        pp = EnzymeCostMinimization(reactions, fluxes, ecm=None,
-                                    bounds=bounds, aq_params=aq_params)
-        return pp
+        parsed_pathway = ParsedPathway.from_csv(fp, bounds, aq_params)
+        return EnzymeCostMinimization(parsed_pathway, ecm=None)
 
     def to_sbtab(self):
-        s = self._to_sbtab()
+        s = self._parsed_pathway.to_sbtab()
         
         sio = StringIO()
         
         # Parameter table
-        # TODO: add all the kinetic parameters (use default values...)
-        keq_header = self.SBTAB_GENERIC_HEADER % ('Parameter', 'Quantity')
+        keq_header = ParsedPathway.create_sbtab_header('Parameter', 'Quantity',
+            pH='%.2f' % self.aq_params.pH, 
+            IonicStrength='%.2f' % self.aq_params.ionic_strength,
+            IonicStrengthUnit='M')
+        sio.write(keq_header)
         keq_cols = ['!QuantityType', '!Reaction', '!Compound', '!Value',
                     '!Unit', '!Reaction:Identifiers:kegg.reaction',
                     '!Compound:Identifiers:kegg.compound', '!ID']
-        if self.aq_params:
-            # Write pH and ionic strength in header
-            aq_params_header = (
-                "pH='%.2f' 'IonicStrength='%.2f' IonicStrengthUnit='M'")
-
-            aq_params_header = aq_params_header % (
-                self.aq_params.pH, self.aq_params.ionic_strength)
-            keq_header = '%s %s' % (keq_header, aq_params_header)
-        sio.writelines(['%\n', keq_header + '\n'])
 
         writer = csv.DictWriter(sio, keq_cols, dialect='excel-tab')
         writer.writeheader()
@@ -152,13 +138,16 @@ class EnzymeCostMinimization(ParsedPathway):
                  '!Compound:Identifiers:kegg.compound': cpd.kegg_id,
                  '!ID': None}
             writer.writerow(d)        
+
+        sio.write('%\n')
+
         return s + sio.getvalue()
 
 class PathwayECMData(PathwayAnalysisData):
     
-    def __init__(self, parsed_pathway, lnC):
+    def __init__(self, parsed_pathway, ecm, lnC):
         super(PathwayECMData, self).__init__(parsed_pathway)
-        self.ecm = parsed_pathway.ecm
+        self.ecm = ecm
         self.lnC = lnC
 
         for rxn, c in zip(self.reaction_data, self.enzyme_costs):

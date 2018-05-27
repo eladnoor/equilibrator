@@ -44,39 +44,12 @@ def HtmlConcentration(conc):
 
 
 class ParsedPathway(object):
-    """
-        A class for handling whole pathways, including the stoichiometry,
-        naming conventions, and several standard parameters that are typically
-        used in pathway analysis: concentration bounds, fluxes, aqueous 
-        enviroment parameters, etc.
-    """
 
-    COLOR_FIXED_CONCENTRATION = sns.color_palette('muted')[1]
-    COLOR_VARIABLE_CONCENTRATION = sns.color_palette('muted')[0]
-    COLOR_BOTTLENECK_CONCENTRATION = sns.color_palette('muted')[2]
-    COLOR_GENERAL_CONCENTRATION = sns.color_palette('muted')[1]
-    COLOR_GRID = '#999999'
-    COLOR_DELTA_G_M = '#999999'
-    COLOR_DELTA_G_MDF = sns.color_palette('muted')[0]
-    COLOR_BOTTLENECK_REACTIONS = sns.color_palette('muted')[2]
-    
     EXPECTED_TNAMES = set(['Reaction', 'Compound', 'Parameter', 'Flux',
                            'ConcentrationConstraint'])
     COFACTORS_FNAME = path.join(BASE_DIR, 'pathway/data/cofactors.csv')
     DEFAULT_BOUNDS = Bounds.from_csv_filename(
         COFACTORS_FNAME, default_lb=1e-6, default_ub=0.1)
-    
-    @staticmethod
-    def create_sbtab_header(tablename, tabletype, **kwargs):
-        s = "!!SBtab TableName='%s' TableType='%s'" % (tablename, tabletype)
-        s += " Document='Pathway Model' SBtabVersion='1.0'"
-        for name, value in kwargs.items():
-            s += " %s='%s'" % (name, value)
-        s += "\n"
-        return s
-            
-    SBTAB_GENERIC_HEADER = \
-        "!!SBtab TableName='%s' TableType='%s' Document='Pathway Model' SBtabVersion='1.0'"
     
     def __init__(self, reactions, fluxes, bounds=None, aq_params=None,
                  reaction_ids=None):
@@ -95,7 +68,7 @@ class ParsedPathway(object):
         """
         assert len(reactions) == len(fluxes)
 
-        self._reactions = reactions
+        self.reactions = reactions
         if reaction_ids is None:
             self.reaction_ids = []
             for i, rxn in enumerate(self.reactions):
@@ -105,23 +78,36 @@ class ParsedPathway(object):
 
         self.aq_params = AqueousParams()  # Default values
 
-        self._fluxes = np.array(fluxes)
+        self.fluxes = np.array(fluxes)
 
         self.bounds = bounds or ParsedPathway.DEFAULT_BOUNDS
 
         self.S, self.compound_kegg_ids = self._build_stoichiometric_matrix()
-        self.compounds_by_kegg_id = self._get_compounds()
-        self._compounds = [self.compounds_by_kegg_id[cid]
+        self.compounds_by_kegg_id = self.get_compounds()
+        self.compounds = [self.compounds_by_kegg_id[cid]
                           for cid in self.compound_kegg_ids]
 
         nr, nc = self.S.shape
 
-        net_rxn_stoich = (self._fluxes.reshape((nr, 1)) * self.S).sum(axis=0)
+        net_rxn_stoich = (self.fluxes.reshape((nr, 1)) * self.S).sum(axis=0)
         net_rxn_data = []
         for coeff, kid in zip(net_rxn_stoich, self.compound_kegg_ids):
             if coeff != 0:
-                net_rxn_data.append(self._reactant_dict(coeff, kid))
-        self.net_reaction = apps.get_model('gibbs.reaction').FromIds(net_rxn_data, fetch_db_names=True)
+                net_rxn_data.append(ParsedPathway.reactant_dict(coeff, kid))
+        self.net_reaction = apps.get_model('gibbs.reaction').FromIds(
+                net_rxn_data, fetch_db_names=True)
+
+    @staticmethod
+    def reactant_dict(coeff, kid, negate=False):
+        """Returns dictionary format expected by Reaction.FromIds."""
+        if negate:
+            coeff = -1*coeff
+        d = {'kegg_id': kid, 'coeff': coeff, 'name': kid,
+             'phase': constants.AQUEOUS_PHASE_NAME}
+        if kid == 'C00001':
+            # Water is not aqueous. Hate that this is hardcoded.
+            d['phase'] = constants.LIQUID_PHASE_NAME
+        return d
 
     def validate_dGs(self):
         """
@@ -136,30 +122,12 @@ class ParsedPathway(object):
         projected = null_proj * self.dG0_r_primes
         return np.all(projected < 1e-8)
 
-    @staticmethod
-    def validate_sbtab(sbtab):
-        missing = ParsedPathway.EXPECTED_TNAMES.difference(sbtab.keys())
-        if missing:
-            raise PathwayParseError('Make sure the pathway model SBtab file '
-                                    'contains these tables: ' + 
-                                    ', '.join(missing))
-        
-    @classmethod
-    def from_sbtab_file(cls, fp):
-        sbtab = SBtabDict.FromSBtabFile(fp)
-        cls.validate_sbtab(sbtab)
-        return cls.from_sbtab(sbtab)
-
     def is_empty(self):
         return len(self.reactions) == 0
         
     def analyze(self):
         raise Exception('ParsedPathway is a virtual class, one should not use its '
                         'static functions.')
-
-    @property
-    def reactions(self):
-        return self._reactions
 
     @property
     def dG0_r_primes(self):
@@ -178,31 +146,10 @@ class ParsedPathway(object):
         for f, r in zip(self.fluxes, self.reactions):
             print('%sx %s' % (f, r))
 
-    @property
-    def compounds(self):
-        return self._compounds
-
-    @property
-    def fluxes(self):
-        return self._fluxes
-
     @staticmethod
-    def _reactant_dict(coeff, kid, negate=False):
-        """Returns dictionary format expected by Reaction.FromIds."""
-        if negate:
-            coeff = -1*coeff
-        d = {'kegg_id': kid, 'coeff': coeff, 'name': kid,
-             'phase': constants.AQUEOUS_PHASE_NAME}
-        if kid == 'C00001':
-            # Water is not aqueous. Hate that this is hardcoded.
-            d['phase'] = constants.LIQUID_PHASE_NAME
-        return d
-
-    @classmethod
-    def _from_sbtab(cls, sbtabs):
+    def from_sbtab(sbtabs):
         """
-            This is the superclass implementation, that should be used
-            by the inherited classes at the beginning of from_sbtab()
+            Initializes a ParsedPathway object with data a SBtabDict
         """
         name_to_cid = sbtabs.GetDictFromTable('Compound', 'ID',
                                               'Identifiers:kegg.compound')
@@ -214,10 +161,10 @@ class ParsedPathway(object):
             rxn_ds = []
             for coeff, name in parsed_rxn.substrates:
                 cid = name_to_cid[name]
-                rxn_ds.append(cls._reactant_dict(coeff, cid, negate=True))
+                rxn_ds.append(ParsedPathway.reactant_dict(coeff, cid, negate=True))
             for coeff, name in parsed_rxn.products:
                 cid = name_to_cid[name]
-                rxn_ds.append(cls._reactant_dict(coeff, cid, negate=False))
+                rxn_ds.append(ParsedPathway.reactant_dict(coeff, cid, negate=False))
             rxn = apps.get_model('gibbs.reaction').FromIds(rxn_ds, fetch_db_names=True)
 
             if not rxn.IsBalanced():
@@ -266,14 +213,9 @@ class ParsedPathway(object):
         for rxn, dg in zip(reactions, dG0_r_primes):
             rxn.dg0_r_prime = dg
 
-        return reactions, fluxes, bounds, aq_params, reaction_ids
+        return ParsedPathway(reactions, fluxes, bounds, aq_params, reaction_ids)
 
-    @classmethod
-    def from_sbtab(cls, sbtabs):
-        raise Exception('ParsedPathway is a virtual class, one should not use its '
-                        'static functions.')
-
-    def _get_compounds(self):
+    def get_compounds(self):
         """Returns a dictionary of compounds by KEGG ID."""
         compounds = {}
         for r in self.reactions:
@@ -308,7 +250,7 @@ class ParsedPathway(object):
         return smat, compounds
     
     @classmethod
-    def _from_csv(cls, f, bounds=None, aq_params=None):
+    def from_csv(cls, f, bounds=None, aq_params=None):
         """
             This is the superclass implementation, that should be used
             by the inherited classes at the beginning of from_csv()
@@ -361,14 +303,18 @@ class ParsedPathway(object):
             rxn.dg0_r_prime = rxn.DeltaG0Prime(aq_params)
             reactions.append(rxn)
 
-        return reactions, fluxes, bounds, aq_params
+        return ParsedPathway(reactions, fluxes, bounds, aq_params)
     
-    @classmethod
-    def from_csv(cls, f, bounds=None, aq_params=None):
-        raise Exception('ParsedPathway is a virtual class, one should not use its '
-                        'static functions.')
-
-    def _to_sbtab(self):
+    @staticmethod
+    def create_sbtab_header(tablename, tabletype, **kwargs):
+        s = "!!SBtab TableName='%s' TableType='%s'" % (tablename, tabletype)
+        s += " Document='Pathway Model' SBtabVersion='1.0'"
+        for name, value in kwargs.items():
+            s += " %s='%s'" % (name, value)
+        s += "\n"
+        return s
+            
+    def to_sbtab(self):
         """
             Returns a full SBtab description of the model.
 
@@ -378,7 +324,7 @@ class ParsedPathway(object):
             by the inherited classes at the beginning of to_sbtab()
         """
         # Reaction table
-        reaction_header = self.create_sbtab_header('Reaction', 'Reaction')
+        reaction_header = ParsedPathway.create_sbtab_header('Reaction', 'Reaction')
         reaction_cols = ['!ID', '!Name', '!ReactionFormula', '!Identifiers:kegg.reaction']
 
         sio = StringIO()
@@ -395,7 +341,7 @@ class ParsedPathway(object):
         sio.write('%\n')
         
         # Compound table
-        compound_header = self.create_sbtab_header('Compound', 'Compound')
+        compound_header = ParsedPathway.create_sbtab_header('Compound', 'Compound')
         compound_cols = ['!ID', '!Name', '!Identifiers:kegg.compound', '!IsConstant']
         sio.write(compound_header)
         writer = csv.DictWriter(sio, compound_cols, dialect='excel-tab')
@@ -409,7 +355,7 @@ class ParsedPathway(object):
         sio.write('%\n')
 
         # Flux table
-        flux_header = self.create_sbtab_header('Flux', 'Quantity', Unit='mM/s')
+        flux_header = ParsedPathway.create_sbtab_header('Flux', 'Quantity', Unit='mM/s')
         flux_cols = ['!QuantityType', '!Reaction', '!Reaction:Identifiers:kegg.reaction', '!Value']
         sio.write(flux_header)
         writer = csv.DictWriter(sio, flux_cols, dialect='excel-tab')
@@ -424,8 +370,8 @@ class ParsedPathway(object):
         sio.write('%\n')
 
         # ConcentrationConstraint table
-        conc_header = self.create_sbtab_header('ConcentrationConstraint',
-                                               'Quantity', Unit='M')
+        conc_header = ParsedPathway.create_sbtab_header('ConcentrationConstraint',
+                                                        'Quantity', Unit='M')
         conc_cols = ['!QuantityType', '!Compound',
                      '!Compound:Identifiers:kegg.compound',
                      '!Concentration:Min', '!Concentration:Max']
@@ -444,10 +390,69 @@ class ParsedPathway(object):
 
         return sio.getvalue()
     
-    def to_sbtab(self):
-        raise Exception('ParsedPathway is a virtual class, one should not use its '
-                        'static functions.')
+class PathwayAnalyzer(object):
+    
+    """
+        A class for handling whole pathways, including the stoichiometry,
+        naming conventions, and several standard parameters that are typically
+        used in pathway analysis: concentration bounds, fluxes, aqueous 
+        enviroment parameters, etc.
+    """
 
+    def __init__(self, parsed_pathway):
+        self._parsed_pathway = parsed_pathway
+
+    @property
+    def reactions(self):
+        return self._parsed_pathway.reactions
+
+    @property
+    def compounds(self):
+        return self._parsed_pathway.compounds
+
+    @property
+    def fluxes(self):
+        return self._parsed_pathway.fluxes
+
+    @property
+    def aq_params(self):
+        return self._parsed_pathway.aq_params
+
+    @property
+    def reaction_ids(self):
+        return self._parsed_pathway.reaction_ids
+
+    @property
+    def net_reaction(self):
+        return self._parsed_pathway.net_reaction
+
+    def to_sbtab(self):
+        return self.parsed_pathway.to_sbtab()
+
+    @classmethod
+    def validate_sbtab(cls, sbtab):
+        missing = ParsedPathway.EXPECTED_TNAMES.difference(sbtab.keys())
+        if missing:
+            raise PathwayParseError('Make sure the pathway model SBtab file '
+                                    'contains these tables: ' + 
+                                    ', '.join(missing))
+        
+    @classmethod
+    def from_sbtab(cls, sbtabs):
+        return PathwayAnalyzer(ParsedPathway.from_sbtab(sbtabs))
+
+    @classmethod
+    def from_sbtab_file(cls, fp):
+        sbtab = SBtabDict.FromSBtabFile(fp)
+        cls.validate_sbtab(sbtab)
+        return cls.from_sbtab(sbtab)
+
+    def validate_dGs(self):
+        return self._parsed_pathway.validate_dGs()
+
+    def is_empty(self):
+        return self._parsed_pathway.is_empty()
+    
     
 class ReactionData(object):
     """
@@ -544,6 +549,15 @@ class PathwayAnalysisData(object):
         
     """
     
+    COLOR_FIXED_CONCENTRATION = sns.color_palette('muted')[1]
+    COLOR_VARIABLE_CONCENTRATION = sns.color_palette('muted')[0]
+    COLOR_BOTTLENECK_CONCENTRATION = sns.color_palette('muted')[2]
+    COLOR_GENERAL_CONCENTRATION = sns.color_palette('muted')[1]
+    COLOR_GRID = '#999999'
+    COLOR_DELTA_G_M = '#999999'
+    COLOR_DELTA_G_MDF = sns.color_palette('muted')[0]
+    COLOR_BOTTLENECK_REACTIONS = sns.color_palette('muted')[2]
+
     def __init__(self, parsed_pathway):
         self.parsed_pathway = parsed_pathway
         
@@ -622,15 +636,15 @@ class PathwayAnalysisData(object):
 
         with sns.axes_style('darkgrid'):
             conc_fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-            ax.grid(color=ParsedPathway.COLOR_GRID, linestyle='--', linewidth=1, alpha=0.2)
+            ax.grid(color=self.COLOR_GRID, linestyle='--', linewidth=1, alpha=0.2)
 
-            ax.axvspan(1e-8, default_lb, color=ParsedPathway.COLOR_GENERAL_CONCENTRATION, alpha=0.5)
-            ax.axvspan(default_ub, 1e3, color=ParsedPathway.COLOR_GENERAL_CONCENTRATION, alpha=0.5)
+            ax.axvspan(1e-8, default_lb, color=self.COLOR_GENERAL_CONCENTRATION, alpha=0.5)
+            ax.axvspan(default_ub, 1e3, color=self.COLOR_GENERAL_CONCENTRATION, alpha=0.5)
             ax.scatter(concs, ys, 
-                       color=ParsedPathway.COLOR_VARIABLE_CONCENTRATION,
+                       color=self.COLOR_VARIABLE_CONCENTRATION,
                        label='Variable concentrations')
             ax.scatter(concs_equal, ys_equal,
-                       color=ParsedPathway.COLOR_FIXED_CONCENTRATION,
+                       color=self.COLOR_FIXED_CONCENTRATION,
                        label='Fixed concentrations')
             
             # Special color for metabolites with nonzero shadow prices.
@@ -638,7 +652,7 @@ class PathwayAnalysisData(object):
             ys_nz_shadow = ys[nz_shadow]
             concs_nz_shadow = concs[nz_shadow]
             ax.scatter(concs_nz_shadow, ys_nz_shadow,
-                       color=ParsedPathway.COLOR_BOTTLENECK_CONCENTRATION,
+                       color=self.COLOR_BOTTLENECK_CONCENTRATION,
                        label='Bottleneck concentrations')
     
             ax.set_yticks(ys)

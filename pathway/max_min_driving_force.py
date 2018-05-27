@@ -6,20 +6,21 @@ import seaborn as sns
 from util import constants
 from pathway.thermo_models import PathwayThermoModel
 from io import StringIO
-from . import ParsedPathway, PathwayAnalysisData
+from . import ParsedPathway, PathwayAnalyzer, PathwayAnalysisData
 
-class MaxMinDrivingForce(ParsedPathway):
+class MaxMinDrivingForce(PathwayAnalyzer):
     """
         A class for performing Max-min Driving Force analysis on a given
         pathway (see https://doi.org/10.1371/journal.pcbi.1003483)
     """
 
     def analyze(self):
-        model = PathwayThermoModel(self.S.T, self.fluxes, self.dG0_r_primes,
-                                   self.compound_kegg_ids,
-                                   self.reaction_ids,
-                                   concentration_bounds=self.bounds)
-        return PathwayMDFData(self, model.mdf_result)
+        pp = self._parsed_pathway
+        model = PathwayThermoModel(pp.S.T, pp.fluxes, pp.dG0_r_primes,
+                                   pp.compound_kegg_ids,
+                                   pp.reaction_ids,
+                                   concentration_bounds=pp.bounds)
+        return PathwayMDFData(pp, model.mdf_result)
 
     @classmethod
     def from_sbtab(cls, sbtabs):
@@ -27,24 +28,20 @@ class MaxMinDrivingForce(ParsedPathway):
             Reads the input parameters from an SBtabDict object and 
             returns an initialized MaxMinDrivingForce object
         """
-        pp = MaxMinDrivingForce(*ParsedPathway._from_sbtab(sbtabs))
-        return pp
+        return MaxMinDrivingForce(ParsedPathway.from_sbtab(sbtabs))
     
     @classmethod
     def from_csv(cls, fp, bounds=None, aq_params=None):
         """
-            Returns a pathway parsed from an input file.
+            Returns a MaxMinDrivingForce object from an input file.
 
-            Caller responsible for closing f.
+            Caller responsible for closing fp.
     
             Args:
                 f: file-like object containing CSV data describing the pathway.
         """
-        reactions, fluxes, bounds, aq_params = \
-            super(MaxMinDrivingForce, cls)._from_csv(fp, bounds, aq_params)
-        pp = MaxMinDrivingForce(reactions, fluxes,
-                                bounds=bounds, aq_params=aq_params)
-        return pp
+        parsed_pathway = ParsedPathway.from_csv(fp, bounds, aq_params)
+        return MaxMinDrivingForce(parsed_pathway)
 
     def to_sbtab(self):
         """
@@ -52,20 +49,19 @@ class MaxMinDrivingForce(ParsedPathway):
             MDF. Typically this will be used to convert a CSV file (with
             only the reaction list) into a full model for MDF analysis.
         """
-        s = self._to_sbtab()
+        s = self._parsed_pathway.to_sbtab()
         
         sio = StringIO()
         
         # Parameter table
-        keq_header = self.create_sbtab_header('Parameter', 'Quantity',
+        keq_header = ParsedPathway.create_sbtab_header('Parameter', 'Quantity',
             pH='%.2f' % self.aq_params.pH, 
             IonicStrength='%.2f' % self.aq_params.ionic_strength,
             IonicStrengthUnit='M')
-
+        sio.write(keq_header)
         keq_cols = ['!QuantityType', '!Reaction', '!Compound', '!Value',
                     '!Unit', '!Reaction:Identifiers:kegg.reaction',
                     '!Compound:Identifiers:kegg.compound', '!ID']
-        sio.writelines(['%\n', keq_header + '\n'])
 
         writer = csv.DictWriter(sio, keq_cols, dialect='excel-tab')
         writer.writeheader()
@@ -82,6 +78,7 @@ class MaxMinDrivingForce(ParsedPathway):
                  '!ID': keq_id}
             writer.writerow(d)
         
+        sio.write('%\n')
         return s + sio.getvalue()
 
 class PathwayMDFData(PathwayAnalysisData):
@@ -125,14 +122,14 @@ class PathwayMDFData(PathwayAnalysisData):
         xticklabels = [''] + self.reaction_names
         with sns.axes_style('darkgrid'):
             mdf_fig, ax = plt.subplots(1, 1, figsize=(8, 6))
-            ax.grid(color=ParsedPathway.COLOR_GRID, linestyle='--',
+            ax.grid(color=self.COLOR_GRID, linestyle='--',
                     linewidth=1, alpha=0.2)
             ax.plot(cumulative_dgms,
                     label='Characteristic physiological 1 mM concentrations',
-                    color=ParsedPathway.COLOR_DELTA_G_M, zorder=1)
+                    color=self.COLOR_DELTA_G_M, zorder=1)
             ax.plot(cumulative_dgs,
                     label='MDF-optimized concentrations',
-                    color=ParsedPathway.COLOR_DELTA_G_MDF, zorder=1)
+                    color=self.COLOR_DELTA_G_MDF, zorder=1)
 
             bottleneck_idx = [i for i, r in enumerate(self.reaction_data)
                               if abs(r.shadow_price) != 0]
@@ -140,7 +137,7 @@ class PathwayMDFData(PathwayAnalysisData):
                      for i in bottleneck_idx]
             lines = LineCollection(lines, label='Bottleneck reactions',
                                    linewidth=2,
-                                   color=ParsedPathway.COLOR_BOTTLENECK_REACTIONS,
+                                   color=self.COLOR_BOTTLENECK_REACTIONS,
                                    linestyle='-',
                                    zorder=2, alpha=1)
             ax.add_collection(lines)

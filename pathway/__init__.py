@@ -8,7 +8,7 @@ from pathway.thermo_models import PathwayThermoModel
 from pathway.parsed_pathway import \
     PathwayParseError, InvalidReactionFormula, UnbalancedReaction, \
     ViolatesFirstLaw, ParsedPathway, PathwayAnalysisData, \
-    ReactionData, CompoundData
+    ReactionData, CompoundData, PathwayAnalyzer
     
 from pathway.max_min_driving_force import MaxMinDrivingForce
 
