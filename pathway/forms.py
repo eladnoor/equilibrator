@@ -1,6 +1,6 @@
 from django import forms
-ANALYSIS_CHOICES = (('MDF', 'Max-min Driving Force'),
-                    ('ECM', 'Enzyme Cost Minimization'))
+ANALYSIS_CHOICES = {'MDF': 'Max-min Driving Force',
+                    'ECM': 'Enzyme Cost Minimization'}
 
 class BuildPathwayModelForm(forms.Form):
     pathway_file = forms.FileField(required=True)
@@ -9,17 +9,25 @@ class BuildPathwayModelForm(forms.Form):
     pH = forms.FloatField(required=False)
     ionic_strength = forms.FloatField(required=False)
     conc_units = forms.CharField(required=True)
-    optimization_method = forms.ChoiceField(choices=ANALYSIS_CHOICES,
-                                            required=True,
-                                            label='optimization_method',
-                                            widget=forms.RadioSelect())
+    mdf_ecm_toggle = forms.BooleanField(required=False)
+    
+    def GetOptimizationMethod(self):
+        if self.cleaned_data['mdf_ecm_toggle']:
+            optimization_method = 'ECM'
+        else:
+            optimization_method = 'MDF'
+        return optimization_method
 
 class AnalyzePathwayModelForm(forms.Form):
     pathway_file = forms.FileField(required=True)
-    optimization_method = forms.ChoiceField(choices=ANALYSIS_CHOICES,
-                                            required=True,
-                                            label='optimization_method',
-                                            widget=forms.RadioSelect())
+    mdf_ecm_toggle = forms.BooleanField(required=False)
+
+    def GetOptimizationMethod(self):
+        if self.cleaned_data['mdf_ecm_toggle']:
+            optimization_method = 'ECM'
+        else:
+            optimization_method = 'MDF'
+        return optimization_method
     
 #    def __init__(self, custom_choices=None, *args, **kwargs):
 #        super(AnalyzePathwayModelForm, self).__init__(*args, **kwargs)

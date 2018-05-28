@@ -7,10 +7,14 @@
         <link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "jquery-ui.theme.min.css" %}" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="{% static "jquery-1.11.3.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "jquery-ui.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "jquery.autocomplete.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "main.js" %}"></script>
         {% include "analytics.html" %}
     </head>
     <body>
-
+    
     <div class="welcome centerize">
 
         {% include "logo_large.html" %}
@@ -20,24 +24,24 @@
             {% csrf_token %}
             <table class='results'>
                 <tr class='infoTableHeader'>
-                    <th colspan="100%">Step 1: Build <a href='http://www.sbtab.net'>SBtab</a> Pathway Model</th>
+                    <th colspan=3>Step 1: Build <a href='http://www.sbtab.net'>SBtab</a> Pathway Model</th>
                 </tr>
                 <tr>
-                    <td colspan="100%">Click <a href="#description">here</a> for an overview of the process. Skip this step if you already have an SBtab model file.</td>
+                    <td colspan=3>Click <a href="#description">here</a> for an overview of the process. Skip this step if you already have an SBtab model file.</td>
                 </tr>
                 <tr>
-                    <td>Pathway definition CSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation.csv" %}">example</a>)</td>
-                    <td><input type="file" name="pathway_file" /></td>
+                    <td width="40%">Pathway definition CSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation.csv" %}">example</a>)</td>
+                    <td colspan=2><input type="file" name="pathway_file" /></td>
                 </tr>
                 <tr>
                     <td>Minimum concentration<sup>&dagger;</sup></td>
-                    <td>
+                    <td colspan=2>
                         <input type="text" name='min_c' value='0.001' size=10 /> mM
                     </td>
                 </tr>
                 <tr>
                     <td>Maximum concentration<sup>&dagger;</sup></td>
-                    <td>
+                    <td colspan=2>
                         <input type="text" name='max_c' value='10' size=10 /> mM
                     </td>
                 </tr>
@@ -45,35 +49,46 @@
                     <td>
                         pH
                     </td>
-                    <td>
-                        <input type="text" name="pH" value="{{constants.DEFAULT_PH}}" size=10 />
+                    <td width="15%">
+                        <input type="text" name="pH" id="phField" value="{{ph}}" />
+                    </td>
+                    <td colspan="100%" class="sliderContainer">
+                        <div id="phSlider"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        Ionic strength
+                        Ionic strength [M]
                     </td>
                     <td>
-                        <input type="text" name="ionic_strength" value="{{constants.DEFAULT_IONIC_STRENGTH}}" size=10 /> M
+                        <input type="text" name="ionic_strength" id="ionStrengthField" value="{{ionic_strength}}" />
+                    </td>
+                    <td colspan="100%" class="sliderContainer">
+                        <div id="ionStrengthSlider"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         Analysis method
                     </td>
-                    <td>
+                    <td colspan=2>
+                        <input type="checkbox" id="switch1" name="mdf_ecm_toggle" /><label for="switch1">MDF vs. ECM</label>
+                        <a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force" target="_blank">MDF</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                        <a href={% static "classic_rxns/faq.html" %}#ecm title="Enzyme Cost Minimization" target="_blank">ECM</a> 
+                        <!--
                         <input type="radio" name="optimization_method" value="MDF" checked><a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force">MDF</a></input>
                         <input type="radio" name="optimization_method" value="ECM" ><a href={% static "classic_rxns/faq.html" %}#ecm title="Enzyme Cost Minimization">ECM</a></input>
+                        -->
                     </td>
                 </tr>
                 <tr>
-                    <td class='footnote' colspan=2>
+                    <td class='footnote' colspan=3>
                         <sup>&dagger;</sup>The default concentration range of 1 &mu;M - 10 mM reflects the fact that metabolite concentrations are constrained from above by osmotic pressure and toxicity considerations and from below
                         by enzyme affinities.
                     </td>
                 </tr>
                 <tr>
-                    <td class='footnote' colspan=2>
+                    <td class='footnote' colspan=3>
                         <sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
                         based on measurements from <i>E. coli</i> and other model organisms (see Noor et al., PloS Comp. Bio 2014).
                         You can edit these defaults by modifying the SBtab file (e.g. in Excel) before performing
@@ -110,8 +125,9 @@
                     <td>Pathway model TSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10.tsv" %}">MDF example</a>,
                     <a href="{% static "pathways/example_pathway_central_metabolism_ecm.tsv" %}">ECM example</a>)</td>
                     <td>
-                        <input type="radio" name="optimization_method" value="MDF" checked><a href={% static "classic_rxns/faq.html" %}#mdf>MDF</a></input>
-                        <input type="radio" name="optimization_method" value="ECM" ><a href={% static "classic_rxns/faq.html" %}#ecm>ECM</a></input>
+                        <input type="checkbox" id="switch2" name="mdf_ecm_toggle" /><label for="switch2">MDF vs. ECM</label>
+                        <a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force" target="_blank">MDF</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                        <a href={% static "classic_rxns/faq.html" %}#ecm title="Enzyme Cost Minimization" target="_blank">ECM</a> 
                     </td>
                 </tr>
                 <tr align='center'>

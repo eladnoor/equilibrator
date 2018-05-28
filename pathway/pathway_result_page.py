@@ -3,6 +3,7 @@
 from gibbs.conditions import AqueousParams
 from .bounds import Bounds
 from .concs import ConcentrationConverter
+from . import MaxMinDrivingForce, EnzymeCostMinimization
 import os
 
 from equilibrator.settings import BASE_DIR
@@ -26,3 +27,21 @@ def make_bounds(form):
     bounds = Bounds.from_csv_filename(
         COFACTORS_FNAME, default_lb=min_c, default_ub=max_c)
     return bounds
+
+def from_csv(form, fp):
+    bounds = make_bounds(form)
+    aq_params = make_aq_params(form)
+    optimization_method = form.GetOptimizationMethod()
+    if optimization_method == 'MDF':
+        pp = MaxMinDrivingForce.from_csv(fp, bounds=bounds,
+                                         aq_params=aq_params)
+    else:
+        pp = EnzymeCostMinimization.from_csv(fp, bounds=bounds,
+                                             aq_params=aq_params)
+
+    fname_base, ext = os.path.splitext(fp.name)
+    output_fname = '%s_pH%.2f_I%.2f_%s.tsv' % (
+        fname_base, aq_params.pH,
+        aq_params.ionic_strength, optimization_method)
+
+    return pp, output_fname

@@ -76,7 +76,7 @@ class ParsedPathway(object):
         else:
             self.reaction_ids = reaction_ids
 
-        self.aq_params = AqueousParams()  # Default values
+        self.aq_params = aq_params or AqueousParams()  # Default values
 
         self.fluxes = np.array(fluxes)
 

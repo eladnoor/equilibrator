@@ -233,3 +233,47 @@ td.reference.border {
 #figureContainer #dgFigure {
     clear: both; 
 }
+
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 100px;
+	height: 25px;
+	background: grey;
+	display: block;
+	border-radius: 25px;
+	background: #EBC8A5;
+	position: relative;
+}
+
+label:after {
+	content: '';
+	position: absolute;
+	top: 2.5px;
+	left: 2.5px;
+	width: 20px;
+	height: 20px;
+	background: #FFFFFF;
+	border-radius: 20px;
+	transition: 0.5s;
+}
+
+input:checked + label {
+	background: #DAB5F7;
+}
+
+input:checked + label:after {
+	left: calc(100% - 2.5px);
+	transform: translateX(-100%);
+}
+
+label:active:after {
+	width: 0px;
+}
+
