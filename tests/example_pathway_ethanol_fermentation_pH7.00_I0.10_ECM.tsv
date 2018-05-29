@@ -1,0 +1,199 @@
+!!SBtab TableName='Reaction' TableType='Reaction' Document='Pathway Model' SBtabVersion='1.0'
+!ID	!Name	!ReactionFormula	!Identifiers:kegg.reaction
+hexokinase_R00299	hexokinase_R00299	C_d_glucose + C_atp <=> C_glucose_6_phosphate + C_adp	R00299
+phosphohex_R00771	phosphohex_R00771	C_glucose_6_phosphate <=> C_d_fructose_6_phosphoric_acid	R00771
+6_phosphof_R04779	6_phosphof_R04779	C_atp + C_d_fructose_6_phosphoric_acid <=> C_adp + C_fructose_16_bisphosphate	R04779
+fructose_b_R01070	fructose_b_R01070	C_fructose_16_bisphosphate <=> C_glycerone_phosphate + C_d_glyceraldehyde_3_phosphate	R01070
+triose_pho_R01015	triose_pho_R01015	C_glycerone_phosphate <=> C_d_glyceraldehyde_3_phosphate	R01015
+glyceralde_R01061	glyceralde_R01061	C_orthophosphate + C_nad + C_d_glyceraldehyde_3_phosphate <=> C_nadh + C_3_phospho_d_glyceroyl_phosphate	R01061
+phosphogly_R01512	phosphogly_R01512	C_adp + C_3_phospho_d_glyceroyl_phosphate <=> C_atp + C_3_phospho_d_glycerate	R01512
+phosphogly_R01518	phosphogly_R01518	C_3_phospho_d_glycerate <=> C_2_phospho_d_glycerate	R01518
+phosphopyr_R00658	phosphopyr_R00658	C_2_phospho_d_glycerate <=> C_phosphoenolpyruvate + C_h2o	R00658
+pyruvate_k_R00200	pyruvate_k_R00200	C_adp + C_phosphoenolpyruvate <=> C_pyruvate + C_atp	R00200
+pyruvate_d_R00224	pyruvate_d_R00224	C_pyruvate <=> C_acetaldehyde + C_co2	R00224
+retinal_re_R00754	retinal_re_R00754	C_acetaldehyde + C_nadh <=> C_ethanol + C_nad	R00754
+%
+!!SBtab TableName='Compound' TableType='Compound' Document='Pathway Model' SBtabVersion='1.0'
+!ID	!Name	!Identifiers:kegg.compound	!IsConstant
+C_d_glucose	D-Glucose	C00031	False
+C_atp	ATP	C00002	False
+C_glucose_6_phosphate	Glucose 6-phosphate	C00092	False
+C_adp	ADP	C00008	False
+C_d_fructose_6_phosphoric_acid	D-Fructose 6-phosphoric acid	C00085	False
+C_fructose_16_bisphosphate	Fructose-1,6-bisphosphate	C05378	False
+C_glycerone_phosphate	Glycerone phosphate	C00111	False
+C_d_glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate	C00118	False
+C_orthophosphate	Orthophosphate	C00009	False
+C_nad	NAD+	C00003	False
+C_nadh	NADH	C00004	False
+C_3_phospho_d_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate	C00236	False
+C_3_phospho_d_glycerate	3-Phospho-D-glycerate	C00197	False
+C_2_phospho_d_glycerate	2-Phospho-D-glycerate	C00631	False
+C_phosphoenolpyruvate	Phosphoenolpyruvate	C00074	False
+C_h2o	H2O	C00001	False
+C_pyruvate	Pyruvate	C00022	False
+C_acetaldehyde	Acetaldehyde	C00084	False
+C_co2	CO2	C00011	False
+C_ethanol	Ethanol	C00469	False
+%
+!!SBtab TableName='Flux' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' Unit='mM/s'
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value
+flux	hexokinase_R00299	R00299	1.0
+flux	phosphohex_R00771	R00771	1.0
+flux	6_phosphof_R04779	R04779	1.0
+flux	fructose_b_R01070	R01070	1.0
+flux	triose_pho_R01015	R01015	1.0
+flux	glyceralde_R01061	R01061	2.0
+flux	phosphogly_R01512	R01512	2.0
+flux	phosphogly_R01518	R01518	2.0
+flux	phosphopyr_R00658	R00658	2.0
+flux	pyruvate_k_R00200	R00200	2.0
+flux	pyruvate_d_R00224	R00224	2.0
+flux	retinal_re_R00754	R00754	2.0
+%
+!!SBtab TableName='ConcentrationConstraint' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' Unit='M'
+!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max
+concentration	C_d_glucose	C00031	1e-06	0.01
+concentration	C_atp	C00002	0.005	0.005
+concentration	C_glucose_6_phosphate	C00092	1e-06	0.01
+concentration	C_adp	C00008	0.0005	0.0005
+concentration	C_d_fructose_6_phosphoric_acid	C00085	1e-06	0.01
+concentration	C_fructose_16_bisphosphate	C05378	1e-06	0.01
+concentration	C_glycerone_phosphate	C00111	1e-06	0.01
+concentration	C_d_glyceraldehyde_3_phosphate	C00118	1e-06	0.01
+concentration	C_orthophosphate	C00009	0.01	0.01
+concentration	C_nad	C00003	0.001	0.001
+concentration	C_nadh	C00004	0.0001	0.0001
+concentration	C_3_phospho_d_glyceroyl_phosphate	C00236	1e-06	0.01
+concentration	C_3_phospho_d_glycerate	C00197	1e-06	0.01
+concentration	C_2_phospho_d_glycerate	C00631	1e-06	0.01
+concentration	C_phosphoenolpyruvate	C00074	1e-06	0.01
+concentration	C_h2o	C00001	1.0	1.0
+concentration	C_pyruvate	C00022	1e-06	0.01
+concentration	C_acetaldehyde	C00084	1e-06	0.01
+concentration	C_co2	C00011	1e-05	1e-05
+concentration	C_ethanol	C00469	1e-06	0.01
+%
+!!SBtab TableName='Parameter' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' pH='7.00' IonicStrength='0.10' IonicStrengthUnit='M'
+!QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
+equilibrium constant	hexokinase_R00299		1061.247724701117	dimensionless	R00299		kEQ_hexokinase_R00299
+equilibrium constant	phosphohex_R00771		0.3608892454158759	dimensionless	R00771		kEQ_phosphohex_R00771
+equilibrium constant	6_phosphof_R04779		190.1447232330702	dimensionless	R04779		kEQ_6_phosphof_R04779
+equilibrium constant	fructose_b_R01070		0.000745159162699283	dimensionless	R01070		kEQ_fructose_b_R01070
+equilibrium constant	triose_pho_R01015		0.10966257096243406	dimensionless	R01015		kEQ_triose_pho_R01015
+equilibrium constant	glyceralde_R01061		0.043290979452048114	dimensionless	R01061		kEQ_glyceralde_R01061
+equilibrium constant	phosphogly_R01512		1716.161636958226	dimensionless	R01512		kEQ_phosphogly_R01512
+equilibrium constant	phosphogly_R01518		0.18215935526460458	dimensionless	R01518		kEQ_phosphogly_R01518
+equilibrium constant	phosphopyr_R00658		5.195720022018543	dimensionless	R00658		kEQ_phosphopyr_R00658
+equilibrium constant	pyruvate_k_R00200		71137.92540085316	dimensionless	R00200		kEQ_pyruvate_k_R00200
+equilibrium constant	pyruvate_d_R00224		1620.6623703987977	dimensionless	R00224		kEQ_pyruvate_d_R00224
+equilibrium constant	retinal_re_R00754		6320.794051065262	dimensionless	R00754		kEQ_retinal_re_R00754
+catalytic rate constant geometric mean	hexokinase_R00299		100.0	1/s	R00299		kC_hexokinase_R00299
+catalytic rate constant geometric mean	phosphohex_R00771		100.0	1/s	R00771		kC_phosphohex_R00771
+catalytic rate constant geometric mean	6_phosphof_R04779		100.0	1/s	R04779		kC_6_phosphof_R04779
+catalytic rate constant geometric mean	fructose_b_R01070		100.0	1/s	R01070		kC_fructose_b_R01070
+catalytic rate constant geometric mean	triose_pho_R01015		100.0	1/s	R01015		kC_triose_pho_R01015
+catalytic rate constant geometric mean	glyceralde_R01061		100.0	1/s	R01061		kC_glyceralde_R01061
+catalytic rate constant geometric mean	phosphogly_R01512		100.0	1/s	R01512		kC_phosphogly_R01512
+catalytic rate constant geometric mean	phosphogly_R01518		100.0	1/s	R01518		kC_phosphogly_R01518
+catalytic rate constant geometric mean	phosphopyr_R00658		100.0	1/s	R00658		kC_phosphopyr_R00658
+catalytic rate constant geometric mean	pyruvate_k_R00200		100.0	1/s	R00200		kC_pyruvate_k_R00200
+catalytic rate constant geometric mean	pyruvate_d_R00224		100.0	1/s	R00224		kC_pyruvate_d_R00224
+catalytic rate constant geometric mean	retinal_re_R00754		100.0	1/s	R00754		kC_retinal_re_R00754
+substrate catalytic rate constant	hexokinase_R00299		100.0	1/s	R00299		kcrf_hexokinase_R00299
+substrate catalytic rate constant	phosphohex_R00771		100.0	1/s	R00771		kcrf_phosphohex_R00771
+substrate catalytic rate constant	6_phosphof_R04779		100.0	1/s	R04779		kcrf_6_phosphof_R04779
+substrate catalytic rate constant	fructose_b_R01070		100.0	1/s	R01070		kcrf_fructose_b_R01070
+substrate catalytic rate constant	triose_pho_R01015		100.0	1/s	R01015		kcrf_triose_pho_R01015
+substrate catalytic rate constant	glyceralde_R01061		100.0	1/s	R01061		kcrf_glyceralde_R01061
+substrate catalytic rate constant	phosphogly_R01512		100.0	1/s	R01512		kcrf_phosphogly_R01512
+substrate catalytic rate constant	phosphogly_R01518		100.0	1/s	R01518		kcrf_phosphogly_R01518
+substrate catalytic rate constant	phosphopyr_R00658		100.0	1/s	R00658		kcrf_phosphopyr_R00658
+substrate catalytic rate constant	pyruvate_k_R00200		100.0	1/s	R00200		kcrf_pyruvate_k_R00200
+substrate catalytic rate constant	pyruvate_d_R00224		100.0	1/s	R00224		kcrf_pyruvate_d_R00224
+substrate catalytic rate constant	retinal_re_R00754		100.0	1/s	R00754		kcrf_retinal_re_R00754
+product catalytic rate constant	hexokinase_R00299		100.0	1/s	R00299		kcrr_hexokinase_R00299
+product catalytic rate constant	phosphohex_R00771		100.0	1/s	R00771		kcrr_phosphohex_R00771
+product catalytic rate constant	6_phosphof_R04779		100.0	1/s	R04779		kcrr_6_phosphof_R04779
+product catalytic rate constant	fructose_b_R01070		100.0	1/s	R01070		kcrr_fructose_b_R01070
+product catalytic rate constant	triose_pho_R01015		100.0	1/s	R01015		kcrr_triose_pho_R01015
+product catalytic rate constant	glyceralde_R01061		100.0	1/s	R01061		kcrr_glyceralde_R01061
+product catalytic rate constant	phosphogly_R01512		100.0	1/s	R01512		kcrr_phosphogly_R01512
+product catalytic rate constant	phosphogly_R01518		100.0	1/s	R01518		kcrr_phosphogly_R01518
+product catalytic rate constant	phosphopyr_R00658		100.0	1/s	R00658		kcrr_phosphopyr_R00658
+product catalytic rate constant	pyruvate_k_R00200		100.0	1/s	R00200		kcrr_pyruvate_k_R00200
+product catalytic rate constant	pyruvate_d_R00224		100.0	1/s	R00224		kcrr_pyruvate_d_R00224
+product catalytic rate constant	retinal_re_R00754		100.0	1/s	R00754		kcrr_retinal_re_R00754
+Michaelis constant	hexokinase_R00299	C_d_glucose	1.0	mM	R00299	C00031	kM_hexokinase_R00299_C_d_glucose
+Michaelis constant	hexokinase_R00299	C_atp	1.0	mM	R00299	C00002	kM_hexokinase_R00299_C_atp
+Michaelis constant	hexokinase_R00299	C_glucose_6_phosphate	1.0	mM	R00299	C00092	kM_hexokinase_R00299_C_glucose_6_phosphate
+Michaelis constant	hexokinase_R00299	C_adp	1.0	mM	R00299	C00008	kM_hexokinase_R00299_C_adp
+Michaelis constant	phosphohex_R00771	C_glucose_6_phosphate	1.0	mM	R00771	C00092	kM_phosphohex_R00771_C_glucose_6_phosphate
+Michaelis constant	phosphohex_R00771	C_d_fructose_6_phosphoric_acid	1.0	mM	R00771	C00085	kM_phosphohex_R00771_C_d_fructose_6_phosphoric_acid
+Michaelis constant	6_phosphof_R04779	C_atp	1.0	mM	R04779	C00002	kM_6_phosphof_R04779_C_atp
+Michaelis constant	6_phosphof_R04779	C_d_fructose_6_phosphoric_acid	1.0	mM	R04779	C00085	kM_6_phosphof_R04779_C_d_fructose_6_phosphoric_acid
+Michaelis constant	6_phosphof_R04779	C_adp	1.0	mM	R04779	C00008	kM_6_phosphof_R04779_C_adp
+Michaelis constant	6_phosphof_R04779	C_fructose_16_bisphosphate	1.0	mM	R04779	C05378	kM_6_phosphof_R04779_C_fructose_16_bisphosphate
+Michaelis constant	fructose_b_R01070	C_fructose_16_bisphosphate	1.0	mM	R01070	C05378	kM_fructose_b_R01070_C_fructose_16_bisphosphate
+Michaelis constant	fructose_b_R01070	C_glycerone_phosphate	1.0	mM	R01070	C00111	kM_fructose_b_R01070_C_glycerone_phosphate
+Michaelis constant	fructose_b_R01070	C_d_glyceraldehyde_3_phosphate	1.0	mM	R01070	C00118	kM_fructose_b_R01070_C_d_glyceraldehyde_3_phosphate
+Michaelis constant	triose_pho_R01015	C_glycerone_phosphate	1.0	mM	R01015	C00111	kM_triose_pho_R01015_C_glycerone_phosphate
+Michaelis constant	triose_pho_R01015	C_d_glyceraldehyde_3_phosphate	1.0	mM	R01015	C00118	kM_triose_pho_R01015_C_d_glyceraldehyde_3_phosphate
+Michaelis constant	glyceralde_R01061	C_orthophosphate	1.0	mM	R01061	C00009	kM_glyceralde_R01061_C_orthophosphate
+Michaelis constant	glyceralde_R01061	C_nad	1.0	mM	R01061	C00003	kM_glyceralde_R01061_C_nad
+Michaelis constant	glyceralde_R01061	C_d_glyceraldehyde_3_phosphate	1.0	mM	R01061	C00118	kM_glyceralde_R01061_C_d_glyceraldehyde_3_phosphate
+Michaelis constant	glyceralde_R01061	C_nadh	1.0	mM	R01061	C00004	kM_glyceralde_R01061_C_nadh
+Michaelis constant	glyceralde_R01061	C_3_phospho_d_glyceroyl_phosphate	1.0	mM	R01061	C00236	kM_glyceralde_R01061_C_3_phospho_d_glyceroyl_phosphate
+Michaelis constant	phosphogly_R01512	C_adp	1.0	mM	R01512	C00008	kM_phosphogly_R01512_C_adp
+Michaelis constant	phosphogly_R01512	C_3_phospho_d_glyceroyl_phosphate	1.0	mM	R01512	C00236	kM_phosphogly_R01512_C_3_phospho_d_glyceroyl_phosphate
+Michaelis constant	phosphogly_R01512	C_atp	1.0	mM	R01512	C00002	kM_phosphogly_R01512_C_atp
+Michaelis constant	phosphogly_R01512	C_3_phospho_d_glycerate	1.0	mM	R01512	C00197	kM_phosphogly_R01512_C_3_phospho_d_glycerate
+Michaelis constant	phosphogly_R01518	C_3_phospho_d_glycerate	1.0	mM	R01518	C00197	kM_phosphogly_R01518_C_3_phospho_d_glycerate
+Michaelis constant	phosphogly_R01518	C_2_phospho_d_glycerate	1.0	mM	R01518	C00631	kM_phosphogly_R01518_C_2_phospho_d_glycerate
+Michaelis constant	phosphopyr_R00658	C_2_phospho_d_glycerate	1.0	mM	R00658	C00631	kM_phosphopyr_R00658_C_2_phospho_d_glycerate
+Michaelis constant	phosphopyr_R00658	C_phosphoenolpyruvate	1.0	mM	R00658	C00074	kM_phosphopyr_R00658_C_phosphoenolpyruvate
+Michaelis constant	phosphopyr_R00658	C_h2o	1.0	mM	R00658	C00001	kM_phosphopyr_R00658_C_h2o
+Michaelis constant	pyruvate_k_R00200	C_adp	1.0	mM	R00200	C00008	kM_pyruvate_k_R00200_C_adp
+Michaelis constant	pyruvate_k_R00200	C_phosphoenolpyruvate	1.0	mM	R00200	C00074	kM_pyruvate_k_R00200_C_phosphoenolpyruvate
+Michaelis constant	pyruvate_k_R00200	C_pyruvate	1.0	mM	R00200	C00022	kM_pyruvate_k_R00200_C_pyruvate
+Michaelis constant	pyruvate_k_R00200	C_atp	1.0	mM	R00200	C00002	kM_pyruvate_k_R00200_C_atp
+Michaelis constant	pyruvate_d_R00224	C_pyruvate	1.0	mM	R00224	C00022	kM_pyruvate_d_R00224_C_pyruvate
+Michaelis constant	pyruvate_d_R00224	C_acetaldehyde	1.0	mM	R00224	C00084	kM_pyruvate_d_R00224_C_acetaldehyde
+Michaelis constant	pyruvate_d_R00224	C_co2	1.0	mM	R00224	C00011	kM_pyruvate_d_R00224_C_co2
+Michaelis constant	retinal_re_R00754	C_acetaldehyde	1.0	mM	R00754	C00084	kM_retinal_re_R00754_C_acetaldehyde
+Michaelis constant	retinal_re_R00754	C_nadh	1.0	mM	R00754	C00004	kM_retinal_re_R00754_C_nadh
+Michaelis constant	retinal_re_R00754	C_ethanol	1.0	mM	R00754	C00469	kM_retinal_re_R00754_C_ethanol
+Michaelis constant	retinal_re_R00754	C_nad	1.0	mM	R00754	C00003	kM_retinal_re_R00754_C_nad
+protein molecular mass	hexokinase_R00299		10000	Da	R00299		
+protein molecular mass	phosphohex_R00771		10000	Da	R00771		
+protein molecular mass	6_phosphof_R04779		10000	Da	R04779		
+protein molecular mass	fructose_b_R01070		10000	Da	R01070		
+protein molecular mass	triose_pho_R01015		10000	Da	R01015		
+protein molecular mass	glyceralde_R01061		10000	Da	R01061		
+protein molecular mass	phosphogly_R01512		10000	Da	R01512		
+protein molecular mass	phosphogly_R01518		10000	Da	R01518		
+protein molecular mass	phosphopyr_R00658		10000	Da	R00658		
+protein molecular mass	pyruvate_k_R00200		10000	Da	R00200		
+protein molecular mass	pyruvate_d_R00224		10000	Da	R00224		
+protein molecular mass	retinal_re_R00754		10000	Da	R00754		
+molecular mass		C_h2o	18.0	Da		C00001	
+molecular mass		C_atp	507.0	Da		C00002	
+molecular mass		C_nad	664.1	Da		C00003	
+molecular mass		C_nadh	665.1	Da		C00004	
+molecular mass		C_adp	427.0	Da		C00008	
+molecular mass		C_orthophosphate	98.0	Da		C00009	
+molecular mass		C_co2	44.0	Da		C00011	
+molecular mass		C_pyruvate	88.0	Da		C00022	
+molecular mass		C_d_glucose	180.1	Da		C00031	
+molecular mass		C_phosphoenolpyruvate	168.0	Da		C00074	
+molecular mass		C_acetaldehyde	44.0	Da		C00084	
+molecular mass		C_d_fructose_6_phosphoric_acid	260.0	Da		C00085	
+molecular mass		C_glucose_6_phosphate	260.0	Da		C00092	
+molecular mass		C_glycerone_phosphate	170.0	Da		C00111	
+molecular mass		C_d_glyceraldehyde_3_phosphate	170.0	Da		C00118	
+molecular mass		C_3_phospho_d_glycerate	186.0	Da		C00197	
+molecular mass		C_3_phospho_d_glyceroyl_phosphate	266.0	Da		C00236	
+molecular mass		C_ethanol	46.0	Da		C00469	
+molecular mass		C_2_phospho_d_glycerate	186.0	Da		C00631	
+molecular mass		C_fructose_16_bisphosphate	340.0	Da		C05378	
+%

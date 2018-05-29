@@ -1,0 +1,91 @@
+!!SBtab TableName='Reaction' TableType='Reaction' Document='Pathway Model' SBtabVersion='1.0'
+!ID	!Name	!ReactionFormula	!Identifiers:kegg.reaction
+hexokinase_R00299	hexokinase_R00299	C_d_glucose + C_atp <=> C_glucose_6_phosphate + C_adp	R00299
+phosphohex_R00771	phosphohex_R00771	C_glucose_6_phosphate <=> C_d_fructose_6_phosphoric_acid	R00771
+6_phosphof_R04779	6_phosphof_R04779	C_atp + C_d_fructose_6_phosphoric_acid <=> C_adp + C_fructose_16_bisphosphate	R04779
+fructose_b_R01070	fructose_b_R01070	C_fructose_16_bisphosphate <=> C_glycerone_phosphate + C_d_glyceraldehyde_3_phosphate	R01070
+triose_pho_R01015	triose_pho_R01015	C_glycerone_phosphate <=> C_d_glyceraldehyde_3_phosphate	R01015
+glyceralde_R01061	glyceralde_R01061	C_orthophosphate + C_nad + C_d_glyceraldehyde_3_phosphate <=> C_nadh + C_3_phospho_d_glyceroyl_phosphate	R01061
+phosphogly_R01512	phosphogly_R01512	C_adp + C_3_phospho_d_glyceroyl_phosphate <=> C_atp + C_3_phospho_d_glycerate	R01512
+phosphogly_R01518	phosphogly_R01518	C_3_phospho_d_glycerate <=> C_2_phospho_d_glycerate	R01518
+phosphopyr_R00658	phosphopyr_R00658	C_2_phospho_d_glycerate <=> C_phosphoenolpyruvate + C_h2o	R00658
+pyruvate_k_R00200	pyruvate_k_R00200	C_adp + C_phosphoenolpyruvate <=> C_pyruvate + C_atp	R00200
+pyruvate_d_R00224	pyruvate_d_R00224	C_pyruvate <=> C_acetaldehyde + C_co2	R00224
+retinal_re_R00754	retinal_re_R00754	C_acetaldehyde + C_nadh <=> C_ethanol + C_nad	R00754
+%
+!!SBtab TableName='Compound' TableType='Compound' Document='Pathway Model' SBtabVersion='1.0'
+!ID	!Name	!Identifiers:kegg.compound	!IsConstant
+C_d_glucose	D-Glucose	C00031	False
+C_atp	ATP	C00002	False
+C_glucose_6_phosphate	Glucose 6-phosphate	C00092	False
+C_adp	ADP	C00008	False
+C_d_fructose_6_phosphoric_acid	D-Fructose 6-phosphoric acid	C00085	False
+C_fructose_16_bisphosphate	Fructose-1,6-bisphosphate	C05378	False
+C_glycerone_phosphate	Glycerone phosphate	C00111	False
+C_d_glyceraldehyde_3_phosphate	D-Glyceraldehyde 3-phosphate	C00118	False
+C_orthophosphate	Orthophosphate	C00009	False
+C_nad	NAD+	C00003	False
+C_nadh	NADH	C00004	False
+C_3_phospho_d_glyceroyl_phosphate	3-Phospho-D-glyceroyl phosphate	C00236	False
+C_3_phospho_d_glycerate	3-Phospho-D-glycerate	C00197	False
+C_2_phospho_d_glycerate	2-Phospho-D-glycerate	C00631	False
+C_phosphoenolpyruvate	Phosphoenolpyruvate	C00074	False
+C_h2o	H2O	C00001	False
+C_pyruvate	Pyruvate	C00022	False
+C_acetaldehyde	Acetaldehyde	C00084	False
+C_co2	CO2	C00011	False
+C_ethanol	Ethanol	C00469	False
+%
+!!SBtab TableName='Flux' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' Unit='mM/s'
+!QuantityType	!Reaction	!Reaction:Identifiers:kegg.reaction	!Value
+flux	hexokinase_R00299	R00299	1.0
+flux	phosphohex_R00771	R00771	1.0
+flux	6_phosphof_R04779	R04779	1.0
+flux	fructose_b_R01070	R01070	1.0
+flux	triose_pho_R01015	R01015	1.0
+flux	glyceralde_R01061	R01061	2.0
+flux	phosphogly_R01512	R01512	2.0
+flux	phosphogly_R01518	R01518	2.0
+flux	phosphopyr_R00658	R00658	2.0
+flux	pyruvate_k_R00200	R00200	2.0
+flux	pyruvate_d_R00224	R00224	2.0
+flux	retinal_re_R00754	R00754	2.0
+%
+!!SBtab TableName='ConcentrationConstraint' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' Unit='M'
+!QuantityType	!Compound	!Compound:Identifiers:kegg.compound	!Concentration:Min	!Concentration:Max
+concentration	C_d_glucose	C00031	1e-06	0.01
+concentration	C_atp	C00002	0.005	0.005
+concentration	C_glucose_6_phosphate	C00092	1e-06	0.01
+concentration	C_adp	C00008	0.0005	0.0005
+concentration	C_d_fructose_6_phosphoric_acid	C00085	1e-06	0.01
+concentration	C_fructose_16_bisphosphate	C05378	1e-06	0.01
+concentration	C_glycerone_phosphate	C00111	1e-06	0.01
+concentration	C_d_glyceraldehyde_3_phosphate	C00118	1e-06	0.01
+concentration	C_orthophosphate	C00009	0.01	0.01
+concentration	C_nad	C00003	0.001	0.001
+concentration	C_nadh	C00004	0.0001	0.0001
+concentration	C_3_phospho_d_glyceroyl_phosphate	C00236	1e-06	0.01
+concentration	C_3_phospho_d_glycerate	C00197	1e-06	0.01
+concentration	C_2_phospho_d_glycerate	C00631	1e-06	0.01
+concentration	C_phosphoenolpyruvate	C00074	1e-06	0.01
+concentration	C_h2o	C00001	1.0	1.0
+concentration	C_pyruvate	C00022	1e-06	0.01
+concentration	C_acetaldehyde	C00084	1e-06	0.01
+concentration	C_co2	C00011	1e-05	1e-05
+concentration	C_ethanol	C00469	1e-06	0.01
+%
+!!SBtab TableName='Parameter' TableType='Quantity' Document='Pathway Model' SBtabVersion='1.0' pH='7.00' IonicStrength='0.10' IonicStrengthUnit='M'
+!QuantityType	!Reaction	!Compound	!Value	!Unit	!Reaction:Identifiers:kegg.reaction	!Compound:Identifiers:kegg.compound	!ID
+equilibrium constant	hexokinase_R00299		1061.247724701117	dimensionless	R00299		kEQ_hexokinase_R00299
+equilibrium constant	phosphohex_R00771		0.3608892454158759	dimensionless	R00771		kEQ_phosphohex_R00771
+equilibrium constant	6_phosphof_R04779		190.1447232330702	dimensionless	R04779		kEQ_6_phosphof_R04779
+equilibrium constant	fructose_b_R01070		0.000745159162699283	dimensionless	R01070		kEQ_fructose_b_R01070
+equilibrium constant	triose_pho_R01015		0.10966257096243406	dimensionless	R01015		kEQ_triose_pho_R01015
+equilibrium constant	glyceralde_R01061		0.043290979452048114	dimensionless	R01061		kEQ_glyceralde_R01061
+equilibrium constant	phosphogly_R01512		1716.161636958226	dimensionless	R01512		kEQ_phosphogly_R01512
+equilibrium constant	phosphogly_R01518		0.18215935526460458	dimensionless	R01518		kEQ_phosphogly_R01518
+equilibrium constant	phosphopyr_R00658		5.195720022018543	dimensionless	R00658		kEQ_phosphopyr_R00658
+equilibrium constant	pyruvate_k_R00200		71137.92540085316	dimensionless	R00200		kEQ_pyruvate_k_R00200
+equilibrium constant	pyruvate_d_R00224		1620.6623703987977	dimensionless	R00224		kEQ_pyruvate_d_R00224
+equilibrium constant	retinal_re_R00754		6320.794051065262	dimensionless	R00754		kEQ_retinal_re_R00754
+%

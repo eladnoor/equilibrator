@@ -9,6 +9,13 @@ import csv
 from util import constants
 import logging
 
+try:
+    sys.path.append(path.expanduser('~/git/enzyme-cost'))
+    from ecm import ECMmodel
+except ImportError as e:
+    logging.error('Make sure to install the enzyme-cost package')
+    raise e
+
 class EnzymeCostMinimization(PathwayAnalyzer):
     """
         A class for performing Enzyme Cost Minimization analysis on a given
@@ -27,16 +34,14 @@ class EnzymeCostMinimization(PathwayAnalyzer):
         """Returns an initialized ParsedPathway."""
         parsed_pathway = ParsedPathway.from_sbtab(sbtabs)
         
-        # TODO: write a much more detailed model validation function which
-        # raises clear exceptions if some data or table is missing!
-        
         try:
-            sys.path.append(path.expanduser('~/git/enzyme-cost'))
-            from ecm import ECMmodel
             ecm = ECMmodel(sbtabs)
         except Exception as e:
             logging.error(str(e))
             raise PathwayParseError('Failed to load the ECM model')
+            
+        # TODO: write a much more detailed model validation function which
+        # raises clear exceptions if some data or table is missing!
         
         return EnzymeCostMinimization(parsed_pathway, ecm)
 
@@ -50,7 +55,8 @@ class EnzymeCostMinimization(PathwayAnalyzer):
             f: file-like object containing CSV data describing the pathway.
         """
         parsed_pathway = ParsedPathway.from_csv(fp, bounds, aq_params)
-        return EnzymeCostMinimization(parsed_pathway, ecm=None)
+        ecm = None
+        return EnzymeCostMinimization(parsed_pathway, ecm)
 
     def to_sbtab(self):
         s = self._parsed_pathway.to_sbtab()

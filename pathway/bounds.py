@@ -134,7 +134,7 @@ class Bounds(BaseBounds):
 
     @classmethod
     def from_csv_filename(cls, fname, default_lb=None, default_ub=None):
-        with open(fname, 'rU') as f:
+        with open(fname, 'r') as f:
             return cls.from_csv_file(
                 f, default_lb=default_lb, default_ub=default_ub)
 

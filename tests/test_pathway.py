@@ -7,9 +7,13 @@ from equilibrator import settings
 import re
 import logging
 from util.SBtab.SBtabDict import SBtabDict
-from pathway import MaxMinDrivingForce, ParsedPathway
+from pathway import MaxMinDrivingForce, EnzymeCostMinimization, ParsedPathway
 from pathway.bounds import Bounds
 from pathway.concs import ConcentrationConverter, NoSuchUnits
+from gibbs.conditions import AqueousParams
+
+from equilibrator.settings import BASE_DIR
+COFACTORS_FNAME = os.path.join(BASE_DIR, 'pathway/data/cofactors.csv')
 
 class PathwayTester(TestCase):
     
@@ -18,22 +22,29 @@ class PathwayTester(TestCase):
         logging.getLogger().setLevel(logging.WARNING)
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
         django.setup()
-        self.sbtab_fname = os.path.join(settings.BASE_DIR, 'tests',
-                                        'pathway_ethanol_SBtab.tsv')
-
         self.csv_fname = os.path.join(settings.BASE_DIR, 'tests',
-                                      'EMP_glycolysis_simple.csv')
+            'example_pathway_ethanol_fermentation.csv')
+        self.mdf_sbtab_fname = os.path.join(settings.BASE_DIR, 'tests',
+            'example_pathway_ethanol_fermentation_pH7.00_I0.10_MDF.tsv')
+        self.ecm_sbtab_fname = os.path.join(settings.BASE_DIR, 'tests',
+            'example_pathway_ethanol_fermentation_pH7.00_I0.10_ECM.tsv')
+
         self.client = Client()
 
-    def test_csv_file(self):
+    def test_mdf_from_csv_file(self):
+        aq_params = AqueousParams(pH=7.0, ionic_strength=0.1)
+        bounds = Bounds.from_csv_filename(
+            COFACTORS_FNAME, default_lb=1e-6, default_ub=1e-2)
+
         with open(self.csv_fname, 'r') as fp:
-            path = MaxMinDrivingForce.from_csv(fp)
+            path = MaxMinDrivingForce.from_csv(fp, bounds=bounds,
+                                               aq_params=aq_params)
         
         mdf_res = path.analyze()
-        self.assertAlmostEqual(mdf_res.score, 2.626, 2)
+        self.assertAlmostEqual(mdf_res.score, 1.69, 1)
 
-    def test_sbtab_file(self):
-        with open(self.sbtab_fname, 'r') as fp:
+    def test_mdf_from_sbtab_file(self):
+        with open(self.mdf_sbtab_fname, 'r') as fp:
             sbtabs = SBtabDict.FromSBtabFile(fp)
             
             self.assertSetEqual(set(ParsedPathway.EXPECTED_TNAMES),
@@ -49,9 +60,26 @@ class PathwayTester(TestCase):
             path = MaxMinDrivingForce.from_sbtab(sbtabs)
             mdf_res = path.analyze()
         
-        self.assertAlmostEqual(mdf_res.score, 1.69, 2)
+        self.assertAlmostEqual(mdf_res.score, 1.69, 1)
         
-        # TODO: add a test for the ECM analysis
+    def test_ecm_from_sbtab_file(self):
+        with open(self.ecm_sbtab_fname, 'r') as fp:
+            sbtabs = SBtabDict.FromSBtabFile(fp)
+            
+            self.assertSetEqual(set(ParsedPathway.EXPECTED_TNAMES),
+                                set(sbtabs.keys()))
+            
+            bs = Bounds.from_sbtab(sbtabs['ConcentrationConstraint'])
+            for key in bs.lower_bounds:
+                lb = bs.GetLowerBound(key)
+                ub = bs.GetUpperBound(key)
+                msg = 'bounds for %s lb = %.2g, ub = %.2g' % (key, lb, ub)
+                self.assertLessEqual(lb, ub, msg=msg)
+
+            path = EnzymeCostMinimization.from_sbtab(sbtabs)
+            ecm_res = path.analyze()
+        
+        self.assertAlmostEqual(ecm_res.score, 15142.5, 0)
 
     def test_unit_string(self):
         test_data = [(1.0, 'M', 1.0),
@@ -88,7 +116,7 @@ class PathwayTester(TestCase):
             self.assertEqual(expected_out, out)
 
     def test_web_server(self):
-        with open(self.sbtab_fname, 'r') as fp:
+        with open(self.mdf_sbtab_fname, 'r') as fp:
             response = self.client.post('/pathway/results',
                                         {'pathway_file': fp,
                                          'optimization_method': 'MDF'})
@@ -98,7 +126,7 @@ class PathwayTester(TestCase):
         match = re.findall(r'MDF</a></strong></td>[^<]+<td>([0-9\.]+) kJ/mol</td>',
                            str(response.content))
         for m in match:
-            self.assertAlmostEqual(float(m), 1.7, 1)
+            self.assertAlmostEqual(float(m), 1.69, 1)
         
 if __name__ == "__main__":
     main()
