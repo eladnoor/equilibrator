@@ -4,7 +4,6 @@
 from matching import query_parser
 import unittest
 
-
 class TestReactionParser(unittest.TestCase):
     """Tests for matcher.Match"""
     

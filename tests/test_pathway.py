@@ -2,7 +2,8 @@
 import os
 from django.test import Client
 import django
-from unittest import TestCase, main
+import unittest
+import warnings
 from equilibrator import settings
 import re
 import logging
@@ -11,11 +12,17 @@ from pathway import MaxMinDrivingForce, EnzymeCostMinimization, ParsedPathway
 from pathway.bounds import Bounds
 from pathway.concs import ConcentrationConverter, NoSuchUnits
 from gibbs.conditions import AqueousParams
-
 from equilibrator.settings import BASE_DIR
 COFACTORS_FNAME = os.path.join(BASE_DIR, 'pathway/data/cofactors.csv')
 
-class PathwayTester(TestCase):
+def ignore_warnings(test_func):
+    def do_test(self, *args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            test_func(self, *args, **kwargs)
+    return do_test
+
+class PathwayTester(unittest.TestCase):
     
     def __init__(self, *args, **kwargs):
         super(PathwayTester, self).__init__(*args, **kwargs)
@@ -31,6 +38,7 @@ class PathwayTester(TestCase):
 
         self.client = Client()
 
+    @ignore_warnings
     def test_mdf_from_csv_file(self):
         aq_params = AqueousParams(pH=7.0, ionic_strength=0.1)
         bounds = Bounds.from_csv_filename(
@@ -43,6 +51,7 @@ class PathwayTester(TestCase):
         mdf_res = path.analyze()
         self.assertAlmostEqual(mdf_res.score, 1.69, 1)
 
+    @ignore_warnings
     def test_mdf_from_sbtab_file(self):
         with open(self.mdf_sbtab_fname, 'r') as fp:
             sbtabs = SBtabDict.FromSBtabFile(fp)
@@ -62,6 +71,7 @@ class PathwayTester(TestCase):
         
         self.assertAlmostEqual(mdf_res.score, 1.69, 1)
         
+    @ignore_warnings
     def test_ecm_from_sbtab_file(self):
         with open(self.ecm_sbtab_fname, 'r') as fp:
             sbtabs = SBtabDict.FromSBtabFile(fp)
@@ -115,6 +125,7 @@ class PathwayTester(TestCase):
             out = ConcentrationConverter.to_molar_units(val, units)
             self.assertEqual(expected_out, out)
 
+    @ignore_warnings
     def test_web_server(self):
         with open(self.mdf_sbtab_fname, 'r') as fp:
             response = self.client.post('/pathway/results',
@@ -129,4 +140,7 @@ class PathwayTester(TestCase):
             self.assertAlmostEqual(float(m), 1.69, 1)
         
 if __name__ == "__main__":
-    main()
+    # PuLP tends to open a TextIOWrapper file without taking care of closing it.
+    # Therefore, we have to ignore these warnings, but hopefully in future versions
+    # of PuLP that will be solved.
+    unittest.main(warnings='ignore')

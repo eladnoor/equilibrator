@@ -4,14 +4,14 @@ import logging
 import itertools
 import json
 import re
-from unittest import TestCase, main
+import unittest
 from django.test import Client
 import django
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
 from equilibrator.settings import HAYSTACK_BACKEND
 
-class GibbsTester(TestCase):
+class GibbsTester(unittest.TestCase):
 
     def setUp(self):
         logging.getLogger().setLevel(logging.WARNING)
@@ -280,4 +280,4 @@ class GibbsTester(TestCase):
 
 
 if __name__ == "__main__":
-    main()
+    unittest.main()

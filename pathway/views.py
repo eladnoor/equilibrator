@@ -8,12 +8,6 @@ from util import constants
 from . import pathway_result_page
 from . import MaxMinDrivingForce, EnzymeCostMinimization
 
-# PuLP tends to open a TextIOWrapper file without taking care of closing it.
-# Therefore, we have to ignore these warnings, but hopefully in future versions
-# of PuLP that will be solved.
-import warnings
-warnings.simplefilter("ignore", ResourceWarning)
-
 def DefinePathwayPage(request):
     """Renders the landing page."""
     template_data = csrf(request)
