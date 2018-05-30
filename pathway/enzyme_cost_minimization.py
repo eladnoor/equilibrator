@@ -9,7 +9,7 @@ import logging
 
 try:
     from ecm import ECMmodel
-except ImportError as e:
+except ModuleNotFoundError as e:
     logging.error('Make sure to install the enzyme-cost package')
     raise e
 
