@@ -16,4 +16,7 @@ install:
 - pip install -r requirements.txt
 before_script:
 - python init_db.py
+- wget https://github.com/eladnoor/enzyme-cost/archive/v0.1.0.tar.gz -O enzyme-cost.tar.gz
+- tar -xvf enzyme-cost.tar.gz
+- pushd enzyme-cost-0.1.0 && python setup.py install && popd
 script: python -m unittest discover tests

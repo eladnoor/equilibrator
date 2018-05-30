@@ -1,5 +1,3 @@
-import sys
-from os import path
 from io import StringIO
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -10,7 +8,6 @@ from util import constants
 import logging
 
 try:
-    sys.path.append(path.expanduser('~/git/enzyme-cost'))
     from ecm import ECMmodel
 except ImportError as e:
     logging.error('Make sure to install the enzyme-cost package')
