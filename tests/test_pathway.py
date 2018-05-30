@@ -75,17 +75,6 @@ class PathwayTester(unittest.TestCase):
     def test_ecm_from_sbtab_file(self):
         with open(self.ecm_sbtab_fname, 'r') as fp:
             sbtabs = SBtabDict.FromSBtabFile(fp)
-            
-            self.assertSetEqual(set(ParsedPathway.EXPECTED_TNAMES),
-                                set(sbtabs.keys()))
-            
-            bs = Bounds.from_sbtab(sbtabs['ConcentrationConstraint'])
-            for key in bs.lower_bounds:
-                lb = bs.GetLowerBound(key)
-                ub = bs.GetUpperBound(key)
-                msg = 'bounds for %s lb = %.2g, ub = %.2g' % (key, lb, ub)
-                self.assertLessEqual(lb, ub, msg=msg)
-
             path = EnzymeCostMinimization.from_sbtab(sbtabs)
             ecm_res = path.analyze()
         

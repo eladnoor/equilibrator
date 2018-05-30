@@ -22,20 +22,31 @@ class EnzymeCostMinimization(PathwayAnalyzer):
         pathway (see https://doi.org/10.1371/journal.pcbi.1005167)
     """
 
-    def __init__(self, parsed_pathway, ecm):
+    def __init__(self, parsed_pathway, ecm_model):
         super(EnzymeCostMinimization, self).__init__(parsed_pathway)
-        self.ecm = ecm
+        self.ecm_model = ecm_model
 
     def analyze(self):
-        return PathwayECMData(self._parsed_pathway, self.ecm, self.ecm.ECM())
+        lnC = self.ecm_model.ECM()
+        if lnC is None:
+            raise Exception('Could not solve ECM probelm')
+        return PathwayECMData(self._parsed_pathway,
+                              self.ecm_model,
+                              lnC=lnC)
     
     @classmethod
     def from_sbtab(cls, sbtabs):
         """Returns an initialized ParsedPathway."""
         parsed_pathway = ParsedPathway.from_sbtab(sbtabs)
         
+        df_dict = {k: v.toDataFrame() for k, v in sbtabs.items()}
+        
+        bound_unit = sbtabs.GetTableAttribute('ConcentrationConstraint', 'Unit')
+        flux_unit = sbtabs.GetTableAttribute('Flux', 'Unit')
         try:
-            ecm = ECMmodel(sbtabs)
+            ecm_model = ECMmodel(df_dict,
+                        bound_unit=bound_unit,
+                        flux_unit=flux_unit)
         except Exception as e:
             logging.error(str(e))
             raise PathwayParseError('Failed to load the ECM model')
@@ -43,7 +54,7 @@ class EnzymeCostMinimization(PathwayAnalyzer):
         # TODO: write a much more detailed model validation function which
         # raises clear exceptions if some data or table is missing!
         
-        return EnzymeCostMinimization(parsed_pathway, ecm)
+        return EnzymeCostMinimization(parsed_pathway, ecm_model)
 
     @classmethod
     def from_csv(cls, fp, bounds=None, aq_params=None):
@@ -151,9 +162,9 @@ class EnzymeCostMinimization(PathwayAnalyzer):
 
 class PathwayECMData(PathwayAnalysisData):
     
-    def __init__(self, parsed_pathway, ecm, lnC):
+    def __init__(self, parsed_pathway, ecm_model, lnC):
         super(PathwayECMData, self).__init__(parsed_pathway)
-        self.ecm = ecm
+        self.ecf = ecm_model.ecf
         self.lnC = lnC
 
         for rxn, c in zip(self.reaction_data, self.enzyme_costs):
@@ -165,7 +176,7 @@ class PathwayECMData(PathwayAnalysisData):
             rxn.eta_th = 1.0/enz_cost_brkdwn[i, 1]
             rxn.eta_sat = 1.0/enz_cost_brkdwn[i, 2]
 
-        cid2conc = dict(zip(self.ecm.kegg_model.cids, np.exp(self.lnC)))
+        cid2conc = dict(zip(ecm_model.kegg_model.cids, np.exp(self.lnC)))
         for i, cpd in enumerate(self.compound_data):
             cpd.concentration = cid2conc.get(cpd.compound.kegg_id, 1)
         
@@ -179,11 +190,11 @@ class PathwayECMData(PathwayAnalysisData):
     
     @property
     def enzyme_costs(self):
-        return self.ecm.ECF(self.lnC)
+        return self.ecf.ECF(self.lnC)
 
     @property
     def enzyme_costs_breakdown(self):
-        return np.array(self.ecm.ecf.GetEnzymeCostPartitions(self.lnC))
+        return np.array(self.ecf.GetEnzymeCostPartitions(self.lnC))
     
     @property
     def is_ecm(self):
@@ -204,7 +215,7 @@ class PathwayECMData(PathwayAnalysisData):
             fig, ax = plt.subplots(figsize=(8, 8))
             ax.grid(color='grey', linestyle='--', linewidth=1, alpha=0.2)
             
-            labels = self.ecm.ecf.ECF_LEVEL_NAMES[0:3]
+            labels = self.ecf.ECF_LEVEL_NAMES[0:3]
             costs = self.enzyme_costs_breakdown[::-1, :] # reverse order of reactions
             
             base = min(filter(None, costs[:, 0])) / 2.0
