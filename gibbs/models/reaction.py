@@ -12,7 +12,7 @@ from django.apps import apps
 from django.utils.text import slugify
 from util import constants
 from .. import conditions
-from .compound import CommonName, CompoundWithCoeff
+from .compound import CommonName, CompoundWithCoeff, Compound
 from itertools import count
 
 class Preprocessing(object):
@@ -1303,13 +1303,12 @@ class StoredReaction(models.Model):
 
     @staticmethod
     def _CompoundToString(kegg_id, coeff):
+        compound_model = apps.get_model('gibbs.Compound')
         try:
-            compound = apps.get_model('gibbs.Compound').objects.get(
-                kegg_id=kegg_id)
+            compound = compound_model.objects.get(kegg_id=kegg_id)
             name = compound.FirstName()
-        except Exception as e:
+        except compound_model.DoesNotExist:
             logging.warning('Cannot find the name for %s' % kegg_id)
-            logging.warning(str(e))
             name = kegg_id
 
         if coeff == 1:
@@ -1321,8 +1320,6 @@ class StoredReaction(models.Model):
         """
             String representation.
         """
-        # TODO: need to replace the KEGG IDs with the common names of the
-        #       compounds
         left = []
         right = []
         for coeff, kegg_id in json.loads(self.reactants):
@@ -1379,11 +1376,18 @@ class StoredReaction(models.Model):
     def GetHash(self):
         return StoredReaction.HashReaction(self.GetSparseRepresentation())
 
-    def GenerateHash(self):
-        self.reaction_hash = self.GetHash()
-        self.reaction_string = self.ToString()
+    def GenerateAttributes(self):
+        """
+            generates the hash string, the full reaction string and the URL
+            that generates the eQuilibrator page for this reaction
+        """
+        # the link option might through a KeyError, if one of the reactants
+        # is not found in the database
         self.link = self.Link()
 
+        self.reaction_string = self.ToString()
+        self.reaction_hash = self.GetHash()
+        
     def __str__(self):
         """String representation."""
         return self.ToString()
@@ -1392,27 +1396,27 @@ class StoredReaction(models.Model):
         """
             Returns a link to this reaction's page.
         """
-        try:
-            rxn = self.ToReaction()
-            return rxn.GetHyperlink(self.ToString())
-        except AttributeError:
-            raise Exception('Cannot find one of the compounds in the database')
+        rxn = self.ToReaction()
+        return rxn.GetHyperlink(self.ToString())
 
     def ToReaction(self, priority=1, aq_params=None):
         """
             returns a list of CSV rows with the following columns:
             kegg ID, dG0_prime, pH, ionic_strength, T, Note
         """
-        reactants = [CompoundWithCoeff.FromId(coeff, kegg_id)
-                     for coeff, kegg_id in json.loads(self.reactants)]
-        rxn = Reaction(reactants)
-        return rxn
+        reactants = []
+        try:
+            for coeff, kegg_id in json.loads(self.reactants):
+                reactants.append(CompoundWithCoeff.FromId(coeff, kegg_id))
+        except Compound.DoesNotExist:
+            raise KeyError('Compound %s was not found in the database' % kegg_id)
+        return Reaction(reactants)
 
 
 class Enzyme(models.Model):
     """A single enzyme."""
     # EC class enzyme.
-    ec = models.CharField(max_length=10)
+    ec = models.CharField(max_length=20)
 
     # A list of common names of the enzyme, used for searching.
     common_names = models.ManyToManyField(CommonName)

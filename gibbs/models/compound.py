@@ -23,24 +23,6 @@ class CommonName(models.Model):
     name = models.CharField(max_length=500)
     enabled = models.BooleanField(default=True)
 
-    @staticmethod
-    def GetOrCreate(name):
-        """Attempts to fetch the CommonName object, or creates it if not present.
-
-        Args:
-            name: the name to use.
-
-        Returns:
-            A CommonName object.
-        """
-        try:
-            n = CommonName.objects.get(name=name, enabled=True)
-            return n
-        except Exception:
-            n = CommonName(name=name, enabled=True)
-            n.save()
-            return n
-
     def __unicode__(self):
         return self.name
 
@@ -452,11 +434,11 @@ class Compound(models.Model):
         if self.inchi is None:
             return
 
-        th_string = InChI2Thumbnail(str(self.inchi), output_format='png')
+        th_string = InChI2Thumbnail(str(self.inchi), output_format='svg')
         if th_string is None:
             return
 
-        self.thumbnail = base64.encodestring(th_string)
+        self.thumbnail = base64.encodebytes(th_string).decode('ASCII')
 
     def GetAtomBag(self):
         """
@@ -713,26 +695,6 @@ class Reactant(models.Model):
     def __init__(self, *args, **kwargs):
         super(Reactant, self).__init__(*args, **kwargs)
 
-    @staticmethod
-    def GetOrCreate(kegg_id, coeff):
-        """Attempts to fetch the CommonName object, or creates it if not present.
-
-        Args:
-            name: the name to use.
-
-        Returns:
-            A CommonName object.
-        """
-        try:
-            r = Reactant.objects.get(compound__kegg_id=kegg_id,
-                                     coeff=coeff)
-            return r
-        except Exception:
-            c = Compound.objects.get(kegg_id=kegg_id)
-            r = Reactant(compound=c, coeff=coeff)
-            r.save()
-            return r
-
 
 class CompoundWithCoeff(models.Model):
     """A compound with a stoichiometric coefficient."""
@@ -779,10 +741,7 @@ class CompoundWithCoeff(models.Model):
         if 'compound' in d:
             compound = d['compound']
         else:
-            try:
-                compound = apps.get_model('gibbs.Compound').objects.get(kegg_id=kegg_id)
-            except Exception:
-                return None
+            compound = apps.get_model('gibbs.Compound').objects.get(kegg_id=kegg_id)
 
         coeff = d.get('coeff', 1)
         name = d.get('name', compound.FirstName())

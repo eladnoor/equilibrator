@@ -1,10 +1,10 @@
 #!/usr/bin/python3
+from equilibrator.settings import DATABASES, HAYSTACK_BACKEND
 import os
 import logging
 import time
 import datetime
 import numpy
-from equilibrator.settings import DATABASES, HAYSTACK_BACKEND
 import django
 from django.core.management import execute_from_command_line
 from django.db import transaction
@@ -13,14 +13,12 @@ import argparse
 def MakeParser():
     parser = argparse.ArgumentParser(
         description=('Initialize eQuilibrator MySQL database'))
-    parser.add_argument('--raw', type=bool, help='Load from raw data files',
-                        default=False)
-    parser.add_argument('--export_csv', type=bool,
-                        help='export final database to CSV file',
-                        default=False)
-    parser.add_argument('--draw_thunb', type=bool,
-                        help='draw chemical structure thumbnails',
-                        default=False)
+    parser.add_argument('--raw', action='store_true',
+                        help='Load from raw data files')
+    parser.add_argument('--export_csv', action='store_true',
+                        help='export final database to CSV file')
+    parser.add_argument('--draw_thumb', action='store_true',
+                        help='draw chemical structure thumbnails')
     return parser
 
 def main():
@@ -29,12 +27,17 @@ def main():
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
     django.setup()
+    logging.getLogger().setLevel(logging.INFO)
 
     db_user, db_name, db_pass = map(DATABASES['default'].get, ['USER', 'NAME', 'PASSWORD'])
     os.environ['MYSQL_PWD'] = db_pass
 
-    logging.info('> Creating MySQL database if it does not exist')
-    cmd = "mysql -u %s -e 'CREATE DATABASE IF NOT EXISTS %s;'" % (db_user, db_name)
+    logging.info('> Drop MySQL database')
+    cmd = "mysql -u %s -e 'DROP DATABASE IF EXISTS %s;'" % (db_user, db_name)
+    os.system(cmd)
+
+    logging.info('> Creating MySQL database')
+    cmd = "mysql -u %s -e 'CREATE DATABASE %s;'" % (db_user, db_name)
     os.system(cmd)
         
     logging.info('> Creating tables if they do not exist')
@@ -71,16 +74,19 @@ def load_from_raw_files(draw_thumb, export_csv):
     transaction.commit()
 
     logging.info('> Loading KEGG compound names')
-    cid_replace = database_io.LoadKeggCompoundNames()
+    database_io.LoadKeggCompoundNames()
     transaction.commit()
 
-    logging.info('> Loading KEGG compound thermodynamic data')
-    database_io.LoadFormationEnergies()
+    logging.info('> Loading Component Contribution data')
+    database_io.LoadComponentContributionEnergies()
+    transaction.commit()
+
+    logging.info('> Loading Alberty data')
     database_io.LoadAlbertyEnergies()
     transaction.commit()
 
     logging.info('> Loading KEGG reaction data')
-    database_io.LoadKeggReactions(cid_replace)
+    database_io.LoadKeggReactions()
     transaction.commit()
 
     logging.info('> Loading KEGG enzyme data')

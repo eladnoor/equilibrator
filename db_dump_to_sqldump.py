@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os
 import logging
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "equilibrator.settings")
 from equilibrator import settings
 import time
 import datetime

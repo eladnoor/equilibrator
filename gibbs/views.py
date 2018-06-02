@@ -121,7 +121,7 @@ def CompoundImage(request):
     if not compounds:
         return HttpResponseBadRequest('No such compound.')
     compound = compounds[0]
-    image_data = base64.b64decode(compound.thumbnail)
+    image_data = base64.decodebytes(bytes(compound.thumbnail, 'ASCII'))
     return HttpResponse(image_data, content_type='image/png')
 
 
