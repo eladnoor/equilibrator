@@ -3,6 +3,7 @@
 	<head>
 		<title>eQuilibrator: The Biochemical Thermodynamics Calculator</title>
 		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+         <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
 		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
 		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
 		<link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
@@ -17,19 +18,22 @@
 	
 	<div class="welcome centerize">
 	
-		{% include "logo_large.html" %}
-
-		<div id="searchForm">
-			<form name="searchForm" action="/search" method="get">
-				<div>
-					<input type="text" name="query" id="queryField" placeholder="Type a name of a compound, reaction or enzyme"/>
-					<input type="submit" id="submitButton" value="Search" />
-				</div>
-			</form>
-		</div>
-		<div class="warning">eQuilibrator now does pathways! <a href="/pathway">Check it out.</a></div>
-		
-		{% include "examples.html" %}		
+        {% include "logo_large.html" %}
+        <br />
+        <form name="searchForm" class="mui-form--inline" action="/search" method="get">
+            <div>
+                <div class="mui-textfield">
+                    <input type="text" name="query" id="queryField" size="70" placeholder="Type a name of a compound, reaction or enzyme" />
+                </div>
+            <input type="submit" id="button" class="mui-btn mui-btn--primary" value="Search" />
+            </div>
+        </form>
+        <br />
+            <div class="warning">
+                eQuilibrator now does pathways! <a href="/pathway">Check it out.</a>
+            </div>
+        <br />
+        {% include "examples.html" %}		
 	</div>
 
 	{% include "footer.html" %}

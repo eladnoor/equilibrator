@@ -3,10 +3,12 @@
     <head>
         <title>{{ title }}</title>
         <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+        <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
         <link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "jquery-ui.theme.min.css" %}" rel="stylesheet" type="text/css">
+        <script src="//cdn.muicss.com/mui-0.9.39/js/mui.min.js"></script>
         <script type="text/javascript" src="{% static "jquery-1.11.3.min.js" %}"></script>
         <script type="text/javascript" src="{% static "jquery-ui.min.js" %}"></script>
         <script type="text/javascript" src="{% static "jquery.autocomplete.min.js" %}"></script>
@@ -15,19 +17,14 @@
     </head>
     <body>
         
-    <div class="header clearfix">
+    <div class="header">
         {% include "logo_small.html" %}
         <div id="searchForm">
-            <form name="searchForm" action="/search" method="get">
-                <div>
-                    {% if query %}
-                        <input type="text" name="query" id="queryField" value="{{ query }}" />
-                        {% else %}
-                        <input type="text" name="query" id="queryField" />
-                    {% endif %}
-        
-                    <input type="submit" id="submitButton" value="Search" />
+            <form name="searchForm" class="mui-form--inline" action="/search" method="get">
+                <div class="mui-textfield">
+                    <input type="text" name="query" size="40" {% if query %}value="{{ query }}"{% endif %} />
                 </div>
+                <input type="submit" id="button" class="mui-btn mui-btn--primary" value="Search" />
             </form>
         </div>
     </div>

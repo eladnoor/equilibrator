@@ -3,6 +3,7 @@
     <head>
         <title>Thermodynamic Data References</title>
 		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+         <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
 		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
 		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
 		<link href="{% static "jquery-ui-1.8.5.custom.css" %}" rel="stylesheet" type="text/css">
@@ -16,23 +17,14 @@
         <div class="centerize">
             {% include "logo_large.html" %}
             
-			<div class="refsList">
-                <table border="1">
-				{% for source in sources %}
-				  {% if source.citation %}
-				    <tr>
-                            <td width="10%" height="50">{{source.name}}</td>
-                            <td width="85%">{{source.citation|safe}}</td>
-                            <td width="5%" height="50" align="right">
-                                {% if source.doi %}
-                                    doi:{{source.doi}}
-                                {% else %}
-                                    {% if source.pmid %}
-                                        pmid:{{source.pmid}}
-                                    {% else %}
-                                    {% endif %}
-                                {% endif %}
-                            </td>
+			<div class="mui-panel">
+			<div class="title">References</div>
+                <table class="mui-table mui-table--bordered">
+    				{% for source in sources %}
+    				  {% if source.citation %}
+    				      <tr>
+                            <td width="25%">{{source.name}}</td>
+                            <td>{{source.citation|safe}}</td>
                         </tr>
                   {% endif %}
                 {% endfor %}

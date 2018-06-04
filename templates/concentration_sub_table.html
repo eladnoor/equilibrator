@@ -19,10 +19,9 @@
     {% endif %}
     </p>
 
-    <table class="results">
-        <tr class="infoTableHeader">
-            <th colspan="100%">Reactant Concentrations</th>
-        </tr>
+    <div class="mui-panel">
+    <div class="title">Reactant Concentrations</div>
+    <table class="mui-table">
         {% for reactant in reaction.reactants %}
         <input type="hidden" name="reactantsCoeff" value="{{ reactant.coeff }}" />
         <input type="hidden" name="reactantsId" value="{{ reactant.kegg_id }}" />
@@ -82,4 +81,5 @@
             <input type="text" hidden="true" name="max_priority" id="maxPriority" value="{{ reaction.aq_params.max_priority }}" size="3"/>
         </td></tr>
     </table>
+    </div>
 </div>

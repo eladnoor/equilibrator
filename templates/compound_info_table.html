@@ -1,8 +1,7 @@
 {% load static %}
-<table class="results">
-	<tr class="infoTableHeader">
-		<th colspan="100%">General Properties</td>		
-	</tr>
+<div class="mui-panel">
+<div class="title">General Properties</div>
+<table class="mui-table">
 	<tr>
 		<td width="25%"><b>Formula</b></td>
 		<td colspan="100%">{{ compound.html_formula|safe }}</td>
@@ -41,9 +40,10 @@
 		{% endif %}
 		</td>
     {% endif %}
-    {% if compound.has_species_groups %}
-        {% include "compound_species_table.html" %}
-    {% endif %}
 </table>
+</div>
 
+{% if compound.has_species_groups %}
+    {% include "compound_species_table.html" %}
+{% endif %}
 

@@ -3,6 +3,7 @@
     <head>
         <title>Graph</title>
         <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+        <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
         <link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "jquery-ui-1.8.5.custom.css" %}" rel="stylesheet" type="text/css">
@@ -22,181 +23,176 @@
         <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="flot/excanvas.min.js"></script><![endif]-->
         <script language="javascript" type="text/javascript" src="{% static "flot/jquery.flot.js" %}"></script>
 
-    <script type="text/javascript">
-
-        function setUp () {
-            
-            var element = document.getElementById("plotContainer");
-            var mode = "{{ mode }}";
-                  
-            compounds = jQuery.parseJSON('{{ compound_data|safe }}');
-            coeffs = jQuery.parseJSON('{{ coeff_data|safe }}');
-            concentrations = jQuery.parseJSON('{{ concentration_list|safe }}');
-
-            var tangle = new Tangle(element, {
-                initialize: function () {
-                    this.ph = 7.0;               // ph units (unitless)
-                    this.pmg = 14.0;             // pmg units (unitless)
-                    this.is = 0.1;               // ionic strength
-                    this.rt = 8.31e-3 * 298.15;  // kJ/(mol K)
-                    this.dgf_mg = -455.3;        // kJ/mol
-                    this.compounds = compounds;
-                    this.coeffs = coeffs;
-                    this.concentrations = concentrations;
-                    this.mode = mode;
-                },
-
-                getDeltaGSpecie: function (specie, ph, is) {
-                    var nh = specie.nh;
-                    var nmg = specie.nmg;
-                    var nc = specie.charge;
-                    var dgf = specie.dgzero;
-                    var prot_pot = nh * this.rt * Math.log(10) * ph;
-                    var ionic_pot = 2.91482 * (Math.pow(nc, 2) - nh) * Math.sqrt(is);
-                    ionic_pot /= 1 + 1.6 * Math.sqrt(is);
-                    var mg_pot = nmg * (this.rt * Math.log(10) * this.pmg - this.dgf_mg);
-                    return dgf + mg_pot + prot_pot - ionic_pot;
-                },
+        <script type="text/javascript">
+    
+            function setUp () {
                 
-                getDeltaGSpecies: function (species, ph, is) {
-                    var scaled_transforms = [];
-                               
-                    for (var i = 0; i < species.length; ++i) {
-                        var species_dg = this.getDeltaGSpecie(species[i], ph, is);
-                        var st = -(species_dg / this.rt);
-                        scaled_transforms.push(st);
-                    }
-                    var offset = Math.min.apply(Math, scaled_transforms);
-                    var sum_exp = 0;
-                    for (var i = 0; i < scaled_transforms.length; ++i) {
-                        var st = scaled_transforms[i];
-                        sum_exp += Math.exp(st - offset);
-                    }
+                var element = document.getElementById("plotContainer");
+                var mode = "{{ mode }}";
+                      
+                compounds = jQuery.parseJSON('{{ compound_data|safe }}');
+                coeffs = jQuery.parseJSON('{{ coeff_data|safe }}');
+                concentrations = jQuery.parseJSON('{{ concentration_list|safe }}');
+    
+                var tangle = new Tangle(element, {
+                    initialize: function () {
+                        this.ph = 7.0;               // ph units (unitless)
+                        this.pmg = 14.0;             // pmg units (unitless)
+                        this.is = 0.1;               // ionic strength
+                        this.rt = 8.31e-3 * 298.15;  // kJ/(mol K)
+                        this.dgf_mg = -455.3;        // kJ/mol
+                        this.compounds = compounds;
+                        this.coeffs = coeffs;
+                        this.concentrations = concentrations;
+                        this.mode = mode;
+                    },
+    
+                    getDeltaGSpecie: function (specie, ph, is) {
+                        var nh = specie.nh;
+                        var nmg = specie.nmg;
+                        var nc = specie.charge;
+                        var dgf = specie.dgzero;
+                        var prot_pot = nh * this.rt * Math.log(10) * ph;
+                        var ionic_pot = 2.91482 * (Math.pow(nc, 2) - nh) * Math.sqrt(is);
+                        ionic_pot /= 1 + 1.6 * Math.sqrt(is);
+                        var mg_pot = nmg * (this.rt * Math.log(10) * this.pmg - this.dgf_mg);
+                        return dgf + mg_pot + prot_pot - ionic_pot;
+                    },
                     
-                    return -this.rt * (offset + Math.log(sum_exp));
-                },
-                
-                getDeltaGPrime0: function (ph, is) {
-                    var DeltaGPrime0 = 0;
-                    for (var i = 0; i < this.compounds.length; ++i) {
-                        var species = this.compounds[i];
-                        var coeff = this.coeffs[i];
-                        
-                        DeltaGPrime0 += coeff * this.getDeltaGSpecies(species, ph, is);
-                    }
-                    
-                    return DeltaGPrime0;
-                }, 
-                
-                getDeltaGPrime: function (ph, is) {
-                    var DeltaGPrime = this.getDeltaGPrime0(ph, is);
-                    
-                    {% if conditions and conditions != "standard" %}
-                        // Correct for concentrations.
-                        for (var i = 0; i < this.compounds.length; ++i) {
-                            var c = this.concentrations[i];
-                            DeltaGPrime += this.rt * this.coeffs[i] * Math.log(c);
+                    getDeltaGSpecies: function (species, ph, is) {
+                        var scaled_transforms = [];
+                                   
+                        for (var i = 0; i < species.length; ++i) {
+                            var species_dg = this.getDeltaGSpecie(species[i], ph, is);
+                            var st = -(species_dg / this.rt);
+                            scaled_transforms.push(st);
                         }
-                    {% endif %}
-                    return DeltaGPrime;
-                },
-                
-                varyPh: function () {
-                    var points = [];
-                    var dGs = [];
+                        var offset = Math.min.apply(Math, scaled_transforms);
+                        var sum_exp = 0;
+                        for (var i = 0; i < scaled_transforms.length; ++i) {
+                            var st = scaled_transforms[i];
+                            sum_exp += Math.exp(st - offset);
+                        }
+                        
+                        return -this.rt * (offset + Math.log(sum_exp));
+                    },
                     
-                    for (curPh = 4; curPh <= 10; curPh += 0.1) {
-                        var DeltaGPrime = this.getDeltaGPrime(curPh, this.is).toFixed(4);
-                        dGs.push(DeltaGPrime);
-                        points.push([curPh, DeltaGPrime]);
+                    getDeltaGPrime0: function (ph, is) {
+                        var DeltaGPrime0 = 0;
+                        for (var i = 0; i < this.compounds.length; ++i) {
+                            var species = this.compounds[i];
+                            var coeff = this.coeffs[i];
+                            
+                            DeltaGPrime0 += coeff * this.getDeltaGSpecies(species, ph, is);
+                        }
+                        
+                        return DeltaGPrime0;
+                    }, 
+                    
+                    getDeltaGPrime: function (ph, is) {
+                        var DeltaGPrime = this.getDeltaGPrime0(ph, is);
+                        
+                        {% if conditions and conditions != "standard" %}
+                            // Correct for concentrations.
+                            for (var i = 0; i < this.compounds.length; ++i) {
+                                var c = this.concentrations[i];
+                                DeltaGPrime += this.rt * this.coeffs[i] * Math.log(c);
+                            }
+                        {% endif %}
+                        return DeltaGPrime;
+                    },
+                    
+                    varyPh: function () {
+                        var points = [];
+                        var dGs = [];
+                        
+                        for (curPh = 4; curPh <= 10; curPh += 0.1) {
+                            var DeltaGPrime = this.getDeltaGPrime(curPh, this.is).toFixed(4);
+                            dGs.push(DeltaGPrime);
+                            points.push([curPh, DeltaGPrime]);
+                        }
+                        
+                        var series = {
+                            data: points,
+                            minDg: Math.min.apply(null, dGs),
+                            maxDg: Math.max.apply(null, dGs),
+                        };
+                        return series;
+                    },
+    
+                    varyIonicStrength: function () {
+                        var points = [];
+                        var dGs = [];
+    
+                        for (curIs = 0; curIs <= 0.35; curIs += 0.001) {
+                            var DeltaGPrime = this.getDeltaGPrime(this.ph, curIs).toFixed(4);
+                            dGs.push(DeltaGPrime);
+                            points.push([curIs, DeltaGPrime]);
+                        }
+    
+                        var series = {
+                            data: points,
+                            minDg: Math.min.apply(null, dGs),
+                            maxDg: Math.max.apply(null, dGs),
+                        };
+                        return series;
+                    },
+    
+                    dgTickFormatter: function(num, axis) {
+                        return (num).toFixed(1) + " kJ/mol";
+                    },
+    
+                    isTickFormatter: function(num, axis) {
+                        return (num).toFixed(2) + " M";
+                    },
+                    
+                    phTickFormatter: function(num, axis) {
+                        return "pH " + (num).toFixed(0);
+                    },
+                    
+                    update: function () {
+                        var series = null;
+    
+                        var options = {
+                            yaxis: { tickFormatter: this.dgTickFormatter },
+                            legend: { container: "#legendContainer" }
+                        };
+                        
+                        if (this.mode == 'varyIs') {
+                            series = this.varyIonicStrength();
+                            options.xaxis = { tickFormatter: this.isTickFormatter };
+                        } else {
+                            series = this.varyPh();
+                    		options.xaxis = { tickFormatter: this.phTickFormatter };
+                    	}
+    
+                        options['yaxis']['min'] = series.minDg - 1.0;
+                        options['yaxis']['max'] = series.maxDg + 1.0;
+                    	
+                        var all_series = [];
+                        all_series.push(series);
+                        $.plot($("#dgFigure"), all_series, options);
                     }
-                    
-                    var series = {
-                        data: points,
-                        minDg: Math.min.apply(null, dGs),
-                        maxDg: Math.max.apply(null, dGs),
-                    };
-                    return series;
-                },
-
-                varyIonicStrength: function () {
-                    var points = [];
-                    var dGs = [];
-
-                    for (curIs = 0; curIs <= 0.35; curIs += 0.001) {
-                        var DeltaGPrime = this.getDeltaGPrime(this.ph, curIs).toFixed(4);
-                        dGs.push(DeltaGPrime);
-                        points.push([curIs, DeltaGPrime]);
-                    }
-
-                    var series = {
-                        data: points,
-                        minDg: Math.min.apply(null, dGs),
-                        maxDg: Math.max.apply(null, dGs),
-                    };
-                    return series;
-                },
-
-                dgTickFormatter: function(num, axis) {
-                    return (num).toFixed(1) + " kJ/mol";
-                },
-
-                isTickFormatter: function(num, axis) {
-                    return (num).toFixed(2) + " M";
-                },
-                
-                phTickFormatter: function(num, axis) {
-                    return "pH " + (num).toFixed(0);
-                },
-                
-                update: function () {
-                    var series = null;
-
-                    var options = {
-                        yaxis: { tickFormatter: this.dgTickFormatter },
-                        legend: { container: "#legendContainer" }
-                    };
-                    
-                    if (this.mode == 'varyIs') {
-                        series = this.varyIonicStrength();
-                        options.xaxis = { tickFormatter: this.isTickFormatter };
-                    } else {
-                        series = this.varyPh();
-                		options.xaxis = { tickFormatter: this.phTickFormatter };
-                	}
-
-                    options['yaxis']['min'] = series.minDg - 1.0;
-                    options['yaxis']['max'] = series.maxDg + 1.0;
-                	
-                    var all_series = [];
-                    all_series.push(series);
-                    $.plot($("#dgFigure"), all_series, options);
-                }
-
-            });
-        }
-
-    </script>
+    
+                });
+            }
+    
+        </script>
 
 	</head>
 	<body onload="setUp();">
 
-	<div class="header clearfix">
-		{% include "logo_small.html" %}
-		<div id="searchForm">
-			<form name="searchForm" action="/search" method="get">
-				<div>
-					{% if query %}
-						<input type="text" name="query" id="queryField" value="{{ query }}" />
-						{% else %}
-						<input type="text" name="query" id="queryField" />
-					{% endif %}
-		
-					<input type="submit" id="submitButton" value="Search" />
-				</div>
-			</form>
-		</div>
-	</div>
+    <div class="header">
+        {% include "logo_small.html" %}
+        <div id="searchForm">
+            <form name="searchForm" class="mui-form--inline" action="/search" method="get">
+                <div class="mui-textfield">
+                    <input type="text" name="query" size="40" {% if query %}value="{{ query }}"{% endif %} />
+                </div>
+                <input type="submit" id="button" class="mui-btn mui-btn--primary" value="Search" />
+            </form>
+        </div>
+    </div>
 
 	<div class="centerize">
 
@@ -234,10 +230,9 @@
                     {% endfor %}
                 </p>
             {% if conditions and conditions != "standard" %}
-                <table class="results">
-                    <tr class="infoTableHeader">
-                        <th colspan="100%">Reactant Concentrations</th>
-                    </tr>
+            <div class="mui-panel">
+            <div class="title">Reactant Concentration</div>
+                <table class="mui-table">
                     {% for reactant in reaction.reactants %}
                     <tr>
                         <td>{{ reactant.name }} {{ reactant.subscript }}</td>
@@ -245,6 +240,7 @@
                     </tr>
                    {% endfor %}
                 </table>
+            </div>
             {% endif %}
 
         </div>

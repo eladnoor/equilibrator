@@ -1,9 +1,8 @@
 {% load static %}
-<table class="results">
-    <tr class="infoTableHeader">
-        <th colspan="100%">Reduction Potentials</th>
-    </tr>
 
+<div class="mui-panel">
+<div class="title">Reduction Potentials</div>
+<table class="mui-table">
     {% if not reaction.is_phys_conc %}
     <tr>
         <td width="20%">
@@ -69,13 +68,14 @@
         </td>
     </tr>
     {% include "reaction_sliders.html" %}
+</table>
+</div>
 
 
-    {% if reaction.half_reaction_dg_prime != None %}
-    <tr class="infoTableHeader">
-        <th colspan="100%">Reaction Gibbs Energy</th>
-    </tr>
-
+{% if reaction.half_reaction_dg_prime != None %}
+<div class="mui-panel">
+<div class="title">Reaction Gibbs Energy</div>
+<table class="mui-table">
     <tr style="border-top: 1px dotted silver;">
         <td width="20%"><strong>Estimated <a href={% static "classic_rxns/faq.html" %}#drg>&Delta;<sub><i>r</i></sub>G'</strong></a></td>
         <td colspan="100%">
@@ -88,7 +88,6 @@
         [kJ/mol]
         </td>
     </tr>
-    {% endif %}
 
     <tr>
         <td width="20%">
@@ -102,3 +101,5 @@
         </td>
     </tr>
 </table>
+</div>
+{% endif %}

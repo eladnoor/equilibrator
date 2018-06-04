@@ -1,8 +1,7 @@
 {% load static %}
-<table class="results">
-    <tr class="infoTableHeader">
-        <th colspan="100%">Formation Gibbs Energy</th>
-    </tr>
+<div class="mui-panel">
+<div class="title">Formation Gibbs Energy</div>
+<table class="mui-table">
     {% if not reaction.is_phys_conc %}
     <tr>
         <td width="25%">
@@ -69,3 +68,4 @@
 
     {% include "reaction_sliders.html" %}
 </table>
+</div>

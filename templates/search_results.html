@@ -3,14 +3,16 @@
 {% endwith %}
 
     {% if compound_results or enzyme_results %}
-    <div class="searchResults" id="searchResults">
-        {% if enzymes_first %}
-        {% include "enzyme_search_results.html" %}
-        {% include "compound_search_results.html" %}
-        {% else %}
-          {% include "compound_search_results.html" %}
-          {% include "enzyme_search_results.html" %}
-        {% endif %}
+    <div class="centerize">
+        <div class="searchResults" id="searchResults">
+            {% if enzymes_first %}
+            {% include "enzyme_search_results.html" %}
+            {% include "compound_search_results.html" %}
+            {% else %}
+              {% include "compound_search_results.html" %}
+              {% include "enzyme_search_results.html" %}
+            {% endif %}
+        </div>
     </div>
     {% else %}
     <div class="centerize">

@@ -82,12 +82,14 @@
                 </div>
 
             {% if advanced_mode %}
-                <table class="results">
-                    <tr class="infoTableHeader">
+                <table class="mui-table">
+                    <thead>
+                    <tr>
                         <td><b>W<sub>rc</sub></td>
                         <td><b>W<sub>gc</sub></td>
                         <td>Reaction</td>
                     </tr>
+                    </thead>
                     {% for row in reaction.analyze_cc %}
                         {% if row.w > 0.0001 or row.w < -0.0001%}
                         <tr>

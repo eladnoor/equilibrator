@@ -1,7 +1,6 @@
-<table class="results">
-    <tr class="infoTableHeader">
-        <th colspan="100%">Enzyme information</th>
-    </tr>
+<div class="mui-panel">
+<div class="title">Enzyme information</div>
+<table class="mui-table">
     <tr>
         <td width="150px"><b>Common names</b></td>
         <td>
@@ -24,15 +23,16 @@
     </tr>
     {% endif %}
 </table>
+</div>
 {% if enzyme.all_reactions %}
-<table class="reactionInfo">
-    <tr class="infoTableHeader">
-        <th colspan="100%">Reactions</th>        
-    </tr>
+<div class="mui-panel">
+<div class="title">Reactions</div>
+<table class="mui-table">
     {% for reaction in enzyme.all_reactions %}
         <tr>
             <td><a href="{{reaction.link}}">{{reaction.reaction_string}}</a></td>
         </tr>
     {% endfor %}
 </table>
+</div>
 {% endif %}

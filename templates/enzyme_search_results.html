@@ -1,14 +1,10 @@
 {% if enzyme_results %}
   <div class="resultsSection">
-    <div class="title">Enzymes</div>
+    <div class="resultTitle">Enzymes</div>
     {% for result in enzyme_results|slice:":5" %}
-      <div class="searchResult clearfix">
-        <table class="enzymeInfo">
-            <tr class="infoTableHeader">
-                <th colspan="100%">
-                    <a href="{{ result.value.link }}">{{ result.key }}</a> (EC {{ result.value.ec }})
-                </th>
-            </tr>
+      <div class="mui-panel">
+      <div class="title"><a href="{{ result.value.link }}">{{ result.key }}</a> (EC {{ result.value.ec }})</div>
+        <table class="mui-table">
             {% for reaction in result.value.all_reactions|slice:":3" %}
             <tr class="reactions">
                 <td>

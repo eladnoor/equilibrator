@@ -1,20 +1,14 @@
   {% load static %}
   {% if compound_results %}
     <div class="resultsSection">
-    <div class="title">Compounds</div>
+    <div class="resultTitle">Compounds</div>
     {% for result in compound_results|slice:":5" %}
-    <a href="{{ result.value.link }}" class="searchResult clearfix">
-    	<table class="compoundInfo">
-        <colgroup>
-            <col style="text-align:left" />
-            <col style="text-align:left" />
-            <col style="text-align:center" />
-        </colgroup>
-        <tr class="infoTableHeader">
-            <th colspan="100%">{{ result.key }}</th>
-        </tr>
+    <a href="{{ result.value.link }}">
+    <div class="mui-panel">
+    <div class="title">{{ result.key }}</div>
+    <table class="mui-table">
         <tr>
-            <td class="column1" >Formula</td>
+            <td class="column1">Formula</td>
             <td class="column2">{{ result.value.html_formula|safe }}</td>
             <td class="column3" rowspan="3">
                 {% if result.value.thumbnail and result.value.thumbnail != "error" %}
@@ -37,7 +31,8 @@
         		<td class="column2">{{ result.value.mass|floatformat:2 }} Da</td>
         	</tr>
     </table>
-      </a>
+    </div>
+    </a>
     {% endfor %}
     </div>
   {% endif %}
