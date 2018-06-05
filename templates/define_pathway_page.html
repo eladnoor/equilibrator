@@ -3,7 +3,7 @@
     <head>
         <title>eQuilibrator for Metabolic Pathways</title>
         <link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
-         <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
+        <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
         <link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
         <link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
@@ -16,16 +16,16 @@
     </head>
     <body>
     
-    <div class="welcome centerize">
+    <div class="centerize">
 
         {% include "logo_large.html" %}
 
-        <form name="pathway_form" action="/pathway/build_model" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name='conc_units' value='mM' />
-            {% csrf_token %}
             <div class="mui-panel">
-                <div class="title">Step 1: Build <a href='http://www.sbtab.net'>SBtab</a> Pathway Model</div>
-                <table>
+            <form name="pathway_form" action="/pathway/build_model" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+                <input type="hidden" name="conc_units" value="mM" />
+                <div class="title">Step 1: Build <a href="http://www.sbtab.net">SBtab</a> Pathway Model</div>
+                <table class="paragraph">
                     <tr>
                         <td colspan=3>Click <a href="#description">here</a> for an overview of the process. Skip this step if you already have an SBtab model file.</td>
                     </tr>
@@ -36,13 +36,13 @@
                     <tr>
                         <td>Minimum concentration<sup>&dagger;</sup></td>
                         <td colspan=2>
-                            <input type="text" name='min_c' value='0.001' size=10 /> mM
+                            <input type="text" name="min_c" value="0.001" size=10 /> mM
                         </td>
                     </tr>
                     <tr>
                         <td>Maximum concentration<sup>&dagger;</sup></td>
                         <td colspan=2>
-                            <input type="text" name='max_c' value='10' size=10 /> mM
+                            <input type="text" name="max_c" value="10" size=10 /> mM
                         </td>
                     </tr>
                     <tr>
@@ -73,30 +73,26 @@
                         </td>
                         <td colspan=2>
                             <input type="checkbox" id="switch1" name="mdf_ecm_toggle" /><label for="switch1">MDF vs. ECM</label>
-                            <a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force" target="_blank">MDF</a> &nbsp; &nbsp; &nbsp; &nbsp;
+                            <a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force" target="_blank">MDF</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                             <a href={% static "classic_rxns/faq.html" %}#ecm title="Enzyme Cost Minimization" target="_blank">ECM</a> 
                         </td>
                     </tr>
                     <tr>
-                        <td class='footnote' colspan=3>
-                            <sup>&dagger;</sup>The default concentration range of 1 &mu;M - 10 mM reflects the fact that metabolite concentrations are constrained from above by osmotic pressure and toxicity considerations and from below
-                            by enzyme affinities.
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class='footnote' colspan=3>
-                            <sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
-                            based on measurements from <i>E. coli</i> and other model organisms (see Noor et al., PloS Comp. Bio 2014).
-                            You can edit these defaults by modifying the SBtab file (e.g. in Excel) before performing
-                            the analysis below.
-                        </td>
+                        <td colspan=3 align="center"><input type="submit" class="mui-btn mui-btn--primary" /></td>
                     </tr>
                 </table>
-                <br />
-                <input type="submit" class="mui-btn mui-btn--primary" /></td>
-            </div>
-        </form>
-        <div class="mui-panel">
+                <p class="paragraph">
+                    <sup>&dagger;</sup>The default concentration range of 1 &mu;M - 10 mM reflects the fact that metabolite concentrations are constrained from above by osmotic pressure and toxicity considerations and from below
+                    by enzyme affinities.
+                </p>
+                <p class="paragraph">
+                    <sup>&dagger;</sup>Default concentrations for ubiquitous cofactors like CoA and ATP are set
+                    based on measurements from <i>E. coli</i> and other model organisms (see Noor et al., PloS Comp. Bio 2014).
+                    You can edit these defaults by modifying the SBtab file (e.g. in Excel) before performing
+                    the analysis below.
+                </p>
+            </form>
+            <br />
             <div class="title">Step 2: Verify & Edit Pathway Model</div>
             <div class="paragraph">
             <ol>
@@ -105,26 +101,25 @@
                 <li>Check and/or edit bounds on metabolite concentrations.</li>
             </ol>
             </div>
-        </div>
-        <div class="mui-panel">
-        <form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data" target="_blank">
-            {% csrf_token %}
-                <div class="title">Step 3: Perform Pathway Analysis</div>
-                <table>
-                    <td width="400px">Pathway model TSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10_MDF.tsv" %}">MDF example</a>,
-                    <a href="{% static "pathways/example_pathway_central_metabolism_ecm.tsv" %}">ECM example</a>)</td>
-                    <td colspan="20%">
-                        <input type="checkbox" id="switch2" name="mdf_ecm_toggle" /><label for="switch2">MDF vs. ECM</label>
-                        <a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force" target="_blank">MDF</a> &nbsp; &nbsp; &nbsp; &nbsp;
-                        <a href={% static "classic_rxns/faq.html" %}#ecm title="Enzyme Cost Minimization" target="_blank">ECM</a> 
-                    </td>
+            <br />
+            <form name="pathway_form" action="/pathway/results" method="POST" enctype="multipart/form-data" target="_blank">
+                {% csrf_token %}
+                    <div class="title">Step 3: Perform Pathway Analysis</div>
+                    <table class="paragraph">
+                        <td width="400px">Pathway model TSV (<a href="{% static "pathways/example_pathway_ethanol_fermentation_pH7.00_I0.10_MDF.tsv" %}">MDF example</a>,
+                        <a href="{% static "pathways/example_pathway_central_metabolism_ecm.tsv" %}">ECM example</a>)</td>
+                        <td colspan="20%">
+                            <input type="checkbox" id="switch2" name="mdf_ecm_toggle" /><label for="switch2">MDF vs. ECM</label>
+                            <a href={% static "classic_rxns/faq.html" %}#mdf title="Max-min Driving Force" target="_blank">MDF</a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <a href={% static "classic_rxns/faq.html" %}#ecm title="Enzyme Cost Minimization" target="_blank">ECM</a> 
+                        </td>
+                    </table>
+                    <br />
+                    <p><input type="file" name="pathway_file" /></p>
+                    <br />
+                    <input type="submit" class="mui-btn mui-btn--primary" /></td>
                 </table>
-                <br />
-                <p><input type="file" name="pathway_file" /></p>
-                <br />
-                <input type="submit" class="mui-btn mui-btn--primary" /></td>
-            </table>
-        </form>
+            </form>
         </div>
 
         <br />
@@ -239,5 +234,6 @@
                     sensitive to the levels of their constituent enzymes.
                 </p>
             </div>
+        </div>
 
     {% include "footer.html" %}

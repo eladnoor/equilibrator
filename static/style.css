@@ -25,14 +25,6 @@
     font-size: 14px;
 }
 
-
-.logoSmall img {
-    width: 80px;
-    border: none;
-    float: left;
-    margin: 20px;
-}
-
 .errorMsg {
     background-color: #C00;
 }
@@ -58,55 +50,43 @@
 }
 
 #searchResults {
-    margin-left: 20px;
-    margin: 5px 40px 5px 40px;
-    width: 800px;
     text-align: center;
 }
 
-#searchResults .searchResult {
-    display: block;
-    margin: 10px;
-    padding: 1px;
-    border: solid 1px black;
-    width: 100%;
-}
-
-#searchResults a:hover {
-    background-color: #CCEEFF;
-}
-
-#searchResults .searchResult span {
-    display: block;
-    color: black;
-    padding-left: 6px;
-}
-
-#searchResults .resultsSection .resultTitle {
+#searchResults .resultTitle {
     text-align: center;
     font-size: 20px;
-    margin: 15 0 5 0;
+    margin: 15 5 5 5;
 }
 
-#searchResults .searchResult .name {
-    color: #0066CC;
-    padding-left: 0px;
+#searchResults .compoundSearchResults {
 }
 
-#searchResults .searchResult .image {
-    float: right;
+#searchResults .compoundSearchResults:hover {
+    box-shadow: 3px 3px 3px 3px #888888;
 }
 
-#searchResults .searchResult .note {
-    font-size: 9px;
-    color: #FF3300;
+#searchResults .compoundSearchResults .column1 {
+    width: 20%;
+    font-weight: bold;
+    text-align: left;
 }
 
-#searchResults .searchResult .reactionLink {
+#searchResults .compoundSearchResults .column2 {
+    width: 60%;
+    text-align: left;
+}
+
+#searchResults .compoundSearchResults .column3 {
+    width: 20%;
+    text-align: center;
+}
+
+#searchResults .enzymeSearchResults .reactionLink {
     color: #006633;
 }
 
-#searchResults .searchResult .viewAllLink {
+#searchResults .enzymeSearchResults .viewAllLink {
     color: #0066CC;
 }
 
@@ -154,16 +134,6 @@ table.enzymeInfo {
     width: 100%;
 }
 
-.enzymeInfo .column1 {
-    width: 15%;
-    font-weight: bold;
-}
-
-.enzymeInfo .column2 {
-    width: 85%;
-}
-
-
 .results td,
 .compoundInfo td,
 .speciesInfo td,
@@ -173,12 +143,6 @@ table.enzymeInfo {
     padding: 5px;
 }
 
-.reactionHeader td,
-.reactionSource td,
-td.reference.border {
-    border-bottom: black 1px solid;
-}
-
 table.reactionInfo,
 table.speciesInfo,
 table.formationEnergyInfo {
@@ -186,10 +150,9 @@ table.formationEnergyInfo {
     padding: 0px;
 }
 
-.speciesHeader td,
 .speciesSource.last td,
 td.reference.border {
-    border-bottom: black 1px solid;
+    border-bottom: #E0E0E0 2px solid;
 }
 
 .infoTableHeader {

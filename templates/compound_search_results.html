@@ -1,10 +1,7 @@
-  {% load static %}
-  {% if compound_results %}
-    <div class="resultsSection">
-    <div class="resultTitle">Compounds</div>
-    {% for result in compound_results|slice:":5" %}
+{% load static %}
+{% for result in compound_results|slice:":5" %}
     <a href="{{ result.value.link }}">
-    <div class="mui-panel">
+    <div class="compoundSearchResults mui-panel">
     <div class="title">{{ result.key }}</div>
     <table class="mui-table">
         <tr>
@@ -33,6 +30,4 @@
     </table>
     </div>
     </a>
-    {% endfor %}
-    </div>
-  {% endif %}
+{% endfor %}

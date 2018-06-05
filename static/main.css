@@ -15,25 +15,11 @@ body {
 
 .paragraph {
     text-align: justify;
+    font-size: 14px;
 }
 
-.info {
-    margin: 5px auto 5px auto;
-    width: 800px;
-    text-align: justify;
-}
-
-.info .title {
-    margin: 0 auto 15px auto;
-    text-align: left;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.info .subtitle {
-    margin: 0 auto 15px auto;
-    text-align: left;
-    font-size: 20px;
+.paragraph .footnote {
+    font-size: 10px;
 }
 
 .searchResults {
@@ -47,13 +33,24 @@ body {
     vertical-align: bottom;
 }
 
-.logo {
-    margin: 20px 0px 40px 0px;
+.logoLarge img {
+    width: 350px;
+    height: 270px;
+    border: none;
+    float: center;
+    margin: 20px 20px;
 }
 
-.logo img {
+.logoLarge a:focus{
+    outline: none;
+}
+
+.logoSmall img {
+    width: 80px;
+    height: 55px;
     border: none;
-    text-align: center;
+    float: left;
+    margin: 20px 20px;
 }
 
 .welcome .title {
@@ -61,10 +58,6 @@ body {
     font-weight: bold;
     margin: 0 auto 45px auto;
     text-align: center;
-}
-
-.subtitle {
-    font-size: 16px;
 }
 
 .welcome {
@@ -81,13 +74,15 @@ body {
     background-color: #CCFFCC;
     font-size: 16px;
     font-weight: bold;
+    margin: 1px 0px 7px 0px;
 }
 
-.directions {
+.mui-table--centered th {
+    text-align: center !important;
+}
+
+.mui-table--centered tr {
     text-align: center;
-    color: grey;
-    padding: 0px;
-    font-size: 16px;
 }
 
 .examples a {
@@ -97,6 +92,7 @@ body {
 
 #footer {
     margin: 50 auto 10 auto;
+    font-size: 16px;
 }
 
 .graphLink {

@@ -2,25 +2,41 @@
     {% include "header.html" %}
 {% endwith %}
 
+    <div class="centerize">
     {% if compound_results or enzyme_results %}
-    <div class="centerize">
-        <div class="searchResults" id="searchResults">
             {% if enzymes_first %}
-            {% include "enzyme_search_results.html" %}
-            {% include "compound_search_results.html" %}
+                {% if enzyme_results %}
+                <div class="searchResults" id="searchResults">
+                    <div class="resultTitle">Enzymes</div>
+                    {% include "enzyme_search_results.html" %}
+                </div>
+                {% endif %}
+                {% if compound_results %}
+                    <div class="searchResults" id="searchResults">
+                        <div class="resultTitle">Compounds</div>
+                        {% include "compound_search_results.html" %}
+                    </div>
+                {% endif %}
             {% else %}
-              {% include "compound_search_results.html" %}
-              {% include "enzyme_search_results.html" %}
+                {% if compound_results %}
+                    <div class="searchResults" id="searchResults">
+                        <div class="resultTitle">Compounds</div>
+                        {% include "compound_search_results.html" %}
+                    </div>
+                {% endif %}
+                {% if enzyme_results %}
+                <div class="searchResults" id="searchResults">
+                    <div class="resultTitle">Enzymes</div>
+                    {% include "enzyme_search_results.html" %}
+                </div>
+                {% endif %}
             {% endif %}
-        </div>
-    </div>
     {% else %}
-    <div class="centerize">
         <div class="warning">
             No results. <a href="/">Try again?</a>
         </div>
-    </div>
     {% endif %}
+    </div>
 
     {% include "footer.html" %}
     

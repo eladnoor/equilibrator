@@ -1,26 +1,21 @@
-{% if enzyme_results %}
-  <div class="resultsSection">
-    <div class="resultTitle">Enzymes</div>
-    {% for result in enzyme_results|slice:":5" %}
-      <div class="mui-panel">
-      <div class="title"><a href="{{ result.value.link }}">{{ result.key }}</a> (EC {{ result.value.ec }})</div>
-        <table class="mui-table">
-            {% for reaction in result.value.all_reactions|slice:":3" %}
-            <tr class="reactions">
-                <td>
-                    <a class="reactionLink" href="{{ reaction.link }}">{{reaction.reaction_string}}</a>
-                </td>
-            </tr>
-            {% if forloop.last and result.value.all_reactions|slice:"3:" %}
-            <tr>
-                <td>
-                    <a class="viewAllLink" href="{{ result.value.link }}">View all {{ result.key }} reactions &raquo;</a>
-                </td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-        </table>
-    </div>
-    {% endfor %}
-  </div>
-{% endif %}
+{% for result in enzyme_results|slice:":5" %}
+  <div class="enzymeSearchResults mui-panel">
+  <div class="title"><a href="{{ result.value.link }}">{{ result.key }}</a> (EC {{ result.value.ec }})</div>
+    <table class="mui-table mui-table--centered">
+        {% for reaction in result.value.all_reactions|slice:":3" %}
+        <tr>
+            <td>
+                <a class="reactionLink" href="{{ reaction.link }}">{{reaction.reaction_string}}</a>
+            </td>
+        </tr>
+        {% if forloop.last and result.value.all_reactions|slice:"3:" %}
+        <tr>
+            <td>
+                <a class="viewAllLink" href="{{ result.value.link }}">View all {{ result.key }} reactions &raquo;</a>
+            </td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
+</div>
+{% endfor %}

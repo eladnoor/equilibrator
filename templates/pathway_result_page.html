@@ -3,6 +3,7 @@
 	<head>
 		<title>eQuilibrator for Metabolic Pathways</title>
 		<link rel="icon" type="image/x-icon" href="{% static "images/equilibrator_favicon.png" %}">
+         <link href="//cdn.muicss.com/mui-0.9.39/css/mui.min.css" rel="stylesheet" type="text/css" />
 		<link href="{% static "main.css" %}" rel="stylesheet" type="text/css">
 		<link href="{% static "style.css" %}" rel="stylesheet" type="text/css">
 		<link href="{% static "jquery-ui.structure.min.css" %}" rel="stylesheet" type="text/css">
@@ -17,123 +18,125 @@
 
         {% if error_message %}
             <p>
-            <div class="warning">
-            {{ error_message }}
-            </div>
+                <div class="warning">
+                {{ error_message }}
+                </div>
             </p>
         {% else %}
             {% if pathway %}
-            <div id="searchResults">
-                <table class='results'>
-                    <tr class='infoTableHeader'>
-                        <th colspan="100%">Pathway Analysis Results</th>
-                    </tr>
-                    <tr>
-                        <td width="20%"><strong>Net Reaction</strong></td>
-                        <td><a href='{{pathway.net_reaction.link_url}}'>{{pathway.net_reaction}}</a></td>
-                    </tr>
-                    <tr>
-                        <td width="20%"><strong>Conditions</strong></td>
-                        <td>pH {{ pathway.aq_params.pH|floatformat }},
-                        ionic strength = {{ pathway.aq_params.ionic_strength|floatformat }} M</a></td>
-                    </tr>
-                    <tr>
-                        <td width="20%"><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'><strong>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></strong></a></td>
-                        <td>{{pathway.net_reaction.dgm_prime|floatformat}} kJ/mol</td>
-                    </tr>
-                    {% if path_data.is_mdf %}
-                    <tr>
-                        <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#total-driving-force target='_blank'>Driving Force</a></strong></td>
-                        <td>{{path_data.min_total_driving_force|floatformat}} &le; -&Delta;<sub><i>r</i></sub>G'</strong> &le; {{path_data.max_total_driving_force|floatformat}} kJ/mol</td>
-                    </tr>
-                    <tr>
-                        <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#mdf target='_blank'>MDF</a></strong></td>
-                        <td>{{path_data.score|floatformat}} kJ/mol</td>
-                    </tr>
-                    {% endif %}
-                    {% if path_data.is_ecm %}
-                    <tr>
-                        <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#ecm target='_blank'>Total Cost</a></strong></td>
-                        <td>{{path_data.score|floatformat}} μM</td>
-                    </tr>
-                    {% endif %}
-                </table>
-    
-                {% if not error_message %}
-                    <table class='results'>
-                        <tr class='infoTableHeader'>
-                            <th colspan="100%">Reaction Data</th>
+                <div class="mui-panel">
+                    <div class="title">Pathway Analysis Results</div>
+                    <table class="mui-table">
+                        <tr>
+                            <td width="20%"><strong>Net Reaction</strong></td>
+                            <td><a href='{{pathway.net_reaction.link_url}}'>{{pathway.net_reaction}}</a></td>
                         </tr>
                         <tr>
-                            <th align="right">Flux</th>
-                            <th align="center">Reaction</th>
-                            {% if path_data.is_mdf %}
-                                <th align="right"><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a></th>
-                                <th align="right">&Delta;<sub><i>r</i></sub>G'</th>
-                                <th align="right">Shadow Price</th>
-                            {% endif %}
-                            {% if path_data.is_ecm %}
-                                <th align="right">Enz. Conc.</th>
-                                <th align="right">&#951;<sup>th</sup></th>
-                                <th align="right">&#951;<sup>sat</sup></th>
-                            {% endif %}
+                            <td width="20%"><strong>Conditions</strong></td>
+                            <td>pH {{ pathway.aq_params.pH|floatformat }},
+                            ionic strength = {{ pathway.aq_params.ionic_strength|floatformat }} M</a></td>
                         </tr>
-                        {% for rxn in path_data.reaction_data %}
-                            <tr>
-                                <td align="right">{{rxn.flux|floatformat:"3"}}</td>
-                                <td align="center"><a href='{{rxn.reaction.link_url}}' title='{{rxn.reaction_formula|safe}}'>{{rxn.name|safe}}</a></td>
+                        <tr>
+                            <td width="20%"><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'><strong>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></strong></a></td>
+                            <td>{{pathway.net_reaction.dgm_prime|floatformat}} kJ/mol</td>
+                        </tr>
+                        {% if path_data.is_mdf %}
+                        <tr>
+                            <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#total-driving-force target='_blank'>Driving Force</a></strong></td>
+                            <td>{{path_data.min_total_driving_force|floatformat}} &le; -&Delta;<sub><i>r</i></sub>G'</strong> &le; {{path_data.max_total_driving_force|floatformat}} kJ/mol</td>
+                        </tr>
+                        <tr>
+                            <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#mdf target='_blank'>MDF</a></strong></td>
+                            <td>{{path_data.score|floatformat}} kJ/mol</td>
+                        </tr>
+                        {% endif %}
+                        {% if path_data.is_ecm %}
+                        <tr>
+                            <td width="20%"><strong><a href={% static "classic_rxns/faq.html" %}#ecm target='_blank'>Total Cost</a></strong></td>
+                            <td>{{path_data.score|floatformat}} μM</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+                {% if not error_message %}
+                    <div class="mui-panel">
+                        <div class="title">Reaction Data</div>
+                        <table class="mui-table mui-table--centered">
+                            <thead>
+                                <th>Flux</th>
+                                <th>Reaction</th>
                                 {% if path_data.is_mdf %}
-                                    <td align="right">{{rxn.dGm_prime|floatformat}}</td>
-                                    <td align="right">{{rxn.dGr|floatformat}}</td>
-                                    <td align="right" {% if rxn.shadow_price != 0 %}style="color:#D65F5F"{% endif %}>{{rxn.shadow_price|floatformat:"1"}}</td>
+                                    <th><a href={% static "classic_rxns/faq.html" %}#dgm target='_blank'>&Delta;<sub><i>r</i></sub>G'<sup>m</sup></a></th>
+                                    <th>&Delta;<sub><i>r</i></sub>G'</th>
+                                    <th>Shadow Price</th>
                                 {% endif %}
                                 {% if path_data.is_ecm %}
-                                    <td align="right">{{rxn.html_enzyme_concentration|safe}}</td>
-                                    <td align="right">{{rxn.eta_th|floatformat:"2"}}
-                                    <td align="right">{{rxn.eta_sat|floatformat:"2"}}
+                                    <th>Enz. Conc.</th>
+                                    <th>&#951;<sup>th</sup></th>
+                                    <th>&#951;<sup>sat</sup></th>
                                 {% endif %}
-                            </tr>
-                        {% endfor %}
-                    </table>
+                            </thead>
+                            <tbody>
+                            {% for rxn in path_data.reaction_data %}
+                                <tr>
+                                    <td>{{rxn.flux|floatformat:"3"}}</td>
+                                    <td><a href='{{rxn.reaction.link_url}}' title='{{rxn.reaction_formula|safe}}'>{{rxn.name|safe}}</a></td>
+                                    {% if path_data.is_mdf %}
+                                        <td>{{rxn.dGm_prime|floatformat}}</td>
+                                        <td>{{rxn.dGr|floatformat}}</td>
+                                        <td {% if rxn.shadow_price != 0 %}style="color:#D65F5F"{% endif %}>{{rxn.shadow_price|floatformat:"1"}}</td>
+                                    {% endif %}
+                                    {% if path_data.is_ecm %}
+                                        <td>{{rxn.html_enzyme_concentration|safe}}</td>
+                                        <td>{{rxn.eta_th|floatformat:"2"}}
+                                        <td>{{rxn.eta_sat|floatformat:"2"}}
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
         
-                    <table class='results'>
-                        <tr class='infoTableHeader'>
-                            <th colspan="100%">Compound Data</th>
-                        </tr>
-                        <tr>
+                    <div class="mui-panel">
+                        <div class="title">Compound Data</div>
+                        <table class="mui-table mui-table--centered">
+                        <thead>
                             <th align="center">Compound</th>
-                            <th width="15%" align="right">Concentration</th>
-                            <th width="15%" align="right">Min </th>
-                            <th width="15%" align="right">Max </th>
+                            <th width="15%">Concentration</th>
+                            <th width="15%">Min </th>
+                            <th width="15%">Max </th>
                             {% if path_data.is_mdf %}
-                                <th align="right">Shadow Price</th>
+                                <th>Shadow Price</th>
                             {% endif %}
-                        </tr>
-                    {% for cdata in path_data.compound_data %}
-                        {% if not cdata.is_water %}
-                            <tr>
-                                <td align="center"><a href='{{cdata.link_url}}'>{{cdata.compound_name}}</a></td>
-                                <td align="right">{{cdata.html_concentration|safe}}</td>
-                                <td align="right" {% if cdata.bounds_equal %}style="color:#6ACC65"{% endif %}>{{cdata.html_lb|safe}}</td>
-                                <td align="right" {% if cdata.bounds_equal %}style="color:#6ACC65"{% endif %}>{{cdata.html_ub|safe}}</td>
-                                {% if path_data.is_mdf %}
-                                    <td align="right" {% if cdata.shadow_price != 0 %}style="color:#D65F5F"{% endif %}>{{cdata.shadow_price|floatformat:"1"}}</td>
-                                {% endif %}
-                            </tr>
-                        {% endif %}
-                    {% endfor %}
-                    </table>
-    
-                    <p>
+                        </thead>
+                        {% for cdata in path_data.compound_data %}
+                            {% if not cdata.is_water %}
+                                <tr>
+                                    <td><a href='{{cdata.link_url}}'>{{cdata.compound_name}}</a></td>
+                                    <td>{{cdata.html_concentration|safe}}</td>
+                                    <td {% if cdata.bounds_equal %}style="color:#6ACC65"{% endif %}>{{cdata.html_lb|safe}}</td>
+                                    <td {% if cdata.bounds_equal %}style="color:#6ACC65"{% endif %}>{{cdata.html_ub|safe}}</td>
+                                    {% if path_data.is_mdf %}
+                                        <td {% if cdata.shadow_price != 0 %}style="color:#D65F5F"{% endif %}>{{cdata.shadow_price|floatformat:"1"}}</td>
+                                    {% endif %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </table>
+                    </div>
+        
+                    <div class="mui-panel">
+                        <div class="title">Reaction Profiles</div>
                         <div id='plotPathwayAnalysisReactions' align='center'>
                             {{path_data.reaction_plot_svg|safe}}
                         </div>
-                    </p>
-                    <p>
+                    </div>
+                    <div class="mui-panel">
+                        <div class="title">Compound Concentrations</div>
                         <div id='plotPathwayAnalysisMetabolites' align='center'>
                             {{path_data.metabolite_plot_svg|safe}}
                         </div>
-                    </p>
+                    </div>
                     
                 {% endif %}
             </div>

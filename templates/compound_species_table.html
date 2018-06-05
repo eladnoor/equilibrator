@@ -2,37 +2,39 @@
 <div class="mui-panel">
 <div class="title">Species Formation Energies</div>
 <table class="mui-table">
-<tr class="speciesHeader">
-    <td>Phase</td>
-    <td witdh="10%">Net charge</td>
-    <td witdh="10%">#Hydrogens</td>
-    <td witdh="15%"><a href={% static "classic_rxns/faq.html" %}#dfg>&Delta;<sub><i>f</i></sub>G&deg;</a> [kJ/mol]</td>
-    <td witdh="15%"><a href={% static "classic_rxns/faq.html" %}#dfg>&Delta;<sub><i>f</i></sub>G'&deg;</a> [kJ/mol]</td>
-    <td>Reference</td>
-</tr>
+    <tr class="speciesHeader">
+        <thead>
+        <th width="10%">Phase</th>
+        <th width="15%">Net charge</th>
+        <th width="15%">#Hydrogens</th>
+        <th width="20%"><a href={% static "classic_rxns/faq.html" %}#dfg>&Delta;<sub><i>f</i></sub>G&deg;</a> [kJ/mol]</th>
+        <th width="20%"><a href={% static "classic_rxns/faq.html" %}#dfg>&Delta;<sub><i>f</i></sub>G'&deg;</a> [kJ/mol]</th>
+        <th width="20%">Reference</th>
+        </thead>
+    </tr>
 
-{% for sg in compound.unique_species_groups %}
-    {% for specie in sg.all_species_no_mg %}
-        <tr class="speciesSource {% if forloop.last and not forloop.parentloop.last %}last{%endif%}">
-            <td>{{ specie.phase }}</td>
-            <td>{% if specie.phase == 'aqueous' %} {{ specie.net_charge }} {% else %} &nbsp; {% endif %}</td>
-            <td>{% if specie.phase == 'aqueous' %} {{ specie.number_of_hydrogens }} {% else %} &nbsp; {% endif %}</td>
-            <td>{{ specie.formation_energy|floatformat:1 }}</td>
-            <td>
-                {% if specie.transformed_energy != None %}
-                    {{ specie.transformed_energy|floatformat:1 }}
-                {% else %}
-                    N/A
+    {% for sg in compound.unique_species_groups %}
+        {% for specie in sg.all_species_no_mg %}
+            <tr class="speciesSource {% if forloop.last and not forloop.parentloop.last %}last{%endif%}">
+                <td>{{ specie.phase }}</td>
+                <td>{% if specie.phase == 'aqueous' %} {{ specie.net_charge }} {% else %} &nbsp; {% endif %}</td>
+                <td>{% if specie.phase == 'aqueous' %} {{ specie.number_of_hydrogens }} {% else %} &nbsp; {% endif %}</td>
+                <td>{{ specie.formation_energy|floatformat:1 }}</td>
+                <td>
+                    {% if specie.transformed_energy != None %}
+                        {{ specie.transformed_energy|floatformat:1 }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+    
+                {% if forloop.first %}
+                <td class="reference {% if not forloop.parentloop.last %}border{% endif %}" rowspan="{{ sg.all_species|length }}">
+                    <a href="{{ sg.source_reference|safe }}" title="Reference list" target="_blank">{{ sg.formation_energy_source|safe }}</a>
+                </td>
                 {% endif %}
-            </td>
-
-            {% if forloop.first %}
-            <td class="reference {% if not forloop.parentloop.last %}border{% endif %}" rowspan="{{ sg.all_species|length }}">
-                <a href="{{ sg.source_reference|safe }}" title="Reference list" target="_blank">{{ sg.formation_energy_source|safe }}</a>
-            </td>
-            {% endif %}
-        </tr>
+            </tr>
+        {% endfor %}
     {% endfor %}
-{% endfor %}
 </table>
 </div>
