@@ -260,8 +260,7 @@ class GibbsTester(unittest.TestCase):
         html = str(response.content).replace(r'\n', '')
 
         # match the compound result
-        matches = re.findall('<tr class="infoTableHeader">\s+<th colspan="100%">(\w+)</th>',
-                             html)
+        matches = re.findall('<div class="title">(\w+)</div>', html)
         self.assertIn('ATP', matches)
         self.assertIn('dATP', matches)
         self.assertIn('ATPA', matches)
@@ -272,7 +271,7 @@ class GibbsTester(unittest.TestCase):
             self.assertIn('BzATP', matches)
 
             # match the enzyme result
-            matches = re.findall('<tr class="infoTableHeader">\s+<th colspan="100%">\s+<a href="[^"]+">([\w\-]+)</a>',
+            matches = re.findall('<div class="title"><a href="[^"]+">([\w\-]+)</a> \(EC [\d\.]+\)</div>',
                                  html)
             self.assertIn('AtPAO3', matches)
             self.assertIn('AtPAO3', matches)
